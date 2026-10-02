@@ -1,991 +1,486 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>MI WEB</title>
-
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      transition: background 0.3s, color 0.3s;
-    }
-
-
-    body.claro {
-      background: #f5f5f5;
-      color: #111;
-    }
-
-
-    /* =========================
-       BARRA DE NAVEGACIÓN
-       ========================= */
-
-    .barra {
-
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-
-      min-height: 70px;
-      padding: 0 25px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      background: #181818;
-      border-bottom: 1px solid #333;
-
-    }
-
-
-    body.claro .barra {
-      background: white;
-      border-bottom: 1px solid #ddd;
-    }
-
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-
-    .navegacion {
-
-      display: flex;
-      gap: 10px;
-      align-items: center;
-
-    }
-
-
-    .navegacion a {
-
-      padding: 10px 14px;
-
-      border-radius: 10px;
-
-      text-decoration: none;
-
-      color: white;
-
-      transition: 0.2s;
-
-    }
-
-
-    body.claro .navegacion a {
-      color: #111;
-    }
-
-
-    .navegacion a:hover {
-      background: #2a2a2a;
-    }
-
-
-    body.claro .navegacion a:hover {
-      background: #eee;
-    }
-
-
-    /* =========================
-       IDIOMA
-       ========================= */
-
-    .idioma {
-      position: relative;
-    }
-
-
-    .botonIdioma {
-
-      padding: 10px 14px;
-
-      border: none;
-
-      border-radius: 10px;
-
-      background: #222;
-
-      color: white;
-
-      font-size: 15px;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-
-    body.claro .botonIdioma {
-
-      background: #ddd;
-
-      color: #111;
-
-    }
-
-
-    .botonIdioma:hover {
-
-      transform: scale(1.05);
-
-    }
-
-
-    .menuIdioma {
-
-      display: none;
-
-      position: absolute;
-
-      top: 48px;
-
-      right: 0;
-
-      min-width: 170px;
-
-      background: #1d1d1d;
-
-      border: 1px solid #333;
-
-      border-radius: 12px;
-
-      padding: 6px;
-
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-
-    }
-
-
-    body.claro .menuIdioma {
-
-      background: white;
-
-      border-color: #ddd;
-
-    }
-
-
-    .menuIdioma.mostrar {
-      display: block;
-    }
-
-
-    .menuIdioma button {
-
-      width: 100%;
-
-      padding: 10px;
-
-      border: none;
-
-      border-radius: 8px;
-
-      background: transparent;
-
-      color: white;
-
-      text-align: left;
-
-      font-size: 15px;
-
-      cursor: pointer;
-
-    }
-
-
-    body.claro .menuIdioma button {
-      color: #111;
-    }
-
-
-    .menuIdioma button:hover {
-      background: #2a2a2a;
-    }
-
-
-    body.claro .menuIdioma button:hover {
-      background: #eee;
-    }
-
-
-    /* =========================
-       BOTÓN DEL TEMA
-       ========================= */
-
-    .tema {
-
-      position: absolute;
-
-      top: 85px;
-
-      right: 20px;
-
-      padding: 12px 18px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      background: #222;
-
-      color: white;
-
-      font-size: 16px;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-
-    body.claro .tema {
-
-      background: #ddd;
-
-      color: #111;
-
-    }
-
-
-    .tema:hover {
-
-      transform: scale(1.05);
-
-    }
-
-
-    /* =========================
-       CABECERA
-       ========================= */
-
-    header {
-
-      text-align: center;
-
-      padding: 70px 20px 40px;
-
-    }
-
-
-    h1 {
-
-      font-size: 60px;
-
-      margin: 0;
-
-    }
-
-
-    header p {
-
-      font-size: 22px;
-
-      color: #aaa;
-
-    }
-
-
-    body.claro header p {
-
-      color: #555;
-
-    }
-
-
-    /* =========================
-       JUEGOS
-       ========================= */
-
-    .juegos {
-
-      max-width: 1000px;
-
-      margin: auto;
-
-      padding: 30px;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(220px, 1fr)
-        );
-
-      gap: 20px;
-
-    }
-
-
-    .juego {
-
-      background: #1d1d1d;
-
-      border-radius: 18px;
-
-      padding: 30px;
-
-      text-decoration: none;
-
-      color: white;
-
-      transition: 0.2s;
-
-      border: 1px solid #333;
-
-    }
-
-
-    body.claro .juego {
-
-      background: white;
-
-      color: #111;
-
-      border: 1px solid #ddd;
-
-    }
-
-
-    .juego:hover {
-
-      transform: translateY(-6px);
-
-    }
-
-
-    .icono {
-
-      font-size: 50px;
-
-    }
-
-
-    .juego h2 {
-
-      margin-bottom: 10px;
-
-    }
-
-
-    .juego p {
-
-      color: #aaa;
-
-    }
-
-
-    body.claro .juego p {
-
-      color: #666;
-
-    }
-
-
-    /* =========================
-       MÓVIL
-       ========================= */
-
-    @media (max-width: 700px) {
-
-      .barra {
-
-        padding: 10px 12px;
-
-        flex-wrap: wrap;
-
-        gap: 8px;
-
-      }
-
-
-      .logo {
-
-        font-size: 18px;
-
-      }
-
-
-      .navegacion {
-
-        gap: 3px;
-
-      }
-
-
-      .navegacion a {
-
-        padding: 8px;
-
-        font-size: 14px;
-
-      }
-
-
-      .botonIdioma {
-
-        padding: 8px;
-
-        font-size: 14px;
-
-      }
-
-
-      .tema {
-
-        top: 90px;
-
-        right: 12px;
-
-        padding: 10px 13px;
-
-        font-size: 14px;
-
-      }
-
-
-      h1 {
-
-        font-size: 42px;
-
-      }
-
-    }
-
-  </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI WEB</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            transition: 0.3s;
+        }
+
+        body.claro {
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        .barra {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            background: #181818;
+            border-bottom: 1px solid #333;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        body.claro .nav-link {
+            color: #555;
+        }
+
+        body.claro .nav-link:hover {
+            color: #111;
+        }
+
+        .controles {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            background: #292929;
+            color: white;
+            font-size: 14px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        body.claro button {
+            background: #e5e5e5;
+            color: #111;
+        }
+
+        .idioma {
+            position: relative;
+        }
+
+        .menu-idioma {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 48px;
+            background: #222;
+            border-radius: 10px;
+            padding: 6px;
+            min-width: 150px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        body.claro .menu-idioma {
+            background: white;
+        }
+
+        .menu-idioma button {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+        }
+
+        .menu-idioma button:hover {
+            background: #333;
+        }
+
+        body.claro .menu-idioma button:hover {
+            background: #eee;
+        }
+
+        header {
+            text-align: center;
+            padding: 70px 20px 40px;
+        }
+
+        header h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #aaa;
+            font-size: 18px;
+        }
+
+        body.claro header p {
+            color: #555;
+        }
+
+        #juegos {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .tarjeta {
+            background: #1c1c1c;
+            border-radius: 18px;
+            padding: 25px;
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+            border: 1px solid #2d2d2d;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px);
+        }
+
+        body.claro .tarjeta {
+            background: white;
+            color: #111;
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+        }
+
+        .tarjeta p {
+            color: #aaa;
+        }
+
+        body.claro .tarjeta p {
+            color: #555;
+        }
+    </style>
 </head>
-
 
 <body>
 
+    <nav class="barra">
 
-  <!-- =========================
-       BARRA DE NAVEGACIÓN
-       ========================= -->
+        <div class="navegacion">
+            <div class="logo" id="logo">🎮 MI WEB</div>
 
-  <nav class="barra">
+            <a href="#" class="nav-link" id="inicio">🏠 Inicio</a>
 
+            <a href="#juegos" class="nav-link" id="juegosLink">🎮 Juegos</a>
+        </div>
 
-    <div class="logo">
+        <div class="controles">
 
-      🎮 MI WEB
+            <div class="idioma">
 
-    </div>
+                <button id="botonIdioma" onclick="abrirIdioma()">
+                    🇪🇸 ES ▾
+                </button>
 
+                <div class="menu-idioma" id="menuIdioma">
 
-    <div class="navegacion">
+                    <button onclick="cambiarIdioma('es')">
+                        🇪🇸 Español
+                    </button>
 
+                    <button onclick="cambiarIdioma('en')">
+                        🇬🇧 English
+                    </button>
 
-      <a href="./">
+                    <button onclick="cambiarIdioma('hy')">
+                        🇦🇲 Հայերեն
+                    </button>
 
-        🏠
+                </div>
 
-        <span
-          data-es="Inicio"
-          data-en="Home"
-          data-hy="Գլխավոր"
-        >
-          Inicio
-        </span>
+            </div>
 
-      </a>
-
-
-      <a href="#juegos">
-
-        🎮
-
-        <span
-          data-es="Juegos"
-          data-en="Games"
-          data-hy="Խաղեր"
-        >
-          Juegos
-        </span>
-
-      </a>
-
-
-      <!-- SELECTOR DE IDIOMA -->
-
-      <div class="idioma">
-
-
-        <button
-          class="botonIdioma"
-          onclick="abrirIdioma()"
-          id="botonIdioma"
-        >
-
-          🇪🇸 ES ▾
-
-        </button>
-
-
-        <div
-          class="menuIdioma"
-          id="menuIdioma"
-        >
-
-
-          <button onclick="cambiarIdioma('es')">
-
-            🇪🇸 Español
-
-          </button>
-
-
-          <button onclick="cambiarIdioma('en')">
-
-            🇬🇧 English
-
-          </button>
-
-
-          <button onclick="cambiarIdioma('hy')">
-
-            🇦🇲 Հայերեն
-
-          </button>
-
+            <button id="botonTema" onclick="cambiarTema()">
+                ☀️ Claro
+            </button>
 
         </div>
 
-      </div>
+    </nav>
 
 
-    </div>
+    <header>
 
-  </nav>
+        <h1 id="titulo">🎮 MI WEB</h1>
 
+        <p id="descripcion">
+            Pequeños juegos y experimentos.
+        </p>
 
-  <!-- =========================
-       BOTÓN TEMA
-       ========================= -->
+    </header>
 
-  <button
-    class="tema"
-    onclick="cambiarTema()"
-    id="botonTema"
-  >
 
-    ☀️ Claro
+    <main id="juegos">
 
-  </button>
+        <div class="tarjetas">
 
+            <a class="tarjeta" href="juegos/numero-aleatorio/">
 
-  <!-- =========================
-       CABECERA
-       ========================= -->
+                <h2 id="juego1Titulo">
+                    🎲 Número aleatorio
+                </h2>
 
-  <header>
+                <p id="juego1Descripcion">
+                    Genera un número aleatorio entre dos números.
+                </p>
 
+            </a>
 
-    <h1>
 
-      🎮
+            <a class="tarjeta" href="juegos/adivina-el-numero/">
 
-      <span
-        data-es="MI WEB"
-        data-en="MY WEBSITE"
-        data-hy="ԻՄ ԿԱՅՔԸ"
-      >
-        MI WEB
-      </span>
+                <h2 id="juego2Titulo">
+                    🔢 Adivina el número
+                </h2>
 
-    </h1>
+                <p id="juego2Descripcion">
+                    Intenta adivinar el número secreto.
+                </p>
 
+            </a>
 
-    <p
-      data-es="Pequeños juegos y experimentos."
-      data-en="Small games and experiments."
-      data-hy="Փոքր խաղեր և փորձեր։"
-    >
+        </div>
 
-      Pequeños juegos y experimentos.
+    </main>
 
-    </p>
 
+    <script>
 
-  </header>
+        function aplicarIdioma() {
 
+            const idioma = localStorage.getItem("idioma") || "es";
 
-  <!-- =========================
-       JUEGOS
-       ========================= -->
+            document.documentElement.lang = idioma;
 
-  <main
-    class="juegos"
-    id="juegos"
-  >
+            if (idioma === "en") {
 
+                document.getElementById("logo").textContent = "🎮 MY WEBSITE";
+                document.getElementById("inicio").textContent = "🏠 Home";
+                document.getElementById("juegosLink").textContent = "🎮 Games";
 
-    <!-- NÚMERO ALEATORIO -->
+                document.getElementById("titulo").textContent = "🎮 MY WEBSITE";
+                document.getElementById("descripcion").textContent =
+                    "Small games and experiments.";
 
-    <a
-      class="juego"
-      href="juegos/numero-aleatorio/"
-    >
+                document.getElementById("juego1Titulo").textContent =
+                    "🎲 Random number";
 
+                document.getElementById("juego1Descripcion").textContent =
+                    "Generate a random number between two numbers.";
 
-      <div class="icono">
+                document.getElementById("juego2Titulo").textContent =
+                    "🔢 Guess the number";
 
-        🎲
+                document.getElementById("juego2Descripcion").textContent =
+                    "Try to guess the secret number.";
 
-      </div>
+                document.getElementById("botonIdioma").textContent =
+                    "🇬🇧 EN ▾";
 
+                document.title = "MY WEBSITE";
 
-      <h2
-        data-es="Número aleatorio"
-        data-en="Random number"
-        data-hy="Պատահական թիվ"
-      >
+            } else if (idioma === "hy") {
 
-        Número aleatorio
+                document.getElementById("logo").textContent = "🎮 ԻՄ ԿԱՅՔԸ";
+                document.getElementById("inicio").textContent = "🏠 Գլխավոր";
+                document.getElementById("juegosLink").textContent = "🎮 Խաղեր";
 
-      </h2>
+                document.getElementById("titulo").textContent =
+                    "🎮 ԻՄ ԿԱՅՔԸ";
 
+                document.getElementById("descripcion").textContent =
+                    "Փոքր խաղեր և փորձեր։";
 
-      <p
-        data-es="Escribe dos números y descubre cuál sale."
-        data-en="Enter two numbers and see which one comes out."
-        data-hy="Գրիր երկու թիվ և տես, թե որն է դուրս գալիս։"
-      >
+                document.getElementById("juego1Titulo").textContent =
+                    "🎲 Պատահական թիվ";
 
-        Escribe dos números y descubre cuál sale.
+                document.getElementById("juego1Descripcion").textContent =
+                    "Ստեղծիր պատահական թիվ երկու թվերի միջև։";
 
-      </p>
+                document.getElementById("juego2Titulo").textContent =
+                    "🔢 Գուշակիր թիվը";
 
+                document.getElementById("juego2Descripcion").textContent =
+                    "Փորձիր գուշակել գաղտնի թիվը։";
 
-    </a>
+                document.getElementById("botonIdioma").textContent =
+                    "🇦🇲 HY ▾";
 
+                document.title = "ԻՄ ԿԱՅՔԸ";
 
-    <!-- ADIVINA EL NÚMERO -->
+            } else {
 
-    <a
-      class="juego"
-      href="juegos/adivina-el-numero/"
-    >
+                document.getElementById("logo").textContent = "🎮 MI WEB";
+                document.getElementById("inicio").textContent = "🏠 Inicio";
+                document.getElementById("juegosLink").textContent = "🎮 Juegos";
 
+                document.getElementById("titulo").textContent = "🎮 MI WEB";
 
-      <div class="icono">
+                document.getElementById("descripcion").textContent =
+                    "Pequeños juegos y experimentos.";
 
-        🔢
+                document.getElementById("juego1Titulo").textContent =
+                    "🎲 Número aleatorio";
 
-      </div>
+                document.getElementById("juego1Descripcion").textContent =
+                    "Genera un número aleatorio entre dos números.";
 
+                document.getElementById("juego2Titulo").textContent =
+                    "🔢 Adivina el número";
 
-      <h2
-        data-es="Adivina el número"
-        data-en="Guess the number"
-        data-hy="Գուշակիր թիվը"
-      >
+                document.getElementById("juego2Descripcion").textContent =
+                    "Intenta adivinar el número secreto.";
 
-        Adivina el número
+                document.getElementById("botonIdioma").textContent =
+                    "🇪🇸 ES ▾";
 
-      </h2>
+                document.title = "MI WEB";
+            }
 
-
-      <p
-        data-es="Encuentra el número secreto entre 1 y 100."
-        data-en="Find the secret number between 1 and 100."
-        data-hy="Գտիր գաղտնի թիվը 1-ից 100-ի միջև։"
-      >
-
-        Encuentra el número secreto entre 1 y 100.
-
-      </p>
-
-
-    </a>
-
-
-  </main>
-
-
-  <script>
-
-
-    /* =========================
-       IDIOMA
-       ========================= */
-
-    function aplicarIdioma() {
-
-
-      const idioma =
-        localStorage.getItem("idioma") || "es";
-
-
-      document.documentElement.lang =
-        idioma;
-
-
-      const textos =
-        document.querySelectorAll(
-          "[data-es][data-en][data-hy]"
-        );
-
-
-      textos.forEach(function(elemento) {
-
-
-        if (idioma === "en") {
-
-          elemento.textContent =
-            elemento.getAttribute("data-en");
-
+            actualizarTextoTema();
         }
 
-        else if (idioma === "hy") {
 
-          elemento.textContent =
-            elemento.getAttribute("data-hy");
+        function cambiarIdioma(idioma) {
 
+            localStorage.setItem("idioma", idioma);
+
+            document.getElementById("menuIdioma").style.display = "none";
+
+            aplicarIdioma();
         }
 
-        else {
 
-          elemento.textContent =
-            elemento.getAttribute("data-es");
+        function abrirIdioma() {
 
+            const menu = document.getElementById("menuIdioma");
+
+            menu.style.display =
+                menu.style.display === "block" ? "none" : "block";
         }
 
-      });
+
+        document.addEventListener("click", function(event) {
+
+            const idioma = document.querySelector(".idioma");
+
+            if (!idioma.contains(event.target)) {
+
+                document.getElementById("menuIdioma").style.display = "none";
+
+            }
+
+        });
 
 
-      const botonIdioma =
-        document.getElementById(
-          "botonIdioma"
-        );
+        function aplicarTema() {
 
+            const tema = localStorage.getItem("tema") || "oscuro";
 
-      if (idioma === "en") {
+            if (tema === "claro") {
 
-        botonIdioma.textContent =
-          "🇬🇧 EN ▾";
+                document.body.classList.add("claro");
 
-      }
+            } else {
 
-      else if (idioma === "hy") {
+                document.body.classList.remove("claro");
 
-        botonIdioma.textContent =
-          "🇦🇲 HY ▾";
+            }
 
-      }
-
-      else {
-
-        botonIdioma.textContent =
-          "🇪🇸 ES ▾";
-
-      }
-
-
-      /* TÍTULO DE LA PÁGINA */
-
-      if (idioma === "en") {
-
-        document.title =
-          "MY WEBSITE";
-
-      }
-
-      else if (idioma === "hy") {
-
-        document.title =
-          "ԻՄ ԿԱՅՔԸ";
-
-      }
-
-      else {
-
-        document.title =
-          "MI WEB";
-
-      }
-
-    }
-
-
-    function cambiarIdioma(idioma) {
-
-
-      localStorage.setItem(
-        "idioma",
-        idioma
-      );
-
-
-      aplicarIdioma();
-
-
-      document
-        .getElementById("menuIdioma")
-        .classList.remove("mostrar");
-
-    }
-
-
-    function abrirIdioma() {
-
-
-      document
-        .getElementById("menuIdioma")
-        .classList.toggle("mostrar");
-
-    }
-
-
-    /* =========================
-       CERRAR MENÚ AL HACER CLICK FUERA
-       ========================= */
-
-    document.addEventListener(
-      "click",
-      function(event) {
-
-
-        const menu =
-          document.getElementById(
-            "menuIdioma"
-          );
-
-
-        const boton =
-          document.getElementById(
-            "botonIdioma"
-          );
-
-
-        if (
-          !menu.contains(event.target) &&
-          !boton.contains(event.target)
-        ) {
-
-          menu.classList.remove(
-            "mostrar"
-          );
-
+            actualizarTextoTema();
         }
 
-      }
-    );
+
+        function cambiarTema() {
+
+            const temaActual =
+                localStorage.getItem("tema") || "oscuro";
+
+            const nuevoTema =
+                temaActual === "oscuro" ? "claro" : "oscuro";
+
+            localStorage.setItem("tema", nuevoTema);
+
+            aplicarTema();
+        }
 
 
-    /* =========================
-       TEMA
-       ========================= */
+        function actualizarTextoTema() {
 
-    function aplicarTema() {
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
 
+            const idioma =
+                localStorage.getItem("idioma") || "es";
 
-      const tema =
-        localStorage.getItem("tema") ||
-        "oscuro";
+            const boton = document.getElementById("botonTema");
 
+            if (idioma === "en") {
 
-      if (tema === "claro") {
+                boton.textContent =
+                    tema === "oscuro" ? "☀️ Light" : "🌙 Dark";
 
+            } else if (idioma === "hy") {
 
-        document.body.classList.add(
-          "claro"
-        );
+                boton.textContent =
+                    tema === "oscuro" ? "☀️ Բաց" : "🌙 Մութ";
 
+            } else {
 
-        document
-          .getElementById("botonTema")
-          .textContent =
-            "🌙 Oscuro";
+                boton.textContent =
+                    tema === "oscuro" ? "☀️ Claro" : "🌙 Oscuro";
 
-      }
-
-
-      else {
+            }
+        }
 
 
-        document.body.classList.remove(
-          "claro"
-        );
+        aplicarIdioma();
+        aplicarTema();
 
-
-        document
-          .getElementById("botonTema")
-          .textContent =
-            "☀️ Claro";
-
-      }
-
-    }
-
-
-    function cambiarTema() {
-
-
-      const temaActual =
-        localStorage.getItem("tema") ||
-        "oscuro";
-
-
-      if (temaActual === "oscuro") {
-
-        localStorage.setItem(
-          "tema",
-          "claro"
-        );
-
-      }
-
-      else {
-
-        localStorage.setItem(
-          "tema",
-          "oscuro"
-        );
-
-      }
-
-
-      aplicarTema();
-
-    }
-
-
-    /* =========================
-       INICIAR
-       ========================= */
-
-    aplicarTema();
-
-    aplicarIdioma();
-
-
-  </script>
-
+    </script>
 
 </body>
-
 </html>
