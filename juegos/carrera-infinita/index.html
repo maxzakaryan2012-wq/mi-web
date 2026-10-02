@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Carrera Infinita - MI WEB</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            transition: 0.3s;
+        }
+
+        body.claro {
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        .barra {
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            background: #181818;
+            border-bottom: 1px solid #333;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .controles {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volver,
+        .botonTema,
+        .idioma {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: #292929;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        body.claro .volver,
+        body.claro .botonTema,
+        body.claro .idioma {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        .menu-idioma {
+            position: relative;
+        }
+
+        .opciones-idioma {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 20;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+        }
+
+        body.claro .opciones-idioma {
+            background: white;
+        }
+
+        .opciones-idioma button {
+            display: block;
+            width: 150px;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        body.claro .opciones-idioma button {
+            color: #111;
+        }
+
+        .opciones-idioma button:hover {
+            background: #333;
+        }
+
+        body.claro .opciones-idioma button:hover {
+            background: #eee;
+        }
+
+        main {
+            max-width: 850px;
+            margin: auto;
+            padding: 30px 20px 50px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        #descripcion {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        body.claro #descripcion {
+            color: #555;
+        }
+
+        .marcador {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 18px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .zona-juego {
+            position: relative;
+            width: min(430px, 100%);
+            height: 600px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #303030;
+            border: 4px solid #555;
+        }
+
+        body.claro .zona-juego {
+            background: #444;
+            border-color: #777;
+        }
+
+        .carretera {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    #333 0%,
+                    #333 32%,
+                    #555 32%,
+                    #555 34%,
+                    #333 34%,
+                    #333 66%,
+                    #555 66%,
+                    #555 68%,
+                    #333 68%,
+                    #333 100%
+                );
+        }
+
+        .linea-carril {
+            position: absolute;
+            top: -100px;
+            bottom: -100px;
+            width: 4px;
+            background: repeating-linear-gradient(
+                to bottom,
+                white 0px,
+                white 45px,
+                transparent 45px,
+                transparent 90px
+            );
+            opacity: 0.55;
+            animation: carretera 0.5s linear infinite;
+        }
+
+        .linea1 {
+            left: 33.33%;
+        }
+
+        .linea2 {
+            left: 66.66%;
+        }
+
+        @keyframes carretera {
+            from {
+                transform: translateY(-90px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .personaje {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: 70px;
+            z-index: 10;
+            transition: left 0.12s;
+        }
+
+        .cabeza {
+            width: 35px;
+            height: 35px;
+            background: #66d9ff;
+            border-radius: 50%;
+            margin: auto;
+            border: 3px solid #111;
+        }
+
+        .cuerpo {
+            width: 45px;
+            height: 35px;
+            background: #2e8bff;
+            border-radius: 10px 10px 5px 5px;
+            margin: -2px auto 0;
+            border: 3px solid #111;
+        }
+
+        .obstaculo {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            background: #e53935;
+            border: 4px solid #8b0000;
+            border-radius: 12px;
+            z-index: 8;
+        }
+
+        .obstaculo::after {
+            content: "!";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .moneda {
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            background: gold;
+            border: 4px solid #b8860b;
+            border-radius: 50%;
+            z-index: 7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b6508;
+            font-weight: bold;
+        }
+
+        .pantalla-inicio,
+        .pantalla-final {
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background: rgba(0,0,0,0.78);
+        }
+
+        .pantalla-final {
+            display: none;
+        }
+
+        .pantalla-inicio h2,
+        .pantalla-final h2 {
+            font-size: 32px;
+            margin: 5px;
+        }
+
+        .pantalla-inicio p,
+        .pantalla-final p {
+            color: #ddd;
+        }
+
+        .boton-jugar {
+            margin-top: 15px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            background: #2e8bff;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-jugar:hover {
+            transform: scale(1.04);
+        }
+
+        .instrucciones {
+            margin-top: 20px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .estadisticas {
+            margin: 35px auto 0;
+            max-width: 650px;
+            background: #1d1d1d;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        body.claro .estadisticas {
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .estadisticas h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+        }
+
+        body.claro th,
+        body.claro td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            font-size: 14px;
+        }
+
+        .tu-posicion {
+            margin-top: 15px;
+            color: #aaa;
+        }
+
+        body.claro .tu-posicion {
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .barra {
+                padding: 0 10px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .volver,
+            .botonTema,
+            .idioma {
+                padding: 8px 9px;
+            }
+
+            .zona-juego {
+                height: 540px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="barra">
+
+        <a
+            href="../../index.html"
+            class="volver"
+            id="volver"
+        >
+            ← Volver
+        </a>
+
+        <div class="logo">
+            🏃 Carrera Infinita
+        </div>
+
+        <div class="controles">
+
+            <div class="menu-idioma">
+
+                <button
+                    class="idioma"
+                    id="botonIdioma"
+                    onclick="mostrarIdiomas()"
+                >
+                    🇪🇸 ES ▾
+                </button>
+
+                <div
+                    class="opciones-idioma"
+                    id="opcionesIdioma"
+                >
+                    <button onclick="cambiarIdioma('es')">
+                        🇪🇸 Español
+                    </button>
+
+                    <button onclick="cambiarIdioma('en')">
+                        🇬🇧 English
+                    </button>
+
+                    <button onclick="cambiarIdioma('hy')">
+                        🇦🇲 Հայերեն
+                    </button>
+                </div>
+
+            </div>
+
+            <button
+                class="botonTema"
+                id="botonTema"
+                onclick="cambiarTema()"
+            >
+                ☀️ Claro
+            </button>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <h1 id="titulo">
+            🏃 Carrera Infinita
+        </h1>
+
+        <p id="descripcion">
+            Esquiva los obstáculos y llega lo más lejos posible.
+        </p>
+
+        <div class="marcador">
+
+            <div>
+                🏆 <span id="textoPuntos">Puntos:</span>
+                <span id="puntos">0</span>
+            </div>
+
+            <div>
+                🪙 <span id="textoMonedas">Monedas:</span>
+                <span id="monedas">0</span>
+            </div>
+
+        </div>
+
+        <div
+            class="zona-juego"
+            id="zonaJuego"
+        >
+
+            <div class="carretera"></div>
+
+            <div class="linea-carril linea1"></div>
+            <div class="linea-carril linea2"></div>
+
+            <div
+                class="personaje"
+                id="personaje"
+            >
+                <div class="cabeza"></div>
+                <div class="cuerpo"></div>
+            </div>
+
+            <div
+                class="pantalla-inicio"
+                id="pantallaInicio"
+            >
+                <h2>🏃</h2>
+
+                <h2 id="tituloInicio">
+                    ¡Corre!
+                </h2>
+
+                <p id="textoInicio">
+                    Esquiva los obstáculos.
+                </p>
+
+                <button
+                    class="boton-jugar"
+                    id="botonJugar"
+                    onclick="empezarJuego()"
+                >
+                    ▶️ Empezar
+                </button>
+
+                <div
+                    class="instrucciones"
+                    id="instrucciones"
+                >
+                    ← → o A / D para moverte
+                </div>
+            </div>
+
+            <div
+                class="pantalla-final"
+                id="pantallaFinal"
+            >
+                <h2 id="tituloFinal">
+                    💥 ¡Has chocado!
+                </h2>
+
+                <p id="resultadoFinal">
+                    Puntos: 0
+                </p>
+
+                <button
+                    class="boton-jugar"
+                    id="botonReintentar"
+                    onclick="empezarJuego()"
+                >
+                    🔄 Jugar otra vez
+                </button>
+            </div>
+
+        </div>
+
+        <section class="estadisticas">
+
+            <h2 id="tituloRanking">
+                🏆 Récords
+            </h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th id="thPuesto">Puesto</th>
+                        <th id="thNombre">Nombre</th>
+                        <th id="thPuntos">Más puntos</th>
+                        <th id="thPartidas">Partidas</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaRanking">
+                </tbody>
+
+            </table>
+
+            <div
+                class="tu-posicion"
+                id="tuPosicion"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        /* =========================
+           TEMA
+        ========================= */
+
+        function aplicarTema() {
+
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
+
+            if (tema === "claro") {
+
+                document.body.classList.add("claro");
+
+            } else {
+
+                document.body.classList.remove("claro");
+
+            }
+
+            actualizarTextoTema();
+
+        }
+
+
+        function cambiarTema() {
+
+            const temaActual =
+                localStorage.getItem("tema") || "oscuro";
+
+            const nuevoTema =
+                temaActual === "oscuro"
+                ? "claro"
+                : "oscuro";
+
+            localStorage.setItem(
+                "tema",
+                nuevoTema
+            );
+
+            aplicarTema();
+
+        }
+
+
+        function actualizarTextoTema() {
+
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+            const boton =
+                document.getElementById("botonTema");
+
+            if (idioma === "en") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Light"
+                    : "🌙 Dark";
+
+            } else if (idioma === "hy") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Բաց"
+                    : "🌙 Մութ";
+
+            } else {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Claro"
+                    : "🌙 Oscuro";
+
+            }
+
+        }
+
+
+        /* =========================
+           IDIOMA
+        ========================= */
+
+        function mostrarIdiomas() {
+
+            const menu =
+                document.getElementById(
+                    "opcionesIdioma"
+                );
+
+            menu.style.display =
+                menu.style.display === "block"
+                ? "none"
+                : "block";
+
+        }
+
+
+        function cambiarIdioma(idioma) {
+
+            localStorage.setItem(
+                "idioma",
+                idioma
+            );
+
+            aplicarIdioma();
+
+            document.getElementById(
+                "opcionesIdioma"
+            ).style.display = "none";
+
+        }
+
+
+        function aplicarIdioma() {
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+
+            if (idioma === "en") {
+
+                document.documentElement.lang = "en";
+
+                document.title =
+                    "Infinite Run - MY WEBSITE";
+
+                document.getElementById("volver").textContent =
+                    "← Back";
+
+                document.getElementById("titulo").textContent =
+                    "🏃 Infinite Run";
+
+                document.getElementById("descripcion").textContent =
+                    "Dodge the obstacles and get as far as possible.";
+
+                document.getElementById("textoPuntos").textContent =
+                    "Points:";
+
+                document.getElementById("textoMonedas").textContent =
+                    "Coins:";
+
+                document.getElementById("tituloInicio").textContent =
+                    "Run!";
+
+                document.getElementById("textoInicio").textContent =
+                    "Dodge the obstacles.";
+
+                document.getElementById("botonJugar").textContent =
+                    "▶️ Start";
+
+                document.getElementById("instrucciones").textContent =
+                    "← → or A / D to move";
+
+                document.getElementById("tituloFinal").textContent =
+                    "💥 You crashed!";
+
+                document.getElementById("botonReintentar").textContent =
+                    "🔄 Play again";
+
+                document.getElementById("tituloRanking").textContent =
+                    "🏆 Records";
+
+                document.getElementById("thPuesto").textContent =
+                    "Rank";
+
+                document.getElementById("thNombre").textContent =
+                    "Name";
+
+                document.getElementById("thPuntos").textContent =
+                    "Best score";
+
+                document.getElementById("thPartidas").textContent =
+                    "Games";
+
+                document.getElementById("botonIdioma").textContent =
+                    "🇬🇧 EN ▾";
+
+
+            } else if (idioma === "hy") {
+
+                document.documentElement.lang = "hy";
+
+                document.title =
+                    "Անվերջ վազք - ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById("volver").textContent =
+                    "← Հետ";
+
+                document.getElementById("titulo").textContent =
+                    "🏃 Անվերջ վազք";
+
+                document.getElementById("descripcion").textContent =
+                    "Խուսափիր խոչընդոտներից և գնա որքան հնարավոր է հեռու։";
+
+                document.getElementById("textoPuntos").textContent =
+                    "Միավորներ:";
+
+                document.getElementById("textoMonedas").textContent =
+                    "Մետաղադրամներ:";
+
+                document.getElementById("tituloInicio").textContent =
+                    "Վազիր!";
+
+                document.getElementById("textoInicio").textContent =
+                    "Խուսափիր խոչընդոտներից։";
+
+                document.getElementById("botonJugar").textContent =
+                    "▶️ Սկսել";
+
+                document.getElementById("instrucciones").textContent =
+                    "← → կամ A / D՝ շարժվելու համար";
+
+                document.getElementById("tituloFinal").textContent =
+                    "💥 Բախվեցիր!";
+
+                document.getElementById("botonReintentar").textContent =
+                    "🔄 Նորից խաղալ";
+
+                document.getElementById("tituloRanking").textContent =
+                    "🏆 Ռեկորդներ";
+
+                document.getElementById("thPuesto").textContent =
+                    "Տեղ";
+
+                document.getElementById("thNombre").textContent =
+                    "Անուն";
+
+                document.getElementById("thPuntos").textContent =
+                    "Լավագույն միավոր";
+
+                document.getElementById("thPartidas").textContent =
+                    "Խաղեր";
+
+                document.getElementById("botonIdioma").textContent =
+                    "🇦🇲 HY ▾";
+
+
+            } else {
+
+                document.documentElement.lang = "es";
+
+                document.title =
+                    "Carrera Infinita - MI WEB";
+
+                document.getElementById("volver").textContent =
+                    "← Volver";
+
+                document.getElementById("titulo").textContent =
+                    "🏃 Carrera Infinita";
+
+                document.getElementById("descripcion").textContent =
+                    "Esquiva los obstáculos y llega lo más lejos posible.";
+
+                document.getElementById("textoPuntos").textContent =
+                    "Puntos:";
+
+                document.getElementById("textoMonedas").textContent =
+                    "Monedas:";
+
+                document.getElementById("tituloInicio").textContent =
+                    "¡Corre!";
+
+                document.getElementById("textoInicio").textContent =
+                    "Esquiva los obstáculos.";
+
+                document.getElementById("botonJugar").textContent =
+                    "▶️ Empezar";
+
+                document.getElementById("instrucciones").textContent =
+                    "← → o A / D para moverte";
+
+                document.getElementById("tituloFinal").textContent =
+                    "💥 ¡Has chocado!";
+
+                document.getElementById("botonReintentar").textContent =
+                    "🔄 Jugar otra vez";
+
+                document.getElementById("tituloRanking").textContent =
+                    "🏆 Récords";
+
+                document.getElementById("thPuesto").textContent =
+                    "Puesto";
+
+                document.getElementById("thNombre").textContent =
+                    "Nombre";
+
+                document.getElementById("thPuntos").textContent =
+                    "Más puntos";
+
+                document.getElementById("thPartidas").textContent =
+                    "Partidas";
+
+                document.getElementById("botonIdioma").textContent =
+                    "🇪🇸 ES ▾";
+
+            }
+
+            actualizarTextoTema();
+            mostrarRanking();
+
+        }
+
+
+        /* =========================
+           USUARIO
+        ========================= */
+
+        function obtenerNombreUsuario() {
+
+            let nombre =
+                localStorage.getItem(
+                    "nombreUsuario"
+                );
+
+            if (!nombre) {
+
+                nombre = "user_0001";
+
+            }
+
+            return nombre;
+
+        }
+
+
+        /* =========================
+           VARIABLES DEL JUEGO
+        ========================= */
+
+        let juegoActivo = false;
+
+        let carrilActual = 1;
+
+        let puntos = 0;
+
+        let monedas = 0;
+
+        let velocidad = 4;
+
+        let obstaculos = [];
+
+        let monedasObjetos = [];
+
+        let intervaloObstaculos;
+
+        let intervaloMonedas;
+
+        let animacion;
+
+
+        const posicionesCarriles = [
+            "16.66%",
+            "50%",
+            "83.33%"
+        ];
+
+
+        /* =========================
+           MOVIMIENTO
+        ========================= */
+
+        function moverIzquierda() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            if (carrilActual > 0) {
+
+                carrilActual--;
+
+                actualizarPosicionPersonaje();
+
+            }
+
+        }
+
+
+        function moverDerecha() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            if (carrilActual < 2) {
+
+                carrilActual++;
+
+                actualizarPosicionPersonaje();
+
+            }
+
+        }
+
+
+        function actualizarPosicionPersonaje() {
+
+            const personaje =
+                document.getElementById(
+                    "personaje"
+                );
+
+            personaje.style.left =
+                posicionesCarriles[carrilActual];
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "ArrowLeft" ||
+                    event.key.toLowerCase() === "a"
+                ) {
+
+                    event.preventDefault();
+
+                    moverIzquierda();
+
+                }
+
+                if (
+                    event.key === "ArrowRight" ||
+                    event.key.toLowerCase() === "d"
+                ) {
+
+                    event.preventDefault();
+
+                    moverDerecha();
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           EMPEZAR
+        ========================= */
+
+        function empezarJuego() {
+
+            cancelarAnimacion();
+
+            limpiarObjetos();
+
+            juegoActivo = true;
+
+            carrilActual = 1;
+
+            puntos = 0;
+
+            monedas = 0;
+
+            velocidad = 4;
+
+            actualizarMarcador();
+
+            actualizarPosicionPersonaje();
+
+            document.getElementById(
+                "pantallaInicio"
+            ).style.display = "none";
+
+            document.getElementById(
+                "pantallaFinal"
+            ).style.display = "none";
+
+            intervaloObstaculos =
+                setInterval(
+                    crearObstaculo,
+                    1100
+                );
+
+            intervaloMonedas =
+                setInterval(
+                    crearMoneda,
+                    900
+                );
+
+            animacion =
+                requestAnimationFrame(
+                    actualizarJuego
+                );
+
+        }
+
+
+        /* =========================
+           CREAR OBSTÁCULOS
+        ========================= */
+
+        function crearObstaculo() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            const zona =
+                document.getElementById(
+                    "zonaJuego"
+                );
+
+            const obstaculo =
+                document.createElement("div");
+
+            obstaculo.className =
+                "obstaculo";
+
+            const carril =
+                Math.floor(
+                    Math.random() * 3
+                );
+
+            obstaculo.dataset.carril =
+                carril;
+
+            obstaculo.style.left =
+                posicionesCarriles[carril];
+
+            obstaculo.style.transform =
+                "translateX(-50%)";
+
+            obstaculo.style.top =
+                "-80px";
+
+            zona.appendChild(
+                obstaculo
+            );
+
+            obstaculos.push({
+                elemento: obstaculo,
+                carril: carril,
+                y: -80
+            });
+
+        }
+
+
+        /* =========================
+           CREAR MONEDAS
+        ========================= */
+
+        function crearMoneda() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            const zona =
+                document.getElementById(
+                    "zonaJuego"
+                );
+
+            const moneda =
+                document.createElement("div");
+
+            moneda.className =
+                "moneda";
+
+            moneda.textContent =
+                "★";
+
+            const carril =
+                Math.floor(
+                    Math.random() * 3
+                );
+
+            moneda.style.left =
+                posicionesCarriles[carril];
+
+            moneda.style.transform =
+                "translateX(-50%)";
+
+            moneda.style.top =
+                "-50px";
+
+            zona.appendChild(
+                moneda
+            );
+
+            monedasObjetos.push({
+                elemento: moneda,
+                carril: carril,
+                y: -50
+            });
+
+        }
+
+
+        /* =========================
+           ACTUALIZAR JUEGO
+        ========================= */
+
+        function actualizarJuego() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            const personaje =
+                document.getElementById(
+                    "personaje"
+                );
+
+            const personajeRect =
+                personaje.getBoundingClientRect();
+
+            for (
+                let i = obstaculos.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                const obstaculo =
+                    obstaculos[i];
+
+                obstaculo.y +=
+                    velocidad;
+
+                obstaculo.elemento.style.top =
+                    obstaculo.y + "px";
+
+                const rect =
+                    obstaculo.elemento.getBoundingClientRect();
+
+                if (
+                    detectarColision(
+                        personajeRect,
+                        rect
+                    )
+                ) {
+
+                    terminarJuego();
+
+                    return;
+
+                }
+
+                if (
+                    obstaculo.y >
+                    document.getElementById(
+                        "zonaJuego"
+                    ).clientHeight + 100
+                ) {
+
+                    obstaculo.elemento.remove();
+
+                    obstaculos.splice(i, 1);
+
+                    puntos++;
+
+                    actualizarMarcador();
+
+                }
+
+            }
+
+
+            for (
+                let i = monedasObjetos.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                const moneda =
+                    monedasObjetos[i];
+
+                moneda.y +=
+                    velocidad;
+
+                moneda.elemento.style.top =
+                    moneda.y + "px";
+
+                const rect =
+                    moneda.elemento.getBoundingClientRect();
+
+                if (
+                    detectarColision(
+                        personajeRect,
+                        rect
+                    )
+                ) {
+
+                    moneda.elemento.remove();
+
+                    monedasObjetos.splice(i, 1);
+
+                    monedas++;
+
+                    puntos += 3;
+
+                    actualizarMarcador();
+
+                    continue;
+
+                }
+
+                if (
+                    moneda.y >
+                    document.getElementById(
+                        "zonaJuego"
+                    ).clientHeight + 100
+                ) {
+
+                    moneda.elemento.remove();
+
+                    monedasObjetos.splice(i, 1);
+
+                }
+
+            }
+
+
+            if (puntos > 0 && puntos % 8 === 0) {
+
+                velocidad =
+                    4 + Math.floor(
+                        puntos / 8
+                    ) * 0.5;
+
+            }
+
+
+            animacion =
+                requestAnimationFrame(
+                    actualizarJuego
+                );
+
+        }
+
+
+        function detectarColision(
+            rect1,
+            rect2
+        ) {
+
+            return (
+                rect1.left < rect2.right &&
+                rect1.right > rect2.left &&
+                rect1.top < rect2.bottom &&
+                rect1.bottom > rect2.top
+            );
+
+        }
+
+
+        /* =========================
+           TERMINAR
+        ========================= */
+
+        function terminarJuego() {
+
+            if (!juegoActivo) {
+                return;
+            }
+
+            juegoActivo = false;
+
+            clearInterval(
+                intervaloObstaculos
+            );
+
+            clearInterval(
+                intervaloMonedas
+            );
+
+            cancelarAnimacion();
+
+            guardarEstadisticas();
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+            let texto;
+
+            if (idioma === "en") {
+
+                texto =
+                    "Points: " +
+                    puntos +
+                    " | Coins: " +
+                    monedas;
+
+            } else if (idioma === "hy") {
+
+                texto =
+                    "Միավորներ: " +
+                    puntos +
+                    " | Մետաղադրամներ: " +
+                    monedas;
+
+            } else {
+
+                texto =
+                    "Puntos: " +
+                    puntos +
+                    " | Monedas: " +
+                    monedas;
+
+            }
+
+            document.getElementById(
+                "resultadoFinal"
+            ).textContent = texto;
+
+            document.getElementById(
+                "pantallaFinal"
+            ).style.display = "flex";
+
+            mostrarRanking();
+
+        }
+
+
+        function cancelarAnimacion() {
+
+            if (animacion) {
+
+                cancelAnimationFrame(
+                    animacion
+                );
+
+                animacion = null;
+
+            }
+
+        }
+
+
+        function limpiarObjetos() {
+
+            obstaculos.forEach(
+                objeto =>
+                    objeto.elemento.remove()
+            );
+
+            monedasObjetos.forEach(
+                objeto =>
+                    objeto.elemento.remove()
+            );
+
+            obstaculos = [];
+
+            monedasObjetos = [];
+
+        }
+
+
+        /* =========================
+           MARCADOR
+        ========================= */
+
+        function actualizarMarcador() {
+
+            document.getElementById(
+                "puntos"
+            ).textContent =
+                puntos;
+
+            document.getElementById(
+                "monedas"
+            ).textContent =
+                monedas;
+
+        }
+
+
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
+
+        function guardarEstadisticas() {
+
+            const nombre =
+                obtenerNombreUsuario();
+
+            let estadisticas;
+
+            try {
+
+                estadisticas =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "estadisticasCarreraInfinita"
+                        )
+                    ) || {};
+
+            } catch {
+
+                estadisticas = {};
+
+            }
+
+            if (!estadisticas[nombre]) {
+
+                estadisticas[nombre] = {
+                    mejorPuntuacion: 0,
+                    partidas: 0
+                };
+
+            }
+
+            estadisticas[nombre].partidas++;
+
+            if (
+                puntos >
+                estadisticas[nombre].mejorPuntuacion
+            ) {
+
+                estadisticas[nombre].mejorPuntuacion =
+                    puntos;
+
+            }
+
+            localStorage.setItem(
+                "estadisticasCarreraInfinita",
+                JSON.stringify(
+                    estadisticas
+                )
+            );
+
+        }
+
+
+        /* =========================
+           RANKING
+        ========================= */
+
+        function mostrarRanking() {
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+            let estadisticas;
+
+            try {
+
+                estadisticas =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "estadisticasCarreraInfinita"
+                        )
+                    ) || {};
+
+            } catch {
+
+                estadisticas = {};
+
+            }
+
+            const jugadores =
+                Object.keys(
+                    estadisticas
+                ).map(nombre => ({
+                    nombre: nombre,
+                    mejorPuntuacion:
+                        estadisticas[nombre]
+                            .mejorPuntuacion || 0,
+                    partidas:
+                        estadisticas[nombre]
+                            .partidas || 0
+                }));
+
+            jugadores.sort(
+                (a, b) => {
+
+                    if (
+                        b.mejorPuntuacion !==
+                        a.mejorPuntuacion
+                    ) {
+
+                        return (
+                            b.mejorPuntuacion -
+                            a.mejorPuntuacion
+                        );
+
+                    }
+
+                    return (
+                        b.partidas -
+                        a.partidas
+                    );
+
+                }
+            );
+
+            const top10 =
+                jugadores.slice(0, 10);
+
+            const tabla =
+                document.getElementById(
+                    "tablaRanking"
+                );
+
+            tabla.innerHTML = "";
+
+            top10.forEach(
+                (jugador, indice) => {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    fila.innerHTML =
+                        `
+                        <td>${indice + 1}</td>
+                        <td>${escapeHTML(jugador.nombre)}</td>
+                        <td>${jugador.mejorPuntuacion}</td>
+                        <td>${jugador.partidas}</td>
+                        `;
+
+                    tabla.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            const nombre =
+                obtenerNombreUsuario();
+
+            const posicion =
+                jugadores.findIndex(
+                    jugador =>
+                        jugador.nombre === nombre
+                ) + 1;
+
+            const tuPosicion =
+                document.getElementById(
+                    "tuPosicion"
+                );
+
+            if (
+                posicion > 10 &&
+                posicion <= jugadores.length
+            ) {
+
+                const jugador =
+                    jugadores[posicion - 1];
+
+                if (idioma === "en") {
+
+                    tuPosicion.textContent =
+                        "👤 Your position: " +
+                        posicion +
+                        " — " +
+                        nombre +
+                        " — " +
+                        jugador.mejorPuntuacion +
+                        " points";
+
+                } else if (idioma === "hy") {
+
+                    tuPosicion.textContent =
+                        "👤 Քո դիրքը՝ " +
+                        posicion +
+                        " — " +
+                        nombre +
+                        " — " +
+                        jugador.mejorPuntuacion +
+                        " միավոր";
+
+                } else {
+
+                    tuPosicion.textContent =
+                        "👤 Tu posición: " +
+                        posicion +
+                        " — " +
+                        nombre +
+                        " — " +
+                        jugador.mejorPuntuacion +
+                        " puntos";
+
+                }
+
+            } else {
+
+                tuPosicion.textContent = "";
+
+            }
+
+        }
+
+
+        function escapeHTML(texto) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                texto;
+
+            return div.innerHTML;
+
+        }
+
+
+        /* =========================
+           INICIAR
+        ========================= */
+
+        aplicarTema();
+
+        aplicarIdioma();
+
+        actualizarPosicionPersonaje();
+
+        mostrarRanking();
+
+    </script>
+
+</body>
+</html>
