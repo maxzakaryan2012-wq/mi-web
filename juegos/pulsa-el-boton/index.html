@@ -1,1 +1,1538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pulsa el botón - MI WEB</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            transition: 0.3s;
+        }
+
+        /* =========================
+           BARRA SUPERIOR
+        ========================= */
+
+        .barra {
+            height: 70px;
+            background: #181818;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .volver {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .volver:hover {
+            opacity: 0.7;
+        }
+
+        .espacio {
+            flex: 1;
+        }
+
+        .menu-idioma {
+            position: relative;
+        }
+
+        .boton-idioma,
+        #botonTema {
+            background: #252525;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .boton-idioma:hover,
+        #botonTema:hover {
+            background: #333;
+        }
+
+        .idiomas {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #202020;
+            border: 1px solid #444;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 150px;
+            z-index: 100;
+        }
+
+        .idiomas button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .idiomas button:hover {
+            background: #333;
+        }
+
+        /* =========================
+           JUEGO
+        ========================= */
+
+        .contenedor {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        #descripcion {
+            color: #bbb;
+            font-size: 17px;
+        }
+
+        .informacion {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 25px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #zonaJuego {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        #botonJuego {
+            position: absolute;
+            display: none;
+            width: 65px;
+            height: 65px;
+            border: none;
+            border-radius: 50%;
+            background: #39d353;
+            cursor: pointer;
+            font-size: 30px;
+            transition: left 0.05s, top 0.05s;
+        }
+
+        #botonJuego:hover {
+            transform: scale(1.08);
+        }
+
+        #botonInicio {
+            margin-top: 20px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #111;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #botonInicio:hover {
+            transform: scale(1.03);
+        }
+
+        #mensaje {
+            min-height: 30px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
+
+        .estadisticas {
+            margin-top: 60px;
+            text-align: left;
+        }
+
+        .estadisticas h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #181818;
+        }
+
+        th,
+        td {
+            padding: 14px 10px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: #222;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tu-fila {
+            background: #292929;
+            font-weight: bold;
+        }
+
+        .posicion-usuario {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #181818;
+            border: 1px solid #333;
+            text-align: center;
+            display: none;
+        }
+
+        /* =========================
+           TEMA CLARO
+        ========================= */
+
+        body.claro {
+            background: #f4f4f4;
+            color: #111;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        body.claro .volver {
+            color: #111;
+        }
+
+        body.claro .boton-idioma,
+        body.claro #botonTema {
+            background: #f1f1f1;
+            color: #111;
+            border-color: #ccc;
+        }
+
+        body.claro .boton-idioma:hover,
+        body.claro #botonTema:hover {
+            background: #e5e5e5;
+        }
+
+        body.claro .idiomas {
+            background: white;
+            border-color: #ccc;
+        }
+
+        body.claro .idiomas button {
+            color: #111;
+        }
+
+        body.claro .idiomas button:hover {
+            background: #eee;
+        }
+
+        body.claro #descripcion {
+            color: #555;
+        }
+
+        body.claro #zonaJuego {
+            background: white;
+            border-color: #ddd;
+        }
+
+        body.claro table {
+            background: white;
+        }
+
+        body.claro th {
+            background: #eee;
+        }
+
+        body.claro th,
+        body.claro td {
+            border-bottom-color: #ddd;
+        }
+
+        body.claro .tu-fila {
+            background: #e8e8e8;
+        }
+
+        body.claro .posicion-usuario {
+            background: white;
+            border-color: #ddd;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- BARRA -->
+
+    <div class="barra">
+
+        <a
+            href="../../index.html"
+            class="volver"
+            id="volver"
+        >
+            ← Volver
+        </a>
+
+        <div class="espacio"></div>
+
+        <div class="menu-idioma">
+
+            <button
+                class="boton-idioma"
+                id="botonIdioma"
+                onclick="abrirIdioma()"
+            >
+                🇪🇸 ES ▾
+            </button>
+
+            <div
+                class="idiomas"
+                id="menuIdiomas"
+            >
+
+                <button onclick="cambiarIdioma('es')">
+                    🇪🇸 Español
+                </button>
+
+                <button onclick="cambiarIdioma('en')">
+                    🇬🇧 English
+                </button>
+
+                <button onclick="cambiarIdioma('hy')">
+                    🇦🇲 Հայերեն
+                </button>
+
+            </div>
+
+        </div>
+
+        <button
+            id="botonTema"
+            onclick="cambiarTema()"
+        >
+            ☀️ Claro
+        </button>
+
+    </div>
+
+
+    <!-- JUEGO -->
+
+    <main class="contenedor">
+
+        <h1 id="titulo">
+            🟢 Pulsa el botón
+        </h1>
+
+        <p id="descripcion">
+            Pulsa el botón tantas veces como puedas en 30 segundos.
+        </p>
+
+        <div class="informacion">
+
+            <div>
+                🎯 <span id="puntosTexto">Puntos</span>:
+                <span id="puntos">0</span>
+            </div>
+
+            <div>
+                ⏱️ <span id="tiempoTexto">Tiempo</span>:
+                <span id="tiempo">30</span>
+            </div>
+
+        </div>
+
+        <button
+            id="botonInicio"
+            onclick="iniciarJuego()"
+        >
+            ▶️ Empezar
+        </button>
+
+        <div id="zonaJuego">
+
+            <button
+                id="botonJuego"
+                onclick="pulsarBoton()"
+            >
+                🟢
+            </button>
+
+        </div>
+
+        <div id="mensaje"></div>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section class="estadisticas">
+
+            <h2 id="tituloEstadisticas">
+                🏆 Estadísticas
+            </h2>
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th id="thPuesto">
+                                Puesto
+                            </th>
+
+                            <th id="thNombre">
+                                Nombre
+                            </th>
+
+                            <th id="thPuntos">
+                                Más botones pulsados
+                            </th>
+
+                            <th id="thPartidas">
+                                Partidas jugadas
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaRanking">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div
+                class="posicion-usuario"
+                id="posicionUsuario"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* =========================
+           VARIABLES
+        ========================= */
+
+        let puntos = 0;
+
+        let tiempo = 30;
+
+        let jugando = false;
+
+        let intervalo = null;
+
+
+        /* =========================
+           INICIAR
+        ========================= */
+
+        function iniciarJuego() {
+
+            if (jugando) {
+                return;
+            }
+
+            puntos = 0;
+
+            tiempo = 30;
+
+            jugando = true;
+
+
+            document.getElementById(
+                "puntos"
+            ).textContent = puntos;
+
+            document.getElementById(
+                "tiempo"
+            ).textContent = tiempo;
+
+
+            document.getElementById(
+                "mensaje"
+            ).textContent = "";
+
+
+            document.getElementById(
+                "botonInicio"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "botonJuego"
+            ).style.display = "block";
+
+
+            moverBoton();
+
+
+            intervalo = setInterval(
+                function() {
+
+                    tiempo--;
+
+                    document.getElementById(
+                        "tiempo"
+                    ).textContent =
+                        tiempo;
+
+
+                    if (tiempo <= 0) {
+
+                        terminarJuego();
+
+                    }
+
+                },
+                1000
+            );
+
+        }
+
+
+        /* =========================
+           PULSAR
+        ========================= */
+
+        function pulsarBoton() {
+
+            if (!jugando) {
+                return;
+            }
+
+
+            puntos++;
+
+
+            document.getElementById(
+                "puntos"
+            ).textContent =
+                puntos;
+
+
+            moverBoton();
+
+        }
+
+
+        /* =========================
+           MOVER BOTÓN
+        ========================= */
+
+        function moverBoton() {
+
+            const zona =
+                document.getElementById(
+                    "zonaJuego"
+                );
+
+            const boton =
+                document.getElementById(
+                    "botonJuego"
+                );
+
+
+            const anchoZona =
+                zona.clientWidth;
+
+            const altoZona =
+                zona.clientHeight;
+
+
+            const anchoBoton =
+                boton.offsetWidth;
+
+            const altoBoton =
+                boton.offsetHeight;
+
+
+            const maxX =
+                anchoZona -
+                anchoBoton;
+
+            const maxY =
+                altoZona -
+                altoBoton;
+
+
+            const x =
+                Math.floor(
+                    Math.random() *
+                    maxX
+                );
+
+
+            const y =
+                Math.floor(
+                    Math.random() *
+                    maxY
+                );
+
+
+            boton.style.left =
+                x + "px";
+
+            boton.style.top =
+                y + "px";
+        }
+
+
+        /* =========================
+           TERMINAR
+        ========================= */
+
+        function terminarJuego() {
+
+            if (!jugando) {
+                return;
+            }
+
+
+            jugando = false;
+
+
+            clearInterval(
+                intervalo
+            );
+
+
+            intervalo = null;
+
+
+            document.getElementById(
+                "botonJuego"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "botonInicio"
+            ).style.display = "inline-block";
+
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            if (idioma === "en") {
+
+                document.getElementById(
+                    "mensaje"
+                ).textContent =
+                    "⏱️ Time's up! You got " +
+                    puntos +
+                    " points!";
+
+            } else if (idioma === "hy") {
+
+                document.getElementById(
+                    "mensaje"
+                ).textContent =
+                    "⏱️ Ժամանակը վերջացավ։ Դու հավաքեցիր " +
+                    puntos +
+                    " միավոր։";
+
+            } else {
+
+                document.getElementById(
+                    "mensaje"
+                ).textContent =
+                    "⏱️ ¡Se acabó el tiempo! Has conseguido " +
+                    puntos +
+                    " puntos.";
+            }
+
+
+            guardarEstadistica();
+
+        }
+
+
+        /* =========================
+           USUARIO
+        ========================= */
+
+        function obtenerNombreUsuario() {
+
+            let nombre =
+                localStorage.getItem(
+                    "nombreUsuario"
+                );
+
+
+            if (!nombre) {
+
+                let numero =
+                    localStorage.getItem(
+                        "numeroUsuario"
+                    );
+
+
+                if (!numero) {
+
+                    numero =
+                        Math.floor(
+                            Math.random() *
+                            10000
+                        );
+
+                    numero =
+                        String(numero)
+                            .padStart(4, "0");
+
+
+                    localStorage.setItem(
+                        "numeroUsuario",
+                        numero
+                    );
+                }
+
+
+                nombre =
+                    "user_" +
+                    numero;
+
+
+                localStorage.setItem(
+                    "nombreUsuario",
+                    nombre
+                );
+            }
+
+
+            return nombre;
+        }
+
+
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
+
+        function obtenerEstadisticas() {
+
+            const datos =
+                localStorage.getItem(
+                    "estadisticasPulsaBoton"
+                );
+
+
+            if (!datos) {
+                return {};
+            }
+
+
+            try {
+
+                return JSON.parse(
+                    datos
+                );
+
+            } catch {
+
+                return {};
+            }
+
+        }
+
+
+        function guardarEstadistica() {
+
+            const nombre =
+                obtenerNombreUsuario();
+
+
+            const estadisticas =
+                obtenerEstadisticas();
+
+
+            if (!estadisticas[nombre]) {
+
+                estadisticas[nombre] = {
+
+                    mejorPuntuacion:
+                        puntos,
+
+                    partidas:
+                        1
+
+                };
+
+            } else {
+
+                if (
+                    puntos >
+                    estadisticas[nombre]
+                        .mejorPuntuacion
+                ) {
+
+                    estadisticas[nombre]
+                        .mejorPuntuacion =
+                        puntos;
+                }
+
+
+                estadisticas[nombre]
+                    .partidas++;
+            }
+
+
+            localStorage.setItem(
+                "estadisticasPulsaBoton",
+                JSON.stringify(
+                    estadisticas
+                )
+            );
+
+
+            mostrarRanking();
+
+        }
+
+
+        function ordenarRanking(
+            estadisticas
+        ) {
+
+            const jugadores =
+                Object.keys(
+                    estadisticas
+                ).map(
+                    function(nombre) {
+
+                        return {
+
+                            nombre: nombre,
+
+                            mejorPuntuacion:
+                                estadisticas[
+                                    nombre
+                                ].mejorPuntuacion,
+
+                            partidas:
+                                estadisticas[
+                                    nombre
+                                ].partidas
+
+                        };
+
+                    }
+                );
+
+
+            jugadores.sort(
+                function(a, b) {
+
+                    if (
+                        a.mejorPuntuacion !==
+                        b.mejorPuntuacion
+                    ) {
+
+                        return (
+                            b.mejorPuntuacion -
+                            a.mejorPuntuacion
+                        );
+                    }
+
+
+                    return (
+                        b.partidas -
+                        a.partidas
+                    );
+
+                }
+            );
+
+
+            return jugadores;
+        }
+
+
+        function mostrarRanking() {
+
+            const estadisticas =
+                obtenerEstadisticas();
+
+
+            const ranking =
+                ordenarRanking(
+                    estadisticas
+                );
+
+
+            const tabla =
+                document.getElementById(
+                    "tablaRanking"
+                );
+
+
+            const nombreUsuario =
+                obtenerNombreUsuario();
+
+
+            tabla.innerHTML = "";
+
+
+            const top10 =
+                ranking.slice(
+                    0,
+                    10
+                );
+
+
+            top10.forEach(
+                function(
+                    jugador,
+                    index
+                ) {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    if (
+                        jugador.nombre ===
+                        nombreUsuario
+                    ) {
+
+                        fila.classList.add(
+                            "tu-fila"
+                        );
+                    }
+
+
+                    const puesto =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const nombre =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const puntos =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const partidas =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    puesto.textContent =
+                        index + 1;
+
+
+                    nombre.textContent =
+                        jugador.nombre;
+
+
+                    puntos.textContent =
+                        jugador.mejorPuntuacion;
+
+
+                    partidas.textContent =
+                        jugador.partidas;
+
+
+                    fila.appendChild(
+                        puesto
+                    );
+
+                    fila.appendChild(
+                        nombre
+                    );
+
+                    fila.appendChild(
+                        puntos
+                    );
+
+                    fila.appendChild(
+                        partidas
+                    );
+
+
+                    tabla.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            mostrarPosicionUsuario(
+                ranking,
+                nombreUsuario
+            );
+
+        }
+
+
+        function mostrarPosicionUsuario(
+            ranking,
+            nombreUsuario
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    "posicionUsuario"
+                );
+
+
+            const posicion =
+                ranking.findIndex(
+                    function(jugador) {
+
+                        return (
+                            jugador.nombre ===
+                            nombreUsuario
+                        );
+
+                    }
+                );
+
+
+            if (
+                posicion === -1 ||
+                posicion < 10
+            ) {
+
+                elemento.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            const jugador =
+                ranking[posicion];
+
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            if (idioma === "en") {
+
+                elemento.textContent =
+                    "👤 Your position: " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.mejorPuntuacion +
+                    " points — " +
+                    jugador.partidas +
+                    " games";
+
+
+            } else if (idioma === "hy") {
+
+                elemento.textContent =
+                    "👤 Քո դիրքը՝ " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.mejorPuntuacion +
+                    " միավոր — " +
+                    jugador.partidas +
+                    " խաղ";
+
+
+            } else {
+
+                elemento.textContent =
+                    "👤 Tu posición: " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.mejorPuntuacion +
+                    " puntos — " +
+                    jugador.partidas +
+                    " partidas";
+            }
+
+
+            elemento.style.display =
+                "block";
+
+        }
+
+
+        /* =========================
+           IDIOMAS
+        ========================= */
+
+        function abrirIdioma() {
+
+            const menu =
+                document.getElementById(
+                    "menuIdiomas"
+                );
+
+
+            if (
+                menu.style.display ===
+                "block"
+            ) {
+
+                menu.style.display =
+                    "none";
+
+            } else {
+
+                menu.style.display =
+                    "block";
+            }
+
+        }
+
+
+        function cambiarIdioma(
+            idioma
+        ) {
+
+            localStorage.setItem(
+                "idioma",
+                idioma
+            );
+
+
+            aplicarIdioma();
+
+
+            document.getElementById(
+                "menuIdiomas"
+            ).style.display =
+                "none";
+
+        }
+
+
+        function aplicarIdioma() {
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            const titulo =
+                document.getElementById(
+                    "titulo"
+                );
+
+            const descripcion =
+                document.getElementById(
+                    "descripcion"
+                );
+
+            const volver =
+                document.getElementById(
+                    "volver"
+                );
+
+            const botonInicio =
+                document.getElementById(
+                    "botonInicio"
+                );
+
+            const botonIdioma =
+                document.getElementById(
+                    "botonIdioma"
+                );
+
+            const puntosTexto =
+                document.getElementById(
+                    "puntosTexto"
+                );
+
+            const tiempoTexto =
+                document.getElementById(
+                    "tiempoTexto"
+                );
+
+
+            const tituloEstadisticas =
+                document.getElementById(
+                    "tituloEstadisticas"
+                );
+
+            const thPuesto =
+                document.getElementById(
+                    "thPuesto"
+                );
+
+            const thNombre =
+                document.getElementById(
+                    "thNombre"
+                );
+
+            const thPuntos =
+                document.getElementById(
+                    "thPuntos"
+                );
+
+            const thPartidas =
+                document.getElementById(
+                    "thPartidas"
+                );
+
+
+            if (idioma === "en") {
+
+                titulo.textContent =
+                    "🟢 Press the button";
+
+                descripcion.textContent =
+                    "Press the button as many times as you can in 30 seconds.";
+
+                volver.textContent =
+                    "← Back";
+
+                botonInicio.textContent =
+                    "▶️ Start";
+
+                puntosTexto.textContent =
+                    "Points";
+
+                tiempoTexto.textContent =
+                    "Time";
+
+                botonIdioma.textContent =
+                    "🇬🇧 EN ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Statistics";
+
+                thPuesto.textContent =
+                    "Place";
+
+                thNombre.textContent =
+                    "Name";
+
+                thPuntos.textContent =
+                    "Most buttons pressed";
+
+                thPartidas.textContent =
+                    "Games played";
+
+                document.title =
+                    "Press the button - MY WEBSITE";
+
+
+            } else if (idioma === "hy") {
+
+                titulo.textContent =
+                    "🟢 Սեղմիր կոճակը";
+
+                descripcion.textContent =
+                    "Սեղմիր կոճակը որքան հնարավոր է շատ 30 վայրկյանի ընթացքում։";
+
+                volver.textContent =
+                    "← Հետ";
+
+                botonInicio.textContent =
+                    "▶️ Սկսել";
+
+                puntosTexto.textContent =
+                    "Միավորներ";
+
+                tiempoTexto.textContent =
+                    "Ժամանակ";
+
+                botonIdioma.textContent =
+                    "🇦🇲 HY ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Վիճակագրություն";
+
+                thPuesto.textContent =
+                    "Դիրք";
+
+                thNombre.textContent =
+                    "Անուն";
+
+                thPuntos.textContent =
+                    "Ամենաշատ սեղմումներ";
+
+                thPartidas.textContent =
+                    "Խաղեր";
+
+                document.title =
+                    "Սեղմիր կոճակը - ԻՄ ԿԱՅՔԸ";
+
+
+            } else {
+
+                titulo.textContent =
+                    "🟢 Pulsa el botón";
+
+                descripcion.textContent =
+                    "Pulsa el botón tantas veces como puedas en 30 segundos.";
+
+                volver.textContent =
+                    "← Volver";
+
+                botonInicio.textContent =
+                    "▶️ Empezar";
+
+                puntosTexto.textContent =
+                    "Puntos";
+
+                tiempoTexto.textContent =
+                    "Tiempo";
+
+                botonIdioma.textContent =
+                    "🇪🇸 ES ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Estadísticas";
+
+                thPuesto.textContent =
+                    "Puesto";
+
+                thNombre.textContent =
+                    "Nombre";
+
+                thPuntos.textContent =
+                    "Más botones pulsados";
+
+                thPartidas.textContent =
+                    "Partidas jugadas";
+
+                document.title =
+                    "Pulsa el botón - MI WEB";
+            }
+
+
+            actualizarTextoTema();
+
+            mostrarRanking();
+
+        }
+
+
+        /* CERRAR MENÚ */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const menu =
+                    document.getElementById(
+                        "menuIdiomas"
+                    );
+
+                const boton =
+                    document.getElementById(
+                        "botonIdioma"
+                    );
+
+
+                if (
+                    !menu.contains(event.target) &&
+                    !boton.contains(event.target)
+                ) {
+
+                    menu.style.display =
+                        "none";
+                }
+
+            }
+        );
+
+
+        /* =========================
+           TEMA
+        ========================= */
+
+        function aplicarTema() {
+
+            const tema =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            if (tema === "claro") {
+
+                document.body.classList.add(
+                    "claro"
+                );
+
+            } else {
+
+                document.body.classList.remove(
+                    "claro"
+                );
+            }
+
+
+            actualizarTextoTema();
+
+        }
+
+
+        function cambiarTema() {
+
+            const temaActual =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            const nuevoTema =
+                temaActual === "oscuro"
+                ? "claro"
+                : "oscuro";
+
+
+            localStorage.setItem(
+                "tema",
+                nuevoTema
+            );
+
+
+            aplicarTema();
+
+        }
+
+
+        function actualizarTextoTema() {
+
+            const tema =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            const boton =
+                document.getElementById(
+                    "botonTema"
+                );
+
+
+            if (idioma === "en") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Light"
+                    : "🌙 Dark";
+
+            } else if (idioma === "hy") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Բաց"
+                    : "🌙 Մութ";
+
+            } else {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Claro"
+                    : "🌙 Oscuro";
+            }
+
+        }
+
+
+        /* =========================
+           INICIO
+        ========================= */
+
+        aplicarIdioma();
+
+        aplicarTema();
+
+        mostrarRanking();
+
+    </script>
+
+</body>
+</html>
