@@ -1,1137 +1,1375 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>MI WEB</title>
-
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #111;
-        color: white;
-        transition: 0.3s;
-    }
-
-    /* =========================
-       BARRA SUPERIOR
-    ========================= */
-
-    .barra {
-        height: 65px;
-        background: #181818;
-        display: flex;
-        align-items: center;
-        padding: 0 25px;
-        border-bottom: 1px solid #333;
-    }
-
-    .logo {
-        font-size: 22px;
-        font-weight: bold;
-        margin-right: 30px;
-    }
-
-    .navegacion {
-        display: flex;
-        gap: 10px;
-    }
-
-    .navegacion a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 14px;
-        border-radius: 8px;
-        transition: 0.2s;
-    }
-
-    .navegacion a:hover {
-        background: #292929;
-    }
-
-    .controles {
-        margin-left: auto;
-        display: flex;
-        gap: 10px;
-    }
-
-    .boton-control {
-        background: #292929;
-        color: white;
-        border: none;
-        padding: 10px 14px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .boton-control:hover {
-        background: #383838;
-    }
-
-    /* =========================
-       IDIOMA
-    ========================= */
-
-    .idioma {
-        position: relative;
-    }
-
-    .menu-idioma {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 45px;
-        background: #222;
-        border: 1px solid #444;
-        border-radius: 10px;
-        padding: 6px;
-        z-index: 100;
-        min-width: 150px;
-    }
-
-    .menu-idioma button {
-        display: block;
-        width: 100%;
-        background: none;
-        border: none;
-        color: white;
-        padding: 10px;
-        text-align: left;
-        border-radius: 7px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .menu-idioma button:hover {
-        background: #333;
-    }
-
-    /* =========================
-       CONTENIDO
-    ========================= */
-
-    main {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 50px 20px;
-    }
-
-    .cabecera {
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
-    .cabecera h1 {
-        font-size: 45px;
-        margin-bottom: 10px;
-    }
-
-    .cabecera p {
-        color: #aaa;
-        font-size: 18px;
-    }
-
-    /* =========================
-       USUARIO
-    ========================= */
-
-    .registro-usuario {
-        max-width: 700px;
-        margin: 0 auto 35px;
-        padding: 20px 25px;
-        text-align: center;
-        background: #1b1b1b;
-        border: 1px solid #333;
-        border-radius: 15px;
-    }
-
-    .usuario-principal {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    #nombreGuardado {
-        font-size: 21px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .boton-nombre {
-        background: #333;
-        color: white;
-        border: none;
-        padding: 9px 14px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .boton-nombre:hover {
-        background: #444;
-    }
-
-    .formulario-usuario {
-        display: none;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-top: 15px;
-    }
-
-    .formulario-usuario input {
-        width: 250px;
-        padding: 12px;
-        border: 1px solid #444;
-        border-radius: 8px;
-        background: #111;
-        color: white;
-        font-size: 16px;
-        outline: none;
-    }
-
-    .formulario-usuario button {
-        padding: 12px 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        background: #333;
-        color: white;
-        font-size: 15px;
-    }
-
-    .formulario-usuario button:hover {
-        background: #444;
-    }
-
-    /* =========================
-       JUEGOS
-    ========================= */
-
-    #juegos {
-        scroll-margin-top: 80px;
-    }
-
-    .titulo-juegos {
-        text-align: center;
-        font-size: 30px;
-        margin-bottom: 25px;
-    }
-
-    .juegos {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
-
-    .tarjeta {
-        background: #1b1b1b;
-        border: 1px solid #333;
-        border-radius: 15px;
-        padding: 25px;
-        transition: 0.2s;
-    }
-
-    .tarjeta:hover {
-        transform: translateY(-3px);
-        border-color: #555;
-    }
-
-    .tarjeta h2 {
-        margin-top: 0;
-    }
-
-    .tarjeta p {
-        color: #aaa;
-        line-height: 1.5;
-    }
-
-    .tarjeta a {
-        display: inline-block;
-        margin-top: 10px;
-        background: #333;
-        color: white;
-        text-decoration: none;
-        padding: 11px 16px;
-        border-radius: 8px;
-        transition: 0.2s;
-    }
-
-    .tarjeta a:hover {
-        background: #444;
-    }
-
-    /* =========================
-       MODO CLARO
-    ========================= */
-
-    body.claro {
-        background: #f5f5f5;
-        color: #111;
-    }
-
-    body.claro .barra {
-        background: white;
-        border-bottom: 1px solid #ddd;
-    }
-
-    body.claro .logo {
-        color: #111;
-    }
-
-    body.claro .navegacion a {
-        color: #111;
-    }
-
-    body.claro .navegacion a:hover {
-        background: #eee;
-    }
-
-    body.claro .boton-control {
-        background: #eee;
-        color: #111;
-    }
-
-    body.claro .boton-control:hover {
-        background: #ddd;
-    }
-
-    body.claro .menu-idioma {
-        background: white;
-        border-color: #ddd;
-    }
-
-    body.claro .menu-idioma button {
-        color: #111;
-    }
-
-    body.claro .menu-idioma button:hover {
-        background: #eee;
-    }
-
-    body.claro .cabecera p {
-        color: #555;
-    }
-
-    body.claro .registro-usuario {
-        background: white;
-        border-color: #ddd;
-    }
-
-    body.claro .boton-nombre {
-        background: #eee;
-        color: #111;
-    }
-
-    body.claro .boton-nombre:hover {
-        background: #ddd;
-    }
-
-    body.claro .formulario-usuario input {
-        background: #f5f5f5;
-        color: #111;
-        border-color: #ccc;
-    }
-
-    body.claro .formulario-usuario button {
-        background: #eee;
-        color: #111;
-    }
-
-    body.claro .formulario-usuario button:hover {
-        background: #ddd;
-    }
-
-    body.claro .tarjeta {
-        background: white;
-        border-color: #ddd;
-    }
-
-    body.claro .tarjeta p {
-        color: #555;
-    }
-
-    body.claro .tarjeta a {
-        background: #eee;
-        color: #111;
-    }
-
-    body.claro .tarjeta a:hover {
-        background: #ddd;
-    }
-
-    /* =========================
-       MÓVIL
-    ========================= */
-
-    @media (max-width: 650px) {
+    <title>MI WEB</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            transition: 0.3s;
+        }
+
+        body.claro {
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        /* =========================
+           BARRA SUPERIOR
+        ========================= */
 
         .barra {
-            padding: 0 12px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            background: #181818;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
         }
 
         .logo {
-            margin-right: 10px;
-            font-size: 18px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .navegacion a {
-            padding: 8px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            transition: 0.2s;
         }
 
-        .boton-control {
-            padding: 8px;
+        .navegacion a:hover {
+            background: #292929;
+        }
+
+        body.claro .navegacion a {
+            color: #111;
+        }
+
+        body.claro .navegacion a:hover {
+            background: #eee;
+        }
+
+        .controles {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .botonTema,
+        .idioma {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: #292929;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        body.claro .botonTema,
+        body.claro .idioma {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        .menu-idioma {
+            position: relative;
+        }
+
+        .opciones-idioma {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+            z-index: 200;
+        }
+
+        body.claro .opciones-idioma {
+            background: white;
+        }
+
+        .opciones-idioma button {
+            display: block;
+            width: 150px;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        body.claro .opciones-idioma button {
+            color: #111;
+        }
+
+        .opciones-idioma button:hover {
+            background: #333;
+        }
+
+        body.claro .opciones-idioma button:hover {
+            background: #eee;
+        }
+
+        /* =========================
+           CONTENIDO
+        ========================= */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 25px;
+        }
+
+        .cabecera {
+            text-align: center;
+            margin-bottom: 45px;
         }
 
         .cabecera h1 {
-            font-size: 35px;
+            font-size: 48px;
+            margin: 0 0 10px;
         }
-    }
-</style>
-```
 
+        .cabecera p {
+            font-size: 18px;
+            color: #aaa;
+            margin: 0;
+        }
+
+        body.claro .cabecera p {
+            color: #555;
+        }
+
+        /* =========================
+           USUARIO
+        ========================= */
+
+        .registro-usuario {
+            max-width: 700px;
+            margin: 0 auto 45px;
+            padding: 20px;
+            background: #1d1d1d;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        body.claro .registro-usuario {
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .usuario-principal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #nombreGuardado {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .boton-nombre {
+            border: none;
+            padding: 9px 14px;
+            border-radius: 9px;
+            background: #292929;
+            color: white;
+            cursor: pointer;
+        }
+
+        body.claro .boton-nombre {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        .formulario-usuario {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .formulario-usuario input {
+            padding: 10px;
+            border-radius: 9px;
+            border: 1px solid #555;
+            background: #111;
+            color: white;
+            outline: none;
+        }
+
+        body.claro .formulario-usuario input {
+            background: white;
+            color: #111;
+            border-color: #bbb;
+        }
+
+        .formulario-usuario button {
+            border: none;
+            padding: 10px 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            background: #292929;
+            color: white;
+        }
+
+        body.claro .formulario-usuario button {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        /* =========================
+           JUEGOS
+        ========================= */
+
+        .titulo-juegos {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .juegos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .tarjeta {
+            background: #1d1d1d;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #2d2d2d;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            border-color: #555;
+        }
+
+        body.claro .tarjeta {
+            background: white;
+            border-color: #ddd;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .tarjeta p {
+            color: #aaa;
+            min-height: 45px;
+            line-height: 1.5;
+        }
+
+        body.claro .tarjeta p {
+            color: #555;
+        }
+
+        .tarjeta a {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: #292929;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .tarjeta a:hover {
+            background: #444;
+            transform: scale(1.03);
+        }
+
+        body.claro .tarjeta a {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        body.claro .tarjeta a:hover {
+            background: #d8d8d8;
+        }
+
+        /* =========================
+           MÓVIL
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .juegos {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .barra {
+                padding: 0 12px;
+            }
+
+            .navegacion {
+                display: none;
+            }
+
+            .cabecera h1 {
+                font-size: 38px;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .juegos {
+                grid-template-columns: 1fr;
+            }
+
+            .controles {
+                gap: 5px;
+            }
+
+            .botonTema,
+            .idioma {
+                padding: 8px 9px;
+            }
+
+            main {
+                padding: 35px 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-```
-<!-- =========================
-     BARRA SUPERIOR
-========================= -->
+    <!-- =========================
+         BARRA
+    ========================= -->
 
-<header class="barra">
+    <header class="barra">
 
-    <div class="logo" id="logo">
-        🎮 MI WEB
-    </div>
+        <div class="logo" id="logo">
+            🎮 MI WEB
+        </div>
 
-    <nav class="navegacion">
+        <nav class="navegacion">
 
-        <a href="index.html" id="inicio">
-            🏠 Inicio
-        </a>
+            <a href="index.html" id="inicio">
+                🏠 Inicio
+            </a>
 
-        <a href="#juegos" id="juegosLink">
-            🎮 Juegos
-        </a>
+            <a href="#juegos" id="juegosNav">
+                🎮 Juegos
+            </a>
 
-    </nav>
+        </nav>
 
-    <div class="controles">
+        <div class="controles">
 
-        <!-- IDIOMA -->
+            <div class="menu-idioma">
 
-        <div class="idioma">
-
-            <button
-                class="boton-control"
-                onclick="abrirIdioma()"
-                id="botonIdioma"
-            >
-                🇪🇸 ES ▾
-            </button>
-
-            <div
-                class="menu-idioma"
-                id="menuIdioma"
-            >
-
-                <button onclick="cambiarIdioma('es')">
-                    🇪🇸 Español
+                <button
+                    class="idioma"
+                    id="botonIdioma"
+                    onclick="mostrarIdiomas()"
+                >
+                    🇪🇸 ES ▾
                 </button>
 
-                <button onclick="cambiarIdioma('en')">
-                    🇬🇧 English
-                </button>
+                <div
+                    class="opciones-idioma"
+                    id="opcionesIdioma"
+                >
 
-                <button onclick="cambiarIdioma('hy')">
-                    🇦🇲 Հայերեն
-                </button>
+                    <button onclick="cambiarIdioma('es')">
+                        🇪🇸 Español
+                    </button>
+
+                    <button onclick="cambiarIdioma('en')">
+                        🇬🇧 English
+                    </button>
+
+                    <button onclick="cambiarIdioma('hy')">
+                        🇦🇲 Հայերեն
+                    </button>
+
+                </div>
 
             </div>
 
+            <button
+                class="botonTema"
+                id="botonTema"
+                onclick="cambiarTema()"
+            >
+                ☀️ Claro
+            </button>
+
         </div>
 
-        <!-- TEMA -->
-
-        <button
-            class="boton-control"
-            id="botonTema"
-            onclick="cambiarTema()"
-        >
-            ☀️ Claro
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- =========================
-     CONTENIDO
-========================= -->
-
-<main>
-
-    <section class="cabecera">
-
-        <h1 id="titulo">
-            🎮 MI WEB
-        </h1>
-
-        <p id="descripcion">
-            Pequeños juegos y experimentos.
-        </p>
-
-    </section>
+    </header>
 
 
     <!-- =========================
-         USUARIO
+         CONTENIDO
     ========================= -->
 
-    <section class="registro-usuario">
+    <main>
 
-        <div class="usuario-principal">
+        <section class="cabecera">
 
-            <p id="nombreGuardado">
-                👤 user_0001
+            <h1 id="tituloPrincipal">
+                🎮 MI WEB
+            </h1>
+
+            <p id="subtitulo">
+                Pequeños juegos y experimentos.
             </p>
 
-            <button
-                class="boton-nombre"
-                id="botonCambiarNombre"
-                onclick="mostrarFormularioNombre()"
-            >
-                ✏️ Cambiar nombre
-            </button>
-
-        </div>
+        </section>
 
 
-        <div
-            class="formulario-usuario"
-            id="formularioUsuario"
-        >
+        <!-- =========================
+             USUARIO
+        ========================= -->
 
-            <input
-                type="text"
-                id="nombreUsuario"
-                maxlength="20"
-                placeholder="Escribe tu nombre"
-                autocomplete="off"
-            >
+        <section class="registro-usuario">
 
-            <button
-                onclick="guardarNombre()"
-                id="botonGuardarNombre"
-            >
-                Guardar
-            </button>
+            <div class="usuario-principal">
 
-            <button
-                onclick="cancelarCambioNombre()"
-                id="botonCancelarNombre"
-            >
-                Cancelar
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         JUEGOS
-    ========================= -->
-
-    <section id="juegos">
-
-        <h2
-            class="titulo-juegos"
-            id="tituloJuegos"
-        >
-            🎮 Juegos
-        </h2>
-
-
-        <div class="juegos">
-
-            <!-- NÚMERO ALEATORIO -->
-
-            <div class="tarjeta">
-
-                <h2 id="tituloAleatorio">
-                    🎲 Número aleatorio
-                </h2>
-
-                <p id="descripcionAleatorio">
-                    Genera un número aleatorio entre dos números.
+                <p id="nombreGuardado">
+                    👤 user_0001
                 </p>
 
-                <a
-                    href="juegos/numero-aleatorio/index.html"
-                    id="botonAleatorio"
+                <button
+                    class="boton-nombre"
+                    id="botonCambiarNombre"
+                    onclick="mostrarFormularioNombre()"
                 >
-                    🎲 Jugar
-                </a>
+                    ✏️ Cambiar nombre
+                </button>
 
             </div>
 
+            <div
+                class="formulario-usuario"
+                id="formularioUsuario"
+            >
 
-            <!-- ADIVINA EL NÚMERO -->
-
-            <div class="tarjeta">
-
-                <h2 id="tituloAdivina">
-                    🔢 Adivina el número
-                </h2>
-
-                <p id="descripcionAdivina">
-                    Intenta adivinar el número secreto entre 1 y 100.
-                </p>
-
-                <a
-                    href="juegos/adivina-el-numero/index.html"
-                    id="botonAdivina"
+                <input
+                    type="text"
+                    id="nombreUsuario"
+                    maxlength="20"
+                    placeholder="Escribe tu nombre"
+                    autocomplete="off"
                 >
-                    🎯 Jugar
-                </a>
+
+                <button
+                    onclick="guardarNombre()"
+                    id="botonGuardarNombre"
+                >
+                    Guardar
+                </button>
+
+                <button
+                    onclick="cancelarCambioNombre()"
+                    id="botonCancelarNombre"
+                >
+                    Cancelar
+                </button>
 
             </div>
 
+        </section>
 
-            <!-- PULSA EL BOTÓN -->
 
-            <div class="tarjeta">
+        <!-- =========================
+             JUEGOS
+        ========================= -->
 
-                <h2 id="tituloPulsa">
-                    🟢 Pulsa el botón
-                </h2>
+        <section id="juegos">
 
-                <p id="descripcionPulsa">
-                    Pulsa el botón tantas veces como puedas en 30 segundos.
-                </p>
+            <h2
+                class="titulo-juegos"
+                id="tituloJuegos"
+            >
+                🎮 Juegos
+            </h2>
 
-                <a
-                    href="juegos/pulsa-el-boton/index.html"
-                    id="botonPulsa"
-                >
-                    🟢 Jugar
-                </a>
+
+            <div class="juegos">
+
+                <!-- JUEGO 1 -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloAleatorio">
+                        🎲 Número aleatorio
+                    </h2>
+
+                    <p id="descripcionAleatorio">
+                        Genera un número aleatorio entre dos números.
+                    </p>
+
+                    <a
+                        href="juegos/numero-aleatorio/index.html"
+                        id="botonAleatorio"
+                    >
+                        🎲 Jugar
+                    </a>
+
+                </div>
+
+
+                <!-- JUEGO 2 -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloAdivina">
+                        🔢 Adivina el número
+                    </h2>
+
+                    <p id="descripcionAdivina">
+                        Intenta adivinar el número secreto entre 1 y 100.
+                    </p>
+
+                    <a
+                        href="juegos/adivina-el-numero/index.html"
+                        id="botonAdivina"
+                    >
+                        🎯 Jugar
+                    </a>
+
+                </div>
+
+
+                <!-- JUEGO 3 -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloPulsa">
+                        🟢 Pulsa el botón
+                    </h2>
+
+                    <p id="descripcionPulsa">
+                        Pulsa el botón tantas veces como puedas en 30 segundos.
+                    </p>
+
+                    <a
+                        href="juegos/pulsa-el-boton/index.html"
+                        id="botonPulsa"
+                    >
+                        🟢 Jugar
+                    </a>
+
+                </div>
+
+
+                <!-- JUEGO 4 -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloReflejos">
+                        🏃 Carrera Infinita
+                    </h2>
+
+                    <p id="descripcionReflejos">
+                        Esquiva los obstáculos y llega lo más lejos posible.
+                    </p>
+
+                    <a
+                        href="juegos/carrera-infinita/index.html"
+                        id="botonReflejos"
+                    >
+                        🏃 Jugar
+                    </a>
+
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
-
-</main>
+    </main>
 
 
-<script>
+    <script>
 
-    /* =========================
-       IDIOMAS
-    ========================= */
+        /* =========================
+           TEMA
+        ========================= */
 
-    function aplicarIdioma() {
+        function aplicarTema() {
 
-        const idioma =
-            localStorage.getItem("idioma") || "es";
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
 
+            if (tema === "claro") {
 
-        if (idioma === "en") {
+                document.body.classList.add("claro");
 
-            document.documentElement.lang = "en";
+            } else {
 
-            document.title = "MY WEBSITE";
+                document.body.classList.remove("claro");
 
-            document.getElementById("logo").textContent =
-                "🎮 MY WEBSITE";
+            }
 
-            document.getElementById("inicio").textContent =
-                "🏠 Home";
-
-            document.getElementById("juegosLink").textContent =
-                "🎮 Games";
-
-            document.getElementById("titulo").textContent =
-                "🎮 MY WEBSITE";
-
-            document.getElementById("descripcion").textContent =
-                "Small games and experiments.";
-
-            document.getElementById("tituloJuegos").textContent =
-                "🎮 Games";
-
-            document.getElementById("tituloAleatorio").textContent =
-                "🎲 Random number";
-
-            document.getElementById("descripcionAleatorio").textContent =
-                "Generate a random number between two numbers.";
-
-            document.getElementById("botonAleatorio").textContent =
-                "🎲 Play";
-
-            document.getElementById("tituloAdivina").textContent =
-                "🔢 Guess the number";
-
-            document.getElementById("descripcionAdivina").textContent =
-                "Try to guess the secret number between 1 and 100.";
-
-            document.getElementById("botonAdivina").textContent =
-                "🎯 Play";
-
-
-            /* PULSA EL BOTÓN */
-
-            document.getElementById("tituloPulsa").textContent =
-                "🟢 Press the button";
-
-            document.getElementById("descripcionPulsa").textContent =
-                "Press the button as many times as you can in 30 seconds.";
-
-            document.getElementById("botonPulsa").textContent =
-                "🟢 Play";
-
-
-            document.getElementById("botonIdioma").textContent =
-                "🇬🇧 EN ▾";
-
-            document.getElementById("botonCambiarNombre").textContent =
-                "✏️ Change name";
-
-            document.getElementById("nombreUsuario").placeholder =
-                "Enter your name";
-
-            document.getElementById("botonGuardarNombre").textContent =
-                "Save";
-
-            document.getElementById("botonCancelarNombre").textContent =
-                "Cancel";
+            actualizarTextoTema();
 
         }
 
-        else if (idioma === "hy") {
 
-            document.documentElement.lang = "hy";
+        function cambiarTema() {
 
-            document.title = "ԻՄ ԿԱՅՔԸ";
+            const temaActual =
+                localStorage.getItem("tema") || "oscuro";
 
-            document.getElementById("logo").textContent =
-                "🎮 ԻՄ ԿԱՅՔԸ";
-
-            document.getElementById("inicio").textContent =
-                "🏠 Գլխավոր";
-
-            document.getElementById("juegosLink").textContent =
-                "🎮 Խաղեր";
-
-            document.getElementById("titulo").textContent =
-                "🎮 ԻՄ ԿԱՅՔԸ";
-
-            document.getElementById("descripcion").textContent =
-                "Փոքր խաղեր և փորձեր։";
-
-            document.getElementById("tituloJuegos").textContent =
-                "🎮 Խաղեր";
-
-            document.getElementById("tituloAleatorio").textContent =
-                "🎲 Պատահական թիվ";
-
-            document.getElementById("descripcionAleatorio").textContent =
-                "Ստեղծիր պատահական թիվ երկու թվերի միջև։";
-
-            document.getElementById("botonAleatorio").textContent =
-                "🎲 Խաղալ";
-
-            document.getElementById("tituloAdivina").textContent =
-                "🔢 Գուշակիր թիվը";
-
-            document.getElementById("descripcionAdivina").textContent =
-                "Փորձիր գուշակել 1-ից 100-ի միջև գաղտնի թիվը։";
-
-            document.getElementById("botonAdivina").textContent =
-                "🎯 Խաղալ";
-
-
-            /* PULSA EL BOTÓN */
-
-            document.getElementById("tituloPulsa").textContent =
-                "🟢 Սեղմիր կոճակը";
-
-            document.getElementById("descripcionPulsa").textContent =
-                "Սեղմիր կոճակը որքան հնարավոր է շատ 30 վայրկյանի ընթացքում։";
-
-            document.getElementById("botonPulsa").textContent =
-                "🟢 Խաղալ";
-
-
-            document.getElementById("botonIdioma").textContent =
-                "🇦🇲 HY ▾";
-
-            document.getElementById("botonCambiarNombre").textContent =
-                "✏️ Փոխել անունը";
-
-            document.getElementById("nombreUsuario").placeholder =
-                "Գրիր քո անունը";
-
-            document.getElementById("botonGuardarNombre").textContent =
-                "Պահպանել";
-
-            document.getElementById("botonCancelarNombre").textContent =
-                "Չեղարկել";
-
-        }
-
-        else {
-
-            document.documentElement.lang = "es";
-
-            document.title = "MI WEB";
-
-            document.getElementById("logo").textContent =
-                "🎮 MI WEB";
-
-            document.getElementById("inicio").textContent =
-                "🏠 Inicio";
-
-            document.getElementById("juegosLink").textContent =
-                "🎮 Juegos";
-
-            document.getElementById("titulo").textContent =
-                "🎮 MI WEB";
-
-            document.getElementById("descripcion").textContent =
-                "Pequeños juegos y experimentos.";
-
-            document.getElementById("tituloJuegos").textContent =
-                "🎮 Juegos";
-
-            document.getElementById("tituloAleatorio").textContent =
-                "🎲 Número aleatorio";
-
-            document.getElementById("descripcionAleatorio").textContent =
-                "Genera un número aleatorio entre dos números.";
-
-            document.getElementById("botonAleatorio").textContent =
-                "🎲 Jugar";
-
-            document.getElementById("tituloAdivina").textContent =
-                "🔢 Adivina el número";
-
-            document.getElementById("descripcionAdivina").textContent =
-                "Intenta adivinar el número secreto entre 1 y 100.";
-
-            document.getElementById("botonAdivina").textContent =
-                "🎯 Jugar";
-
-
-            /* PULSA EL BOTÓN */
-
-            document.getElementById("tituloPulsa").textContent =
-                "🟢 Pulsa el botón";
-
-            document.getElementById("descripcionPulsa").textContent =
-                "Pulsa el botón tantas veces como puedas en 30 segundos.";
-
-            document.getElementById("botonPulsa").textContent =
-                "🟢 Jugar";
-
-
-            document.getElementById("botonIdioma").textContent =
-                "🇪🇸 ES ▾";
-
-            document.getElementById("botonCambiarNombre").textContent =
-                "✏️ Cambiar nombre";
-
-            document.getElementById("nombreUsuario").placeholder =
-                "Escribe tu nombre";
-
-            document.getElementById("botonGuardarNombre").textContent =
-                "Guardar";
-
-            document.getElementById("botonCancelarNombre").textContent =
-                "Cancelar";
-        }
-
-
-        actualizarTextoTema();
-    }
-
-
-    function cambiarIdioma(idioma) {
-
-        localStorage.setItem("idioma", idioma);
-
-        aplicarIdioma();
-
-        document.getElementById("menuIdioma").style.display =
-            "none";
-    }
-
-
-    function abrirIdioma() {
-
-        const menu =
-            document.getElementById("menuIdioma");
-
-        if (menu.style.display === "block") {
-            menu.style.display = "none";
-        } else {
-            menu.style.display = "block";
-        }
-    }
-
-
-    document.addEventListener("click", function(event) {
-
-        const idioma =
-            document.querySelector(".idioma");
-
-        const menu =
-            document.getElementById("menuIdioma");
-
-        if (!idioma.contains(event.target)) {
-            menu.style.display = "none";
-        }
-
-    });
-
-
-    /* =========================
-       TEMA
-    ========================= */
-
-    function aplicarTema() {
-
-        const tema =
-            localStorage.getItem("tema") || "oscuro";
-
-        if (tema === "claro") {
-
-            document.body.classList.add("claro");
-
-        } else {
-
-            document.body.classList.remove("claro");
-
-        }
-
-        actualizarTextoTema();
-    }
-
-
-    function cambiarTema() {
-
-        const temaActual =
-            localStorage.getItem("tema") || "oscuro";
-
-        const nuevoTema =
-            temaActual === "oscuro"
-            ? "claro"
-            : "oscuro";
-
-        localStorage.setItem("tema", nuevoTema);
-
-        aplicarTema();
-    }
-
-
-    function actualizarTextoTema() {
-
-        const tema =
-            localStorage.getItem("tema") || "oscuro";
-
-        const idioma =
-            localStorage.getItem("idioma") || "es";
-
-        const boton =
-            document.getElementById("botonTema");
-
-
-        if (idioma === "en") {
-
-            boton.textContent =
-                tema === "oscuro"
-                ? "☀️ Light"
-                : "🌙 Dark";
-
-        }
-
-        else if (idioma === "hy") {
-
-            boton.textContent =
-                tema === "oscuro"
-                ? "☀️ Բաց"
-                : "🌙 Մութ";
-
-        }
-
-        else {
-
-            boton.textContent =
-                tema === "oscuro"
-                ? "☀️ Claro"
-                : "🌙 Oscuro";
-
-        }
-    }
-
-
-    /* =========================
-       USUARIO
-    ========================= */
-
-    function obtenerNumeroUsuario() {
-
-        let numero =
-            localStorage.getItem("numeroUsuario");
-
-
-        if (!numero) {
-
-            numero =
-                Math.floor(
-                    Math.random() * 10000
-                );
-
-            numero =
-                String(numero).padStart(4, "0");
+            const nuevoTema =
+                temaActual === "oscuro"
+                ? "claro"
+                : "oscuro";
 
             localStorage.setItem(
-                "numeroUsuario",
-                numero
+                "tema",
+                nuevoTema
             );
+
+            aplicarTema();
+
         }
 
 
-        return numero;
-    }
+        function actualizarTextoTema() {
+
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+            const boton =
+                document.getElementById(
+                    "botonTema"
+                );
+
+            if (idioma === "en") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Light"
+                    : "🌙 Dark";
+
+            } else if (idioma === "hy") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Բաց"
+                    : "🌙 Մութ";
+
+            } else {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Claro"
+                    : "🌙 Oscuro";
+
+            }
+
+        }
 
 
-    function obtenerNombreUsuario() {
+        /* =========================
+           IDIOMA
+        ========================= */
 
-        let nombre =
-            localStorage.getItem("nombreUsuario");
+        function mostrarIdiomas() {
+
+            const menu =
+                document.getElementById(
+                    "opcionesIdioma"
+                );
+
+            menu.style.display =
+                menu.style.display === "block"
+                ? "none"
+                : "block";
+
+        }
 
 
-        if (!nombre) {
+        function cambiarIdioma(idioma) {
 
-            nombre =
-                "user_" + obtenerNumeroUsuario();
+            localStorage.setItem(
+                "idioma",
+                idioma
+            );
+
+            aplicarIdioma();
+
+            document.getElementById(
+                "opcionesIdioma"
+            ).style.display = "none";
+
+        }
+
+
+        function aplicarIdioma() {
+
+            const idioma =
+                localStorage.getItem("idioma") || "es";
+
+
+            /* =========================
+               ESPAÑOL
+            ========================= */
+
+            if (idioma === "es") {
+
+                document.documentElement.lang = "es";
+
+                document.title =
+                    "MI WEB";
+
+                document.getElementById(
+                    "logo"
+                ).textContent =
+                    "🎮 MI WEB";
+
+                document.getElementById(
+                    "inicio"
+                ).textContent =
+                    "🏠 Inicio";
+
+                document.getElementById(
+                    "juegosNav"
+                ).textContent =
+                    "🎮 Juegos";
+
+                document.getElementById(
+                    "tituloPrincipal"
+                ).textContent =
+                    "🎮 MI WEB";
+
+                document.getElementById(
+                    "subtitulo"
+                ).textContent =
+                    "Pequeños juegos y experimentos.";
+
+                document.getElementById(
+                    "botonCambiarNombre"
+                ).textContent =
+                    "✏️ Cambiar nombre";
+
+                document.getElementById(
+                    "nombreUsuario"
+                ).placeholder =
+                    "Escribe tu nombre";
+
+                document.getElementById(
+                    "botonGuardarNombre"
+                ).textContent =
+                    "Guardar";
+
+                document.getElementById(
+                    "botonCancelarNombre"
+                ).textContent =
+                    "Cancelar";
+
+                document.getElementById(
+                    "tituloJuegos"
+                ).textContent =
+                    "🎮 Juegos";
+
+
+                /* Juego 1 */
+
+                document.getElementById(
+                    "tituloAleatorio"
+                ).textContent =
+                    "🎲 Número aleatorio";
+
+                document.getElementById(
+                    "descripcionAleatorio"
+                ).textContent =
+                    "Genera un número aleatorio entre dos números.";
+
+                document.getElementById(
+                    "botonAleatorio"
+                ).textContent =
+                    "🎲 Jugar";
+
+
+                /* Juego 2 */
+
+                document.getElementById(
+                    "tituloAdivina"
+                ).textContent =
+                    "🔢 Adivina el número";
+
+                document.getElementById(
+                    "descripcionAdivina"
+                ).textContent =
+                    "Intenta adivinar el número secreto entre 1 y 100.";
+
+                document.getElementById(
+                    "botonAdivina"
+                ).textContent =
+                    "🎯 Jugar";
+
+
+                /* Juego 3 */
+
+                document.getElementById(
+                    "tituloPulsa"
+                ).textContent =
+                    "🟢 Pulsa el botón";
+
+                document.getElementById(
+                    "descripcionPulsa"
+                ).textContent =
+                    "Pulsa el botón tantas veces como puedas en 30 segundos.";
+
+                document.getElementById(
+                    "botonPulsa"
+                ).textContent =
+                    "🟢 Jugar";
+
+
+                /* Juego 4 */
+
+                document.getElementById(
+                    "tituloReflejos"
+                ).textContent =
+                    "🏃 Carrera Infinita";
+
+                document.getElementById(
+                    "descripcionReflejos"
+                ).textContent =
+                    "Esquiva los obstáculos y llega lo más lejos posible.";
+
+                document.getElementById(
+                    "botonReflejos"
+                ).textContent =
+                    "🏃 Jugar";
+
+                document.getElementById(
+                    "botonIdioma"
+                ).textContent =
+                    "🇪🇸 ES ▾";
+
+            }
+
+
+            /* =========================
+               ENGLISH
+            ========================= */
+
+            else if (idioma === "en") {
+
+                document.documentElement.lang = "en";
+
+                document.title =
+                    "MY WEBSITE";
+
+                document.getElementById(
+                    "logo"
+                ).textContent =
+                    "🎮 MY WEBSITE";
+
+                document.getElementById(
+                    "inicio"
+                ).textContent =
+                    "🏠 Home";
+
+                document.getElementById(
+                    "juegosNav"
+                ).textContent =
+                    "🎮 Games";
+
+                document.getElementById(
+                    "tituloPrincipal"
+                ).textContent =
+                    "🎮 MY WEBSITE";
+
+                document.getElementById(
+                    "subtitulo"
+                ).textContent =
+                    "Small games and experiments.";
+
+                document.getElementById(
+                    "botonCambiarNombre"
+                ).textContent =
+                    "✏️ Change name";
+
+                document.getElementById(
+                    "nombreUsuario"
+                ).placeholder =
+                    "Enter your name";
+
+                document.getElementById(
+                    "botonGuardarNombre"
+                ).textContent =
+                    "Save";
+
+                document.getElementById(
+                    "botonCancelarNombre"
+                ).textContent =
+                    "Cancel";
+
+                document.getElementById(
+                    "tituloJuegos"
+                ).textContent =
+                    "🎮 Games";
+
+
+                /* Game 1 */
+
+                document.getElementById(
+                    "tituloAleatorio"
+                ).textContent =
+                    "🎲 Random number";
+
+                document.getElementById(
+                    "descripcionAleatorio"
+                ).textContent =
+                    "Generate a random number between two numbers.";
+
+                document.getElementById(
+                    "botonAleatorio"
+                ).textContent =
+                    "🎲 Play";
+
+
+                /* Game 2 */
+
+                document.getElementById(
+                    "tituloAdivina"
+                ).textContent =
+                    "🔢 Guess the number";
+
+                document.getElementById(
+                    "descripcionAdivina"
+                ).textContent =
+                    "Try to guess the secret number between 1 and 100.";
+
+                document.getElementById(
+                    "botonAdivina"
+                ).textContent =
+                    "🎯 Play";
+
+
+                /* Game 3 */
+
+                document.getElementById(
+                    "tituloPulsa"
+                ).textContent =
+                    "🟢 Press the button";
+
+                document.getElementById(
+                    "descripcionPulsa"
+                ).textContent =
+                    "Press the button as many times as you can in 30 seconds.";
+
+                document.getElementById(
+                    "botonPulsa"
+                ).textContent =
+                    "🟢 Play";
+
+
+                /* Game 4 */
+
+                document.getElementById(
+                    "tituloReflejos"
+                ).textContent =
+                    "🏃 Infinite Run";
+
+                document.getElementById(
+                    "descripcionReflejos"
+                ).textContent =
+                    "Dodge the obstacles and get as far as possible.";
+
+                document.getElementById(
+                    "botonReflejos"
+                ).textContent =
+                    "🏃 Play";
+
+                document.getElementById(
+                    "botonIdioma"
+                ).textContent =
+                    "🇬🇧 EN ▾";
+
+            }
+
+
+            /* =========================
+               ARMENIAN
+            ========================= */
+
+            else if (idioma === "hy") {
+
+                document.documentElement.lang = "hy";
+
+                document.title =
+                    "ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById(
+                    "logo"
+                ).textContent =
+                    "🎮 ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById(
+                    "inicio"
+                ).textContent =
+                    "🏠 Գլխավոր";
+
+                document.getElementById(
+                    "juegosNav"
+                ).textContent =
+                    "🎮 Խաղեր";
+
+                document.getElementById(
+                    "tituloPrincipal"
+                ).textContent =
+                    "🎮 ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById(
+                    "subtitulo"
+                ).textContent =
+                    "Փոքր խաղեր և փորձեր։";
+
+                document.getElementById(
+                    "botonCambiarNombre"
+                ).textContent =
+                    "✏️ Փոխել անունը";
+
+                document.getElementById(
+                    "nombreUsuario"
+                ).placeholder =
+                    "Գրիր քո անունը";
+
+                document.getElementById(
+                    "botonGuardarNombre"
+                ).textContent =
+                    "Պահպանել";
+
+                document.getElementById(
+                    "botonCancelarNombre"
+                ).textContent =
+                    "Չեղարկել";
+
+                document.getElementById(
+                    "tituloJuegos"
+                ).textContent =
+                    "🎮 Խաղեր";
+
+
+                /* Game 1 */
+
+                document.getElementById(
+                    "tituloAleatorio"
+                ).textContent =
+                    "🎲 Պատահական թիվ";
+
+                document.getElementById(
+                    "descripcionAleatorio"
+                ).textContent =
+                    "Ստեղծիր պատահական թիվ երկու թվերի միջև։";
+
+                document.getElementById(
+                    "botonAleatorio"
+                ).textContent =
+                    "🎲 Խաղալ";
+
+
+                /* Game 2 */
+
+                document.getElementById(
+                    "tituloAdivina"
+                ).textContent =
+                    "🔢 Գուշակիր թիվը";
+
+                document.getElementById(
+                    "descripcionAdivina"
+                ).textContent =
+                    "Փորձիր գուշակել 1-ից 100-ի միջև գաղտնի թիվը։";
+
+                document.getElementById(
+                    "botonAdivina"
+                ).textContent =
+                    "🎯 Խաղալ";
+
+
+                /* Game 3 */
+
+                document.getElementById(
+                    "tituloPulsa"
+                ).textContent =
+                    "🟢 Սեղմիր կոճակը";
+
+                document.getElementById(
+                    "descripcionPulsa"
+                ).textContent =
+                    "Սեղմիր կոճակը որքան հնարավոր է շատ 30 վայրկյանի ընթացքում։";
+
+                document.getElementById(
+                    "botonPulsa"
+                ).textContent =
+                    "🟢 Խաղալ";
+
+
+                /* Game 4 */
+
+                document.getElementById(
+                    "tituloReflejos"
+                ).textContent =
+                    "🏃 Անվերջ վազք";
+
+                document.getElementById(
+                    "descripcionReflejos"
+                ).textContent =
+                    "Խուսափիր խոչընդոտներից և գնա որքան հնարավոր է հեռու։";
+
+                document.getElementById(
+                    "botonReflejos"
+                ).textContent =
+                    "🏃 Խաղալ";
+
+                document.getElementById(
+                    "botonIdioma"
+                ).textContent =
+                    "🇦🇲 HY ▾";
+
+            }
+
+            actualizarTextoTema();
+
+            mostrarNombreUsuario();
+
+        }
+
+
+        /* =========================
+           USUARIO
+        ========================= */
+
+        function obtenerNumeroUsuario() {
+
+            let numero =
+                localStorage.getItem(
+                    "numeroUsuario"
+                );
+
+            if (!numero) {
+
+                numero =
+                    Math.floor(
+                        Math.random() * 10000
+                    );
+
+                numero =
+                    String(numero).padStart(
+                        4,
+                        "0"
+                    );
+
+                localStorage.setItem(
+                    "numeroUsuario",
+                    numero
+                );
+
+            }
+
+            return numero;
+
+        }
+
+
+        function obtenerNombreUsuario() {
+
+            let nombre =
+                localStorage.getItem(
+                    "nombreUsuario"
+                );
+
+            if (!nombre) {
+
+                nombre =
+                    "user_" +
+                    obtenerNumeroUsuario();
+
+                localStorage.setItem(
+                    "nombreUsuario",
+                    nombre
+                );
+
+            }
+
+            return nombre;
+
+        }
+
+
+        function mostrarNombreUsuario() {
+
+            const nombre =
+                obtenerNombreUsuario();
+
+            document.getElementById(
+                "nombreGuardado"
+            ).textContent =
+                "👤 " + nombre;
+
+        }
+
+
+        function mostrarFormularioNombre() {
+
+            const formulario =
+                document.getElementById(
+                    "formularioUsuario"
+                );
+
+            const input =
+                document.getElementById(
+                    "nombreUsuario"
+                );
+
+            formulario.style.display =
+                "flex";
+
+            input.value =
+                obtenerNombreUsuario();
+
+            input.focus();
+
+            input.select();
+
+        }
+
+
+        function guardarNombre() {
+
+            const input =
+                document.getElementById(
+                    "nombreUsuario"
+                );
+
+            const nombre =
+                input.value.trim();
+
+            if (nombre === "") {
+
+                input.focus();
+
+                return;
+
+            }
 
             localStorage.setItem(
                 "nombreUsuario",
                 nombre
             );
-        }
 
+            mostrarNombreUsuario();
 
-        return nombre;
-    }
-
-
-    function mostrarNombreUsuario() {
-
-        const nombre =
-            obtenerNombreUsuario();
-
-        document.getElementById(
-            "nombreGuardado"
-        ).textContent =
-            "👤 " + nombre;
-    }
-
-
-    function mostrarFormularioNombre() {
-
-        const formulario =
             document.getElementById(
                 "formularioUsuario"
-            );
+            ).style.display =
+                "none";
 
-        const input =
-            document.getElementById(
-                "nombreUsuario"
-            );
-
-
-        formulario.style.display = "flex";
-
-        input.value =
-            obtenerNombreUsuario();
-
-        input.focus();
-        input.select();
-    }
-
-
-    function guardarNombre() {
-
-        const input =
-            document.getElementById(
-                "nombreUsuario"
-            );
-
-        const nombre =
-            input.value.trim();
-
-
-        if (nombre === "") {
-
-            input.focus();
-
-            return;
         }
 
 
-        localStorage.setItem(
-            "nombreUsuario",
-            nombre
+        function cancelarCambioNombre() {
+
+            document.getElementById(
+                "formularioUsuario"
+            ).style.display =
+                "none";
+
+        }
+
+
+        /* =========================
+           CERRAR MENÚ DE IDIOMA
+        ========================= */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const menu =
+                    document.querySelector(
+                        ".menu-idioma"
+                    );
+
+                if (
+                    !menu.contains(
+                        event.target
+                    )
+                ) {
+
+                    document.getElementById(
+                        "opcionesIdioma"
+                    ).style.display =
+                        "none";
+
+                }
+
+            }
         );
 
 
+        /* =========================
+           INICIAR
+        ========================= */
+
+        aplicarTema();
+
+        aplicarIdioma();
+
         mostrarNombreUsuario();
 
-        document.getElementById(
-            "formularioUsuario"
-        ).style.display = "none";
-    }
-
-
-    function cancelarCambioNombre() {
-
-        document.getElementById(
-            "formularioUsuario"
-        ).style.display = "none";
-    }
-
-
-    /* =========================
-       INICIAR
-    ========================= */
-
-    aplicarIdioma();
-
-    aplicarTema();
-
-    mostrarNombreUsuario();
-
-</script>
-```
+    </script>
 
 </body>
 </html>
