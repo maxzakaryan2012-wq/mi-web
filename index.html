@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Web</title>
+
+  <title>Número aleatorio</title>
 
   <style>
     body {
@@ -14,27 +15,89 @@
       text-align: center;
     }
 
-    header {
-      padding: 60px 20px;
+    .contenedor {
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 30px;
     }
 
     h1 {
-      font-size: 60px;
-      margin: 0;
+      font-size: 50px;
     }
 
-    p {
-      font-size: 22px;
+    input {
+      width: 120px;
+      padding: 15px;
+      margin: 10px;
+      font-size: 20px;
+      text-align: center;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #resultado {
+      font-size: 70px;
+      font-weight: bold;
+      margin-top: 40px;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>🎮 MI WEB</h1>
-    <p>Pequeños juegos y experimentos.</p>
-  </header>
+  <div class="contenedor">
+
+    <h1>🎲 Número aleatorio</h1>
+
+    <p>Escribe dos números:</p>
+
+    <input type="number" id="numero1" placeholder="1">
+    <input type="number" id="numero2" placeholder="10">
+
+    <br>
+
+    <button onclick="generarNumero()">🎲 Generar</button>
+
+    <div id="resultado">?</div>
+
+  </div>
+
+  <script>
+    function generarNumero() {
+      let numero1 = Number(document.getElementById("numero1").value);
+      let numero2 = Number(document.getElementById("numero2").value);
+
+      if (numero1 > numero2) {
+        let temporal = numero1;
+        numero1 = numero2;
+        numero2 = temporal;
+      }
+
+      if (numero1 === numero2) {
+        document.getElementById("resultado").textContent = numero1;
+        return;
+      }
+
+      let resultado = Math.floor(
+        Math.random() * (numero2 - numero1 + 1)
+      ) + numero1;
+
+      document.getElementById("resultado").textContent = resultado;
+    }
+  </script>
 
 </body>
 </html>
