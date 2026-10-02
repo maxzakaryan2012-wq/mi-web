@@ -7,6 +7,7 @@
   <title>MI WEB</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -23,6 +24,96 @@
       background: #f5f5f5;
       color: #111;
     }
+
+
+    /* BARRA DE NAVEGACIÓN */
+
+    .barra {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      height: 70px;
+      padding: 0 25px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background: #181818;
+      border-bottom: 1px solid #333;
+    }
+
+    body.claro .barra {
+      background: white;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .navegacion {
+      display: flex;
+      gap: 10px;
+    }
+
+    .navegacion a {
+      padding: 10px 14px;
+      border-radius: 10px;
+
+      text-decoration: none;
+      color: white;
+
+      transition: 0.2s;
+    }
+
+    body.claro .navegacion a {
+      color: #111;
+    }
+
+    .navegacion a:hover {
+      background: #2a2a2a;
+    }
+
+    body.claro .navegacion a:hover {
+      background: #eee;
+    }
+
+
+    /* BOTÓN DEL TEMA */
+
+    .tema {
+      position: absolute;
+      top: 85px;
+      right: 20px;
+
+      padding: 12px 18px;
+
+      border: none;
+      border-radius: 12px;
+
+      background: #222;
+      color: white;
+
+      font-size: 16px;
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    body.claro .tema {
+      background: #ddd;
+      color: #111;
+    }
+
+    .tema:hover {
+      transform: scale(1.05);
+    }
+
+
+    /* CABECERA */
 
     header {
       text-align: center;
@@ -43,55 +134,43 @@
       color: #555;
     }
 
-    /* BOTÓN DE TEMA */
-
-    .tema {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 12px 18px;
-      border: none;
-      border-radius: 12px;
-      background: #222;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    body.claro .tema {
-      background: #ddd;
-      color: #111;
-    }
-
-    .tema:hover {
-      transform: scale(1.05);
-    }
 
     /* JUEGOS */
 
     .juegos {
       max-width: 1000px;
       margin: auto;
+
       padding: 30px;
+
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(220px, 1fr)
+      );
+
       gap: 20px;
     }
 
     .juego {
       background: #1d1d1d;
+
       border-radius: 18px;
+
       padding: 30px;
+
       text-decoration: none;
       color: white;
+
       transition: 0.2s;
+
       border: 1px solid #333;
     }
 
     body.claro .juego {
       background: white;
       color: #111;
+
       border: 1px solid #ddd;
     }
 
@@ -114,45 +193,163 @@
     body.claro .juego p {
       color: #666;
     }
+
+
+    /* MÓVIL */
+
+    @media (max-width: 600px) {
+
+      .barra {
+        padding: 0 12px;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .navegacion {
+        gap: 3px;
+      }
+
+      .navegacion a {
+        padding: 8px;
+        font-size: 14px;
+      }
+
+      .tema {
+        top: 80px;
+        right: 12px;
+        padding: 10px 13px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-  <button class="tema" onclick="cambiarTema()" id="botonTema">
+
+  <!-- BARRA DE NAVEGACIÓN -->
+
+  <nav class="barra">
+
+    <div class="logo">
+      🎮 MI WEB
+    </div>
+
+    <div class="navegacion">
+
+      <a href="./">
+        🏠 Inicio
+      </a>
+
+      <a href="#juegos">
+        🎮 Juegos
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- BOTÓN DEL TEMA -->
+
+  <button
+    class="tema"
+    onclick="cambiarTema()"
+    id="botonTema"
+  >
     ☀️ Claro
   </button>
 
+
+  <!-- CABECERA -->
+
   <header>
-    <h1>🎮 MI WEB</h1>
-    <p>Pequeños juegos y experimentos.</p>
+
+    <h1>
+      🎮 MI WEB
+    </h1>
+
+    <p>
+      Pequeños juegos y experimentos.
+    </p>
+
   </header>
 
-  <main class="juegos">
+
+  <!-- JUEGOS -->
+
+  <main
+    class="juegos"
+    id="juegos"
+  >
+
 
     <!-- NÚMERO ALEATORIO -->
 
-    <a class="juego" href="juegos/numero-aleatorio/">
-      <div class="icono">🎲</div>
-      <h2>Número aleatorio</h2>
-      <p>Escribe dos números y descubre cuál sale.</p>
+    <a
+      class="juego"
+      href="juegos/numero-aleatorio/"
+    >
+
+      <div class="icono">
+        🎲
+      </div>
+
+      <h2>
+        Número aleatorio
+      </h2>
+
+      <p>
+        Escribe dos números y descubre cuál sale.
+      </p>
+
     </a>
+
 
     <!-- ADIVINA EL NÚMERO -->
 
-    <a class="juego" href="juegos/adivina-el-numero/">
-      <div class="icono">🔢</div>
-      <h2>Adivina el número</h2>
-      <p>Encuentra el número secreto entre 1 y 100.</p>
+    <a
+      class="juego"
+      href="juegos/adivina-el-numero/"
+    >
+
+      <div class="icono">
+        🔢
+      </div>
+
+      <h2>
+        Adivina el número
+      </h2>
+
+      <p>
+        Encuentra el número secreto entre 1 y 100.
+      </p>
+
     </a>
+
 
   </main>
 
+
   <script>
+
+
+    /* APLICAR TEMA */
 
     function aplicarTema() {
 
-      const tema = localStorage.getItem("tema") || "oscuro";
+      const tema =
+        localStorage.getItem("tema") || "oscuro";
+
 
       if (tema === "claro") {
 
@@ -161,35 +358,59 @@
         document.getElementById("botonTema").textContent =
           "🌙 Oscuro";
 
-      } else {
+      }
+
+      else {
 
         document.body.classList.remove("claro");
 
         document.getElementById("botonTema").textContent =
           "☀️ Claro";
+
       }
+
     }
+
+
+    /* CAMBIAR TEMA */
 
     function cambiarTema() {
 
       const temaActual =
         localStorage.getItem("tema") || "oscuro";
 
+
       if (temaActual === "oscuro") {
 
-        localStorage.setItem("tema", "claro");
+        localStorage.setItem(
+          "tema",
+          "claro"
+        );
 
-      } else {
-
-        localStorage.setItem("tema", "oscuro");
       }
 
+      else {
+
+        localStorage.setItem(
+          "tema",
+          "oscuro"
+        );
+
+      }
+
+
       aplicarTema();
+
     }
+
+
+    /* INICIAR */
 
     aplicarTema();
 
+
   </script>
+
 
 </body>
 </html>
