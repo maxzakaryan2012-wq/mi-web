@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Carrera Infinita - MI WEB</title>
+    <title>Carrera Infinita</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -17,7 +16,8 @@
             font-family: Arial, sans-serif;
             background: #111;
             color: white;
-            transition: 0.3s;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
 
         body.claro {
@@ -26,10 +26,10 @@
         }
 
         /* =========================
-           BARRA
+           BARRA SUPERIOR
         ========================= */
 
-        .barra {
+        .barra-superior {
             height: 65px;
             display: flex;
             align-items: center;
@@ -39,108 +39,83 @@
             border-bottom: 1px solid #333;
         }
 
-        body.claro .barra {
+        body.claro .barra-superior {
             background: white;
             border-bottom: 1px solid #ddd;
         }
 
-        .logo {
-            font-size: 21px;
-            font-weight: bold;
-        }
-
-        .controles {
+        .izquierda {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
-        .volver,
-        .botonTema,
-        .idioma {
+        .boton {
             border: none;
             border-radius: 10px;
-            padding: 10px 13px;
+            padding: 10px 14px;
             background: #292929;
             color: white;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
         }
 
-        .volver {
-            text-decoration: none;
+        .boton:hover {
+            background: #3a3a3a;
         }
 
-        body.claro .volver,
-        body.claro .botonTema,
-        body.claro .idioma {
+        body.claro .boton {
             background: #e8e8e8;
             color: #111;
         }
 
-        .menu-idioma {
-            position: relative;
+        body.claro .boton:hover {
+            background: #d8d8d8;
         }
 
-        .opciones-idioma {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 45px;
-            background: #222;
-            border-radius: 10px;
-            overflow: hidden;
-            z-index: 100;
+        .derecha {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        body.claro .opciones-idioma {
-            background: white;
-        }
-
-        .opciones-idioma button {
-            display: block;
-            width: 150px;
-            padding: 12px;
-            border: none;
-            background: transparent;
+        select {
+            background: #292929;
             color: white;
-            text-align: left;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
             cursor: pointer;
         }
 
-        body.claro .opciones-idioma button {
+        body.claro select {
+            background: #e8e8e8;
             color: #111;
-        }
-
-        .opciones-idioma button:hover {
-            background: #333;
-        }
-
-        body.claro .opciones-idioma button:hover {
-            background: #eee;
         }
 
         /* =========================
            CONTENIDO
         ========================= */
 
-        main {
-            max-width: 850px;
+        .contenedor {
+            width: min(1000px, 94%);
             margin: auto;
-            padding: 30px 20px 50px;
+            padding: 25px 0 50px;
             text-align: center;
         }
 
         h1 {
-            margin: 0 0 8px;
+            margin: 5px 0 20px;
+            font-size: 32px;
         }
 
-        #descripcion {
+        .descripcion {
             color: #aaa;
             margin-bottom: 20px;
         }
 
-        body.claro #descripcion {
+        body.claro .descripcion {
             color: #555;
         }
 
@@ -151,9 +126,36 @@
         .marcador {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-bottom: 18px;
-            font-size: 18px;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .marcador-caja {
+            min-width: 150px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: #1d1d1d;
+            border: 1px solid #333;
+        }
+
+        body.claro .marcador-caja {
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .marcador-titulo {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        body.claro .marcador-titulo {
+            color: #666;
+        }
+
+        .marcador-valor {
+            font-size: 25px;
             font-weight: bold;
         }
 
@@ -163,54 +165,48 @@
 
         .zona-juego {
             position: relative;
-            width: min(450px, 100%);
-            height: 620px;
+            width: 390px;
+            max-width: 100%;
+            height: 600px;
             margin: auto;
             overflow: hidden;
-            border-radius: 20px;
-            border: 4px solid #555;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #272727 0%,
-                    #272727 32.5%,
-                    #5b5b5b 32.5%,
-                    #5b5b5b 33.5%,
-                    #272727 33.5%,
-                    #272727 66.5%,
-                    #5b5b5b 66.5%,
-                    #5b5b5b 67.5%,
-                    #272727 67.5%,
-                    #272727 100%
-                );
+            border-radius: 18px;
+            background: #222;
+            border: 4px solid #444;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
         }
 
         body.claro .zona-juego {
-            border-color: #777;
+            border-color: #aaa;
         }
 
-        /* =========================
-           LÍNEAS DE LA CARRETERA
-        ========================= */
+        .carretera {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    #252525 0%,
+                    #303030 10%,
+                    #303030 90%,
+                    #252525 100%
+                );
+        }
 
         .linea-carril {
             position: absolute;
-            top: -120px;
-            bottom: -120px;
-            width: 4px;
-
-            background:
-                repeating-linear-gradient(
-                    to bottom,
-                    rgba(255,255,255,0.8) 0px,
-                    rgba(255,255,255,0.8) 55px,
-                    transparent 55px,
-                    transparent 110px
-                );
-
-            animation: carretera 0.55s linear infinite;
-            pointer-events: none;
+            top: -100px;
+            bottom: -100px;
+            width: 5px;
+            border-radius: 10px;
+            background: repeating-linear-gradient(
+                to bottom,
+                white 0px,
+                white 50px,
+                transparent 50px,
+                transparent 100px
+            );
+            opacity: 0.45;
         }
 
         .linea1 {
@@ -221,57 +217,37 @@
             left: 66.66%;
         }
 
-        @keyframes carretera {
-
-            from {
-                transform: translateY(-110px);
-            }
-
-            to {
-                transform: translateY(0);
-            }
-
-        }
-
         /* =========================
-           PERSONAJE ROBOT
+           JUGADOR
         ========================= */
 
-        .personaje {
+        .jugador {
             position: absolute;
+            width: 60px;
+            height: 95px;
             bottom: 35px;
             left: 50%;
-            width: 64px;
-            height: 86px;
             transform: translateX(-50%);
-            z-index: 20;
-
-            transition:
-                left 0.12s ease-out;
+            z-index: 10;
+            transition: left 0.12s ease;
         }
 
-        .robot-cabeza {
+        .cabeza {
             position: absolute;
+            width: 42px;
+            height: 38px;
+            left: 9px;
             top: 0;
-            left: 10px;
-            width: 44px;
-            height: 39px;
-
-            background:
-                linear-gradient(
-                    #8fe8ff,
-                    #3da8d8
-                );
-
-            border: 3px solid #101820;
-            border-radius: 10px 10px 8px 8px;
+            background: #d9d9d9;
+            border: 3px solid #111;
+            border-radius: 10px;
         }
 
-        .robot-ojo {
+        .ojo {
             position: absolute;
-            top: 12px;
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
+            top: 10px;
             background: #111;
             border-radius: 50%;
         }
@@ -284,90 +260,82 @@
             right: 9px;
         }
 
-        .robot-antena {
+        .antena {
             position: absolute;
-            top: -12px;
-            left: 29px;
             width: 4px;
-            height: 12px;
-            background: #222;
+            height: 15px;
+            top: -14px;
+            left: 28px;
+            background: #aaa;
         }
 
-        .robot-antena::after {
-            content: "";
+        .antena-punta {
             position: absolute;
-            top: -5px;
-            left: -3px;
-            width: 10px;
-            height: 10px;
-            background: #ffcc33;
+            width: 8px;
+            height: 8px;
+            top: -19px;
+            left: 26px;
+            background: #ff4040;
             border-radius: 50%;
+        }
+
+        .cuerpo {
+            position: absolute;
+            width: 48px;
+            height: 45px;
+            left: 6px;
+            top: 35px;
+            background: #3498db;
+            border: 3px solid #111;
+            border-radius: 10px;
+        }
+
+        .panel {
+            position: absolute;
+            width: 25px;
+            height: 12px;
+            left: 9px;
+            top: 10px;
+            background: #75d7ff;
+            border-radius: 4px;
+        }
+
+        .brazo {
+            position: absolute;
+            width: 10px;
+            height: 35px;
+            top: 40px;
+            background: #aaa;
             border: 2px solid #111;
-        }
-
-        .robot-cuerpo {
-            position: absolute;
-            top: 38px;
-            left: 7px;
-            width: 50px;
-            height: 38px;
-
-            background:
-                linear-gradient(
-                    #3574e8,
-                    #214ab2
-                );
-
-            border: 3px solid #101820;
-            border-radius: 9px;
-        }
-
-        .robot-pecho {
-            position: absolute;
-            top: 8px;
-            left: 15px;
-            width: 14px;
-            height: 10px;
-            background: #70e1ff;
-            border-radius: 3px;
-        }
-
-        .robot-brazo {
-            position: absolute;
-            top: 43px;
-            width: 11px;
-            height: 29px;
-            background: #3976c9;
-            border: 3px solid #101820;
-            border-radius: 8px;
-        }
-
-        .brazo1 {
-            left: 0;
-            transform: rotate(8deg);
-        }
-
-        .brazo2 {
-            right: 0;
-            transform: rotate(-8deg);
-        }
-
-        .robot-pierna {
-            position: absolute;
-            bottom: 0;
-            width: 14px;
-            height: 22px;
-            background: #303a4a;
-            border: 3px solid #101820;
             border-radius: 6px;
         }
 
+        .brazo1 {
+            left: -7px;
+            transform: rotate(10deg);
+        }
+
+        .brazo2 {
+            right: -7px;
+            transform: rotate(-10deg);
+        }
+
+        .pierna {
+            position: absolute;
+            width: 13px;
+            height: 25px;
+            top: 76px;
+            background: #777;
+            border: 2px solid #111;
+            border-radius: 5px;
+        }
+
         .pierna1 {
-            left: 15px;
+            left: 13px;
         }
 
         .pierna2 {
-            right: 15px;
+            right: 13px;
         }
 
         /* =========================
@@ -376,115 +344,83 @@
 
         .obstaculo {
             position: absolute;
-            z-index: 10;
+            z-index: 5;
             transform: translateX(-50%);
         }
-
-        /* GRANDE: 2 FILAS */
 
         .obstaculo-grande {
             width: 88px;
             height: 130px;
-
             background:
-                linear-gradient(
+                repeating-linear-gradient(
                     135deg,
-                    #d93030 0%,
-                    #8e1616 100%
+                    #e74c3c 0px,
+                    #e74c3c 18px,
+                    #222 18px,
+                    #222 30px
                 );
-
-            border: 5px solid #4b0c0c;
-            border-radius: 13px;
-
-            box-shadow:
-                inset 0 0 0 3px rgba(255,255,255,0.12);
-        }
-
-        .obstaculo-grande::before {
-            content: "⚠";
-            position: absolute;
-            top: 32px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 45px;
-            color: #ffd33d;
+            border: 4px solid #111;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
 
         .obstaculo-grande::after {
-            content: "";
-            position: absolute;
-            left: 10px;
-            right: 10px;
-            bottom: 14px;
-            height: 8px;
-            background:
-                repeating-linear-gradient(
-                    135deg,
-                    #ffd33d 0px,
-                    #ffd33d 12px,
-                    #151515 12px,
-                    #151515 24px
-                );
-        }
-
-        /* PEQUEÑO 1 */
-
-        .obstaculo-barrera {
-            width: 82px;
-            height: 62px;
-
-            background:
-                repeating-linear-gradient(
-                    135deg,
-                    #ff9f1c 0px,
-                    #ff9f1c 13px,
-                    #242424 13px,
-                    #242424 26px
-                );
-
-            border: 4px solid #8b4c00;
-            border-radius: 9px;
-        }
-
-        .obstaculo-barrera::after {
-            content: "";
-            position: absolute;
-            left: 7px;
-            right: 7px;
-            bottom: 8px;
-            height: 7px;
-            background: #111;
-            border-radius: 4px;
-        }
-
-        /* PEQUEÑO 2 */
-
-        .obstaculo-caja {
-            width: 76px;
-            height: 62px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #8f5be8,
-                    #4e269b
-                );
-
-            border: 4px solid #29115d;
-            border-radius: 8px;
-        }
-
-        .obstaculo-caja::before {
-            content: "X";
+            content: "⚠";
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #f4dcff;
-            font-size: 32px;
+            font-size: 42px;
+            color: white;
+            text-shadow: 0 2px 4px black;
+        }
+
+        .obstaculo-barrera {
+            width: 82px;
+            height: 62px;
+            background:
+                repeating-linear-gradient(
+                    135deg,
+                    #f39c12 0px,
+                    #f39c12 15px,
+                    #222 15px,
+                    #222 28px
+                );
+            border: 4px solid #111;
+            border-radius: 8px;
+        }
+
+        .obstaculo-barrera::after {
+            content: "!";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
             font-weight: bold;
+            color: white;
+        }
+
+        .obstaculo-caja {
+            width: 76px;
+            height: 62px;
+            background: #8e44ad;
+            border: 4px solid #111;
+            border-radius: 8px;
+            box-shadow: inset 0 0 0 5px #9b59b6;
+        }
+
+        .obstaculo-caja::after {
+            content: "✕";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
         }
 
         /* =========================
@@ -493,89 +429,32 @@
 
         .moneda {
             position: absolute;
-            z-index: 8;
-            width: 38px;
-            height: 38px;
-
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-
-            transform:
-                translateX(-50%)
-                rotateY(0deg);
-
+            transform: translateX(-50%);
+            z-index: 6;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            font-size: 17px;
             font-weight: bold;
-
-            animation:
-                girarMoneda 0.7s linear infinite;
+            border: 3px solid rgba(0,0,0,0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
         }
 
         .moneda-bronce {
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #d99a55,
-                    #8a4f22
-                );
-
-            border: 4px solid #663818;
-            color: #ffe0ad;
+            background: #b87333;
+            color: white;
         }
 
         .moneda-plata {
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #ffffff,
-                    #8d9298
-                );
-
-            border: 4px solid #555b61;
-            color: #ffffff;
+            background: #cfd3d6;
+            color: #222;
         }
 
         .moneda-oro {
-            width: 44px;
-            height: 44px;
-
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #fff36b,
-                    #d99b00
-                );
-
-            border: 4px solid #9b6b00;
-            color: #fff7b0;
-
-            box-shadow:
-                0 0 12px rgba(255,210,0,0.55);
-        }
-
-        @keyframes girarMoneda {
-
-            0% {
-                transform:
-                    translateX(-50%)
-                    rotateY(0deg);
-            }
-
-            50% {
-                transform:
-                    translateX(-50%)
-                    rotateY(90deg);
-            }
-
-            100% {
-                transform:
-                    translateX(-50%)
-                    rotateY(180deg);
-            }
-
+            background: #ffd700;
+            color: #222;
         }
 
         /* =========================
@@ -586,17 +465,13 @@
         .pantalla-final {
             position: absolute;
             inset: 0;
-            z-index: 50;
-
+            z-index: 30;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
             padding: 25px;
-
-            background:
-                rgba(0,0,0,0.80);
+            background: rgba(0,0,0,0.86);
         }
 
         .pantalla-final {
@@ -606,178 +481,157 @@
         .pantalla-inicio h2,
         .pantalla-final h2 {
             font-size: 32px;
-            margin: 6px;
+            margin: 0 0 12px;
         }
 
         .pantalla-inicio p,
         .pantalla-final p {
-            color: #ddd;
-            max-width: 300px;
+            color: #ccc;
             line-height: 1.5;
         }
 
         .boton-jugar {
-            margin-top: 15px;
-            padding: 15px 30px;
-
             border: none;
+            padding: 14px 28px;
+            margin-top: 15px;
             border-radius: 12px;
-
-            background: #2979ff;
+            background: #2ecc71;
             color: white;
-
             font-size: 18px;
             font-weight: bold;
-
             cursor: pointer;
         }
 
         .boton-jugar:hover {
-            transform: scale(1.04);
+            background: #27ae60;
         }
 
-        .instrucciones {
-            margin-top: 20px;
-            color: #aaa;
-            font-size: 14px;
+        .resultado-final {
+            font-size: 19px;
+            line-height: 1.8;
+            margin: 10px 0;
         }
 
         /* =========================
-           RANKING
+           RECORDS
         ========================= */
 
-        .estadisticas {
-            margin: 35px auto 0;
-            max-width: 700px;
-
-            background: #1d1d1d;
-            border-radius: 16px;
-            padding: 20px;
+        .records {
+            margin: 30px auto 0;
+            max-width: 650px;
+            text-align: left;
         }
 
-        body.claro .estadisticas {
-            background: white;
-            border: 1px solid #ddd;
+        .records h2 {
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        .estadisticas h2 {
-            margin-top: 0;
-        }
-
-        table {
+        .tabla-records {
             width: 100%;
             border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #1c1c1c;
         }
 
-        th,
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #444;
+        body.claro .tabla-records {
+            background: white;
         }
 
-        body.claro th,
-        body.claro td {
+        .tabla-records th,
+        .tabla-records td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        body.claro .tabla-records th,
+        body.claro .tabla-records td {
             border-bottom: 1px solid #ddd;
         }
 
-        .tu-posicion {
-            margin-top: 15px;
-            color: #aaa;
+        .tabla-records th {
+            background: #292929;
         }
 
-        body.claro .tu-posicion {
-            color: #555;
+        body.claro .tabla-records th {
+            background: #e8e8e8;
+        }
+
+        .sin-records {
+            text-align: center;
+            color: #999;
+            padding: 20px;
         }
 
         /* =========================
-           MÓVIL
+           RESPONSIVE
         ========================= */
 
-        @media (max-width: 600px) {
-
-            .barra {
+        @media (max-width: 500px) {
+            .barra-superior {
                 padding: 0 10px;
             }
 
-            .logo {
-                font-size: 17px;
+            .boton {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            select {
+                padding: 8px;
+                font-size: 13px;
             }
 
             .zona-juego {
-                height: 570px;
+                height: 560px;
             }
 
-            .volver,
-            .botonTema,
-            .idioma {
-                padding: 8px 9px;
+            h1 {
+                font-size: 27px;
             }
 
-            .marcador {
-                gap: 15px;
-                font-size: 16px;
+            .tabla-records th,
+            .tabla-records td {
+                padding: 9px 5px;
+                font-size: 13px;
             }
-
         }
-
     </style>
 </head>
 
 <body>
 
     <!-- =========================
-         BARRA
+         BARRA SUPERIOR
     ========================= -->
 
-    <header class="barra">
+    <header class="barra-superior">
 
-        <a
-            href="../../index.html"
-            class="volver"
-            id="volver"
-        >
-            ← Volver
-        </a>
-
-        <div class="logo">
-            🏃 Carrera Infinita
+        <div class="izquierda">
+            <button
+                class="boton"
+                onclick="volverInicio()"
+                id="botonVolver"
+            >
+                ← Volver
+            </button>
         </div>
 
-        <div class="controles">
+        <div class="derecha">
 
-            <div class="menu-idioma">
-
-                <button
-                    class="idioma"
-                    id="botonIdioma"
-                    onclick="mostrarIdiomas()"
-                >
-                    🇪🇸 ES ▾
-                </button>
-
-                <div
-                    class="opciones-idioma"
-                    id="opcionesIdioma"
-                >
-
-                    <button onclick="cambiarIdioma('es')">
-                        🇪🇸 Español
-                    </button>
-
-                    <button onclick="cambiarIdioma('en')">
-                        🇬🇧 English
-                    </button>
-
-                    <button onclick="cambiarIdioma('hy')">
-                        🇦🇲 Հայերեն
-                    </button>
-
-                </div>
-
-            </div>
+            <select
+                id="selectorIdioma"
+                onchange="cambiarIdioma()"
+            >
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="hy">🇦🇲 Հայերեն</option>
+            </select>
 
             <button
-                class="botonTema"
+                class="boton"
                 id="botonTema"
                 onclick="cambiarTema()"
             >
@@ -789,14 +643,21 @@
     </header>
 
 
-    <main>
+    <!-- =========================
+         CONTENIDO
+    ========================= -->
 
-        <h1 id="titulo">
+    <main class="contenedor">
+
+        <h1 id="tituloJuego">
             🏃 Carrera Infinita
         </h1>
 
-        <p id="descripcion">
-            Esquiva los obstáculos y recoge monedas.
+        <p
+            class="descripcion"
+            id="descripcionJuego"
+        >
+            Esquiva obstáculos y recoge monedas para conseguir puntos.
         </p>
 
 
@@ -804,69 +665,80 @@
 
         <div class="marcador">
 
-            <div>
-                🏆
-                <span id="textoPuntos">
-                    Puntos:
-                </span>
-                <span id="puntos">
+            <div class="marcador-caja">
+                <div
+                    class="marcador-titulo"
+                    id="textoPuntos"
+                >
+                    Puntos
+                </div>
+
+                <div
+                    class="marcador-valor"
+                    id="puntos"
+                >
                     0
-                </span>
+                </div>
             </div>
 
-            <div>
-                🪙
-                <span id="textoMonedas">
-                    Monedas:
-                </span>
-                <span id="monedas">
-                    0
-                </span>
+
+            <div class="marcador-caja">
+                <div
+                    class="marcador-titulo"
+                    id="textoTiempo"
+                >
+                    Tiempo
+                </div>
+
+                <div
+                    class="marcador-valor"
+                    id="tiempo"
+                >
+                    0.0 s
+                </div>
             </div>
 
         </div>
 
 
         <!-- =========================
-             ZONA DE JUEGO
+             ZONA DEL JUEGO
         ========================= -->
 
-        <div
-            class="zona-juego"
-            id="zonaJuego"
-        >
+        <div class="zona-juego" id="zonaJuego">
 
-            <div class="linea-carril linea1"></div>
-            <div class="linea-carril linea2"></div>
+            <div class="carretera">
+
+                <div class="linea-carril linea1"></div>
+                <div class="linea-carril linea2"></div>
+
+            </div>
 
 
-            <!-- ROBOT -->
+            <!-- JUGADOR -->
 
             <div
-                class="personaje"
-                id="personaje"
+                class="jugador"
+                id="jugador"
             >
 
-                <div class="robot-antena"></div>
+                <div class="antena"></div>
+                <div class="antena-punta"></div>
 
-                <div class="robot-cabeza">
-
-                    <div class="robot-ojo ojo1"></div>
-                    <div class="robot-ojo ojo2"></div>
-
+                <div class="cabeza">
+                    <div class="ojo ojo1"></div>
+                    <div class="ojo ojo2"></div>
                 </div>
 
-                <div class="robot-cuerpo">
-
-                    <div class="robot-pecho"></div>
-
+                <div class="cuerpo">
+                    <div class="panel"></div>
                 </div>
 
-                <div class="robot-brazo brazo1"></div>
-                <div class="robot-brazo brazo2"></div>
+                <div class="brazo brazo1"></div>
+                <div class="brazo brazo2"></div>
 
-                <div class="robot-pierna pierna1"></div>
-                <div class="robot-pierna pierna2"></div>
+                <div class="pierna pierna1"></div>
+                <div class="pierna pierna2"></div>
 
             </div>
 
@@ -878,32 +750,26 @@
                 id="pantallaInicio"
             >
 
-                <h2>
-                    🤖
-                </h2>
-
                 <h2 id="tituloInicio">
-                    ¡Corre!
+                    🏃 ¡Prepárate!
                 </h2>
 
                 <p id="textoInicio">
-                    Esquiva los obstáculos y recoge monedas.
+                    Muévete entre los tres carriles,
+                    esquiva los obstáculos y recoge monedas.
+                </p>
+
+                <p id="controlesInicio">
+                    ← → o A / D
                 </p>
 
                 <button
                     class="boton-jugar"
+                    onclick="iniciarJuego()"
                     id="botonJugar"
-                    onclick="empezarJuego()"
                 >
-                    ▶️ Empezar
+                    ▶ Jugar
                 </button>
-
-                <div
-                    class="instrucciones"
-                    id="instrucciones"
-                >
-                    ← → o A / D para cambiar de carril
-                </div>
 
             </div>
 
@@ -916,17 +782,21 @@
             >
 
                 <h2 id="tituloFinal">
-                    💥 ¡Has chocado!
+                    💥 ¡Fin de la carrera!
                 </h2>
 
-                <p id="resultadoFinal">
-                    Puntos: 0
-                </p>
+                <div
+                    class="resultado-final"
+                    id="resultadoFinal"
+                >
+                    Puntos: 0<br>
+                    Tiempo: 0.0 s
+                </div>
 
                 <button
                     class="boton-jugar"
+                    onclick="iniciarJuego()"
                     id="botonReintentar"
-                    onclick="empezarJuego()"
                 >
                     🔄 Jugar otra vez
                 </button>
@@ -937,49 +807,32 @@
 
 
         <!-- =========================
-             RANKING
+             RECORDS
         ========================= -->
 
-        <section class="estadisticas">
+        <section class="records">
 
-            <h2 id="tituloRanking">
+            <h2 id="tituloRecords">
                 🏆 Récords
             </h2>
 
-            <table>
+            <table class="tabla-records">
 
                 <thead>
 
                     <tr>
-
-                        <th id="thPuesto">
-                            Puesto
-                        </th>
-
-                        <th id="thNombre">
-                            Nombre
-                        </th>
-
-                        <th id="thPuntos">
-                            Más puntos
-                        </th>
-
-                        <th id="thPartidas">
-                            Partidas
-                        </th>
-
+                        <th>#</th>
+                        <th id="cabeceraJugador">Jugador</th>
+                        <th id="cabeceraPuntos">Puntos</th>
+                        <th id="cabeceraTiempo">Tiempo</th>
                     </tr>
 
                 </thead>
 
-                <tbody id="tablaRanking"></tbody>
+                <tbody id="tablaRecords">
+                </tbody>
 
             </table>
-
-            <div
-                class="tu-posicion"
-                id="tuPosicion"
-            ></div>
 
         </section>
 
@@ -988,14 +841,254 @@
 
     <script>
 
-        /* =========================
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        let jugando = false;
+
+        let puntosActuales = 0;
+
+        let tiempoInicio = 0;
+
+        let tiempoActual = 0;
+
+        let intervaloJuego = null;
+
+        let intervaloTiempo = null;
+
+        let velocidad = 4;
+
+        let carrilJugador = 1;
+
+        let contadorObstaculos = 0;
+
+        let contadorMonedas = 0;
+
+
+        const zonaJuego =
+            document.getElementById("zonaJuego");
+
+        const jugador =
+            document.getElementById("jugador");
+
+        const puntos =
+            document.getElementById("puntos");
+
+        const tiempo =
+            document.getElementById("tiempo");
+
+
+        const estadisticasKey =
+            "estadisticasCarreraInfinita";
+
+
+        /* =====================================================
+           IDIOMAS
+        ===================================================== */
+
+        const textos = {
+
+            es: {
+
+                titulo: "🏃 Carrera Infinita",
+
+                descripcion:
+                    "Esquiva obstáculos y recoge monedas para conseguir puntos.",
+
+                volver: "← Volver",
+
+                puntos: "Puntos",
+
+                tiempo: "Tiempo",
+
+                inicio: "🏃 ¡Prepárate!",
+
+                instrucciones:
+                    "Muévete entre los tres carriles, esquiva los obstáculos y recoge monedas.",
+
+                controles:
+                    "← → o A / D",
+
+                jugar:
+                    "▶ Jugar",
+
+                final:
+                    "💥 ¡Fin de la carrera!",
+
+                otraVez:
+                    "🔄 Jugar otra vez",
+
+                jugador:
+                    "Jugador",
+
+                records:
+                    "🏆 Récords",
+
+                puestos:
+                    "Puesto",
+
+                sinRecords:
+                    "Todavía no hay récords.",
+
+                segundos: "s"
+
+            },
+
+            en: {
+
+                titulo: "🏃 Infinite Run",
+
+                descripcion:
+                    "Dodge obstacles and collect coins to earn points.",
+
+                volver: "← Back",
+
+                puntos: "Points",
+
+                tiempo: "Time",
+
+                inicio: "🏃 Get Ready!",
+
+                instrucciones:
+                    "Move between the three lanes, dodge obstacles and collect coins.",
+
+                controles:
+                    "← → or A / D",
+
+                jugar:
+                    "▶ Play",
+
+                final:
+                    "💥 Race over!",
+
+                otraVez:
+                    "🔄 Play again",
+
+                jugador:
+                    "Player",
+
+                records:
+                    "🏆 Records",
+
+                puestos:
+                    "Place",
+
+                sinRecords:
+                    "There are no records yet.",
+
+                segundos: "s"
+
+            },
+
+            hy: {
+
+                titulo: "🏃 Անվերջ վազք",
+
+                descripcion:
+                    "Խուսափիր խոչընդոտներից և հավաքիր մետաղադրամներ՝ միավորներ ստանալու համար։",
+
+                volver: "← Վերադառնալ",
+
+                puntos: "Միավորներ",
+
+                tiempo: "Ժամանակ",
+
+                inicio: "🏃 Պատրաստվիր։",
+
+                instrucciones:
+                    "Շարժվիր երեք գծերի միջև, խուսափիր խոչընդոտներից և հավաքիր մետաղադրամներ։",
+
+                controles:
+                    "← → կամ A / D",
+
+                jugar:
+                    "▶ Խաղալ",
+
+                final:
+                    "💥 Վազքն ավարտվեց։",
+
+                otraVez:
+                    "🔄 Կրկին խաղալ",
+
+                jugador:
+                    "Խաղացող",
+
+                records:
+                    "🏆 Ռեկորդներ",
+
+                puestos:
+                    "Տեղ",
+
+                sinRecords:
+                    "Դեռ ռեկորդներ չկան։",
+
+                segundos: "վ"
+
+            }
+
+        };
+
+
+        /* =====================================================
+           USUARIO
+        ===================================================== */
+
+        function obtenerNumeroUsuario() {
+
+            let numero =
+                localStorage.getItem("numeroUsuario");
+
+            if (!numero) {
+
+                numero =
+                    Math.floor(
+                        Math.random() * 10000
+                    );
+
+                numero =
+                    String(numero).padStart(4, "0");
+
+                localStorage.setItem(
+                    "numeroUsuario",
+                    numero
+                );
+            }
+
+            return numero;
+        }
+
+
+        function obtenerNombreUsuario() {
+
+            let nombre =
+                localStorage.getItem("nombreUsuario");
+
+            if (!nombre) {
+
+                nombre =
+                    "user_" +
+                    obtenerNumeroUsuario();
+
+                localStorage.setItem(
+                    "nombreUsuario",
+                    nombre
+                );
+            }
+
+            return nombre;
+        }
+
+
+        /* =====================================================
            TEMA
-        ========================= */
+        ===================================================== */
 
         function aplicarTema() {
 
             const tema =
-                localStorage.getItem("tema") || "oscuro";
+                localStorage.getItem("tema") ||
+                "oscuro";
 
             if (tema === "claro") {
 
@@ -1008,89 +1101,193 @@
             }
 
             actualizarTextoTema();
-
         }
 
 
         function cambiarTema() {
 
-            const actual =
-                localStorage.getItem("tema") || "oscuro";
+            const temaActual =
+                localStorage.getItem("tema") ||
+                "oscuro";
 
-            const nuevo =
-                actual === "oscuro"
-                ? "claro"
-                : "oscuro";
+            const nuevoTema =
+                temaActual === "oscuro"
+                    ? "claro"
+                    : "oscuro";
 
             localStorage.setItem(
                 "tema",
-                nuevo
+                nuevoTema
             );
 
             aplicarTema();
-
         }
 
 
         function actualizarTextoTema() {
 
             const tema =
-                localStorage.getItem("tema") || "oscuro";
+                localStorage.getItem("tema") ||
+                "oscuro";
 
             const idioma =
-                localStorage.getItem("idioma") || "es";
+                localStorage.getItem("idioma") ||
+                "es";
 
             const boton =
-                document.getElementById(
-                    "botonTema"
-                );
+                document.getElementById("botonTema");
 
             if (idioma === "en") {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Light"
-                    : "🌙 Dark";
+                        ? "☀️ Light"
+                        : "🌙 Dark";
 
             } else if (idioma === "hy") {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Բաց"
-                    : "🌙 Մութ";
+                        ? "☀️ Բաց"
+                        : "🌙 Մութ";
 
             } else {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Claro"
-                    : "🌙 Oscuro";
+                        ? "☀️ Claro"
+                        : "🌙 Oscuro";
 
             }
 
         }
 
 
-        /* =========================
+        /* =====================================================
            IDIOMA
-        ========================= */
+        ===================================================== */
 
-        function mostrarIdiomas() {
+        function aplicarIdioma() {
 
-            const menu =
-                document.getElementById(
-                    "opcionesIdioma"
-                );
+            const idioma =
+                localStorage.getItem("idioma") ||
+                "es";
 
-            menu.style.display =
-                menu.style.display === "block"
-                ? "none"
-                : "block";
+            const t =
+                textos[idioma] ||
+                textos.es;
+
+
+            document.getElementById(
+                "selectorIdioma"
+            ).value = idioma;
+
+
+            document.getElementById(
+                "tituloJuego"
+            ).textContent =
+                t.titulo;
+
+
+            document.getElementById(
+                "descripcionJuego"
+            ).textContent =
+                t.descripcion;
+
+
+            document.getElementById(
+                "botonVolver"
+            ).textContent =
+                t.volver;
+
+
+            document.getElementById(
+                "textoPuntos"
+            ).textContent =
+                t.puntos;
+
+
+            document.getElementById(
+                "textoTiempo"
+            ).textContent =
+                t.tiempo;
+
+
+            document.getElementById(
+                "tituloInicio"
+            ).textContent =
+                t.inicio;
+
+
+            document.getElementById(
+                "textoInicio"
+            ).textContent =
+                t.instrucciones;
+
+
+            document.getElementById(
+                "controlesInicio"
+            ).textContent =
+                t.controles;
+
+
+            document.getElementById(
+                "botonJugar"
+            ).textContent =
+                t.jugar;
+
+
+            document.getElementById(
+                "tituloFinal"
+            ).textContent =
+                t.final;
+
+
+            document.getElementById(
+                "botonReintentar"
+            ).textContent =
+                t.otraVez;
+
+
+            document.getElementById(
+                "tituloRecords"
+            ).textContent =
+                t.records;
+
+
+            document.getElementById(
+                "cabeceraJugador"
+            ).textContent =
+                t.jugador;
+
+
+            document.getElementById(
+                "cabeceraPuntos"
+            ).textContent =
+                t.puntos;
+
+
+            document.getElementById(
+                "cabeceraTiempo"
+            ).textContent =
+                t.tiempo;
+
+
+            actualizarTextoTema();
+
+            actualizarResultadoFinal();
+
+            mostrarRecords();
 
         }
 
 
-        function cambiarIdioma(idioma) {
+        function cambiarIdioma() {
+
+            const idioma =
+                document.getElementById(
+                    "selectorIdioma"
+                ).value;
 
             localStorage.setItem(
                 "idioma",
@@ -1099,300 +1296,72 @@
 
             aplicarIdioma();
 
-            document.getElementById(
-                "opcionesIdioma"
-            ).style.display = "none";
+        }
+
+
+        /* =====================================================
+           POSICIONES DE CARRILES
+        ===================================================== */
+
+        function obtenerPosicionCarril(carril) {
+
+            const ancho =
+                zonaJuego.clientWidth;
+
+            const posiciones = [
+
+                ancho * 0.1666,
+
+                ancho * 0.5,
+
+                ancho * 0.8333
+
+            ];
+
+            return posiciones[carril];
 
         }
 
 
-        function aplicarIdioma() {
-
-            const idioma =
-                localStorage.getItem("idioma") || "es";
-
-
-            if (idioma === "en") {
-
-                document.documentElement.lang = "en";
-
-                document.title =
-                    "Infinite Run - MY WEBSITE";
-
-                document.getElementById("volver").textContent =
-                    "← Back";
-
-                document.getElementById("titulo").textContent =
-                    "🏃 Infinite Run";
-
-                document.getElementById("descripcion").textContent =
-                    "Dodge obstacles and collect coins.";
-
-                document.getElementById("textoPuntos").textContent =
-                    "Points:";
-
-                document.getElementById("textoMonedas").textContent =
-                    "Coins:";
-
-                document.getElementById("tituloInicio").textContent =
-                    "Run!";
-
-                document.getElementById("textoInicio").textContent =
-                    "Dodge obstacles and collect coins.";
-
-                document.getElementById("botonJugar").textContent =
-                    "▶️ Start";
-
-                document.getElementById("instrucciones").textContent =
-                    "← → or A / D to change lanes";
-
-                document.getElementById("tituloFinal").textContent =
-                    "💥 You crashed!";
-
-                document.getElementById("botonReintentar").textContent =
-                    "🔄 Play again";
-
-                document.getElementById("tituloRanking").textContent =
-                    "🏆 Records";
-
-                document.getElementById("thPuesto").textContent =
-                    "Rank";
-
-                document.getElementById("thNombre").textContent =
-                    "Name";
-
-                document.getElementById("thPuntos").textContent =
-                    "Best score";
-
-                document.getElementById("thPartidas").textContent =
-                    "Games";
-
-                document.getElementById("botonIdioma").textContent =
-                    "🇬🇧 EN ▾";
-
-
-            } else if (idioma === "hy") {
-
-                document.documentElement.lang = "hy";
-
-                document.title =
-                    "Անվերջ վազք - ԻՄ ԿԱՅՔԸ";
-
-                document.getElementById("volver").textContent =
-                    "← Հետ";
-
-                document.getElementById("titulo").textContent =
-                    "🏃 Անվերջ վազք";
-
-                document.getElementById("descripcion").textContent =
-                    "Խուսափիր խոչընդոտներից և հավաքիր մետաղադրամներ։";
-
-                document.getElementById("textoPuntos").textContent =
-                    "Միավորներ:";
-
-                document.getElementById("textoMonedas").textContent =
-                    "Մետաղադրամներ:";
-
-                document.getElementById("tituloInicio").textContent =
-                    "Վազիր!";
-
-                document.getElementById("textoInicio").textContent =
-                    "Խուսափիր խոչընդոտներից և հավաքիր մետաղադրամներ։";
-
-                document.getElementById("botonJugar").textContent =
-                    "▶️ Սկսել";
-
-                document.getElementById("instrucciones").textContent =
-                    "← → կամ A / D՝ գիծը փոխելու համար";
-
-                document.getElementById("tituloFinal").textContent =
-                    "💥 Բախվեցիր!";
-
-                document.getElementById("botonReintentar").textContent =
-                    "🔄 Նորից խաղալ";
-
-                document.getElementById("tituloRanking").textContent =
-                    "🏆 Ռեկորդներ";
-
-                document.getElementById("thPuesto").textContent =
-                    "Տեղ";
-
-                document.getElementById("thNombre").textContent =
-                    "Անուն";
-
-                document.getElementById("thPuntos").textContent =
-                    "Լավագույն միավոր";
-
-                document.getElementById("thPartidas").textContent =
-                    "Խաղեր";
-
-                document.getElementById("botonIdioma").textContent =
-                    "🇦🇲 HY ▾";
-
-
-            } else {
-
-                document.documentElement.lang = "es";
-
-                document.title =
-                    "Carrera Infinita - MI WEB";
-
-                document.getElementById("volver").textContent =
-                    "← Volver";
-
-                document.getElementById("titulo").textContent =
-                    "🏃 Carrera Infinita";
-
-                document.getElementById("descripcion").textContent =
-                    "Esquiva los obstáculos y recoge monedas.";
-
-                document.getElementById("textoPuntos").textContent =
-                    "Puntos:";
-
-                document.getElementById("textoMonedas").textContent =
-                    "Monedas:";
-
-                document.getElementById("tituloInicio").textContent =
-                    "¡Corre!";
-
-                document.getElementById("textoInicio").textContent =
-                    "Esquiva los obstáculos y recoge monedas.";
-
-                document.getElementById("botonJugar").textContent =
-                    "▶️ Empezar";
-
-                document.getElementById("instrucciones").textContent =
-                    "← → o A / D para cambiar de carril";
-
-                document.getElementById("tituloFinal").textContent =
-                    "💥 ¡Has chocado!";
-
-                document.getElementById("botonReintentar").textContent =
-                    "🔄 Jugar otra vez";
-
-                document.getElementById("tituloRanking").textContent =
-                    "🏆 Récords";
-
-                document.getElementById("thPuesto").textContent =
-                    "Puesto";
-
-                document.getElementById("thNombre").textContent =
-                    "Nombre";
-
-                document.getElementById("thPuntos").textContent =
-                    "Más puntos";
-
-                document.getElementById("thPartidas").textContent =
-                    "Partidas";
-
-                document.getElementById("botonIdioma").textContent =
-                    "🇪🇸 ES ▾";
-
-            }
-
-            actualizarTextoTema();
-            mostrarRanking();
+        function actualizarJugador() {
+
+            jugador.style.left =
+                obtenerPosicionCarril(
+                    carrilJugador
+                ) + "px";
 
         }
 
 
-        /* =========================
-           USUARIO
-        ========================= */
-
-        function obtenerNombreUsuario() {
-
-            return (
-                localStorage.getItem(
-                    "nombreUsuario"
-                ) ||
-                "user_0001"
-            );
-
-        }
-
-
-        /* =========================
-           VARIABLES
-        ========================= */
-
-        let juegoActivo = false;
-
-        let carrilActual = 1;
-
-        let puntos = 0;
-
-        let monedas = 0;
-
-        let velocidad = 4;
-
-        let tiempoJuego = 0;
-
-        let obstaculos = [];
-
-        let monedasObjetos = [];
-
-        let intervaloObstaculos;
-
-        let intervaloMonedas;
-
-        let animacion;
-
-        let relojVelocidad;
-
-
-        const posicionesCarriles = [
-            "16.66%",
-            "50%",
-            "83.33%"
-        ];
-
-
-        /* =========================
-           MOVIMIENTO
-        ========================= */
+        /* =====================================================
+           CAMBIO DE CARRIL
+        ===================================================== */
 
         function moverIzquierda() {
 
-            if (!juegoActivo) {
-                return;
-            }
+            if (!jugando) return;
 
-            if (carrilActual > 0) {
+            if (carrilJugador > 0) {
 
-                carrilActual--;
+                carrilJugador--;
 
-                actualizarPosicionPersonaje();
+                actualizarJugador();
 
             }
-
         }
 
 
         function moverDerecha() {
 
-            if (!juegoActivo) {
-                return;
-            }
+            if (!jugando) return;
 
-            if (carrilActual < 2) {
+            if (carrilJugador < 2) {
 
-                carrilActual++;
+                carrilJugador++;
 
-                actualizarPosicionPersonaje();
+                actualizarJugador();
 
             }
-
-        }
-
-
-        function actualizarPosicionPersonaje() {
-
-            document.getElementById(
-                "personaje"
-            ).style.left =
-                posicionesCarriles[carrilActual];
-
         }
 
 
@@ -1405,8 +1374,6 @@
                     event.key.toLowerCase() === "a"
                 ) {
 
-                    event.preventDefault();
-
                     moverIzquierda();
 
                 }
@@ -1416,8 +1383,6 @@
                     event.key.toLowerCase() === "d"
                 ) {
 
-                    event.preventDefault();
-
                     moverDerecha();
 
                 }
@@ -1426,110 +1391,228 @@
         );
 
 
-        /* =========================
-           EMPEZAR
-        ========================= */
+        /* =====================================================
+           INICIAR JUEGO
+        ===================================================== */
 
-        function empezarJuego() {
+        function iniciarJuego() {
 
-            detenerJuego();
+            limpiarJuego();
 
-            limpiarObjetos();
+            jugando = true;
 
-            juegoActivo = true;
+            puntosActuales = 0;
 
-            carrilActual = 1;
-
-            puntos = 0;
-
-            monedas = 0;
+            tiempoActual = 0;
 
             velocidad = 4;
 
-            tiempoJuego = 0;
+            carrilJugador = 1;
 
-            actualizarMarcador();
+            contadorObstaculos = 0;
 
-            actualizarPosicionPersonaje();
+            contadorMonedas = 0;
+
+            puntos.textContent = "0";
+
+            tiempo.textContent = "0.0 s";
+
+            actualizarJugador();
+
 
             document.getElementById(
                 "pantallaInicio"
             ).style.display = "none";
+
 
             document.getElementById(
                 "pantallaFinal"
             ).style.display = "none";
 
 
-            intervaloObstaculos =
+            tiempoInicio =
+                performance.now();
+
+
+            intervaloTiempo =
                 setInterval(
-                    crearObstaculo,
-                    900
+                    actualizarTiempo,
+                    50
                 );
 
 
-            intervaloMonedas =
+            intervaloJuego =
                 setInterval(
-                    crearMoneda,
-                    650
-                );
-
-
-            relojVelocidad =
-                setInterval(
-                    aumentarVelocidad,
-                    3000
-                );
-
-
-            animacion =
-                requestAnimationFrame(
-                    actualizarJuego
+                    actualizarJuego,
+                    20
                 );
 
         }
 
 
-        /* =========================
-           VELOCIDAD
-        ========================= */
+        /* =====================================================
+           TIEMPO
+        ===================================================== */
 
-        function aumentarVelocidad() {
+        function actualizarTiempo() {
 
-            if (!juegoActivo) {
-                return;
-            }
+            if (!jugando) return;
 
-            tiempoJuego++;
+            tiempoActual =
+                (performance.now() -
+                    tiempoInicio) / 1000;
 
-            velocidad += 0.35;
+            const idioma =
+                localStorage.getItem("idioma") ||
+                "es";
 
-            if (velocidad > 11) {
-                velocidad = 11;
-            }
+            const unidad =
+                textos[idioma].segundos;
+
+            tiempo.textContent =
+                tiempoActual.toFixed(1) +
+                " " +
+                unidad;
 
         }
 
 
-        /* =========================
-           OBSTÁCULOS
-        ========================= */
+        /* =====================================================
+           ACTUALIZAR JUEGO
+        ===================================================== */
+
+        function actualizarJuego() {
+
+            if (!jugando) return;
+
+
+            moverElementos();
+
+
+            if (
+                Math.random() <
+                0.012
+            ) {
+
+                crearObstaculo();
+
+            }
+
+
+            if (
+                Math.random() <
+                0.008
+            ) {
+
+                crearMoneda();
+
+            }
+
+
+            /* Aumentar velocidad cada cierto tiempo */
+
+            velocidad =
+                Math.min(
+                    11,
+                    4 +
+                    Math.floor(
+                        tiempoActual / 3
+                    ) * 0.35
+                );
+
+        }
+
+
+        /* =====================================================
+           MOVER ELEMENTOS
+        ===================================================== */
+
+        function moverElementos() {
+
+            const elementos =
+                zonaJuego.querySelectorAll(
+                    ".obstaculo, .moneda"
+                );
+
+
+            elementos.forEach(
+                function(elemento) {
+
+                    let top =
+                        parseFloat(
+                            elemento.style.top
+                        );
+
+
+                    if (
+                        isNaN(top)
+                    ) {
+
+                        top = -150;
+
+                    }
+
+
+                    top += velocidad;
+
+
+                    elemento.style.top =
+                        top + "px";
+
+
+                    if (
+                        detectarColision(
+                            elemento
+                        )
+                    ) {
+
+                        if (
+                            elemento.classList.contains(
+                                "moneda"
+                            )
+                        ) {
+
+                            recogerMoneda(
+                                elemento
+                            );
+
+                        } else {
+
+                            terminarJuego();
+
+                        }
+
+                    }
+
+
+                    if (
+                        top >
+                        zonaJuego.clientHeight + 150
+                    ) {
+
+                        elemento.remove();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CREAR OBSTÁCULO
+        ===================================================== */
 
         function crearObstaculo() {
 
-            if (!juegoActivo) {
-                return;
-            }
-
-            const zona =
-                document.getElementById(
-                    "zonaJuego"
-                );
-
             const obstaculo =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
+
+
+            obstaculo.classList.add(
+                "obstaculo"
+            );
 
 
             const tipo =
@@ -1538,46 +1621,23 @@
                 );
 
 
-            let alto;
-
-
             if (tipo === 0) {
 
-                /*
-                    GRANDE
-                    2 FILAS
-                */
-
-                obstaculo.className =
-                    "obstaculo obstaculo-grande";
-
-                alto = 130;
-
+                obstaculo.classList.add(
+                    "obstaculo-grande"
+                );
 
             } else if (tipo === 1) {
 
-                /*
-                    PEQUEÑO 1
-                    1 FILA
-                */
-
-                obstaculo.className =
-                    "obstaculo obstaculo-barrera";
-
-                alto = 62;
-
+                obstaculo.classList.add(
+                    "obstaculo-barrera"
+                );
 
             } else {
 
-                /*
-                    PEQUEÑO 2
-                    1 FILA
-                */
-
-                obstaculo.className =
-                    "obstaculo obstaculo-caja";
-
-                alto = 62;
+                obstaculo.classList.add(
+                    "obstaculo-caja"
+                );
 
             }
 
@@ -1588,57 +1648,39 @@
                 );
 
 
-            obstaculo.dataset.carril =
-                carril;
-
-
             obstaculo.style.left =
-                posicionesCarriles[carril];
+                obtenerPosicionCarril(
+                    carril
+                ) + "px";
 
 
             obstaculo.style.top =
-                (-alto - 10) + "px";
+                "-150px";
 
 
-            zona.appendChild(
+            zonaJuego.appendChild(
                 obstaculo
             );
 
 
-            obstaculos.push({
-
-                elemento: obstaculo,
-
-                carril: carril,
-
-                y: -alto - 10,
-
-                alto: alto
-
-            });
+            contadorObstaculos++;
 
         }
 
 
-        /* =========================
-           MONEDAS
-        ========================= */
+        /* =====================================================
+           CREAR MONEDA
+        ===================================================== */
 
         function crearMoneda() {
 
-            if (!juegoActivo) {
-                return;
-            }
-
-            const zona =
-                document.getElementById(
-                    "zonaJuego"
-                );
-
             const moneda =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
+
+
+            moneda.classList.add(
+                "moneda"
+            );
 
 
             const aleatorio =
@@ -1647,57 +1689,44 @@
 
             let valor;
 
-            let clase;
-
-
-            /*
-                BRONCE
-                1 PUNTO
-            */
 
             if (aleatorio < 0.65) {
 
+                moneda.classList.add(
+                    "moneda-bronce"
+                );
+
+                moneda.textContent = "1";
+
                 valor = 1;
 
-                clase =
-                    "moneda moneda-bronce";
+            } else if (
+                aleatorio < 0.90
+            ) {
 
-            }
+                moneda.classList.add(
+                    "moneda-plata"
+                );
 
-            /*
-                PLATA
-                5 PUNTOS
-            */
-
-            else if (aleatorio < 0.90) {
+                moneda.textContent = "5";
 
                 valor = 5;
 
-                clase =
-                    "moneda moneda-plata";
+            } else {
 
-            }
+                moneda.classList.add(
+                    "moneda-oro"
+                );
 
-            /*
-                ORO
-                20 PUNTOS
-            */
-
-            else {
+                moneda.textContent = "20";
 
                 valor = 20;
 
-                clase =
-                    "moneda moneda-oro";
-
             }
 
 
-            moneda.className =
-                clase;
-
-            moneda.textContent =
-                "★";
+            moneda.dataset.valor =
+                valor;
 
 
             const carril =
@@ -1707,684 +1736,433 @@
 
 
             moneda.style.left =
-                posicionesCarriles[carril];
+                obtenerPosicionCarril(
+                    carril
+                ) + "px";
 
 
             moneda.style.top =
-                "-55px";
+                "-50px";
 
 
-            zona.appendChild(
+            zonaJuego.appendChild(
                 moneda
             );
 
 
-            monedasObjetos.push({
-
-                elemento: moneda,
-
-                carril: carril,
-
-                y: -55,
-
-                valor: valor
-
-            });
+            contadorMonedas++;
 
         }
 
 
-        /* =========================
-           ACTUALIZAR
-        ========================= */
+        /* =====================================================
+           COLISIONES
+        ===================================================== */
 
-        function actualizarJuego() {
+        function detectarColision(elemento) {
 
-            if (!juegoActivo) {
-                return;
-            }
+            const jugadorRect =
+                jugador.getBoundingClientRect();
 
+            const elementoRect =
+                elemento.getBoundingClientRect();
 
-            const personaje =
-                document.getElementById(
-                    "personaje"
-                );
-
-
-            const personajeRect =
-                personaje.getBoundingClientRect();
-
-
-            const zona =
-                document.getElementById(
-                    "zonaJuego"
-                );
-
-
-            /* OBSTÁCULOS */
-
-            for (
-                let i = obstaculos.length - 1;
-                i >= 0;
-                i--
-            ) {
-
-                const obstaculo =
-                    obstaculos[i];
-
-
-                obstaculo.y +=
-                    velocidad;
-
-
-                obstaculo.elemento.style.top =
-                    obstaculo.y + "px";
-
-
-                const rect =
-                    obstaculo.elemento
-                        .getBoundingClientRect();
-
-
-                /*
-                    CHOQUE
-                */
-
-                if (
-                    detectarColision(
-                        personajeRect,
-                        rect
-                    )
-                ) {
-
-                    terminarJuego();
-
-                    return;
-
-                }
-
-
-                /*
-                    BORRAR CUANDO SALE
-                */
-
-                if (
-                    obstaculo.y >
-                    zona.clientHeight + 150
-                ) {
-
-                    obstaculo.elemento.remove();
-
-                    obstaculos.splice(
-                        i,
-                        1
-                    );
-
-                }
-
-            }
-
-
-            /* MONEDAS */
-
-            for (
-                let i = monedasObjetos.length - 1;
-                i >= 0;
-                i--
-            ) {
-
-                const moneda =
-                    monedasObjetos[i];
-
-
-                moneda.y +=
-                    velocidad;
-
-
-                moneda.elemento.style.top =
-                    moneda.y + "px";
-
-
-                const rect =
-                    moneda.elemento
-                        .getBoundingClientRect();
-
-
-                /*
-                    RECOGER MONEDA
-                */
-
-                if (
-                    detectarColision(
-                        personajeRect,
-                        rect
-                    )
-                ) {
-
-                    puntos +=
-                        moneda.valor;
-
-                    monedas++;
-
-
-                    moneda.elemento.remove();
-
-
-                    monedasObjetos.splice(
-                        i,
-                        1
-                    );
-
-
-                    actualizarMarcador();
-
-                    continue;
-
-                }
-
-
-                /*
-                    BORRAR
-                */
-
-                if (
-                    moneda.y >
-                    zona.clientHeight + 100
-                ) {
-
-                    moneda.elemento.remove();
-
-                    monedasObjetos.splice(
-                        i,
-                        1
-                    );
-
-                }
-
-            }
-
-
-            animacion =
-                requestAnimationFrame(
-                    actualizarJuego
-                );
-
-        }
-
-
-        /* =========================
-           COLISIÓN
-        ========================= */
-
-        function detectarColision(
-            a,
-            b
-        ) {
 
             const margen = 8;
 
-            return (
 
-                a.left + margen <
-                b.right - margen &&
+            return !(
+                jugadorRect.right - margen <
+                    elementoRect.left ||
 
-                a.right - margen >
-                b.left + margen &&
+                jugadorRect.left + margen >
+                    elementoRect.right ||
 
-                a.top + margen <
-                b.bottom - margen &&
+                jugadorRect.bottom - margen <
+                    elementoRect.top ||
 
-                a.bottom - margen >
-                b.top + margen
-
+                jugadorRect.top + margen >
+                    elementoRect.bottom
             );
 
         }
 
 
-        /* =========================
-           TERMINAR
-        ========================= */
+        /* =====================================================
+           RECOGER MONEDA
+        ===================================================== */
+
+        function recogerMoneda(moneda) {
+
+            const valor =
+                Number(
+                    moneda.dataset.valor
+                ) || 1;
+
+
+            puntosActuales += valor;
+
+
+            puntos.textContent =
+                puntosActuales;
+
+
+            moneda.remove();
+
+        }
+
+
+        /* =====================================================
+           TERMINAR JUEGO
+        ===================================================== */
 
         function terminarJuego() {
 
-            if (!juegoActivo) {
-                return;
-            }
+            if (!jugando) return;
 
 
-            juegoActivo = false;
+            jugando = false;
 
 
-            detenerJuego();
+            clearInterval(
+                intervaloJuego
+            );
+
+            clearInterval(
+                intervaloTiempo
+            );
 
 
-            guardarEstadisticas();
+            actualizarTiempo();
 
 
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
+            guardarEstadistica();
 
 
-            let texto;
-
-
-            if (idioma === "en") {
-
-                texto =
-                    "Score: " +
-                    puntos +
-                    " | Coins: " +
-                    monedas;
-
-            }
-
-            else if (idioma === "hy") {
-
-                texto =
-                    "Միավորներ՝ " +
-                    puntos +
-                    " | Մետաղադրամներ՝ " +
-                    monedas;
-
-            }
-
-            else {
-
-                texto =
-                    "Puntos: " +
-                    puntos +
-                    " | Monedas: " +
-                    monedas;
-
-            }
-
-
-            document.getElementById(
-                "resultadoFinal"
-            ).textContent =
-                texto;
+            actualizarResultadoFinal();
 
 
             document.getElementById(
                 "pantallaFinal"
-            ).style.display =
-                "flex";
+            ).style.display = "flex";
 
 
-            mostrarRanking();
+            mostrarRecords();
 
         }
 
 
-        function detenerJuego() {
+        /* =====================================================
+           RESULTADO FINAL
+        ===================================================== */
 
-            clearInterval(
-                intervaloObstaculos
-            );
+        function actualizarResultadoFinal() {
 
-            clearInterval(
-                intervaloMonedas
-            );
-
-            clearInterval(
-                relojVelocidad
-            );
-
-
-            intervaloObstaculos = null;
-
-            intervaloMonedas = null;
-
-            relojVelocidad = null;
-
-
-            if (animacion) {
-
-                cancelAnimationFrame(
-                    animacion
+            const elemento =
+                document.getElementById(
+                    "resultadoFinal"
                 );
 
-                animacion = null;
+
+            if (!elemento) return;
+
+
+            const idioma =
+                localStorage.getItem("idioma") ||
+                "es";
+
+
+            const t =
+                textos[idioma];
+
+
+            elemento.innerHTML =
+                t.puntos +
+                ": <strong>" +
+                puntosActuales +
+                "</strong><br>" +
+
+                t.tiempo +
+                ": <strong>" +
+                tiempoActual.toFixed(1) +
+                " " +
+                t.segundos +
+                "</strong>";
+
+        }
+
+
+        /* =====================================================
+           LIMPIAR JUEGO
+        ===================================================== */
+
+        function limpiarJuego() {
+
+            clearInterval(
+                intervaloJuego
+            );
+
+            clearInterval(
+                intervaloTiempo
+            );
+
+
+            const elementos =
+                zonaJuego.querySelectorAll(
+                    ".obstaculo, .moneda"
+                );
+
+
+            elementos.forEach(
+                function(elemento) {
+
+                    elemento.remove();
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ESTADÍSTICAS
+        ===================================================== */
+
+        function obtenerEstadisticas() {
+
+            let datos =
+                localStorage.getItem(
+                    estadisticasKey
+                );
+
+
+            if (!datos) {
+
+                return {};
+
+            }
+
+
+            try {
+
+                return JSON.parse(datos);
+
+            } catch {
+
+                return {};
 
             }
 
         }
 
 
-        function limpiarObjetos() {
+        function guardarEstadistica() {
 
-            obstaculos.forEach(
-                objeto => {
+            const datos =
+                obtenerEstadisticas();
 
-                    objeto.elemento.remove();
-
-                }
-            );
-
-
-            monedasObjetos.forEach(
-                objeto => {
-
-                    objeto.elemento.remove();
-
-                }
-            );
-
-
-            obstaculos = [];
-
-            monedasObjetos = [];
-
-        }
-
-
-        /* =========================
-           MARCADOR
-        ========================= */
-
-        function actualizarMarcador() {
-
-            document.getElementById(
-                "puntos"
-            ).textContent =
-                puntos;
-
-
-            document.getElementById(
-                "monedas"
-            ).textContent =
-                monedas;
-
-        }
-
-
-        /* =========================
-           ESTADÍSTICAS
-        ========================= */
-
-        function guardarEstadisticas() {
 
             const nombre =
                 obtenerNombreUsuario();
 
 
-            let estadisticas;
+            if (
+                !datos[nombre]
+            ) {
 
+                datos[nombre] = {
 
-            try {
+                    mejorPuntuacion:
+                        puntosActuales,
 
-                estadisticas =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "estadisticasCarreraInfinita"
-                        )
-                    ) || {};
+                    mejorTiempo:
+                        tiempoActual,
 
-            }
-
-            catch {
-
-                estadisticas = {};
-
-            }
-
-
-            if (!estadisticas[nombre]) {
-
-                estadisticas[nombre] = {
-
-                    mejorPuntuacion: 0,
-
-                    partidas: 0
+                    partidas: 1
 
                 };
 
-            }
+            } else {
+
+                datos[nombre].partidas++;
 
 
-            estadisticas[nombre].partidas++;
+                if (
+                    puntosActuales >
+                    datos[nombre].mejorPuntuacion
+                ) {
 
+                    datos[nombre].mejorPuntuacion =
+                        puntosActuales;
 
-            if (
-                puntos >
-                estadisticas[nombre]
-                    .mejorPuntuacion
-            ) {
+                    datos[nombre].mejorTiempo =
+                        tiempoActual;
 
-                estadisticas[nombre]
-                    .mejorPuntuacion =
-                    puntos;
+                } else if (
+                    puntosActuales ===
+                    datos[nombre].mejorPuntuacion
+                ) {
+
+                    if (
+                        tiempoActual >
+                        datos[nombre].mejorTiempo
+                    ) {
+
+                        datos[nombre].mejorTiempo =
+                            tiempoActual;
+
+                    }
+
+                }
 
             }
 
 
             localStorage.setItem(
-                "estadisticasCarreraInfinita",
-                JSON.stringify(
-                    estadisticas
-                )
+                estadisticasKey,
+                JSON.stringify(datos)
             );
 
         }
 
 
-        /* =========================
-           RANKING
-        ========================= */
+        /* =====================================================
+           RECORDS
+        ===================================================== */
 
-        function mostrarRanking() {
-
-            let estadisticas;
-
-
-            try {
-
-                estadisticas =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "estadisticasCarreraInfinita"
-                        )
-                    ) || {};
-
-            }
-
-            catch {
-
-                estadisticas = {};
-
-            }
-
-
-            const jugadores =
-                Object.keys(
-                    estadisticas
-                ).map(
-                    nombre => ({
-
-                        nombre: nombre,
-
-                        mejorPuntuacion:
-                            estadisticas[nombre]
-                                .mejorPuntuacion || 0,
-
-                        partidas:
-                            estadisticas[nombre]
-                                .partidas || 0
-
-                    })
-                );
-
-
-            jugadores.sort(
-                (a, b) => {
-
-                    if (
-                        b.mejorPuntuacion !==
-                        a.mejorPuntuacion
-                    ) {
-
-                        return (
-                            b.mejorPuntuacion -
-                            a.mejorPuntuacion
-                        );
-
-                    }
-
-
-                    return (
-                        b.partidas -
-                        a.partidas
-                    );
-
-                }
-            );
-
+        function mostrarRecords() {
 
             const tabla =
                 document.getElementById(
-                    "tablaRanking"
+                    "tablaRecords"
                 );
 
 
             tabla.innerHTML = "";
 
 
-            jugadores
-                .slice(0, 10)
-                .forEach(
-                    (jugador, indice) => {
-
-                        const fila =
-                            document.createElement(
-                                "tr"
-                            );
+            const datos =
+                obtenerEstadisticas();
 
 
-                        fila.innerHTML = `
-
-                            <td>
-                                ${indice + 1}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    jugador.nombre
-                                )}
-                            </td>
-
-                            <td>
-                                ${jugador.mejorPuntuacion}
-                            </td>
-
-                            <td>
-                                ${jugador.partidas}
-                            </td>
-
-                        `;
+            const jugadores =
+                Object.keys(datos);
 
 
-                        tabla.appendChild(
-                            fila
-                        );
-
-                    }
-                );
+            const idioma =
+                localStorage.getItem("idioma") ||
+                "es";
 
 
-            const nombre =
-                obtenerNombreUsuario();
-
-
-            const posicion =
-                jugadores.findIndex(
-                    jugador =>
-                        jugador.nombre ===
-                        nombre
-                ) + 1;
-
-
-            const tuPosicion =
-                document.getElementById(
-                    "tuPosicion"
-                );
+            const t =
+                textos[idioma];
 
 
             if (
-                posicion > 10 &&
-                posicion <= jugadores.length
+                jugadores.length === 0
             ) {
 
-                const jugador =
-                    jugadores[
-                        posicion - 1
-                    ];
+                tabla.innerHTML =
+                    '<tr><td colspan="4" class="sin-records">' +
+                    t.sinRecords +
+                    "</td></tr>";
 
-
-                const idioma =
-                    localStorage.getItem(
-                        "idioma"
-                    ) || "es";
-
-
-                if (idioma === "en") {
-
-                    tuPosicion.textContent =
-                        "👤 Your position: " +
-                        posicion +
-                        " — " +
-                        nombre +
-                        " — " +
-                        jugador.mejorPuntuacion +
-                        " points";
-
-                }
-
-                else if (idioma === "hy") {
-
-                    tuPosicion.textContent =
-                        "👤 Քո դիրքը՝ " +
-                        posicion +
-                        " — " +
-                        nombre +
-                        " — " +
-                        jugador.mejorPuntuacion +
-                        " միավոր";
-
-                }
-
-                else {
-
-                    tuPosicion.textContent =
-                        "👤 Tu posición: " +
-                        posicion +
-                        " — " +
-                        nombre +
-                        " — " +
-                        jugador.mejorPuntuacion +
-                        " puntos";
-
-                }
+                return;
 
             }
 
-            else {
 
-                tuPosicion.textContent = "";
+            jugadores.sort(
+                function(a, b) {
 
-            }
+                    const puntosA =
+                        datos[a].mejorPuntuacion || 0;
+
+                    const puntosB =
+                        datos[b].mejorPuntuacion || 0;
+
+
+                    if (
+                        puntosB !== puntosA
+                    ) {
+
+                        return puntosB -
+                            puntosA;
+
+                    }
+
+
+                    const tiempoA =
+                        datos[a].mejorTiempo || 0;
+
+                    const tiempoB =
+                        datos[b].mejorTiempo || 0;
+
+
+                    return tiempoB -
+                        tiempoA;
+
+                }
+            );
+
+
+            const top =
+                jugadores.slice(0, 10);
+
+
+            top.forEach(
+                function(nombre, indice) {
+
+                    const jugadorDatos =
+                        datos[nombre];
+
+
+                    const fila =
+                        document.createElement("tr");
+
+
+                    fila.innerHTML =
+
+                        "<td>" +
+                        (indice + 1) +
+                        "</td>" +
+
+                        "<td>" +
+                        escaparHTML(nombre) +
+                        "</td>" +
+
+                        "<td>" +
+                        (jugadorDatos.mejorPuntuacion || 0) +
+                        "</td>" +
+
+                        "<td>" +
+                        (
+                            jugadorDatos.mejorTiempo ||
+                            0
+                        ).toFixed(1) +
+                        " " +
+                        t.segundos +
+                        "</td>";
+
+
+                    tabla.appendChild(
+                        fila
+                    );
+
+                }
+            );
 
         }
 
 
-        function escapeHTML(texto) {
+        /* =====================================================
+           SEGURIDAD DEL NOMBRE
+        ===================================================== */
+
+        function escaparHTML(texto) {
 
             const div =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             div.textContent =
                 texto;
@@ -2394,19 +2172,29 @@
         }
 
 
-        /* =========================
+        /* =====================================================
+           VOLVER
+        ===================================================== */
+
+        function volverInicio() {
+
+            window.location.href =
+                "../../index.html";
+
+        }
+
+
+        /* =====================================================
            INICIO
-        ========================= */
+        ===================================================== */
 
         aplicarTema();
 
         aplicarIdioma();
 
-        actualizarPosicionPersonaje();
+        actualizarJugador();
 
-        actualizarMarcador();
-
-        mostrarRanking();
+        mostrarRecords();
 
     </script>
 
