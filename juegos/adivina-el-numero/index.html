@@ -1,10 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Adivina el número - MI WEB</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    min-height: 100vh;
+    transition: 0.3s;
+}
+
+body.claro {
+    background: #f2f2f2;
+    color: #111;
+}
+
+.barra {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #333;
+    background: #181818;
+}
+
+body.claro .barra {
+    background: white;
+    border-color: #ddd;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+body.claro .volver {
+    color: #111;
+}
+
+.controles {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    background: #292929;
+    color: white;
+    font-size: 14px;
+}
+
+body.claro button {
+    background: #e5e5e5;
+    color: #111;
+}
+
+.idioma {
+    position: relative;
+}
+
+.menu-idioma {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 48px;
+    background: #222;
+    border-radius: 10px;
+    padding: 6px;
+    width: 150px;
+    z-index: 10;
+}
+
+body.claro .menu-idioma {
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.menu-idioma button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+}
+
+.menu-idioma button:hover {
+    background: #333;
+}
+
+body.claro .menu-idioma button:hover {
+    background: #eee;
+}
+
+.contenido {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+.descripcion {
+    color: #aaa;
+    margin-bottom: 35px;
+}
+
+body.claro .descripcion {
+    color: #555;
+}
+
+input {
+    width: 220px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background: #1c1c1c;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+body.claro input {
+    background: white;
+    color: #111;
+    border-color: #ccc;
+}
+
+.adivinar {
+    display: block;
+    margin: 20px auto;
+    font-size: 16px;
+}
+
+.mensaje {
+    margin-top: 30px;
+    font-size: 22px;
+    min-height: 35px;
+}
+
+.intentos {
+    color: #aaa;
+    margin-top: 15px;
+}
+
+body.claro .intentos {
+    color: #555;
+}
+
+.reiniciar {
+    display: none;
+    margin: 20px auto;
+    font-size: 16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="barra">
+
+<a href="../../" class="volver" id="volver">
+← Volver
+</a>
+
+<div class="controles">
+
+<div class="idioma">
+
+<button id="botonIdioma" onclick="abrirIdioma()">
+🇪🇸 ES ▾
+</button>
+
+<div class="menu-idioma" id="menuIdioma">
+
+<button onclick="cambiarIdioma('es')">
+🇪🇸 Español
+</button>
+
+<button onclick="cambiarIdioma('en')">
+🇬🇧 English
+</button>
+
+<button onclick="cambiarIdioma('hy')">
+🇦🇲 Հայերեն
+</button>
+
+</div>
+
+</div>
+
+<button id="botonTema" onclick="cambiarTema()">
+☀️ Claro
+</button>
+
+</div>
+
+</nav>
+
+
+<main class="contenido">
+
+<h1 id="titulo">
+🔢 Adivina el número
+</h1>
+
+<p class="descripcion" id="descripcion">
+Estoy pensando en un número entre 1 y 100.
+</p>
+
+<input
+    type="number"
+    id="numero"
+    min="1"
+    max="100"
+    placeholder="1 - 100"
+>
+
+<button
+    class="adivinar"
+    id="botonAdivinar"
+    onclick="comprobarNumero()"
+>
+🎯 Adivinar
+</button>
+
+<div
+    class="mensaje"
+    id="mensaje">
+</div>
+
+<div
+    class="intentos"
+    id="intentos">
+Intentos: 0
+</div>
+
+<button
+    class="reiniciar"
+    id="reiniciar"
+    onclick="reiniciarJuego()"
+>
+🔄 Jugar otra vez
+</button>
+
+</main>
+
+
+<script>
+
+let numeroSecreto =
+    Math.floor(Math.random() * 100) + 1;
+
+let numeroIntentos = 0;
+
+let juegoTerminado = false;
+
+
+function aplicarIdioma() {
+
+    const idioma =
+        localStorage.getItem("idioma") || "es";
+
+    document.documentElement.lang = idioma;
+
+    if (idioma === "en") {
+
+        document.getElementById("titulo").textContent =
+            "🔢 Guess the number";
+
+        document.getElementById("descripcion").textContent =
+            "I'm thinking of a number between 1 and 100.";
+
+        document.getElementById("volver").textContent =
+            "← Back";
+
+        document.getElementById("botonAdivinar").textContent =
+            "🎯 Guess";
+
+        document.getElementById("reiniciar").textContent =
+            "🔄 Play again";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇬🇧 EN ▾";
+
+        document.getElementById("numero").placeholder =
+            "1 - 100";
+
+        document.title =
+            "Guess the number - MY WEBSITE";
+
+    } else if (idioma === "hy") {
+
+        document.getElementById("titulo").textContent =
+            "🔢 Գուշակիր թիվը";
+
+        document.getElementById("descripcion").textContent =
+            "Ես մտածում եմ 1-ից 100-ի միջև գտնվող թվի մասին։";
+
+        document.getElementById("volver").textContent =
+            "← Հետ";
+
+        document.getElementById("botonAdivinar").textContent =
+            "🎯 Գուշակել";
+
+        document.getElementById("reiniciar").textContent =
+            "🔄 Նորից խաղալ";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇦🇲 HY ▾";
+
+        document.getElementById("numero").placeholder =
+            "1 - 100";
+
+        document.title =
+            "Գուշակիր թիվը - ԻՄ ԿԱՅՔԸ";
+
+    } else {
+
+        document.getElementById("titulo").textContent =
+            "🔢 Adivina el número";
+
+        document.getElementById("descripcion").textContent =
+            "Estoy pensando en un número entre 1 y 100.";
+
+        document.getElementById("volver").textContent =
+            "← Volver";
+
+        document.getElementById("botonAdivinar").textContent =
+            "🎯 Adivinar";
+
+        document.getElementById("reiniciar").textContent =
+            "🔄 Jugar otra vez";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇪🇸 ES ▾";
+
+        document.getElementById("numero").placeholder =
+            "1 - 100";
+
+        document.title =
+            "Adivina el número - MI WEB";
+    }
+
+    actualizarIntentos();
+    actualizarTextoTema();
+}
+
+
+function actualizarIntentos() {
+
+    const idioma =
+        localStorage.getItem("idioma") || "es";
+
+    if (idioma === "en") {
+
+        document.getElementById("intentos").textContent =
+            "Attempts: " + numeroIntentos;
+
+    } else if (idioma === "hy") {
+
+        document.getElementById("intentos").textContent =
+            "Փորձեր՝ " + numeroIntentos;
+
+    } else {
+
+        document.getElementById("intentos").textContent =
+            "Intentos: " + numeroIntentos;
+    }
+}
+
+
+function comprobarNumero() {
+
+    if (juegoTerminado) {
+        return;
+    }
+
+    const input =
+        document.getElementById("numero");
+
+    const mensaje =
+        document.getElementById("mensaje");
+
+    const numero =
+        Number(input.value);
+
+    const idioma =
+        localStorage.getItem("idioma") || "es";
+
+
+    if (input.value === "") {
+
+        if (idioma === "en") {
+
+            mensaje.textContent =
+                "⚠️ Enter a number.";
+
+        } else if (idioma === "hy") {
+
+            mensaje.textContent =
+                "⚠️ Գրիր թիվ։";
+
+        } else {
+
+            mensaje.textContent =
+                "⚠️ Escribe un número.";
+        }
+
+        return;
+    }
+
+
+    if (numero < 1 || numero > 100) {
+
+        if (idioma === "en") {
+
+            mensaje.textContent =
+                "⚠️ The number must be between 1 and 100.";
+
+        } else if (idioma === "hy") {
+
+            mensaje.textContent =
+                "⚠️ Թիվը պետք է լինի 1-ից 100-ի միջև։";
+
+        } else {
+
+            mensaje.textContent =
+                "⚠️ El número debe estar entre 1 y 100.";
+        }
+
+        return;
+    }
+
+
+    numeroIntentos++;
+
+    actualizarIntentos();
+
+
+    if (numero < numeroSecreto) {
+
+        if (idioma === "en") {
+
+            mensaje.textContent =
+                "🔼 It's higher.";
+
+        } else if (idioma === "hy") {
+
+            mensaje.textContent =
+                "🔼 Ավելի բարձր է։";
+
+        } else {
+
+            mensaje.textContent =
+                "🔼 Es más alto.";
+        }
+
+
+    } else if (numero > numeroSecreto) {
+
+        if (idioma === "en") {
+
+            mensaje.textContent =
+                "🔽 It's lower.";
+
+        } else if (idioma === "hy") {
+
+            mensaje.textContent =
+                "🔽 Ավելի ցածր է։";
+
+        } else {
+
+            mensaje.textContent =
+                "🔽 Es más bajo.";
+        }
+
+
+    } else {
+
+        if (idioma === "en") {
+
+            mensaje.textContent =
+                "🎉 You got it! It was " +
+                numeroSecreto + ".";
+
+        } else if (idioma === "hy") {
+
+            mensaje.textContent =
+                "🎉 Ճիշտ է։ Թիվը " +
+                numeroSecreto + " էր։";
+
+        } else {
+
+            mensaje.textContent =
+                "🎉 ¡Acertaste! Era el " +
+                numeroSecreto + ".";
+        }
+
+        juegoTerminado = true;
+
+        input.disabled = true;
+
+        document.getElementById("botonAdivinar").style.display =
+            "none";
+
+        document.getElementById("reiniciar").style.display =
+            "block";
+    }
+}
+
+
+function reiniciarJuego() {
+
+    numeroSecreto =
+        Math.floor(Math.random() * 100) + 1;
+
+    numeroIntentos = 0;
+
+    juegoTerminado = false;
+
+    document.getElementById("numero").value = "";
+
+    document.getElementById("numero").disabled = false;
+
+    document.getElementById("mensaje").textContent = "";
+
+    document.getElementById("botonAdivinar").style.display =
+        "block";
+
+    document.getElementById("reiniciar").style.display =
+        "none";
+
+    actualizarIntentos();
+}
+
+
+document.getElementById("numero").addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            comprobarNumero();
+
+        }
+
+    }
+);
+
+
+function cambiarIdioma(idioma) {
+
+    localStorage.setItem("idioma", idioma);
+
+    document.getElementById("menuIdioma").style.display =
+        "none";
+
+    aplicarIdioma();
+}
+
+
+function abrirIdioma() {
+
+    const menu =
+        document.getElementById("menuIdioma");
+
+    menu.style.display =
+        menu.style.display === "block"
+        ? "none"
+        : "block";
+}
+
+
+document.addEventListener("click", function(event) {
+
+    const idioma =
+        document.querySelector(".idioma");
+
+    if (!idioma.contains(event.target)) {
+
+        document.getElementById("menuIdioma").style.display =
+            "none";
+    }
+
+});
+
+
 function aplicarTema() {
 
-    const tema = localStorage.getItem("tema") || "oscuro";
+    const tema =
+        localStorage.getItem("tema") || "oscuro";
 
     if (tema === "claro") {
+
         document.body.classList.add("claro");
+
     } else {
+
         document.body.classList.remove("claro");
     }
 
@@ -18,7 +631,9 @@ function cambiarTema() {
         localStorage.getItem("tema") || "oscuro";
 
     const nuevoTema =
-        temaActual === "oscuro" ? "claro" : "oscuro";
+        temaActual === "oscuro"
+        ? "claro"
+        : "oscuro";
 
     localStorage.setItem("tema", nuevoTema);
 
@@ -40,16 +655,31 @@ function actualizarTextoTema() {
     if (idioma === "en") {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Light" : "🌙 Dark";
+            tema === "oscuro"
+            ? "☀️ Light"
+            : "🌙 Dark";
 
     } else if (idioma === "hy") {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Բաց" : "🌙 Մութ";
+            tema === "oscuro"
+            ? "☀️ Բաց"
+            : "🌙 Մութ";
 
     } else {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Claro" : "🌙 Oscuro";
+            tema === "oscuro"
+            ? "☀️ Claro"
+            : "🌙 Oscuro";
     }
 }
+
+
+aplicarIdioma();
+aplicarTema();
+
+</script>
+
+</body>
+</html>
