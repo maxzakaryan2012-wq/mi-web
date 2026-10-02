@@ -9,342 +9,219 @@
 
   <title>Número aleatorio - MI WEB</title>
 
-
   <style>
 
     * {
       box-sizing: border-box;
     }
 
-
     body {
-
       margin: 0;
-
       font-family: Arial, sans-serif;
-
       background: #111;
-
       color: white;
-
       text-align: center;
-
       transition: background 0.3s, color 0.3s;
-
     }
-
 
     body.claro {
-
       background: #f5f5f5;
-
       color: #111;
-
     }
 
-
-    /* BOTONES SUPERIORES */
+    /* BOTÓN VOLVER */
 
     .volver {
-
       position: absolute;
-
       top: 20px;
-
       left: 20px;
-
       padding: 12px 18px;
-
       border: none;
-
       border-radius: 12px;
-
       background: #222;
-
       color: white;
-
       font-size: 16px;
-
       cursor: pointer;
-
       text-decoration: none;
-
       transition: 0.2s;
-
     }
-
 
     body.claro .volver {
-
       background: #ddd;
-
       color: #111;
-
     }
 
-
-    .tema {
-
-      position: absolute;
-
-      top: 20px;
-
-      right: 20px;
-
-      padding: 12px 18px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      background: #222;
-
-      color: white;
-
-      font-size: 16px;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-
-    body.claro .tema {
-
-      background: #ddd;
-
-      color: #111;
-
-    }
-
-
-    .volver:hover,
-    .tema:hover,
-    .generar:hover {
-
+    .volver:hover {
       transform: scale(1.05);
-
     }
-
 
     /* IDIOMA */
 
     .idioma {
-
       position: absolute;
-
       top: 20px;
-
       right: 150px;
-
     }
-
 
     .botonIdioma {
-
       padding: 12px 14px;
-
       border: none;
-
       border-radius: 12px;
-
       background: #222;
-
       color: white;
-
       font-size: 15px;
-
       cursor: pointer;
-
+      transition: 0.2s;
     }
-
 
     body.claro .botonIdioma {
-
       background: #ddd;
-
       color: #111;
-
     }
 
+    .botonIdioma:hover {
+      transform: scale(1.05);
+    }
 
     .menuIdioma {
-
       display: none;
-
       position: absolute;
-
       top: 48px;
-
       right: 0;
-
-      min-width: 160px;
-
+      min-width: 170px;
       background: #1d1d1d;
-
       border: 1px solid #333;
-
       border-radius: 12px;
-
       padding: 6px;
-
       z-index: 1000;
-
     }
-
 
     body.claro .menuIdioma {
-
       background: white;
-
       border-color: #ddd;
-
     }
-
 
     .menuIdioma.mostrar {
-
       display: block;
-
     }
-
 
     .menuIdioma button {
-
       width: 100%;
-
       padding: 10px;
-
       border: none;
-
       border-radius: 8px;
-
       background: transparent;
-
       color: white;
-
       text-align: left;
-
-      cursor: pointer;
-
       font-size: 15px;
-
+      cursor: pointer;
     }
-
 
     body.claro .menuIdioma button {
-
       color: #111;
-
     }
-
 
     .menuIdioma button:hover {
-
       background: #2a2a2a;
-
     }
-
 
     body.claro .menuIdioma button:hover {
-
       background: #eee;
-
     }
 
+    /* TEMA */
 
-    /* CONTENEDOR */
+    .tema {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    body.claro .tema {
+      background: #ddd;
+      color: #111;
+    }
+
+    .tema:hover {
+      transform: scale(1.05);
+    }
+
+    /* CONTENIDO */
 
     .contenedor {
-
       max-width: 600px;
-
       margin: 100px auto;
-
       padding: 30px 20px;
-
     }
-
 
     h1 {
-
       font-size: 50px;
-
+      margin-bottom: 15px;
     }
 
+    .descripcion {
+      font-size: 20px;
+      color: #aaa;
+    }
+
+    body.claro .descripcion {
+      color: #555;
+    }
 
     input {
-
       width: 120px;
-
       padding: 15px;
-
       margin: 10px;
-
       font-size: 20px;
-
       text-align: center;
-
       border-radius: 10px;
-
       border: none;
-
     }
-
 
     .generar {
-
       margin-top: 20px;
-
       padding: 15px 30px;
-
       font-size: 20px;
-
       border: none;
-
       border-radius: 10px;
-
       cursor: pointer;
-
+      transition: 0.2s;
     }
 
+    .generar:hover {
+      transform: scale(1.05);
+    }
 
     #resultado {
-
       font-size: 70px;
-
       font-weight: bold;
-
       margin-top: 40px;
-
     }
-
 
     @media (max-width: 600px) {
 
       .idioma {
-
         right: 125px;
-
       }
 
       .tema {
-
         right: 12px;
-
       }
 
       .volver {
-
         left: 12px;
-
       }
 
       h1 {
-
         font-size: 40px;
-
       }
 
     }
@@ -362,11 +239,9 @@
   <a
     class="volver"
     href="../../"
-    id="botonVolver"
+    id="volver"
   >
-
     ← Volver
-
   </a>
 
 
@@ -374,15 +249,12 @@
 
   <div class="idioma">
 
-
     <button
       class="botonIdioma"
-      onclick="abrirIdioma()"
       id="botonIdioma"
+      onclick="abrirIdioma()"
     >
-
       🇪🇸 ES ▾
-
     </button>
 
 
@@ -391,27 +263,17 @@
       id="menuIdioma"
     >
 
-
       <button onclick="cambiarIdioma('es')">
-
         🇪🇸 Español
-
       </button>
-
 
       <button onclick="cambiarIdioma('en')">
-
         🇬🇧 English
-
       </button>
-
 
       <button onclick="cambiarIdioma('hy')">
-
         🇦🇲 Հայերեն
-
       </button>
-
 
     </div>
 
@@ -422,12 +284,10 @@
 
   <button
     class="tema"
-    onclick="cambiarTema()"
     id="botonTema"
+    onclick="cambiarTema()"
   >
-
     ☀️ Claro
-
   </button>
 
 
@@ -435,32 +295,16 @@
 
   <div class="contenedor">
 
-
-    <h1>
-
-      🎲
-
-      <span
-        data-es="Número aleatorio"
-        data-en="Random number"
-        data-hy="Պատահական թիվ"
-      >
-
-        Número aleatorio
-
-      </span>
-
+    <h1 id="titulo">
+      🎲 Número aleatorio
     </h1>
 
 
     <p
-      data-es="Escribe dos números:"
-      data-en="Enter two numbers:"
-      data-hy="Գրիր երկու թիվ։"
+      class="descripcion"
+      id="descripcion"
     >
-
       Escribe dos números:
-
     </p>
 
 
@@ -483,184 +327,113 @@
 
     <button
       class="generar"
-      onclick="generarNumero()"
       id="botonGenerar"
+      onclick="generarNumero()"
     >
-
       🎲 Generar
-
     </button>
 
 
     <div id="resultado">
-
       ?
-
     </div>
-
 
   </div>
 
 
   <script>
 
-
-    /* NÚMERO ALEATORIO */
-
-    function generarNumero() {
-
-
-      let numero1 =
-        Number(
-          document.getElementById("numero1").value
-        );
-
-
-      let numero2 =
-        Number(
-          document.getElementById("numero2").value
-        );
-
-
-      if (numero1 > numero2) {
-
-        let temporal = numero1;
-
-        numero1 = numero2;
-
-        numero2 = temporal;
-
-      }
-
-
-      if (numero1 === numero2) {
-
-        document.getElementById(
-          "resultado"
-        ).textContent = numero1;
-
-        return;
-
-      }
-
-
-      let resultado =
-
-        Math.floor(
-
-          Math.random() *
-          (numero2 - numero1 + 1)
-
-        ) + numero1;
-
-
-      document.getElementById(
-        "resultado"
-      ).textContent = resultado;
-
-    }
-
-
-    /* IDIOMA */
+    /* =========================
+       IDIOMA
+       ========================= */
 
     function aplicarIdioma() {
-
 
       const idioma =
         localStorage.getItem("idioma") || "es";
 
 
-      document.documentElement.lang =
-        idioma;
+      document.documentElement.lang = idioma;
 
 
-      const textos =
-        document.querySelectorAll(
-          "[data-es][data-en][data-hy]"
-        );
+      const titulo =
+        document.getElementById("titulo");
 
+      const descripcion =
+        document.getElementById("descripcion");
 
-      textos.forEach(function(elemento) {
+      const volver =
+        document.getElementById("volver");
 
-
-        if (idioma === "en") {
-
-          elemento.textContent =
-            elemento.getAttribute("data-en");
-
-        }
-
-        else if (idioma === "hy") {
-
-          elemento.textContent =
-            elemento.getAttribute("data-hy");
-
-        }
-
-        else {
-
-          elemento.textContent =
-            elemento.getAttribute("data-es");
-
-        }
-
-      });
-
+      const botonGenerar =
+        document.getElementById("botonGenerar");
 
       const botonIdioma =
-        document.getElementById(
-          "botonIdioma"
-        );
+        document.getElementById("botonIdioma");
 
 
       if (idioma === "en") {
 
+        titulo.textContent =
+          "🎲 Random number";
+
+        descripcion.textContent =
+          "Enter two numbers:";
+
+        volver.textContent =
+          "← Back";
+
+        botonGenerar.textContent =
+          "🎲 Generate";
+
         botonIdioma.textContent =
           "🇬🇧 EN ▾";
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent = "← Back";
-
-        document.getElementById(
-          "botonGenerar"
-        ).textContent = "🎲 Generate";
 
         document.title =
           "Random number - MY WEBSITE";
 
       }
 
+
       else if (idioma === "hy") {
+
+        titulo.textContent =
+          "🎲 Պատահական թիվ";
+
+        descripcion.textContent =
+          "Գրիր երկու թիվ։";
+
+        volver.textContent =
+          "← Հետ";
+
+        botonGenerar.textContent =
+          "🎲 Ստեղծել";
 
         botonIdioma.textContent =
           "🇦🇲 HY ▾";
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent = "← Հետ";
-
-        document.getElementById(
-          "botonGenerar"
-        ).textContent = "🎲 Ստեղծել";
 
         document.title =
           "Պատահական թիվ - ԻՄ ԿԱՅՔԸ";
 
       }
 
+
       else {
+
+        titulo.textContent =
+          "🎲 Número aleatorio";
+
+        descripcion.textContent =
+          "Escribe dos números:";
+
+        volver.textContent =
+          "← Volver";
+
+        botonGenerar.textContent =
+          "🎲 Generar";
 
         botonIdioma.textContent =
           "🇪🇸 ES ▾";
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent = "← Volver";
-
-        document.getElementById(
-          "botonGenerar"
-        ).textContent = "🎲 Generar";
 
         document.title =
           "Número aleatorio - MI WEB";
@@ -701,27 +474,18 @@
       "click",
       function(event) {
 
-
         const menu =
-          document.getElementById(
-            "menuIdioma"
-          );
-
+          document.getElementById("menuIdioma");
 
         const boton =
-          document.getElementById(
-            "botonIdioma"
-          );
-
+          document.getElementById("botonIdioma");
 
         if (
           !menu.contains(event.target) &&
           !boton.contains(event.target)
         ) {
 
-          menu.classList.remove(
-            "mostrar"
-          );
+          menu.classList.remove("mostrar");
 
         }
 
@@ -729,21 +493,72 @@
     );
 
 
-    /* TEMA */
+    /* =========================
+       NÚMERO ALEATORIO
+       ========================= */
+
+    function generarNumero() {
+
+      let numero1 =
+        Number(
+          document.getElementById("numero1").value
+        );
+
+      let numero2 =
+        Number(
+          document.getElementById("numero2").value
+        );
+
+
+      if (numero1 > numero2) {
+
+        let temporal = numero1;
+
+        numero1 = numero2;
+
+        numero2 = temporal;
+
+      }
+
+
+      if (numero1 === numero2) {
+
+        document.getElementById(
+          "resultado"
+        ).textContent = numero1;
+
+        return;
+
+      }
+
+
+      let resultado =
+        Math.floor(
+          Math.random() *
+          (numero2 - numero1 + 1)
+        ) + numero1;
+
+
+      document.getElementById(
+        "resultado"
+      ).textContent = resultado;
+
+    }
+
+
+    /* =========================
+       TEMA
+       ========================= */
 
     function aplicarTema() {
 
-
       const tema =
-        localStorage.getItem("tema") ||
-        "oscuro";
+        localStorage.getItem("tema") || "oscuro";
 
 
       if (tema === "claro") {
 
-        document.body.classList.add(
-          "claro"
-        );
+        document.body.classList.add("claro");
 
         document.getElementById(
           "botonTema"
@@ -754,9 +569,7 @@
 
       else {
 
-        document.body.classList.remove(
-          "claro"
-        );
+        document.body.classList.remove("claro");
 
         document.getElementById(
           "botonTema"
@@ -770,10 +583,8 @@
 
     function cambiarTema() {
 
-
       const temaActual =
-        localStorage.getItem("tema") ||
-        "oscuro";
+        localStorage.getItem("tema") || "oscuro";
 
 
       if (temaActual === "oscuro") {
@@ -802,10 +613,9 @@
 
     /* INICIAR */
 
-    aplicarTema();
-
     aplicarIdioma();
 
+    aplicarTema();
 
   </script>
 
