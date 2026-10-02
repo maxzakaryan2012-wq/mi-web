@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>MI WEB</title>
+
 
   <style>
 
@@ -12,147 +16,372 @@
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family: Arial, sans-serif;
+
       background: #111;
+
       color: white;
-      transition: background 0.3s, color 0.3s;
+
+      transition:
+        background 0.3s,
+        color 0.3s;
+
     }
+
 
     body.claro {
+
       background: #f5f5f5;
+
       color: #111;
+
     }
 
 
-    /* BARRA DE NAVEGACIÓN */
+    /* =========================
+       BARRA DE NAVEGACIÓN
+       ========================= */
 
     .barra {
+
       position: sticky;
+
       top: 0;
+
       z-index: 1000;
 
       height: 70px;
+
       padding: 0 25px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       background: #181818;
+
       border-bottom: 1px solid #333;
+
     }
+
 
     body.claro .barra {
+
       background: white;
+
       border-bottom: 1px solid #ddd;
+
     }
+
 
     .logo {
+
       font-size: 22px;
+
       font-weight: bold;
+
     }
+
 
     .navegacion {
+
       display: flex;
+
       gap: 10px;
+
+      align-items: center;
+
     }
 
+
     .navegacion a {
+
       padding: 10px 14px;
+
       border-radius: 10px;
 
       text-decoration: none;
+
       color: white;
 
       transition: 0.2s;
+
     }
+
 
     body.claro .navegacion a {
+
       color: #111;
+
     }
+
 
     .navegacion a:hover {
+
       background: #2a2a2a;
+
     }
+
 
     body.claro .navegacion a:hover {
+
       background: #eee;
+
     }
 
 
-    /* BOTÓN DEL TEMA */
+    /* =========================
+       IDIOMA
+       ========================= */
+
+    .idioma {
+
+      position: relative;
+
+    }
+
+
+    .botonIdioma {
+
+      padding: 10px 14px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      background: #222;
+
+      color: white;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+    }
+
+
+    body.claro .botonIdioma {
+
+      background: #ddd;
+
+      color: #111;
+
+    }
+
+
+    .botonIdioma:hover {
+
+      transform: scale(1.05);
+
+    }
+
+
+    .menuIdioma {
+
+      display: none;
+
+      position: absolute;
+
+      top: 48px;
+
+      right: 0;
+
+      min-width: 150px;
+
+      background: #1d1d1d;
+
+      border: 1px solid #333;
+
+      border-radius: 12px;
+
+      padding: 6px;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+    }
+
+
+    body.claro .menuIdioma {
+
+      background: white;
+
+      border-color: #ddd;
+
+    }
+
+
+    .menuIdioma.mostrar {
+
+      display: block;
+
+    }
+
+
+    .menuIdioma button {
+
+      width: 100%;
+
+      padding: 10px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: transparent;
+
+      color: white;
+
+      text-align: left;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+    }
+
+
+    body.claro .menuIdioma button {
+
+      color: #111;
+
+    }
+
+
+    .menuIdioma button:hover {
+
+      background: #2a2a2a;
+
+    }
+
+
+    body.claro .menuIdioma button:hover {
+
+      background: #eee;
+
+    }
+
+
+    /* =========================
+       TEMA
+       ========================= */
 
     .tema {
+
       position: absolute;
+
       top: 85px;
+
       right: 20px;
 
       padding: 12px 18px;
 
       border: none;
+
       border-radius: 12px;
 
       background: #222;
+
       color: white;
 
       font-size: 16px;
+
       cursor: pointer;
 
       transition: 0.2s;
+
     }
+
 
     body.claro .tema {
+
       background: #ddd;
+
       color: #111;
+
     }
+
 
     .tema:hover {
+
       transform: scale(1.05);
+
     }
 
 
-    /* CABECERA */
+    /* =========================
+       CABECERA
+       ========================= */
 
     header {
+
       text-align: center;
+
       padding: 70px 20px 40px;
+
     }
+
 
     h1 {
+
       font-size: 60px;
+
       margin: 0;
+
     }
+
 
     header p {
+
       font-size: 22px;
+
       color: #aaa;
+
     }
+
 
     body.claro header p {
+
       color: #555;
+
     }
 
 
-    /* JUEGOS */
+    /* =========================
+       JUEGOS
+       ========================= */
 
     .juegos {
+
       max-width: 1000px;
+
       margin: auto;
 
       padding: 30px;
 
       display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(220px, 1fr)
-      );
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(220px, 1fr)
+        );
 
       gap: 20px;
+
     }
 
+
     .juego {
+
       background: #1d1d1d;
 
       border-radius: 18px;
@@ -160,132 +389,274 @@
       padding: 30px;
 
       text-decoration: none;
+
       color: white;
 
       transition: 0.2s;
 
       border: 1px solid #333;
+
     }
 
+
     body.claro .juego {
+
       background: white;
+
       color: #111;
 
       border: 1px solid #ddd;
+
     }
+
 
     .juego:hover {
+
       transform: translateY(-6px);
+
     }
+
 
     .icono {
+
       font-size: 50px;
+
     }
+
 
     .juego h2 {
+
       margin-bottom: 10px;
+
     }
+
 
     .juego p {
+
       color: #aaa;
+
     }
+
 
     body.claro .juego p {
+
       color: #666;
+
     }
 
 
-    /* MÓVIL */
+    /* =========================
+       MÓVIL
+       ========================= */
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
 
       .barra {
-        padding: 0 12px;
+
+        height: auto;
+
+        min-height: 70px;
+
+        padding: 10px 12px;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+
       }
+
 
       .logo {
+
         font-size: 18px;
+
       }
+
 
       .navegacion {
+
         gap: 3px;
+
       }
+
 
       .navegacion a {
+
         padding: 8px;
+
         font-size: 14px;
+
       }
+
+
+      .botonIdioma {
+
+        padding: 8px;
+
+        font-size: 14px;
+
+      }
+
 
       .tema {
-        top: 80px;
+
+        top: 90px;
+
         right: 12px;
+
         padding: 10px 13px;
+
         font-size: 14px;
+
       }
 
+
       h1 {
+
         font-size: 42px;
+
       }
 
     }
 
   </style>
+
 </head>
 
 
 <body>
 
 
-  <!-- BARRA DE NAVEGACIÓN -->
+  <!-- =========================
+       BARRA
+       ========================= -->
 
   <nav class="barra">
 
+
     <div class="logo">
+
       🎮 MI WEB
+
     </div>
+
 
     <div class="navegacion">
 
+
       <a href="./">
-        🏠 Inicio
+
+        🏠 <span data-es="Inicio" data-en="Home">
+          Inicio
+        </span>
+
       </a>
 
+
       <a href="#juegos">
-        🎮 Juegos
+
+        🎮 <span data-es="Juegos" data-en="Games">
+          Juegos
+        </span>
+
       </a>
+
+
+      <!-- IDIOMA -->
+
+      <div class="idioma">
+
+
+        <button
+          class="botonIdioma"
+          onclick="abrirIdioma()"
+          id="botonIdioma"
+        >
+
+          🇪🇸 ES ▾
+
+        </button>
+
+
+        <div
+          class="menuIdioma"
+          id="menuIdioma"
+        >
+
+          <button onclick="cambiarIdioma('es')">
+
+            🇪🇸 Español
+
+          </button>
+
+
+          <button onclick="cambiarIdioma('en')">
+
+            🇬🇧 English
+
+          </button>
+
+        </div>
+
+
+      </div>
+
 
     </div>
 
   </nav>
 
 
-  <!-- BOTÓN DEL TEMA -->
+  <!-- =========================
+       BOTÓN TEMA
+       ========================= -->
 
   <button
     class="tema"
     onclick="cambiarTema()"
     id="botonTema"
   >
+
     ☀️ Claro
+
   </button>
 
 
-  <!-- CABECERA -->
+  <!-- =========================
+       CABECERA
+       ========================= -->
 
   <header>
 
+
     <h1>
-      🎮 MI WEB
+
+      🎮 <span
+        data-es="MI WEB"
+        data-en="MY WEBSITE"
+      >
+        MI WEB
+      </span>
+
     </h1>
 
-    <p>
+
+    <p
+      data-es="Pequeños juegos y experimentos."
+      data-en="Small games and experiments."
+    >
+
       Pequeños juegos y experimentos.
+
     </p>
+
 
   </header>
 
 
-  <!-- JUEGOS -->
+  <!-- =========================
+       JUEGOS
+       ========================= -->
 
   <main
     class="juegos"
@@ -300,17 +671,33 @@
       href="juegos/numero-aleatorio/"
     >
 
+
       <div class="icono">
+
         🎲
+
       </div>
 
-      <h2>
+
+      <h2
+        data-es="Número aleatorio"
+        data-en="Random number"
+      >
+
         Número aleatorio
+
       </h2>
 
-      <p>
+
+      <p
+        data-es="Escribe dos números y descubre cuál sale."
+        data-en="Enter two numbers and see which one comes out."
+      >
+
         Escribe dos números y descubre cuál sale.
+
       </p>
+
 
     </a>
 
@@ -322,17 +709,33 @@
       href="juegos/adivina-el-numero/"
     >
 
+
       <div class="icono">
+
         🔢
+
       </div>
 
-      <h2>
+
+      <h2
+        data-es="Adivina el número"
+        data-en="Guess the number"
+      >
+
         Adivina el número
+
       </h2>
 
-      <p>
+
+      <p
+        data-es="Encuentra el número secreto entre 1 y 100."
+        data-en="Find the secret number between 1 and 100."
+      >
+
         Encuentra el número secreto entre 1 y 100.
+
       </p>
+
 
     </a>
 
@@ -340,12 +743,159 @@
   </main>
 
 
+  <!-- =========================
+       JAVASCRIPT
+       ========================= -->
+
   <script>
 
 
-    /* APLICAR TEMA */
+    /* =========================
+       IDIOMA
+       ========================= */
+
+    function aplicarIdioma() {
+
+
+      const idioma =
+        localStorage.getItem("idioma") || "es";
+
+
+      document.documentElement.lang =
+        idioma;
+
+
+      const textos =
+        document.querySelectorAll("[data-es][data-en]");
+
+
+      textos.forEach(function(elemento) {
+
+
+        if (idioma === "en") {
+
+          elemento.textContent =
+            elemento.getAttribute("data-en");
+
+        }
+
+        else {
+
+          elemento.textContent =
+            elemento.getAttribute("data-es");
+
+        }
+
+      });
+
+
+      const botonIdioma =
+        document.getElementById("botonIdioma");
+
+
+      if (idioma === "en") {
+
+        botonIdioma.textContent =
+          "🇬🇧 EN ▾";
+
+      }
+
+      else {
+
+        botonIdioma.textContent =
+          "🇪🇸 ES ▾";
+
+      }
+
+
+      /* TÍTULO DE LA PÁGINA */
+
+      if (idioma === "en") {
+
+        document.title =
+          "MY WEBSITE";
+
+      }
+
+      else {
+
+        document.title =
+          "MI WEB";
+
+      }
+
+    }
+
+
+
+    function cambiarIdioma(idioma) {
+
+
+      localStorage.setItem(
+        "idioma",
+        idioma
+      );
+
+
+      aplicarIdioma();
+
+
+      document
+        .getElementById("menuIdioma")
+        .classList.remove("mostrar");
+
+    }
+
+
+
+    function abrirIdioma() {
+
+
+      document
+        .getElementById("menuIdioma")
+        .classList.toggle("mostrar");
+
+    }
+
+
+
+    /* =========================
+       CERRAR MENÚ AL HACER CLICK FUERA
+       ========================= */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+
+        const menu =
+          document.getElementById("menuIdioma");
+
+
+        const boton =
+          document.getElementById("botonIdioma");
+
+
+        if (
+          !menu.contains(event.target) &&
+          !boton.contains(event.target)
+        ) {
+
+          menu.classList.remove("mostrar");
+
+        }
+
+      }
+    );
+
+
+
+    /* =========================
+       TEMA
+       ========================= */
 
     function aplicarTema() {
+
 
       const tema =
         localStorage.getItem("tema") || "oscuro";
@@ -353,34 +903,48 @@
 
       if (tema === "claro") {
 
-        document.body.classList.add("claro");
 
-        document.getElementById("botonTema").textContent =
-          "🌙 Oscuro";
+        document.body.classList.add(
+          "claro"
+        );
+
+
+        document
+          .getElementById("botonTema")
+          .textContent =
+            "🌙 Oscuro";
 
       }
 
+
       else {
 
-        document.body.classList.remove("claro");
 
-        document.getElementById("botonTema").textContent =
-          "☀️ Claro";
+        document.body.classList.remove(
+          "claro"
+        );
+
+
+        document
+          .getElementById("botonTema")
+          .textContent =
+            "☀️ Claro";
 
       }
 
     }
 
 
-    /* CAMBIAR TEMA */
 
     function cambiarTema() {
+
 
       const temaActual =
         localStorage.getItem("tema") || "oscuro";
 
 
       if (temaActual === "oscuro") {
+
 
         localStorage.setItem(
           "tema",
@@ -389,7 +953,9 @@
 
       }
 
+
       else {
+
 
         localStorage.setItem(
           "tema",
@@ -404,13 +970,19 @@
     }
 
 
-    /* INICIAR */
+
+    /* =========================
+       INICIAR
+       ========================= */
 
     aplicarTema();
+
+    aplicarIdioma();
 
 
   </script>
 
 
 </body>
+
 </html>
