@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Número aleatorio</title>
+  <title>MI WEB</title>
 
   <style>
     body {
@@ -12,92 +12,77 @@
       font-family: Arial, sans-serif;
       background: #111;
       color: white;
-      text-align: center;
     }
 
-    .contenedor {
-      max-width: 600px;
-      margin: 100px auto;
-      padding: 30px;
+    header {
+      text-align: center;
+      padding: 70px 20px 40px;
     }
 
     h1 {
+      font-size: 60px;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 22px;
+      color: #bbb;
+    }
+
+    .juegos {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .juego {
+      background: #1d1d1d;
+      border-radius: 18px;
+      padding: 30px;
+      text-decoration: none;
+      color: white;
+      transition: 0.2s;
+      border: 1px solid #333;
+    }
+
+    .juego:hover {
+      transform: translateY(-6px);
+      background: #252525;
+    }
+
+    .icono {
       font-size: 50px;
     }
 
-    input {
-      width: 120px;
-      padding: 15px;
-      margin: 10px;
-      font-size: 20px;
-      text-align: center;
-      border-radius: 10px;
-      border: none;
+    .juego h2 {
+      margin-bottom: 10px;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 15px 30px;
-      font-size: 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    #resultado {
-      font-size: 70px;
-      font-weight: bold;
-      margin-top: 40px;
+    .juego p {
+      color: #aaa;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="contenedor">
+  <header>
+    <h1>🎮 MI WEB</h1>
+    <p>Pequeños juegos y experimentos.</p>
+  </header>
 
-    <h1>🎲 Número aleatorio</h1>
+  <main class="juegos">
 
-    <p>Escribe dos números:</p>
+    <a class="juego" href="juegos/numero-aleatorio/">
+      <div class="icono">🎲</div>
+      <h2>Número aleatorio</h2>
+      <p>Escribe dos números y descubre cuál sale.</p>
+    </a>
 
-    <input type="number" id="numero1" placeholder="1">
-    <input type="number" id="numero2" placeholder="10">
-
-    <br>
-
-    <button onclick="generarNumero()">🎲 Generar</button>
-
-    <div id="resultado">?</div>
-
-  </div>
-
-  <script>
-    function generarNumero() {
-      let numero1 = Number(document.getElementById("numero1").value);
-      let numero2 = Number(document.getElementById("numero2").value);
-
-      if (numero1 > numero2) {
-        let temporal = numero1;
-        numero1 = numero2;
-        numero2 = temporal;
-      }
-
-      if (numero1 === numero2) {
-        document.getElementById("resultado").textContent = numero1;
-        return;
-      }
-
-      let resultado = Math.floor(
-        Math.random() * (numero2 - numero1 + 1)
-      ) + numero1;
-
-      document.getElementById("resultado").textContent = resultado;
-    }
-  </script>
+  </main>
 
 </body>
 </html>
