@@ -2,514 +2,1299 @@
 <html lang="es">
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Número aleatorio - MI WEB</title>
+    <title>Número aleatorio - MI WEB</title>
 
-<style>
+    <style>
 
-* {
-    box-sizing: border-box;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: white;
-    min-height: 100vh;
-    transition: 0.3s;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            transition: 0.3s;
+        }
 
-body.claro {
-    background: #f2f2f2;
-    color: #111;
-}
+        /* BARRA */
 
-.barra {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    border-bottom: 1px solid #333;
-    background: #181818;
-    transition: 0.3s;
-}
+        .barra {
+            height: 70px;
+            background: #181818;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
 
-body.claro .barra {
-    background: white;
-    border-color: #ddd;
-}
+        .volver {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-.volver {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
+        .volver:hover {
+            opacity: 0.7;
+        }
 
-body.claro .volver {
-    color: #111;
-}
+        .espacio {
+            flex: 1;
+        }
 
-.controles {
-    margin-left: auto;
-    display: flex;
-    gap: 10px;
-}
+        .menu-idioma {
+            position: relative;
+        }
 
-button {
-    border: none;
-    border-radius: 10px;
-    padding: 10px 14px;
-    cursor: pointer;
-    background: #292929;
-    color: white;
-    font-size: 14px;
-    transition: 0.2s;
-}
+        .boton-idioma,
+        #botonTema {
+            background: #252525;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-button:hover {
-    transform: scale(1.03);
-}
+        .boton-idioma:hover,
+        #botonTema:hover {
+            background: #333;
+        }
 
-body.claro button {
-    background: #e5e5e5;
-    color: #111;
-}
+        .idiomas {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #202020;
+            border: 1px solid #444;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 150px;
+            z-index: 100;
+        }
 
-.idioma {
-    position: relative;
-}
+        .idiomas button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-.menu-idioma {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 48px;
-    background: #222;
-    border-radius: 10px;
-    padding: 6px;
-    width: 150px;
-    z-index: 10;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-}
+        .idiomas button:hover {
+            background: #333;
+        }
 
-body.claro .menu-idioma {
-    background: white;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-}
+        /* CONTENIDO */
 
-.menu-idioma button {
-    width: 100%;
-    text-align: left;
-    background: transparent;
-}
+        .contenedor {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
 
-.menu-idioma button:hover {
-    background: #333;
-}
+        h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
 
-body.claro .menu-idioma button:hover {
-    background: #eee;
-}
+        #descripcion {
+            color: #bbb;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
 
-.contenido {
-    max-width: 600px;
-    margin: 80px auto;
-    padding: 20px;
-    text-align: center;
-}
+        .inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-h1 {
-    font-size: 42px;
-}
+        input {
+            width: 180px;
+            padding: 14px;
+            font-size: 17px;
+            border-radius: 10px;
+            border: 1px solid #555;
+            background: #202020;
+            color: white;
+            outline: none;
+            text-align: center;
+        }
 
-.descripcion {
-    color: #aaa;
-    margin-bottom: 35px;
-}
+        input:focus {
+            border-color: #777;
+        }
 
-body.claro .descripcion {
-    color: #555;
-}
+        #botonGenerar {
+            display: block;
+            margin: 20px auto;
+            padding: 13px 25px;
+            font-size: 17px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: #111;
+            font-weight: bold;
+        }
 
-.inputs {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+        #botonGenerar:hover {
+            transform: scale(1.03);
+        }
 
-input {
-    width: 180px;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #444;
-    background: #1c1c1c;
-    color: white;
-    font-size: 16px;
-}
+        #resultado {
+            min-height: 50px;
+            margin-top: 25px;
+            font-size: 32px;
+            font-weight: bold;
+        }
 
-body.claro input {
-    background: white;
-    color: #111;
-    border-color: #ccc;
-}
+        /* ESTADÍSTICAS */
 
-.generar {
-    margin-top: 20px;
-    font-size: 16px;
-}
+        .estadisticas {
+            margin-top: 60px;
+            text-align: left;
+        }
 
-.resultado {
-    margin-top: 35px;
-    font-size: 35px;
-    font-weight: bold;
-}
+        .estadisticas h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
 
-</style>
+        .tabla-contenedor {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #181818;
+        }
+
+        th,
+        td {
+            padding: 14px 10px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: #222;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tu-fila {
+            background: #292929;
+            font-weight: bold;
+        }
+
+        .posicion-usuario {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #181818;
+            border: 1px solid #333;
+            text-align: center;
+            display: none;
+        }
+
+        /* TEMA CLARO */
+
+        body.claro {
+            background: #f4f4f4;
+            color: #111;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        body.claro .volver {
+            color: #111;
+        }
+
+        body.claro .boton-idioma,
+        body.claro #botonTema {
+            background: #f1f1f1;
+            color: #111;
+            border-color: #ccc;
+        }
+
+        body.claro .boton-idioma:hover,
+        body.claro #botonTema:hover {
+            background: #e5e5e5;
+        }
+
+        body.claro .idiomas {
+            background: white;
+            border-color: #ccc;
+        }
+
+        body.claro .idiomas button {
+            color: #111;
+        }
+
+        body.claro .idiomas button:hover {
+            background: #eee;
+        }
+
+        body.claro #descripcion {
+            color: #555;
+        }
+
+        body.claro input {
+            background: white;
+            color: #111;
+            border-color: #bbb;
+        }
+
+        body.claro table {
+            background: white;
+        }
+
+        body.claro th {
+            background: #eee;
+        }
+
+        body.claro th,
+        body.claro td {
+            border-bottom-color: #ddd;
+        }
+
+        body.claro .tu-fila {
+            background: #e8e8e8;
+        }
+
+        body.claro .posicion-usuario {
+            background: white;
+            border-color: #ddd;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<nav class="barra">
+    <!-- BARRA SUPERIOR -->
 
-<a href="../../" class="volver" id="volver">
-← Volver
-</a>
+    <div class="barra">
 
-<div class="controles">
+        <a
+            href="../../index.html"
+            class="volver"
+            id="volver"
+        >
+            ← Volver
+        </a>
 
-<div class="idioma">
+        <div class="espacio"></div>
 
-<button id="botonIdioma" onclick="abrirIdioma()">
-🇪🇸 ES ▾
-</button>
+        <div class="menu-idioma">
 
-<div class="menu-idioma" id="menuIdioma">
+            <button
+                class="boton-idioma"
+                id="botonIdioma"
+                onclick="abrirIdioma()"
+            >
+                🇪🇸 ES ▾
+            </button>
 
-<button onclick="cambiarIdioma('es')">
-🇪🇸 Español
-</button>
+            <div
+                class="idiomas"
+                id="menuIdiomas"
+            >
 
-<button onclick="cambiarIdioma('en')">
-🇬🇧 English
-</button>
+                <button onclick="cambiarIdioma('es')">
+                    🇪🇸 Español
+                </button>
 
-<button onclick="cambiarIdioma('hy')">
-🇦🇲 Հայերեն
-</button>
+                <button onclick="cambiarIdioma('en')">
+                    🇬🇧 English
+                </button>
 
-</div>
+                <button onclick="cambiarIdioma('hy')">
+                    🇦🇲 Հայերեն
+                </button>
 
-</div>
+            </div>
 
-<button id="botonTema" onclick="cambiarTema()">
-☀️ Claro
-</button>
+        </div>
 
-</div>
+        <button
+            id="botonTema"
+            onclick="cambiarTema()"
+        >
+            ☀️ Claro
+        </button>
 
-</nav>
+    </div>
 
 
-<main class="contenido">
+    <!-- CONTENIDO -->
 
-<h1 id="titulo">
-🎲 Número aleatorio
-</h1>
+    <main class="contenedor">
 
-<p class="descripcion" id="descripcion">
-Escribe dos números:
-</p>
+        <h1 id="titulo">
+            🎲 Número aleatorio
+        </h1>
 
-<div class="inputs">
+        <p id="descripcion">
+            Escribe dos números:
+        </p>
 
-<input
-    type="number"
-    id="numero1"
-    placeholder="Número 1"
->
+        <div class="inputs">
 
-<input
-    type="number"
-    id="numero2"
-    placeholder="Número 2"
->
+            <input
+                type="number"
+                id="numero1"
+                placeholder="Número 1"
+            >
 
-</div>
+            <input
+                type="number"
+                id="numero2"
+                placeholder="Número 2"
+            >
 
-<button
-    class="generar"
-    id="botonGenerar"
-    onclick="generarNumero()"
->
-🎲 Generar
-</button>
+        </div>
 
-<div class="resultado" id="resultado"></div>
+        <button
+            id="botonGenerar"
+            onclick="generarNumero()"
+        >
+            🎲 Generar
+        </button>
 
-</main>
+        <div id="resultado"></div>
 
 
-<script>
+        <!-- ESTADÍSTICAS -->
 
-function aplicarIdioma() {
+        <section class="estadisticas">
 
-    const idioma =
-        localStorage.getItem("idioma") || "es";
+            <h2 id="tituloEstadisticas">
+                🏆 Estadísticas
+            </h2>
 
-    document.documentElement.lang = idioma;
+            <div class="tabla-contenedor">
 
-    if (idioma === "en") {
+                <table>
 
-        document.getElementById("titulo").textContent =
-            "🎲 Random number";
+                    <thead>
 
-        document.getElementById("descripcion").textContent =
-            "Enter two numbers:";
+                        <tr>
 
-        document.getElementById("volver").textContent =
-            "← Back";
+                            <th id="thPuesto">
+                                Puesto
+                            </th>
 
-        document.getElementById("botonGenerar").textContent =
-            "🎲 Generate";
+                            <th id="thNombre">
+                                Nombre
+                            </th>
 
-        document.getElementById("botonIdioma").textContent =
-            "🇬🇧 EN ▾";
+                            <th id="thGenerados">
+                                Números generados
+                            </th>
 
-        document.getElementById("numero1").placeholder =
-            "Number 1";
+                        </tr>
 
-        document.getElementById("numero2").placeholder =
-            "Number 2";
+                    </thead>
 
-        document.title =
-            "Random number - MY WEBSITE";
+                    <tbody id="tablaRanking">
+                    </tbody>
 
-    } else if (idioma === "hy") {
+                </table>
 
-        document.getElementById("titulo").textContent =
-            "🎲 Պատահական թիվ";
+            </div>
 
-        document.getElementById("descripcion").textContent =
-            "Գրիր երկու թիվ։";
+            <div
+                class="posicion-usuario"
+                id="posicionUsuario"
+            ></div>
 
-        document.getElementById("volver").textContent =
-            "← Հետ";
+        </section>
 
-        document.getElementById("botonGenerar").textContent =
-            "🎲 Ստեղծել";
+    </main>
 
-        document.getElementById("botonIdioma").textContent =
-            "🇦🇲 HY ▾";
 
-        document.getElementById("numero1").placeholder =
-            "Թիվ 1";
+    <script>
 
-        document.getElementById("numero2").placeholder =
-            "Թիվ 2";
+        /* =========================
+           NÚMERO ALEATORIO
+        ========================= */
 
-        document.title =
-            "Պատահական թիվ - ԻՄ ԿԱՅՔԸ";
+        function generarNumero() {
 
-    } else {
+            const input1 =
+                document.getElementById(
+                    "numero1"
+                );
 
-        document.getElementById("titulo").textContent =
-            "🎲 Número aleatorio";
+            const input2 =
+                document.getElementById(
+                    "numero2"
+                );
 
-        document.getElementById("descripcion").textContent =
-            "Escribe dos números:";
+            let numero1 =
+                Number(input1.value);
 
-        document.getElementById("volver").textContent =
-            "← Volver";
+            let numero2 =
+                Number(input2.value);
 
-        document.getElementById("botonGenerar").textContent =
-            "🎲 Generar";
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
 
-        document.getElementById("botonIdioma").textContent =
-            "🇪🇸 ES ▾";
 
-        document.getElementById("numero1").placeholder =
-            "Número 1";
+            if (
+                input1.value === "" ||
+                input2.value === ""
+            ) {
 
-        document.getElementById("numero2").placeholder =
-            "Número 2";
+                if (idioma === "en") {
 
-        document.title =
-            "Número aleatorio - MI WEB";
-    }
+                    document.getElementById(
+                        "resultado"
+                    ).textContent =
+                        "⚠️ Enter two numbers.";
 
-    actualizarTextoTema();
-}
+                } else if (idioma === "hy") {
 
+                    document.getElementById(
+                        "resultado"
+                    ).textContent =
+                        "⚠️ Գրիր երկու թիվ։";
 
-function cambiarIdioma(idioma) {
+                } else {
 
-    localStorage.setItem("idioma", idioma);
+                    document.getElementById(
+                        "resultado"
+                    ).textContent =
+                        "⚠️ Escribe dos números.";
+                }
 
-    document.getElementById("menuIdioma").style.display =
-        "none";
+                return;
+            }
 
-    aplicarIdioma();
-}
 
+            if (numero1 > numero2) {
 
-function abrirIdioma() {
+                const temporal =
+                    numero1;
 
-    const menu =
-        document.getElementById("menuIdioma");
+                numero1 =
+                    numero2;
 
-    menu.style.display =
-        menu.style.display === "block"
-        ? "none"
-        : "block";
-}
+                numero2 =
+                    temporal;
+            }
 
 
-document.addEventListener("click", function(event) {
+            const resultado =
+                Math.floor(
+                    Math.random() *
+                    (
+                        numero2 -
+                        numero1 +
+                        1
+                    )
+                ) +
+                numero1;
 
-    const idioma =
-        document.querySelector(".idioma");
 
-    if (!idioma.contains(event.target)) {
+            document.getElementById(
+                "resultado"
+            ).textContent =
+                resultado;
 
-        document.getElementById("menuIdioma").style.display =
-            "none";
-    }
 
-});
+            /* GUARDAR ESTADÍSTICA */
 
-
-function generarNumero() {
-
-    let numero1 =
-        Number(document.getElementById("numero1").value);
-
-    let numero2 =
-        Number(document.getElementById("numero2").value);
-
-    const resultado =
-        document.getElementById("resultado");
-
-    if (
-        document.getElementById("numero1").value === "" ||
-        document.getElementById("numero2").value === ""
-    ) {
-
-        const idioma =
-            localStorage.getItem("idioma") || "es";
-
-        if (idioma === "en") {
-
-            resultado.textContent =
-                "⚠️ Enter two numbers.";
-
-        } else if (idioma === "hy") {
-
-            resultado.textContent =
-                "⚠️ Գրիր երկու թիվ։";
-
-        } else {
-
-            resultado.textContent =
-                "⚠️ Escribe dos números.";
+            guardarNumeroGenerado();
         }
 
-        return;
-    }
 
-    if (numero1 > numero2) {
+        /* =========================
+           USUARIO
+        ========================= */
 
-        [numero1, numero2] =
-            [numero2, numero1];
-    }
+        function obtenerNombreUsuario() {
 
-    const numero =
-        Math.floor(
-            Math.random() *
-            (numero2 - numero1 + 1)
-        ) + numero1;
-
-    resultado.textContent = numero;
-}
+            let nombre =
+                localStorage.getItem(
+                    "nombreUsuario"
+                );
 
 
-function aplicarTema() {
+            if (!nombre) {
 
-    const tema =
-        localStorage.getItem("tema") || "oscuro";
-
-    if (tema === "claro") {
-
-        document.body.classList.add("claro");
-
-    } else {
-
-        document.body.classList.remove("claro");
-    }
-
-    actualizarTextoTema();
-}
+                let numero =
+                    localStorage.getItem(
+                        "numeroUsuario"
+                    );
 
 
-function cambiarTema() {
+                if (!numero) {
 
-    const temaActual =
-        localStorage.getItem("tema") || "oscuro";
+                    numero =
+                        Math.floor(
+                            Math.random() *
+                            10000
+                        );
 
-    const nuevoTema =
-        temaActual === "oscuro"
-        ? "claro"
-        : "oscuro";
+                    numero =
+                        String(numero)
+                            .padStart(4, "0");
 
-    localStorage.setItem("tema", nuevoTema);
-
-    aplicarTema();
-}
-
-
-function actualizarTextoTema() {
-
-    const tema =
-        localStorage.getItem("tema") || "oscuro";
-
-    const idioma =
-        localStorage.getItem("idioma") || "es";
-
-    const boton =
-        document.getElementById("botonTema");
-
-    if (idioma === "en") {
-
-        boton.textContent =
-            tema === "oscuro"
-            ? "☀️ Light"
-            : "🌙 Dark";
-
-    } else if (idioma === "hy") {
-
-        boton.textContent =
-            tema === "oscuro"
-            ? "☀️ Բաց"
-            : "🌙 Մութ";
-
-    } else {
-
-        boton.textContent =
-            tema === "oscuro"
-            ? "☀️ Claro"
-            : "🌙 Oscuro";
-    }
-}
+                    localStorage.setItem(
+                        "numeroUsuario",
+                        numero
+                    );
+                }
 
 
-aplicarIdioma();
-aplicarTema();
+                nombre =
+                    "user_" +
+                    numero;
 
-</script>
+
+                localStorage.setItem(
+                    "nombreUsuario",
+                    nombre
+                );
+            }
+
+
+            return nombre;
+        }
+
+
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
+
+        function obtenerEstadisticas() {
+
+            const datos =
+                localStorage.getItem(
+                    "estadisticasNumeroAleatorio"
+                );
+
+
+            if (!datos) {
+                return {};
+            }
+
+
+            try {
+
+                return JSON.parse(
+                    datos
+                );
+
+            } catch {
+
+                return {};
+            }
+        }
+
+
+        function guardarNumeroGenerado() {
+
+            const nombre =
+                obtenerNombreUsuario();
+
+
+            const estadisticas =
+                obtenerEstadisticas();
+
+
+            if (!estadisticas[nombre]) {
+
+                estadisticas[nombre] = {
+
+                    generados: 1
+
+                };
+
+            } else {
+
+                estadisticas[nombre]
+                    .generados++;
+            }
+
+
+            localStorage.setItem(
+                "estadisticasNumeroAleatorio",
+                JSON.stringify(
+                    estadisticas
+                )
+            );
+
+
+            mostrarRanking();
+        }
+
+
+        function ordenarRanking(
+            estadisticas
+        ) {
+
+            const jugadores =
+                Object.keys(
+                    estadisticas
+                ).map(
+                    function(nombre) {
+
+                        return {
+
+                            nombre: nombre,
+
+                            generados:
+                                estadisticas[
+                                    nombre
+                                ].generados
+
+                        };
+
+                    }
+                );
+
+
+            jugadores.sort(
+                function(a, b) {
+
+                    if (
+                        a.generados !==
+                        b.generados
+                    ) {
+
+                        return (
+                            b.generados -
+                            a.generados
+                        );
+                    }
+
+
+                    return a.nombre.localeCompare(
+                        b.nombre
+                    );
+
+                }
+            );
+
+
+            return jugadores;
+        }
+
+
+        function mostrarRanking() {
+
+            const estadisticas =
+                obtenerEstadisticas();
+
+
+            const ranking =
+                ordenarRanking(
+                    estadisticas
+                );
+
+
+            const tabla =
+                document.getElementById(
+                    "tablaRanking"
+                );
+
+
+            const nombreUsuario =
+                obtenerNombreUsuario();
+
+
+            tabla.innerHTML = "";
+
+
+            const top10 =
+                ranking.slice(
+                    0,
+                    10
+                );
+
+
+            top10.forEach(
+                function(
+                    jugador,
+                    index
+                ) {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    if (
+                        jugador.nombre ===
+                        nombreUsuario
+                    ) {
+
+                        fila.classList.add(
+                            "tu-fila"
+                        );
+                    }
+
+
+                    const puesto =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const nombre =
+                        document.createElement(
+                            "td"
+                        );
+
+                    const generados =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    puesto.textContent =
+                        index + 1;
+
+
+                    nombre.textContent =
+                        jugador.nombre;
+
+
+                    generados.textContent =
+                        jugador.generados;
+
+
+                    fila.appendChild(
+                        puesto
+                    );
+
+                    fila.appendChild(
+                        nombre
+                    );
+
+                    fila.appendChild(
+                        generados
+                    );
+
+
+                    tabla.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            mostrarPosicionUsuario(
+                ranking,
+                nombreUsuario
+            );
+        }
+
+
+        function mostrarPosicionUsuario(
+            ranking,
+            nombreUsuario
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    "posicionUsuario"
+                );
+
+
+            const posicion =
+                ranking.findIndex(
+                    function(jugador) {
+
+                        return (
+                            jugador.nombre ===
+                            nombreUsuario
+                        );
+
+                    }
+                );
+
+
+            if (posicion === -1) {
+
+                elemento.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            if (posicion < 10) {
+
+                elemento.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            const jugador =
+                ranking[posicion];
+
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            if (idioma === "en") {
+
+                elemento.textContent =
+                    "👤 Your position: " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.generados +
+                    " random numbers generated";
+
+
+            } else if (idioma === "hy") {
+
+                elemento.textContent =
+                    "👤 Քո դիրքը՝ " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.generados +
+                    " պատահական թիվ";
+
+
+            } else {
+
+                elemento.textContent =
+                    "👤 Tu posición: " +
+                    (posicion + 1) +
+                    " — " +
+                    nombreUsuario +
+                    " — " +
+                    jugador.generados +
+                    " números aleatorios generados";
+            }
+
+
+            elemento.style.display =
+                "block";
+        }
+
+
+        /* =========================
+           IDIOMAS
+        ========================= */
+
+        function abrirIdioma() {
+
+            const menu =
+                document.getElementById(
+                    "menuIdiomas"
+                );
+
+
+            if (
+                menu.style.display ===
+                "block"
+            ) {
+
+                menu.style.display =
+                    "none";
+
+            } else {
+
+                menu.style.display =
+                    "block";
+            }
+        }
+
+
+        function cambiarIdioma(
+            idioma
+        ) {
+
+            localStorage.setItem(
+                "idioma",
+                idioma
+            );
+
+
+            aplicarIdioma();
+
+
+            document.getElementById(
+                "menuIdiomas"
+            ).style.display =
+                "none";
+        }
+
+
+        function aplicarIdioma() {
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            const titulo =
+                document.getElementById(
+                    "titulo"
+                );
+
+            const descripcion =
+                document.getElementById(
+                    "descripcion"
+                );
+
+            const volver =
+                document.getElementById(
+                    "volver"
+                );
+
+            const botonGenerar =
+                document.getElementById(
+                    "botonGenerar"
+                );
+
+            const numero1 =
+                document.getElementById(
+                    "numero1"
+                );
+
+            const numero2 =
+                document.getElementById(
+                    "numero2"
+                );
+
+            const botonIdioma =
+                document.getElementById(
+                    "botonIdioma"
+                );
+
+
+            const tituloEstadisticas =
+                document.getElementById(
+                    "tituloEstadisticas"
+                );
+
+            const thPuesto =
+                document.getElementById(
+                    "thPuesto"
+                );
+
+            const thNombre =
+                document.getElementById(
+                    "thNombre"
+                );
+
+            const thGenerados =
+                document.getElementById(
+                    "thGenerados"
+                );
+
+
+            if (idioma === "en") {
+
+                titulo.textContent =
+                    "🎲 Random number";
+
+                descripcion.textContent =
+                    "Enter two numbers:";
+
+                volver.textContent =
+                    "← Back";
+
+                botonGenerar.textContent =
+                    "🎲 Generate";
+
+                numero1.placeholder =
+                    "Number 1";
+
+                numero2.placeholder =
+                    "Number 2";
+
+                botonIdioma.textContent =
+                    "🇬🇧 EN ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Statistics";
+
+                thPuesto.textContent =
+                    "Place";
+
+                thNombre.textContent =
+                    "Name";
+
+                thGenerados.textContent =
+                    "Random numbers generated";
+
+                document.title =
+                    "Random number - MY WEBSITE";
+
+
+            } else if (idioma === "hy") {
+
+                titulo.textContent =
+                    "🎲 Պատահական թիվ";
+
+                descripcion.textContent =
+                    "Գրիր երկու թիվ։";
+
+                volver.textContent =
+                    "← Հետ";
+
+                botonGenerar.textContent =
+                    "🎲 Ստեղծել";
+
+                numero1.placeholder =
+                    "Թիվ 1";
+
+                numero2.placeholder =
+                    "Թիվ 2";
+
+                botonIdioma.textContent =
+                    "🇦🇲 HY ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Վիճակագրություն";
+
+                thPuesto.textContent =
+                    "Դիրք";
+
+                thNombre.textContent =
+                    "Անուն";
+
+                thGenerados.textContent =
+                    "Ստեղծված պատահական թվեր";
+
+                document.title =
+                    "Պատահական թիվ - ԻՄ ԿԱՅՔԸ";
+
+
+            } else {
+
+                titulo.textContent =
+                    "🎲 Número aleatorio";
+
+                descripcion.textContent =
+                    "Escribe dos números:";
+
+                volver.textContent =
+                    "← Volver";
+
+                botonGenerar.textContent =
+                    "🎲 Generar";
+
+                numero1.placeholder =
+                    "Número 1";
+
+                numero2.placeholder =
+                    "Número 2";
+
+                botonIdioma.textContent =
+                    "🇪🇸 ES ▾";
+
+                tituloEstadisticas.textContent =
+                    "🏆 Estadísticas";
+
+                thPuesto.textContent =
+                    "Puesto";
+
+                thNombre.textContent =
+                    "Nombre";
+
+                thGenerados.textContent =
+                    "Números generados";
+
+                document.title =
+                    "Número aleatorio - MI WEB";
+            }
+
+
+            mostrarRanking();
+
+            actualizarTextoTema();
+        }
+
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const menu =
+                    document.getElementById(
+                        "menuIdiomas"
+                    );
+
+                const boton =
+                    document.getElementById(
+                        "botonIdioma"
+                    );
+
+
+                if (
+                    !menu.contains(event.target) &&
+                    !boton.contains(event.target)
+                ) {
+
+                    menu.style.display =
+                        "none";
+                }
+
+            }
+        );
+
+
+        /* =========================
+           TEMA
+        ========================= */
+
+        function aplicarTema() {
+
+            const tema =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            if (tema === "claro") {
+
+                document.body.classList.add(
+                    "claro"
+                );
+
+            } else {
+
+                document.body.classList.remove(
+                    "claro"
+                );
+            }
+
+
+            actualizarTextoTema();
+        }
+
+
+        function cambiarTema() {
+
+            const temaActual =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            const nuevoTema =
+                temaActual === "oscuro"
+                ? "claro"
+                : "oscuro";
+
+
+            localStorage.setItem(
+                "tema",
+                nuevoTema
+            );
+
+
+            aplicarTema();
+        }
+
+
+        function actualizarTextoTema() {
+
+            const tema =
+                localStorage.getItem(
+                    "tema"
+                ) || "oscuro";
+
+
+            const idioma =
+                localStorage.getItem(
+                    "idioma"
+                ) || "es";
+
+
+            const boton =
+                document.getElementById(
+                    "botonTema"
+                );
+
+
+            if (idioma === "en") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Light"
+                    : "🌙 Dark";
+
+            } else if (idioma === "hy") {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Բաց"
+                    : "🌙 Մութ";
+
+            } else {
+
+                boton.textContent =
+                    tema === "oscuro"
+                    ? "☀️ Claro"
+                    : "🌙 Oscuro";
+            }
+        }
+
+
+        /* =========================
+           INICIO
+        ========================= */
+
+        aplicarIdioma();
+
+        aplicarTema();
+
+        mostrarRanking();
+
+    </script>
 
 </body>
 </html>
