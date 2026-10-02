@@ -12,6 +12,12 @@
       font-family: Arial, sans-serif;
       background: #111;
       color: white;
+      transition: 0.3s;
+    }
+
+    body.dia {
+      background: #f5f5f5;
+      color: #111;
     }
 
     header {
@@ -26,8 +32,38 @@
 
     header p {
       font-size: 22px;
-      color: #bbb;
+      color: #aaa;
     }
+
+    body.dia header p {
+      color: #555;
+    }
+
+    /* BOTÓN DE TEMA */
+
+    .tema {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    body.dia .tema {
+      background: #ddd;
+      color: #111;
+    }
+
+    .tema:hover {
+      transform: scale(1.05);
+    }
+
+    /* JUEGOS */
 
     .juegos {
       max-width: 1000px;
@@ -48,9 +84,14 @@
       border: 1px solid #333;
     }
 
+    body.dia .juego {
+      background: white;
+      color: #111;
+      border: 1px solid #ddd;
+    }
+
     .juego:hover {
       transform: translateY(-6px);
-      background: #252525;
     }
 
     .icono {
@@ -64,10 +105,18 @@
     .juego p {
       color: #aaa;
     }
+
+    body.dia .juego p {
+      color: #666;
+    }
   </style>
 </head>
 
 <body>
+
+  <button class="tema" onclick="cambiarTema()" id="botonTema">
+    ☀️ Día
+  </button>
 
   <header>
     <h1>🎮 MI WEB</h1>
@@ -83,6 +132,20 @@
     </a>
 
   </main>
+
+  <script>
+    function cambiarTema() {
+      document.body.classList.toggle("dia");
+
+      const boton = document.getElementById("botonTema");
+
+      if (document.body.classList.contains("dia")) {
+        boton.textContent = "🌙 Noche";
+      } else {
+        boton.textContent = "☀️ Día";
+      }
+    }
+  </script>
 
 </body>
 </html>
