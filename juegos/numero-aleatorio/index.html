@@ -34,6 +34,7 @@ body.claro {
     padding: 0 20px;
     border-bottom: 1px solid #333;
     background: #181818;
+    transition: 0.3s;
 }
 
 body.claro .barra {
@@ -65,6 +66,11 @@ button {
     background: #292929;
     color: white;
     font-size: 14px;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.03);
 }
 
 body.claro button {
@@ -86,6 +92,7 @@ body.claro button {
     padding: 6px;
     width: 150px;
     z-index: 10;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 body.claro .menu-idioma {
@@ -131,6 +138,7 @@ body.claro .descripcion {
     display: flex;
     gap: 10px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 input {
@@ -383,13 +391,32 @@ function generarNumero() {
     let numero2 =
         Number(document.getElementById("numero2").value);
 
+    const resultado =
+        document.getElementById("resultado");
+
     if (
         document.getElementById("numero1").value === "" ||
         document.getElementById("numero2").value === ""
     ) {
 
-        document.getElementById("resultado").textContent =
-            "⚠️";
+        const idioma =
+            localStorage.getItem("idioma") || "es";
+
+        if (idioma === "en") {
+
+            resultado.textContent =
+                "⚠️ Enter two numbers.";
+
+        } else if (idioma === "hy") {
+
+            resultado.textContent =
+                "⚠️ Գրիր երկու թիվ։";
+
+        } else {
+
+            resultado.textContent =
+                "⚠️ Escribe dos números.";
+        }
 
         return;
     }
@@ -400,14 +427,13 @@ function generarNumero() {
             [numero2, numero1];
     }
 
-    const resultado =
+    const numero =
         Math.floor(
             Math.random() *
             (numero2 - numero1 + 1)
         ) + numero1;
 
-    document.getElementById("resultado").textContent =
-        resultado;
+    resultado.textContent = numero;
 }
 
 
