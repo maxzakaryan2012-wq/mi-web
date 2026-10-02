@@ -20,12 +20,12 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    body.dia {
+    body.claro {
       background: #f5f5f5;
       color: #111;
     }
 
-    /* BOTÓN VOLVER */
+    /* VOLVER */
 
     .volver {
       position: absolute;
@@ -42,12 +42,12 @@
       transition: 0.2s;
     }
 
-    body.dia .volver {
+    body.claro .volver {
       background: #ddd;
       color: #111;
     }
 
-    /* BOTÓN TEMA */
+    /* TEMA */
 
     .tema {
       position: absolute;
@@ -63,7 +63,7 @@
       transition: 0.2s;
     }
 
-    body.dia .tema {
+    body.claro .tema {
       background: #ddd;
       color: #111;
     }
@@ -93,7 +93,7 @@
       color: #aaa;
     }
 
-    body.dia .descripcion {
+    body.claro .descripcion {
       color: #555;
     }
 
@@ -112,7 +112,7 @@
       outline: none;
     }
 
-    body.dia input {
+    body.claro input {
       background: white;
       color: #111;
       border-color: #ccc;
@@ -140,7 +140,7 @@
       margin-top: 15px;
     }
 
-    /* MENSAJE */
+    /* MENSAJES */
 
     #mensaje {
       font-size: 28px;
@@ -155,13 +155,14 @@
       margin-top: 15px;
     }
 
-    body.dia #intentos {
+    body.claro #intentos {
       color: #555;
     }
 
     /* MÓVIL */
 
     @media (max-width: 600px) {
+
       h1 {
         font-size: 38px;
       }
@@ -182,14 +183,18 @@
 <body>
 
   <!-- VOLVER -->
+
   <a class="volver" href="../../">
     ← Volver
   </a>
 
   <!-- TEMA -->
+
   <button class="tema" onclick="cambiarTema()" id="botonTema">
-    ☀️ Día
+    ☀️ Claro
   </button>
+
+  <!-- JUEGO -->
 
   <div class="contenedor">
 
@@ -217,7 +222,11 @@
       Intentos: 0
     </div>
 
-    <button class="reiniciar" id="reiniciar" onclick="reiniciarJuego()">
+    <button
+      class="reiniciar"
+      id="reiniciar"
+      onclick="reiniciarJuego()"
+    >
       🔄 Jugar otra vez
     </button>
 
@@ -225,9 +234,17 @@
 
   <script>
 
-    let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+    /* =========================
+       JUEGO
+       ========================= */
+
+    let numeroSecreto =
+      Math.floor(Math.random() * 100) + 1;
+
     let intentos = 0;
+
     let juegoTerminado = false;
+
 
     function comprobarNumero() {
 
@@ -235,96 +252,183 @@
         return;
       }
 
-      const input = document.getElementById("numero");
-      const mensaje = document.getElementById("mensaje");
-      const numero = Number(input.value);
+      const input =
+        document.getElementById("numero");
+
+      const mensaje =
+        document.getElementById("mensaje");
+
+      const numero =
+        Number(input.value);
+
 
       if (input.value === "") {
-        mensaje.textContent = "⚠️ Escribe un número.";
+
+        mensaje.textContent =
+          "⚠️ Escribe un número.";
+
         return;
       }
+
 
       if (numero < 1 || numero > 100) {
-        mensaje.textContent = "⚠️ El número debe estar entre 1 y 100.";
+
+        mensaje.textContent =
+          "⚠️ El número debe estar entre 1 y 100.";
+
         return;
       }
 
+
       intentos++;
+
 
       document.getElementById("intentos").textContent =
         "Intentos: " + intentos;
 
+
       if (numero < numeroSecreto) {
 
-        mensaje.textContent = "🔼 Es más alto.";
+        mensaje.textContent =
+          "🔼 Es más alto.";
 
-      } else if (numero > numeroSecreto) {
+      }
 
-        mensaje.textContent = "🔽 Es más bajo.";
-
-      } else {
+      else if (numero > numeroSecreto) {
 
         mensaje.textContent =
-          "🎉 ¡Acertaste! Era el " + numeroSecreto + ".";
+          "🔽 Es más bajo.";
+
+      }
+
+      else {
+
+        mensaje.textContent =
+          "🎉 ¡Acertaste! Era el " +
+          numeroSecreto + ".";
 
         juegoTerminado = true;
 
         input.disabled = true;
 
-        document.querySelector(".adivinar").style.display = "none";
-        document.getElementById("reiniciar").style.display = "block";
+        document.querySelector(".adivinar").style.display =
+          "none";
+
+        document.getElementById("reiniciar").style.display =
+          "block";
       }
 
+
       input.value = "";
+
       input.focus();
     }
 
+
     function reiniciarJuego() {
 
-      numeroSecreto = Math.floor(Math.random() * 100) + 1;
+      numeroSecreto =
+        Math.floor(Math.random() * 100) + 1;
 
       intentos = 0;
 
       juegoTerminado = false;
 
-      document.getElementById("numero").disabled = false;
-      document.getElementById("numero").value = "";
 
-      document.getElementById("mensaje").textContent = "";
+      const input =
+        document.getElementById("numero");
+
+      input.disabled = false;
+
+      input.value = "";
+
+
+      document.getElementById("mensaje").textContent =
+        "";
 
       document.getElementById("intentos").textContent =
         "Intentos: 0";
 
-      document.querySelector(".adivinar").style.display = "block";
-      document.getElementById("reiniciar").style.display = "none";
 
-      document.getElementById("numero").focus();
+      document.querySelector(".adivinar").style.display =
+        "block";
+
+      document.getElementById("reiniciar").style.display =
+        "none";
+
+
+      input.focus();
     }
+
+
+    /* =========================
+       TEMA
+       ========================= */
+
+    function aplicarTema() {
+
+      const tema =
+        localStorage.getItem("tema") || "oscuro";
+
+
+      if (tema === "claro") {
+
+        document.body.classList.add("claro");
+
+        document.getElementById("botonTema").textContent =
+          "🌙 Oscuro";
+
+      }
+
+      else {
+
+        document.body.classList.remove("claro");
+
+        document.getElementById("botonTema").textContent =
+          "☀️ Claro";
+      }
+    }
+
 
     function cambiarTema() {
 
-      document.body.classList.toggle("dia");
+      const temaActual =
+        localStorage.getItem("tema") || "oscuro";
 
-      const boton = document.getElementById("botonTema");
 
-      if (document.body.classList.contains("dia")) {
+      if (temaActual === "oscuro") {
 
-        boton.textContent = "🌙 Noche";
-
-      } else {
-
-        boton.textContent = "☀️ Día";
+        localStorage.setItem("tema", "claro");
 
       }
+
+      else {
+
+        localStorage.setItem("tema", "oscuro");
+      }
+
+
+      aplicarTema();
     }
 
-    document.getElementById("numero").addEventListener("keydown", function(event) {
 
-      if (event.key === "Enter") {
-        comprobarNumero();
-      }
+    /* APLICAR TEMA AL ABRIR */
 
-    });
+    aplicarTema();
+
+
+    /* ENTER PARA ADIVINAR */
+
+    document
+      .getElementById("numero")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+          comprobarNumero();
+        }
+
+      });
 
   </script>
 
