@@ -19,7 +19,9 @@
             transition: 0.3s;
         }
 
-        /* BARRA SUPERIOR */
+        /* =========================
+           BARRA SUPERIOR
+        ========================= */
 
         .barra {
             height: 65px;
@@ -73,7 +75,9 @@
             background: #383838;
         }
 
-        /* MENÚ IDIOMA */
+        /* =========================
+           IDIOMA
+        ========================= */
 
         .idioma {
             position: relative;
@@ -109,7 +113,9 @@
             background: #333;
         }
 
-        /* CONTENIDO */
+        /* =========================
+           CONTENIDO
+        ========================= */
 
         main {
             max-width: 1000px;
@@ -132,33 +138,57 @@
             font-size: 18px;
         }
 
-        /* REGISTRO */
+        /* =========================
+           USUARIO
+        ========================= */
 
         .registro-usuario {
             max-width: 700px;
             margin: 0 auto 35px;
-            padding: 25px;
+            padding: 20px 25px;
             text-align: center;
             background: #1b1b1b;
             border: 1px solid #333;
             border-radius: 15px;
-            transition: 0.3s;
         }
 
-        .registro-usuario h2 {
-            margin-top: 0;
-            margin-bottom: 18px;
-        }
-
-        .formulario-usuario {
+        .usuario-principal {
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
-            gap: 8px;
         }
 
-        .registro-usuario input {
+        #nombreGuardado {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .boton-nombre {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .boton-nombre:hover {
+            background: #444;
+        }
+
+        .formulario-usuario {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .formulario-usuario input {
             width: 250px;
             padding: 12px;
             border: 1px solid #444;
@@ -169,31 +199,23 @@
             outline: none;
         }
 
-        .registro-usuario input:focus {
-            border-color: #777;
-        }
-
-        .registro-usuario button {
+        .formulario-usuario button {
             padding: 12px 16px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
             background: #333;
             color: white;
+            font-size: 15px;
         }
 
-        .registro-usuario button:hover {
+        .formulario-usuario button:hover {
             background: #444;
         }
 
-        #nombreGuardado {
-            font-size: 22px;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-
-        /* JUEGOS */
+        /* =========================
+           JUEGOS
+        ========================= */
 
         #juegos {
             scroll-margin-top: 80px;
@@ -248,7 +270,9 @@
             background: #444;
         }
 
-        /* MODO CLARO */
+        /* =========================
+           MODO CLARO
+        ========================= */
 
         body.claro {
             background: #f5f5f5;
@@ -303,18 +327,27 @@
             border-color: #ddd;
         }
 
-        body.claro .registro-usuario input {
+        body.claro .boton-nombre {
+            background: #eee;
+            color: #111;
+        }
+
+        body.claro .boton-nombre:hover {
+            background: #ddd;
+        }
+
+        body.claro .formulario-usuario input {
             background: #f5f5f5;
             color: #111;
             border-color: #ccc;
         }
 
-        body.claro .registro-usuario button {
+        body.claro .formulario-usuario button {
             background: #eee;
             color: #111;
         }
 
-        body.claro .registro-usuario button:hover {
+        body.claro .formulario-usuario button:hover {
             background: #ddd;
         }
 
@@ -336,9 +369,12 @@
             background: #ddd;
         }
 
-        /* MÓVIL */
+        /* =========================
+           MÓVIL
+        ========================= */
 
         @media (max-width: 650px) {
+
             .barra {
                 padding: 0 12px;
             }
@@ -365,7 +401,9 @@
 
 <body>
 
-    <!-- BARRA SUPERIOR -->
+    <!-- =========================
+         BARRA SUPERIOR
+    ========================= -->
 
     <header class="barra">
 
@@ -374,6 +412,7 @@
         </div>
 
         <nav class="navegacion">
+
             <a href="index.html" id="inicio">
                 🏠 Inicio
             </a>
@@ -381,9 +420,12 @@
             <a href="#juegos" id="juegosLink">
                 🎮 Juegos
             </a>
+
         </nav>
 
         <div class="controles">
+
+            <!-- IDIOMA -->
 
             <div class="idioma">
 
@@ -399,6 +441,7 @@
                     class="menu-idioma"
                     id="menuIdioma"
                 >
+
                     <button onclick="cambiarIdioma('es')">
                         🇪🇸 Español
                     </button>
@@ -410,9 +453,12 @@
                     <button onclick="cambiarIdioma('hy')">
                         🇦🇲 Հայերեն
                     </button>
+
                 </div>
 
             </div>
+
+            <!-- TEMA -->
 
             <button
                 class="boton-control"
@@ -427,7 +473,9 @@
     </header>
 
 
-    <!-- CONTENIDO -->
+    <!-- =========================
+         CONTENIDO
+    ========================= -->
 
     <main>
 
@@ -444,16 +492,28 @@
         </section>
 
 
-        <!-- REGISTRO DE USUARIO -->
+        <!-- =========================
+             USUARIO
+        ========================= -->
 
-        <section
-            class="registro-usuario"
-            id="registroUsuario"
-        >
+        <section class="registro-usuario">
 
-            <h2 id="tituloUsuario">
-                👤 ¿Cómo te llamas?
-            </h2>
+            <div class="usuario-principal">
+
+                <p id="nombreGuardado">
+                    👤 user_0001
+                </p>
+
+                <button
+                    class="boton-nombre"
+                    id="botonCambiarNombre"
+                    onclick="mostrarFormularioNombre()"
+                >
+                    ✏️ Cambiar nombre
+                </button>
+
+            </div>
+
 
             <div
                 class="formulario-usuario"
@@ -476,23 +536,20 @@
                 </button>
 
                 <button
-                    onclick="usarNombreAutomatico()"
-                    id="botonNombreAutomatico"
+                    onclick="cancelarCambioNombre()"
+                    id="botonCancelarNombre"
                 >
-                    Continuar como usuario
+                    Cancelar
                 </button>
 
             </div>
 
-            <p
-                id="nombreGuardado"
-                style="display:none;"
-            ></p>
-
         </section>
 
 
-        <!-- JUEGOS -->
+        <!-- =========================
+             JUEGOS
+        ========================= -->
 
         <section id="juegos">
 
@@ -502,6 +559,7 @@
             >
                 🎮 Juegos
             </h2>
+
 
             <div class="juegos">
 
@@ -612,8 +670,8 @@
                 document.getElementById("botonIdioma").textContent =
                     "🇬🇧 EN ▾";
 
-                document.getElementById("tituloUsuario").textContent =
-                    "👤 What's your name?";
+                document.getElementById("botonCambiarNombre").textContent =
+                    "✏️ Change name";
 
                 document.getElementById("nombreUsuario").placeholder =
                     "Enter your name";
@@ -621,8 +679,8 @@
                 document.getElementById("botonGuardarNombre").textContent =
                     "Save";
 
-                document.getElementById("botonNombreAutomatico").textContent =
-                    "Continue as user";
+                document.getElementById("botonCancelarNombre").textContent =
+                    "Cancel";
 
             }
 
@@ -671,8 +729,8 @@
                 document.getElementById("botonIdioma").textContent =
                     "🇦🇲 HY ▾";
 
-                document.getElementById("tituloUsuario").textContent =
-                    "👤 Ինչպե՞ս է քո անունը։";
+                document.getElementById("botonCambiarNombre").textContent =
+                    "✏️ Փոխել անունը";
 
                 document.getElementById("nombreUsuario").placeholder =
                     "Գրիր քո անունը";
@@ -680,8 +738,8 @@
                 document.getElementById("botonGuardarNombre").textContent =
                     "Պահպանել";
 
-                document.getElementById("botonNombreAutomatico").textContent =
-                    "Շարունակել որպես օգտատեր";
+                document.getElementById("botonCancelarNombre").textContent =
+                    "Չեղարկել";
 
             }
 
@@ -730,8 +788,8 @@
                 document.getElementById("botonIdioma").textContent =
                     "🇪🇸 ES ▾";
 
-                document.getElementById("tituloUsuario").textContent =
-                    "👤 ¿Cómo te llamas?";
+                document.getElementById("botonCambiarNombre").textContent =
+                    "✏️ Cambiar nombre";
 
                 document.getElementById("nombreUsuario").placeholder =
                     "Escribe tu nombre";
@@ -739,8 +797,8 @@
                 document.getElementById("botonGuardarNombre").textContent =
                     "Guardar";
 
-                document.getElementById("botonNombreAutomatico").textContent =
-                    "Continuar como usuario";
+                document.getElementById("botonCancelarNombre").textContent =
+                    "Cancelar";
             }
 
 
@@ -797,9 +855,13 @@
                 localStorage.getItem("tema") || "oscuro";
 
             if (tema === "claro") {
+
                 document.body.classList.add("claro");
+
             } else {
+
                 document.body.classList.remove("claro");
+
             }
 
             actualizarTextoTema();
@@ -870,17 +932,18 @@
         function obtenerNumeroUsuario() {
 
             let numero =
-                parseInt(
-                    localStorage.getItem("numeroUsuario")
-                );
+                localStorage.getItem("numeroUsuario");
 
 
             if (!numero) {
 
                 numero =
                     Math.floor(
-                        Math.random() * 9999
-                    ) + 1;
+                        Math.random() * 10000
+                    );
+
+                numero =
+                    String(numero).padStart(4, "0");
 
                 localStorage.setItem(
                     "numeroUsuario",
@@ -889,28 +952,73 @@
             }
 
 
-            return String(numero).padStart(4, "0");
+            return numero;
         }
 
 
-        function usarNombreAutomatico() {
+        function obtenerNombreUsuario() {
+
+            let nombre =
+                localStorage.getItem("nombreUsuario");
+
+
+            if (!nombre) {
+
+                nombre =
+                    "user_" + obtenerNumeroUsuario();
+
+                localStorage.setItem(
+                    "nombreUsuario",
+                    nombre
+                );
+            }
+
+
+            return nombre;
+        }
+
+
+        function mostrarNombreUsuario() {
 
             const nombre =
-                "user_" + obtenerNumeroUsuario();
+                obtenerNombreUsuario();
 
-            localStorage.setItem(
-                "nombreUsuario",
-                nombre
-            );
+            document.getElementById(
+                "nombreGuardado"
+            ).textContent =
+                "👤 " + nombre;
+        }
 
-            mostrarNombreUsuario();
+
+        function mostrarFormularioNombre() {
+
+            const formulario =
+                document.getElementById(
+                    "formularioUsuario"
+                );
+
+            const input =
+                document.getElementById(
+                    "nombreUsuario"
+                );
+
+
+            formulario.style.display = "flex";
+
+            input.value =
+                obtenerNombreUsuario();
+
+            input.focus();
+            input.select();
         }
 
 
         function guardarNombre() {
 
             const input =
-                document.getElementById("nombreUsuario");
+                document.getElementById(
+                    "nombreUsuario"
+                );
 
             const nombre =
                 input.value.trim();
@@ -918,7 +1026,7 @@
 
             if (nombre === "") {
 
-                usarNombreAutomatico();
+                input.focus();
 
                 return;
             }
@@ -929,39 +1037,20 @@
                 nombre
             );
 
+
             mostrarNombreUsuario();
+
+            document.getElementById(
+                "formularioUsuario"
+            ).style.display = "none";
         }
 
 
-        function mostrarNombreUsuario() {
+        function cancelarCambioNombre() {
 
-            const nombre =
-                localStorage.getItem("nombreUsuario");
-
-
-            if (!nombre) {
-                return;
-            }
-
-
-            const formulario =
-                document.getElementById("formularioUsuario");
-
-            const titulo =
-                document.getElementById("tituloUsuario");
-
-            const nombreGuardado =
-                document.getElementById("nombreGuardado");
-
-
-            formulario.style.display = "none";
-
-            titulo.style.display = "none";
-
-            nombreGuardado.style.display = "block";
-
-            nombreGuardado.textContent =
-                "👤 " + nombre;
+            document.getElementById(
+                "formularioUsuario"
+            ).style.display = "none";
         }
 
 
