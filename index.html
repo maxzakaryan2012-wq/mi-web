@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>MI WEB</title>
 
     <style>
@@ -18,56 +19,38 @@
             transition: 0.3s;
         }
 
-        body.claro {
-            background: #f2f2f2;
-            color: #111;
-        }
+        /* BARRA SUPERIOR */
 
         .barra {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: 70px;
+            height: 65px;
+            background: #181818;
             display: flex;
             align-items: center;
             padding: 0 25px;
-            background: #181818;
             border-bottom: 1px solid #333;
         }
 
-        body.claro .barra {
-            background: white;
-            border-bottom: 1px solid #ddd;
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 30px;
         }
 
         .navegacion {
             display: flex;
-            align-items: center;
-            gap: 25px;
+            gap: 10px;
         }
 
-        .logo {
-            font-size: 21px;
-            font-weight: bold;
-        }
-
-        .nav-link {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .nav-link:hover {
+        .navegacion a {
             color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
         }
 
-        body.claro .nav-link {
-            color: #555;
-        }
-
-        body.claro .nav-link:hover {
-            color: #111;
+        .navegacion a:hover {
+            background: #292929;
         }
 
         .controles {
@@ -76,24 +59,21 @@
             gap: 10px;
         }
 
-        button {
-            border: none;
-            border-radius: 10px;
-            padding: 10px 14px;
-            cursor: pointer;
+        .boton-control {
             background: #292929;
             color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 14px;
         }
 
-        button:hover {
-            transform: scale(1.03);
+        .boton-control:hover {
+            background: #383838;
         }
 
-        body.claro button {
-            background: #e5e5e5;
-            color: #111;
-        }
+        /* MENÚ IDIOMA */
 
         .idioma {
             position: relative;
@@ -103,82 +83,145 @@
             display: none;
             position: absolute;
             right: 0;
-            top: 48px;
+            top: 45px;
             background: #222;
+            border: 1px solid #444;
             border-radius: 10px;
             padding: 6px;
+            z-index: 100;
             min-width: 150px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        body.claro .menu-idioma {
-            background: white;
         }
 
         .menu-idioma button {
+            display: block;
             width: 100%;
+            background: none;
+            border: none;
+            color: white;
+            padding: 10px;
             text-align: left;
-            background: transparent;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .menu-idioma button:hover {
             background: #333;
         }
 
-        body.claro .menu-idioma button:hover {
-            background: #eee;
+        /* CONTENIDO */
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 50px 20px;
         }
 
-        header {
+        .cabecera {
             text-align: center;
-            padding: 70px 20px 40px;
+            margin-bottom: 35px;
         }
 
-        header h1 {
-            font-size: 50px;
+        .cabecera h1 {
+            font-size: 45px;
             margin-bottom: 10px;
         }
 
-        header p {
+        .cabecera p {
             color: #aaa;
             font-size: 18px;
         }
 
-        body.claro header p {
-            color: #555;
+        /* REGISTRO */
+
+        .registro-usuario {
+            max-width: 700px;
+            margin: 0 auto 35px;
+            padding: 25px;
+            text-align: center;
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 15px;
+            transition: 0.3s;
         }
+
+        .registro-usuario h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+
+        .formulario-usuario {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .registro-usuario input {
+            width: 250px;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #111;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .registro-usuario input:focus {
+            border-color: #777;
+        }
+
+        .registro-usuario button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            background: #333;
+            color: white;
+        }
+
+        .registro-usuario button:hover {
+            background: #444;
+        }
+
+        #nombreGuardado {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        /* JUEGOS */
 
         #juegos {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
+            scroll-margin-top: 80px;
         }
 
-        .tarjetas {
+        .titulo-juegos {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .juegos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
         .tarjeta {
-            background: #1c1c1c;
-            border-radius: 18px;
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 15px;
             padding: 25px;
-            text-decoration: none;
-            color: white;
             transition: 0.2s;
-            border: 1px solid #2d2d2d;
         }
 
         .tarjeta:hover {
-            transform: translateY(-5px);
-        }
-
-        body.claro .tarjeta {
-            background: white;
-            color: #111;
-            border: 1px solid #ddd;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+            border-color: #555;
         }
 
         .tarjeta h2 {
@@ -187,36 +230,175 @@
 
         .tarjeta p {
             color: #aaa;
+            line-height: 1.5;
+        }
+
+        .tarjeta a {
+            display: inline-block;
+            margin-top: 10px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .tarjeta a:hover {
+            background: #444;
+        }
+
+        /* MODO CLARO */
+
+        body.claro {
+            background: #f5f5f5;
+            color: #111;
+        }
+
+        body.claro .barra {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        body.claro .logo {
+            color: #111;
+        }
+
+        body.claro .navegacion a {
+            color: #111;
+        }
+
+        body.claro .navegacion a:hover {
+            background: #eee;
+        }
+
+        body.claro .boton-control {
+            background: #eee;
+            color: #111;
+        }
+
+        body.claro .boton-control:hover {
+            background: #ddd;
+        }
+
+        body.claro .menu-idioma {
+            background: white;
+            border-color: #ddd;
+        }
+
+        body.claro .menu-idioma button {
+            color: #111;
+        }
+
+        body.claro .menu-idioma button:hover {
+            background: #eee;
+        }
+
+        body.claro .cabecera p {
+            color: #555;
+        }
+
+        body.claro .registro-usuario {
+            background: white;
+            border-color: #ddd;
+        }
+
+        body.claro .registro-usuario input {
+            background: #f5f5f5;
+            color: #111;
+            border-color: #ccc;
+        }
+
+        body.claro .registro-usuario button {
+            background: #eee;
+            color: #111;
+        }
+
+        body.claro .registro-usuario button:hover {
+            background: #ddd;
+        }
+
+        body.claro .tarjeta {
+            background: white;
+            border-color: #ddd;
         }
 
         body.claro .tarjeta p {
             color: #555;
+        }
+
+        body.claro .tarjeta a {
+            background: #eee;
+            color: #111;
+        }
+
+        body.claro .tarjeta a:hover {
+            background: #ddd;
+        }
+
+        /* MÓVIL */
+
+        @media (max-width: 650px) {
+            .barra {
+                padding: 0 12px;
+            }
+
+            .logo {
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            .navegacion a {
+                padding: 8px;
+            }
+
+            .boton-control {
+                padding: 8px;
+            }
+
+            .cabecera h1 {
+                font-size: 35px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <nav class="barra">
+    <!-- BARRA SUPERIOR -->
 
-        <div class="navegacion">
-            <div class="logo" id="logo">🎮 MI WEB</div>
+    <header class="barra">
 
-            <a href="#" class="nav-link" id="inicio">🏠 Inicio</a>
-
-            <a href="#juegos" class="nav-link" id="juegosLink">🎮 Juegos</a>
+        <div class="logo" id="logo">
+            🎮 MI WEB
         </div>
+
+        <nav class="navegacion">
+            <a href="index.html" id="inicio">
+                🏠 Inicio
+            </a>
+
+            <a href="#juegos" id="juegosLink">
+                🎮 Juegos
+            </a>
+        </nav>
 
         <div class="controles">
 
             <div class="idioma">
 
-                <button id="botonIdioma" onclick="abrirIdioma()">
+                <button
+                    class="boton-control"
+                    onclick="abrirIdioma()"
+                    id="botonIdioma"
+                >
                     🇪🇸 ES ▾
                 </button>
 
-                <div class="menu-idioma" id="menuIdioma">
-
+                <div
+                    class="menu-idioma"
+                    id="menuIdioma"
+                >
                     <button onclick="cambiarIdioma('es')">
                         🇪🇸 Español
                     </button>
@@ -228,105 +410,236 @@
                     <button onclick="cambiarIdioma('hy')">
                         🇦🇲 Հայերեն
                     </button>
-
                 </div>
 
             </div>
 
-            <button id="botonTema" onclick="cambiarTema()">
+            <button
+                class="boton-control"
+                id="botonTema"
+                onclick="cambiarTema()"
+            >
                 ☀️ Claro
             </button>
 
         </div>
 
-    </nav>
-
-
-    <header>
-
-        <h1 id="titulo">🎮 MI WEB</h1>
-
-        <p id="descripcion">
-            Pequeños juegos y experimentos.
-        </p>
-
     </header>
 
 
-    <main id="juegos">
+    <!-- CONTENIDO -->
 
-        <div class="tarjetas">
+    <main>
 
-            <a class="tarjeta" href="juegos/numero-aleatorio/">
+        <section class="cabecera">
 
-                <h2 id="juego1Titulo">
-                    🎲 Número aleatorio
-                </h2>
+            <h1 id="titulo">
+                🎮 MI WEB
+            </h1>
 
-                <p id="juego1Descripcion">
-                    Genera un número aleatorio entre dos números.
-                </p>
+            <p id="descripcion">
+                Pequeños juegos y experimentos.
+            </p>
 
-            </a>
+        </section>
 
 
-            <a class="tarjeta" href="juegos/adivina-el-numero/">
+        <!-- REGISTRO DE USUARIO -->
 
-                <h2 id="juego2Titulo">
-                    🔢 Adivina el número
-                </h2>
+        <section
+            class="registro-usuario"
+            id="registroUsuario"
+        >
 
-                <p id="juego2Descripcion">
-                    Intenta adivinar el número secreto.
-                </p>
+            <h2 id="tituloUsuario">
+                👤 ¿Cómo te llamas?
+            </h2>
 
-            </a>
+            <div
+                class="formulario-usuario"
+                id="formularioUsuario"
+            >
 
-        </div>
+                <input
+                    type="text"
+                    id="nombreUsuario"
+                    maxlength="20"
+                    placeholder="Escribe tu nombre"
+                    autocomplete="off"
+                >
+
+                <button
+                    onclick="guardarNombre()"
+                    id="botonGuardarNombre"
+                >
+                    Guardar
+                </button>
+
+                <button
+                    onclick="usarNombreAutomatico()"
+                    id="botonNombreAutomatico"
+                >
+                    Continuar como usuario
+                </button>
+
+            </div>
+
+            <p
+                id="nombreGuardado"
+                style="display:none;"
+            ></p>
+
+        </section>
+
+
+        <!-- JUEGOS -->
+
+        <section id="juegos">
+
+            <h2
+                class="titulo-juegos"
+                id="tituloJuegos"
+            >
+                🎮 Juegos
+            </h2>
+
+            <div class="juegos">
+
+                <!-- NÚMERO ALEATORIO -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloAleatorio">
+                        🎲 Número aleatorio
+                    </h2>
+
+                    <p id="descripcionAleatorio">
+                        Genera un número aleatorio entre dos números.
+                    </p>
+
+                    <a
+                        href="juegos/numero-aleatorio/index.html"
+                        id="botonAleatorio"
+                    >
+                        🎲 Jugar
+                    </a>
+
+                </div>
+
+
+                <!-- ADIVINA EL NÚMERO -->
+
+                <div class="tarjeta">
+
+                    <h2 id="tituloAdivina">
+                        🔢 Adivina el número
+                    </h2>
+
+                    <p id="descripcionAdivina">
+                        Intenta adivinar el número secreto entre 1 y 100.
+                    </p>
+
+                    <a
+                        href="juegos/adivina-el-numero/index.html"
+                        id="botonAdivina"
+                    >
+                        🎯 Jugar
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </main>
 
 
     <script>
 
+        /* =========================
+           IDIOMAS
+        ========================= */
+
         function aplicarIdioma() {
 
-            const idioma = localStorage.getItem("idioma") || "es";
+            const idioma =
+                localStorage.getItem("idioma") || "es";
 
-            document.documentElement.lang = idioma;
 
             if (idioma === "en") {
 
-                document.getElementById("logo").textContent = "🎮 MY WEBSITE";
-                document.getElementById("inicio").textContent = "🏠 Home";
-                document.getElementById("juegosLink").textContent = "🎮 Games";
+                document.documentElement.lang = "en";
 
-                document.getElementById("titulo").textContent = "🎮 MY WEBSITE";
+                document.title = "MY WEBSITE";
+
+                document.getElementById("logo").textContent =
+                    "🎮 MY WEBSITE";
+
+                document.getElementById("inicio").textContent =
+                    "🏠 Home";
+
+                document.getElementById("juegosLink").textContent =
+                    "🎮 Games";
+
+                document.getElementById("titulo").textContent =
+                    "🎮 MY WEBSITE";
+
                 document.getElementById("descripcion").textContent =
                     "Small games and experiments.";
 
-                document.getElementById("juego1Titulo").textContent =
+                document.getElementById("tituloJuegos").textContent =
+                    "🎮 Games";
+
+                document.getElementById("tituloAleatorio").textContent =
                     "🎲 Random number";
 
-                document.getElementById("juego1Descripcion").textContent =
+                document.getElementById("descripcionAleatorio").textContent =
                     "Generate a random number between two numbers.";
 
-                document.getElementById("juego2Titulo").textContent =
+                document.getElementById("botonAleatorio").textContent =
+                    "🎲 Play";
+
+                document.getElementById("tituloAdivina").textContent =
                     "🔢 Guess the number";
 
-                document.getElementById("juego2Descripcion").textContent =
-                    "Try to guess the secret number.";
+                document.getElementById("descripcionAdivina").textContent =
+                    "Try to guess the secret number between 1 and 100.";
+
+                document.getElementById("botonAdivina").textContent =
+                    "🎯 Play";
 
                 document.getElementById("botonIdioma").textContent =
                     "🇬🇧 EN ▾";
 
-                document.title = "MY WEBSITE";
+                document.getElementById("tituloUsuario").textContent =
+                    "👤 What's your name?";
 
-            } else if (idioma === "hy") {
+                document.getElementById("nombreUsuario").placeholder =
+                    "Enter your name";
 
-                document.getElementById("logo").textContent = "🎮 ԻՄ ԿԱՅՔԸ";
-                document.getElementById("inicio").textContent = "🏠 Գլխավոր";
-                document.getElementById("juegosLink").textContent = "🎮 Խաղեր";
+                document.getElementById("botonGuardarNombre").textContent =
+                    "Save";
+
+                document.getElementById("botonNombreAutomatico").textContent =
+                    "Continue as user";
+
+            }
+
+            else if (idioma === "hy") {
+
+                document.documentElement.lang = "hy";
+
+                document.title = "ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById("logo").textContent =
+                    "🎮 ԻՄ ԿԱՅՔԸ";
+
+                document.getElementById("inicio").textContent =
+                    "🏠 Գլխավոր";
+
+                document.getElementById("juegosLink").textContent =
+                    "🎮 Խաղեր";
 
                 document.getElementById("titulo").textContent =
                     "🎮 ԻՄ ԿԱՅՔԸ";
@@ -334,51 +647,102 @@
                 document.getElementById("descripcion").textContent =
                     "Փոքր խաղեր և փորձեր։";
 
-                document.getElementById("juego1Titulo").textContent =
+                document.getElementById("tituloJuegos").textContent =
+                    "🎮 Խաղեր";
+
+                document.getElementById("tituloAleatorio").textContent =
                     "🎲 Պատահական թիվ";
 
-                document.getElementById("juego1Descripcion").textContent =
+                document.getElementById("descripcionAleatorio").textContent =
                     "Ստեղծիր պատահական թիվ երկու թվերի միջև։";
 
-                document.getElementById("juego2Titulo").textContent =
+                document.getElementById("botonAleatorio").textContent =
+                    "🎲 Խաղալ";
+
+                document.getElementById("tituloAdivina").textContent =
                     "🔢 Գուշակիր թիվը";
 
-                document.getElementById("juego2Descripcion").textContent =
-                    "Փորձիր գուշակել գաղտնի թիվը։";
+                document.getElementById("descripcionAdivina").textContent =
+                    "Փորձիր գուշակել 1-ից 100-ի միջև գաղտնի թիվը։";
+
+                document.getElementById("botonAdivina").textContent =
+                    "🎯 Խաղալ";
 
                 document.getElementById("botonIdioma").textContent =
                     "🇦🇲 HY ▾";
 
-                document.title = "ԻՄ ԿԱՅՔԸ";
+                document.getElementById("tituloUsuario").textContent =
+                    "👤 Ինչպե՞ս է քո անունը։";
 
-            } else {
+                document.getElementById("nombreUsuario").placeholder =
+                    "Գրիր քո անունը";
 
-                document.getElementById("logo").textContent = "🎮 MI WEB";
-                document.getElementById("inicio").textContent = "🏠 Inicio";
-                document.getElementById("juegosLink").textContent = "🎮 Juegos";
+                document.getElementById("botonGuardarNombre").textContent =
+                    "Պահպանել";
 
-                document.getElementById("titulo").textContent = "🎮 MI WEB";
+                document.getElementById("botonNombreAutomatico").textContent =
+                    "Շարունակել որպես օգտատեր";
+
+            }
+
+            else {
+
+                document.documentElement.lang = "es";
+
+                document.title = "MI WEB";
+
+                document.getElementById("logo").textContent =
+                    "🎮 MI WEB";
+
+                document.getElementById("inicio").textContent =
+                    "🏠 Inicio";
+
+                document.getElementById("juegosLink").textContent =
+                    "🎮 Juegos";
+
+                document.getElementById("titulo").textContent =
+                    "🎮 MI WEB";
 
                 document.getElementById("descripcion").textContent =
                     "Pequeños juegos y experimentos.";
 
-                document.getElementById("juego1Titulo").textContent =
+                document.getElementById("tituloJuegos").textContent =
+                    "🎮 Juegos";
+
+                document.getElementById("tituloAleatorio").textContent =
                     "🎲 Número aleatorio";
 
-                document.getElementById("juego1Descripcion").textContent =
+                document.getElementById("descripcionAleatorio").textContent =
                     "Genera un número aleatorio entre dos números.";
 
-                document.getElementById("juego2Titulo").textContent =
+                document.getElementById("botonAleatorio").textContent =
+                    "🎲 Jugar";
+
+                document.getElementById("tituloAdivina").textContent =
                     "🔢 Adivina el número";
 
-                document.getElementById("juego2Descripcion").textContent =
-                    "Intenta adivinar el número secreto.";
+                document.getElementById("descripcionAdivina").textContent =
+                    "Intenta adivinar el número secreto entre 1 y 100.";
+
+                document.getElementById("botonAdivina").textContent =
+                    "🎯 Jugar";
 
                 document.getElementById("botonIdioma").textContent =
                     "🇪🇸 ES ▾";
 
-                document.title = "MI WEB";
+                document.getElementById("tituloUsuario").textContent =
+                    "👤 ¿Cómo te llamas?";
+
+                document.getElementById("nombreUsuario").placeholder =
+                    "Escribe tu nombre";
+
+                document.getElementById("botonGuardarNombre").textContent =
+                    "Guardar";
+
+                document.getElementById("botonNombreAutomatico").textContent =
+                    "Continuar como usuario";
             }
+
 
             actualizarTextoTema();
         }
@@ -388,46 +752,54 @@
 
             localStorage.setItem("idioma", idioma);
 
-            document.getElementById("menuIdioma").style.display = "none";
-
             aplicarIdioma();
+
+            document.getElementById("menuIdioma").style.display =
+                "none";
         }
 
 
         function abrirIdioma() {
 
-            const menu = document.getElementById("menuIdioma");
+            const menu =
+                document.getElementById("menuIdioma");
 
-            menu.style.display =
-                menu.style.display === "block" ? "none" : "block";
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
         }
 
 
         document.addEventListener("click", function(event) {
 
-            const idioma = document.querySelector(".idioma");
+            const idioma =
+                document.querySelector(".idioma");
+
+            const menu =
+                document.getElementById("menuIdioma");
 
             if (!idioma.contains(event.target)) {
-
-                document.getElementById("menuIdioma").style.display = "none";
-
+                menu.style.display = "none";
             }
 
         });
 
 
+        /* =========================
+           TEMA
+        ========================= */
+
         function aplicarTema() {
 
-            const tema = localStorage.getItem("tema") || "oscuro";
+            const tema =
+                localStorage.getItem("tema") || "oscuro";
 
             if (tema === "claro") {
-
                 document.body.classList.add("claro");
-
             } else {
-
                 document.body.classList.remove("claro");
-
             }
 
             actualizarTextoTema();
@@ -440,7 +812,9 @@
                 localStorage.getItem("tema") || "oscuro";
 
             const nuevoTema =
-                temaActual === "oscuro" ? "claro" : "oscuro";
+                temaActual === "oscuro"
+                ? "claro"
+                : "oscuro";
 
             localStorage.setItem("tema", nuevoTema);
 
@@ -456,29 +830,150 @@
             const idioma =
                 localStorage.getItem("idioma") || "es";
 
-            const boton = document.getElementById("botonTema");
+            const boton =
+                document.getElementById("botonTema");
+
 
             if (idioma === "en") {
 
                 boton.textContent =
-                    tema === "oscuro" ? "☀️ Light" : "🌙 Dark";
+                    tema === "oscuro"
+                    ? "☀️ Light"
+                    : "🌙 Dark";
 
-            } else if (idioma === "hy") {
+            }
+
+            else if (idioma === "hy") {
 
                 boton.textContent =
-                    tema === "oscuro" ? "☀️ Բաց" : "🌙 Մութ";
+                    tema === "oscuro"
+                    ? "☀️ Բաց"
+                    : "🌙 Մութ";
 
-            } else {
+            }
+
+            else {
 
                 boton.textContent =
-                    tema === "oscuro" ? "☀️ Claro" : "🌙 Oscuro";
+                    tema === "oscuro"
+                    ? "☀️ Claro"
+                    : "🌙 Oscuro";
 
             }
         }
 
 
+        /* =========================
+           USUARIO
+        ========================= */
+
+        function obtenerNumeroUsuario() {
+
+            let numero =
+                parseInt(
+                    localStorage.getItem("numeroUsuario")
+                );
+
+
+            if (!numero) {
+
+                numero =
+                    Math.floor(
+                        Math.random() * 9999
+                    ) + 1;
+
+                localStorage.setItem(
+                    "numeroUsuario",
+                    numero
+                );
+            }
+
+
+            return String(numero).padStart(4, "0");
+        }
+
+
+        function usarNombreAutomatico() {
+
+            const nombre =
+                "user_" + obtenerNumeroUsuario();
+
+            localStorage.setItem(
+                "nombreUsuario",
+                nombre
+            );
+
+            mostrarNombreUsuario();
+        }
+
+
+        function guardarNombre() {
+
+            const input =
+                document.getElementById("nombreUsuario");
+
+            const nombre =
+                input.value.trim();
+
+
+            if (nombre === "") {
+
+                usarNombreAutomatico();
+
+                return;
+            }
+
+
+            localStorage.setItem(
+                "nombreUsuario",
+                nombre
+            );
+
+            mostrarNombreUsuario();
+        }
+
+
+        function mostrarNombreUsuario() {
+
+            const nombre =
+                localStorage.getItem("nombreUsuario");
+
+
+            if (!nombre) {
+                return;
+            }
+
+
+            const formulario =
+                document.getElementById("formularioUsuario");
+
+            const titulo =
+                document.getElementById("tituloUsuario");
+
+            const nombreGuardado =
+                document.getElementById("nombreGuardado");
+
+
+            formulario.style.display = "none";
+
+            titulo.style.display = "none";
+
+            nombreGuardado.style.display = "block";
+
+            nombreGuardado.textContent =
+                "👤 " + nombre;
+        }
+
+
+        /* =========================
+           INICIAR
+        ========================= */
+
         aplicarIdioma();
+
         aplicarTema();
+
+        mostrarNombreUsuario();
 
     </script>
 
