@@ -1,1 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piensa un número</title>
+<style>
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    transition: 0.3s;
+}
+body.claro { background: #f2f2f2; color: #111; }
+
+.barra {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    background: #181818;
+    border-bottom: 1px solid #333;
+}
+body.claro .barra { background: white; border-bottom: 1px solid #ddd; }
+
+.barra a {
+    color: inherit;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+}
+.barra a:hover { background: #292929; }
+body.claro .barra a:hover { background: #eee; }
+.logo { font-size: 22px; font-weight: bold; }
+
+main {
+    max-width: 600px;
+    margin: auto;
+    padding: 45px 20px;
+    text-align: center;
+}
+h1 { font-size: 40px; margin: 0 0 10px; }
+.sub { color: #aaa; margin: 0 0 30px; font-size: 18px; }
+body.claro .sub { color: #555; }
+
+.panel {
+    background: #1d1d1d;
+    border: 1px solid #2d2d2d;
+    border-radius: 18px;
+    padding: 30px 25px;
+}
+body.claro .panel { background: white; border-color: #ddd; }
+
+.rango {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.rango label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #aaa; }
+body.claro .rango label { color: #555; }
+.rango input {
+    width: 130px;
+    padding: 11px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 9px;
+    border: 1px solid #555;
+    background: #111;
+    color: white;
+    outline: none;
+}
+body.claro .rango input { background: white; color: #111; border-color: #bbb; }
+
+.btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: #292929;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn:hover { background: #444; transform: scale(1.03); }
+body.claro .btn { background: #e8e8e8; color: #111; }
+body.claro .btn:hover { background: #d8d8d8; }
+.btn:focus-visible, input:focus-visible { outline: 2px solid #4da3ff; outline-offset: 2px; }
+
+.btn.ok { background: #1f7a3d; color: white; }
+.btn.ok:hover { background: #26974a; }
+
+.error { color: #ff6b6b; margin: 15px 0 0; min-height: 20px; }
+
+.intento { color: #aaa; margin: 0 0 5px; }
+body.claro .intento { color: #555; }
+.pregunta { font-size: 20px; margin: 0; }
+.numero {
+    font-size: 96px;
+    font-weight: bold;
+    margin: 10px 0 25px;
+    word-break: break-all;
+}
+.botones { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.pista { color: #888; font-size: 13px; margin: 20px 0 0; }
+
+.mensaje { font-size: 24px; margin: 0 0 20px; line-height: 1.4; }
+
+@media (max-width: 550px) {
+    h1 { font-size: 32px; }
+    .numero { font-size: 72px; }
+    .botones .btn { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="barra">
+    <a href="../../index.html" id="volver"></a>
+    <div class="logo">🧠</div>
+</header>
+
+<main>
+    <h1 id="titulo"></h1>
+    <p class="sub" id="sub"></p>
+
+    <!-- CONFIGURACIÓN -->
+    <section class="panel" id="inicio">
+        <div class="rango">
+            <label><span data-t="desde"></span><input type="number" id="min" value="1"></label>
+            <label><span data-t="hasta"></span><input type="number" id="max" value="100"></label>
+        </div>
+        <button class="btn" id="empezar" data-t="empezar"></button>
+        <p class="error" id="error"></p>
+    </section>
+
+    <!-- JUEGO -->
+    <section class="panel" id="juego" hidden>
+        <p class="intento"><span data-t="intento"></span> <span id="intentoNum">1</span></p>
+        <p class="pregunta" data-t="pregunta"></p>
+        <div class="numero" id="numero"></div>
+        <div class="botones">
+            <button class="btn" id="menos" data-t="menos"></button>
+            <button class="btn ok" id="ok" data-t="ok"></button>
+            <button class="btn" id="mas" data-t="mas"></button>
+        </div>
+        <p class="pista" data-t="pista"></p>
+    </section>
+
+    <!-- FINAL -->
+    <section class="panel" id="fin" hidden>
+        <p class="mensaje" id="mensajeFin"></p>
+        <button class="btn" id="otra" data-t="otra"></button>
+    </section>
+</main>
+
+<script>
+const T = {
+    es: {
+        titulo: "🧠 Piensa un número",
+        sub: "Piensa un número y yo intentaré adivinarlo.",
+        volver: "← Volver",
+        desde: "Desde", hasta: "Hasta",
+        empezar: "🧠 Empezar",
+        intento: "Intento",
+        pregunta: "¿Es este tu número?",
+        mas: "⬆️ Más", menos: "⬇️ Menos", ok: "🎯 ¡Correcto!",
+        pista: "Más = tu número es mayor · Menos = tu número es menor",
+        win: "¡Lo adiviné! Intentos: ",
+        cheat: "Algo no cuadra: tus respuestas se contradicen. Empieza de nuevo.",
+        otra: "🔄 Jugar otra vez",
+        err: "Escribe un rango válido: el mínimo debe ser menor que el máximo."
+    },
+    en: {
+        titulo: "🧠 Think of a number",
+        sub: "Think of a number and I'll try to guess it.",
+        volver: "← Back",
+        desde: "From", hasta: "To",
+        empezar: "🧠 Start",
+        intento: "Attempt",
+        pregunta: "Is this your number?",
+        mas: "⬆️ Higher", menos: "⬇️ Lower", ok: "🎯 Correct!",
+        pista: "Higher = your number is bigger · Lower = your number is smaller",
+        win: "I got it! Attempts: ",
+        cheat: "Something doesn't add up: your answers contradict each other. Start again.",
+        otra: "🔄 Play again",
+        err: "Enter a valid range: the minimum must be lower than the maximum."
+    },
+    hy: {
+        titulo: "🧠 Մտածիր թիվ",
+        sub: "Մտածիր մի թիվ, ես կփորձեմ գուշակել։",
+        volver: "← Հետ",
+        desde: "Սկսած", hasta: "Մինչև",
+        empezar: "🧠 Սկսել",
+        intento: "Փորձ",
+        pregunta: "Սա՞ է քո թիվը",
+        mas: "⬆️ Ավելի շատ", menos: "⬇️ Ավելի քիչ", ok: "🎯 Ճիշտ է",
+        pista: "Ավելի շատ՝ քո թիվը մեծ է · Ավելի քիչ՝ քո թիվը փոքր է",
+        win: "Գուշակեցի։ Փորձեր՝ ",
+        cheat: "Ինչ-որ բան այն չէ. քո պատասխանները հակասում են։ Սկսիր նորից։",
+        otra: "🔄 Խաղալ նորից",
+        err: "Մուտքագրիր ճիշտ միջակայք. նվազագույնը պետք է փոքր լինի առավելագույնից։"
+    }
+};
+
+const idioma = localStorage.getItem("idioma") || "es";
+const L = T[idioma] || T.es;
+
+if (localStorage.getItem("tema") === "claro") document.body.classList.add("claro");
+
+document.documentElement.lang = idioma;
+document.title = L.titulo.replace("🧠 ", "");
+document.getElementById("titulo").textContent = L.titulo;
+document.getElementById("sub").textContent = L.sub;
+document.getElementById("volver").textContent = L.volver;
+document.querySelectorAll("[data-t]").forEach(el => el.textContent = L[el.dataset.t]);
+
+const $ = id => document.getElementById(id);
+let lo, hi, intento, intentoActual;
+
+function mostrar(panel) {
+    ["inicio", "juego", "fin"].forEach(p => $(p).hidden = (p !== panel));
+}
+
+function empezar() {
+    const min = parseInt($("min").value, 10);
+    const max = parseInt($("max").value, 10);
+    if (isNaN(min) || isNaN(max) || min >= max) {
+        $("error").textContent = L.err;
+        return;
+    }
+    $("error").textContent = "";
+    lo = min;
+    hi = max;
+    intento = 1;
+    preguntar();
+    mostrar("juego");
+}
+
+function preguntar() {
+    intentoActual = Math.floor((lo + hi) / 2);
+    $("numero").textContent = intentoActual;
+    $("intentoNum").textContent = intento;
+}
+
+function responder(direccion) {
+    if (direccion === "mas") lo = intentoActual + 1;
+    else hi = intentoActual - 1;
+
+    if (lo > hi) {
+        $("mensajeFin").textContent = "🤔 " + L.cheat;
+        mostrar("fin");
+        return;
+    }
+    intento++;
+    preguntar();
+}
+
+$("empezar").onclick = empezar;
+$("mas").onclick = () => responder("mas");
+$("menos").onclick = () => responder("menos");
+$("ok").onclick = () => {
+    $("mensajeFin").textContent = "🎉 " + L.win + intento;
+    mostrar("fin");
+};
+$("otra").onclick = () => mostrar("inicio");
+</script>
+
+</body>
+</html>
