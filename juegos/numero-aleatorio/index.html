@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Número aleatorio</title>
+  <title>Número aleatorio - MI WEB</title>
 
   <style>
     body {
@@ -13,7 +13,61 @@
       background: #111;
       color: white;
       text-align: center;
+      transition: 0.3s;
     }
+
+    body.dia {
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    /* BOTÓN TEMA */
+
+    .tema {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    body.dia .tema {
+      background: #ddd;
+      color: #111;
+    }
+
+    /* BOTÓN VOLVER */
+
+    .volver {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    body.dia .volver {
+      background: #ddd;
+      color: #111;
+    }
+
+    .volver:hover,
+    .tema:hover {
+      transform: scale(1.05);
+    }
+
+    /* CONTENIDO */
 
     .contenedor {
       max-width: 600px;
@@ -35,17 +89,13 @@
       border: none;
     }
 
-    button {
+    button.generar {
       margin-top: 20px;
       padding: 15px 30px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-    }
-
-    button:hover {
-      transform: scale(1.05);
     }
 
     #resultado {
@@ -58,6 +108,16 @@
 
 <body>
 
+  <!-- VOLVER -->
+  <a class="volver" href="../../">
+    ← Volver
+  </a>
+
+  <!-- TEMA -->
+  <button class="tema" onclick="cambiarTema()" id="botonTema">
+    ☀️ Día
+  </button>
+
   <div class="contenedor">
 
     <h1>🎲 Número aleatorio</h1>
@@ -69,7 +129,9 @@
 
     <br>
 
-    <button onclick="generarNumero()">🎲 Generar</button>
+    <button class="generar" onclick="generarNumero()">
+      🎲 Generar
+    </button>
 
     <div id="resultado">?</div>
 
@@ -96,6 +158,18 @@
       ) + numero1;
 
       document.getElementById("resultado").textContent = resultado;
+    }
+
+    function cambiarTema() {
+      document.body.classList.toggle("dia");
+
+      const boton = document.getElementById("botonTema");
+
+      if (document.body.classList.contains("dia")) {
+        boton.textContent = "🌙 Noche";
+      } else {
+        boton.textContent = "☀️ Día";
+      }
     }
   </script>
 
