@@ -9,423 +9,253 @@
 
   <title>Adivina el número - MI WEB</title>
 
-
   <style>
 
     * {
       box-sizing: border-box;
     }
 
-
     body {
-
       margin: 0;
-
       font-family: Arial, sans-serif;
-
       background: #111;
-
       color: white;
-
       text-align: center;
-
       transition: background 0.3s, color 0.3s;
-
     }
-
 
     body.claro {
-
       background: #f5f5f5;
-
       color: #111;
-
     }
 
-
-    /* BOTONES */
+    /* VOLVER */
 
     .volver {
-
       position: absolute;
-
       top: 20px;
-
       left: 20px;
-
       padding: 12px 18px;
-
       border: none;
-
       border-radius: 12px;
-
       background: #222;
-
       color: white;
-
       font-size: 16px;
-
       cursor: pointer;
-
       text-decoration: none;
-
       transition: 0.2s;
-
     }
-
 
     body.claro .volver {
-
       background: #ddd;
-
       color: #111;
-
     }
 
-
-    .tema {
-
-      position: absolute;
-
-      top: 20px;
-
-      right: 20px;
-
-      padding: 12px 18px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      background: #222;
-
-      color: white;
-
-      font-size: 16px;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-
-    body.claro .tema {
-
-      background: #ddd;
-
-      color: #111;
-
-    }
-
-
-    .volver:hover,
-    .tema:hover,
-    .adivinar:hover,
-    .reiniciar:hover {
-
+    .volver:hover {
       transform: scale(1.05);
-
     }
-
 
     /* IDIOMA */
 
     .idioma {
-
       position: absolute;
-
       top: 20px;
-
       right: 150px;
-
     }
-
 
     .botonIdioma {
-
       padding: 12px 14px;
-
       border: none;
-
       border-radius: 12px;
-
       background: #222;
-
       color: white;
-
       font-size: 15px;
-
       cursor: pointer;
-
+      transition: 0.2s;
     }
-
 
     body.claro .botonIdioma {
-
       background: #ddd;
-
       color: #111;
-
     }
 
+    .botonIdioma:hover {
+      transform: scale(1.05);
+    }
 
     .menuIdioma {
-
       display: none;
-
       position: absolute;
-
       top: 48px;
-
       right: 0;
-
-      min-width: 160px;
-
+      min-width: 170px;
       background: #1d1d1d;
-
       border: 1px solid #333;
-
       border-radius: 12px;
-
       padding: 6px;
-
       z-index: 1000;
-
     }
-
 
     body.claro .menuIdioma {
-
       background: white;
-
       border-color: #ddd;
-
     }
-
 
     .menuIdioma.mostrar {
-
       display: block;
-
     }
-
 
     .menuIdioma button {
-
       width: 100%;
-
       padding: 10px;
-
       border: none;
-
       border-radius: 8px;
-
       background: transparent;
-
       color: white;
-
       text-align: left;
-
-      cursor: pointer;
-
       font-size: 15px;
-
+      cursor: pointer;
     }
-
 
     body.claro .menuIdioma button {
-
       color: #111;
-
     }
-
 
     .menuIdioma button:hover {
-
       background: #2a2a2a;
-
     }
-
 
     body.claro .menuIdioma button:hover {
-
       background: #eee;
-
     }
 
+    /* TEMA */
+
+    .tema {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    body.claro .tema {
+      background: #ddd;
+      color: #111;
+    }
+
+    .tema:hover {
+      transform: scale(1.05);
+    }
 
     /* CONTENEDOR */
 
     .contenedor {
-
       max-width: 600px;
-
       margin: 100px auto;
-
       padding: 30px 20px;
-
     }
-
 
     h1 {
-
       font-size: 50px;
-
       margin-bottom: 15px;
-
     }
-
 
     .descripcion {
-
       font-size: 20px;
-
       color: #aaa;
-
     }
-
 
     body.claro .descripcion {
-
       color: #555;
-
     }
-
 
     input {
-
       width: 180px;
-
       padding: 15px;
-
       margin-top: 25px;
-
       font-size: 22px;
-
       text-align: center;
-
       border-radius: 10px;
-
       border: 2px solid #333;
-
       background: #222;
-
       color: white;
-
       outline: none;
-
     }
-
 
     body.claro input {
-
       background: white;
-
       color: #111;
-
       border-color: #ccc;
-
     }
-
 
     input:focus {
-
       border-color: #777;
-
     }
-
 
     .adivinar,
     .reiniciar {
-
       display: block;
-
       margin: 20px auto 0;
-
       padding: 15px 30px;
-
       font-size: 20px;
-
       border: none;
-
       border-radius: 10px;
-
       cursor: pointer;
-
+      transition: 0.2s;
     }
 
+    .adivinar:hover,
+    .reiniciar:hover {
+      transform: scale(1.05);
+    }
 
     .reiniciar {
-
       display: none;
-
       margin-top: 15px;
-
     }
-
 
     #mensaje {
-
       font-size: 28px;
-
       font-weight: bold;
-
       margin-top: 35px;
-
       min-height: 40px;
-
     }
-
 
     #intentos {
-
       font-size: 18px;
-
       color: #aaa;
-
       margin-top: 15px;
-
     }
-
 
     body.claro #intentos {
-
       color: #555;
-
     }
-
 
     @media (max-width: 600px) {
 
       h1 {
-
         font-size: 38px;
-
       }
-
 
       .contenedor {
-
         margin-top: 90px;
-
       }
-
 
       .volver,
       .tema {
-
         padding: 10px 13px;
-
         font-size: 14px;
-
       }
 
-
       .idioma {
-
         right: 125px;
-
       }
 
     }
@@ -443,11 +273,9 @@
   <a
     class="volver"
     href="../../"
-    id="botonVolver"
+    id="volver"
   >
-
     ← Volver
-
   </a>
 
 
@@ -455,15 +283,12 @@
 
   <div class="idioma">
 
-
     <button
       class="botonIdioma"
-      onclick="abrirIdioma()"
       id="botonIdioma"
+      onclick="abrirIdioma()"
     >
-
       🇪🇸 ES ▾
-
     </button>
 
 
@@ -472,27 +297,17 @@
       id="menuIdioma"
     >
 
-
       <button onclick="cambiarIdioma('es')">
-
         🇪🇸 Español
-
       </button>
-
 
       <button onclick="cambiarIdioma('en')">
-
         🇬🇧 English
-
       </button>
-
 
       <button onclick="cambiarIdioma('hy')">
-
         🇦🇲 Հայերեն
-
       </button>
-
 
     </div>
 
@@ -503,12 +318,10 @@
 
   <button
     class="tema"
-    onclick="cambiarTema()"
     id="botonTema"
+    onclick="cambiarTema()"
   >
-
     ☀️ Claro
-
   </button>
 
 
@@ -517,32 +330,16 @@
   <div class="contenedor">
 
 
-    <h1>
-
-      🔢
-
-      <span
-        data-es="Adivina el número"
-        data-en="Guess the number"
-        data-hy="Գուշակիր թիվը"
-      >
-
-        Adivina el número
-
-      </span>
-
+    <h1 id="titulo">
+      🔢 Adivina el número
     </h1>
 
 
     <p
       class="descripcion"
-      data-es="Estoy pensando en un número entre 1 y 100."
-      data-en="I'm thinking of a number between 1 and 100."
-      data-hy="Ես մտածում եմ 1-ից 100-ի միջև գտնվող թվի մասին։"
+      id="descripcion"
     >
-
       Estoy pensando en un número entre 1 y 100.
-
     </p>
 
 
@@ -557,12 +354,10 @@
 
     <button
       class="adivinar"
-      onclick="comprobarNumero()"
       id="botonAdivinar"
+      onclick="comprobarNumero()"
     >
-
       🎯 Adivinar
-
     </button>
 
 
@@ -570,9 +365,7 @@
 
 
     <div id="intentos">
-
       Intentos: 0
-
     </div>
 
 
@@ -581,9 +374,7 @@
       id="reiniciar"
       onclick="reiniciarJuego()"
     >
-
       🔄 Jugar otra vez
-
     </button>
 
 
@@ -592,298 +383,16 @@
 
   <script>
 
-
     /* =========================
-       JUEGO
+       VARIABLES DEL JUEGO
        ========================= */
 
     let numeroSecreto =
       Math.floor(Math.random() * 100) + 1;
 
-
     let intentos = 0;
 
-
     let juegoTerminado = false;
-
-
-    function comprobarNumero() {
-
-
-      if (juegoTerminado) {
-
-        return;
-
-      }
-
-
-      const input =
-        document.getElementById("numero");
-
-
-      const mensaje =
-        document.getElementById("mensaje");
-
-
-      const numero =
-        Number(input.value);
-
-
-      const idioma =
-        localStorage.getItem("idioma") || "es";
-
-
-      if (input.value === "") {
-
-
-        if (idioma === "en") {
-
-          mensaje.textContent =
-            "⚠️ Enter a number.";
-
-        }
-
-        else if (idioma === "hy") {
-
-          mensaje.textContent =
-            "⚠️ Գրիր թիվ։";
-
-        }
-
-        else {
-
-          mensaje.textContent =
-            "⚠️ Escribe un número.";
-
-        }
-
-
-        return;
-
-      }
-
-
-      if (numero < 1 || numero > 100) {
-
-
-        if (idioma === "en") {
-
-          mensaje.textContent =
-            "⚠️ The number must be between 1 and 100.";
-
-        }
-
-        else if (idioma === "hy") {
-
-          mensaje.textContent =
-            "⚠️ Թիվը պետք է լինի 1-ից 100-ի միջև։";
-
-        }
-
-        else {
-
-          mensaje.textContent =
-            "⚠️ El número debe estar entre 1 y 100.";
-
-        }
-
-
-        return;
-
-      }
-
-
-      intentos++;
-
-
-      document.getElementById(
-        "intentos"
-      ).textContent =
-        obtenerTextoIntentos(intentos);
-
-
-      if (numero < numeroSecreto) {
-
-
-        if (idioma === "en") {
-
-          mensaje.textContent =
-            "🔼 It's higher.";
-
-        }
-
-        else if (idioma === "hy") {
-
-          mensaje.textContent =
-            "🔼 Ավելի բարձր է։";
-
-        }
-
-        else {
-
-          mensaje.textContent =
-            "🔼 Es más alto.";
-
-        }
-
-      }
-
-
-      else if (numero > numeroSecreto) {
-
-
-        if (idioma === "en") {
-
-          mensaje.textContent =
-            "🔽 It's lower.";
-
-        }
-
-        else if (idioma === "hy") {
-
-          mensaje.textContent =
-            "🔽 Ավելի ցածր է։";
-
-        }
-
-        else {
-
-          mensaje.textContent =
-            "🔽 Es más bajo.";
-
-        }
-
-      }
-
-
-      else {
-
-
-        if (idioma === "en") {
-
-          mensaje.textContent =
-            "🎉 You got it! It was " +
-            numeroSecreto + ".";
-
-        }
-
-        else if (idioma === "hy") {
-
-          mensaje.textContent =
-            "🎉 Ճիշտ է։ Թիվը " +
-            numeroSecreto + " էր։";
-
-        }
-
-        else {
-
-          mensaje.textContent =
-            "🎉 ¡Acertaste! Era el " +
-            numeroSecreto + ".";
-
-        }
-
-
-        juegoTerminado = true;
-
-
-        input.disabled = true;
-
-
-        document.querySelector(
-          ".adivinar"
-        ).style.display = "none";
-
-
-        document.getElementById(
-          "reiniciar"
-        ).style.display = "block";
-
-
-      }
-
-
-      input.value = "";
-
-
-      input.focus();
-
-    }
-
-
-    function obtenerTextoIntentos(numero) {
-
-
-      const idioma =
-        localStorage.getItem("idioma") || "es";
-
-
-      if (idioma === "en") {
-
-        return "Attempts: " + numero;
-
-      }
-
-
-      if (idioma === "hy") {
-
-        return "Փորձեր՝ " + numero;
-
-      }
-
-
-      return "Intentos: " + numero;
-
-    }
-
-
-    function reiniciarJuego() {
-
-
-      numeroSecreto =
-        Math.floor(Math.random() * 100) + 1;
-
-
-      intentos = 0;
-
-
-      juegoTerminado = false;
-
-
-      const input =
-        document.getElementById("numero");
-
-
-      input.disabled = false;
-
-
-      input.value = "";
-
-
-      document.getElementById(
-        "mensaje"
-      ).textContent = "";
-
-
-      document.getElementById(
-        "intentos"
-      ).textContent =
-        obtenerTextoIntentos(0);
-
-
-      document.querySelector(
-        ".adivinar"
-      ).style.display = "block";
-
-
-      document.getElementById(
-        "reiniciar"
-      ).style.display = "none";
-
-
-      input.focus();
-
-    }
 
 
     /* =========================
@@ -892,84 +401,51 @@
 
     function aplicarIdioma() {
 
-
       const idioma =
         localStorage.getItem("idioma") || "es";
 
 
-      document.documentElement.lang =
-        idioma;
+      document.documentElement.lang = idioma;
 
 
-      const textos =
-        document.querySelectorAll(
-          "[data-es][data-en][data-hy]"
-        );
+      const titulo =
+        document.getElementById("titulo");
 
+      const descripcion =
+        document.getElementById("descripcion");
 
-      textos.forEach(function(elemento) {
+      const volver =
+        document.getElementById("volver");
 
+      const botonAdivinar =
+        document.getElementById("botonAdivinar");
 
-        if (idioma === "en") {
-
-          elemento.textContent =
-            elemento.getAttribute("data-en");
-
-        }
-
-        else if (idioma === "hy") {
-
-          elemento.textContent =
-            elemento.getAttribute("data-hy");
-
-        }
-
-        else {
-
-          elemento.textContent =
-            elemento.getAttribute("data-es");
-
-        }
-
-      });
-
+      const reiniciar =
+        document.getElementById("reiniciar");
 
       const botonIdioma =
-        document.getElementById(
-          "botonIdioma"
-        );
+        document.getElementById("botonIdioma");
 
 
       if (idioma === "en") {
 
+        titulo.textContent =
+          "🔢 Guess the number";
+
+        descripcion.textContent =
+          "I'm thinking of a number between 1 and 100.";
+
+        volver.textContent =
+          "← Back";
+
+        botonAdivinar.textContent =
+          "🎯 Guess";
+
+        reiniciar.textContent =
+          "🔄 Play again";
 
         botonIdioma.textContent =
           "🇬🇧 EN ▾";
-
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent =
-          "← Back";
-
-
-        document.getElementById(
-          "botonAdivinar"
-        ).textContent =
-          "🎯 Guess";
-
-
-        document.getElementById(
-          "reiniciar"
-        ).textContent =
-          "🔄 Play again";
-
-
-        document.getElementById(
-          "intentos"
-        ).textContent =
-          obtenerTextoIntentos(intentos);
-
 
         document.title =
           "Guess the number - MY WEBSITE";
@@ -979,34 +455,23 @@
 
       else if (idioma === "hy") {
 
+        titulo.textContent =
+          "🔢 Գուշակիր թիվը";
+
+        descripcion.textContent =
+          "Ես մտածում եմ 1-ից 100-ի միջև գտնվող թվի մասին։";
+
+        volver.textContent =
+          "← Հետ";
+
+        botonAdivinar.textContent =
+          "🎯 Գուշակել";
+
+        reiniciar.textContent =
+          "🔄 Նորից խաղալ";
 
         botonIdioma.textContent =
           "🇦🇲 HY ▾";
-
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent =
-          "← Հետ";
-
-
-        document.getElementById(
-          "botonAdivinar"
-        ).textContent =
-          "🎯 Գուշակել";
-
-
-        document.getElementById(
-          "reiniciar"
-        ).textContent =
-          "🔄 Նորից խաղալ";
-
-
-        document.getElementById(
-          "intentos"
-        ).textContent =
-          obtenerTextoIntentos(intentos);
-
 
         document.title =
           "Գուշակիր թիվը - ԻՄ ԿԱՅՔԸ";
@@ -1016,37 +481,63 @@
 
       else {
 
+        titulo.textContent =
+          "🔢 Adivina el número";
+
+        descripcion.textContent =
+          "Estoy pensando en un número entre 1 y 100.";
+
+        volver.textContent =
+          "← Volver";
+
+        botonAdivinar.textContent =
+          "🎯 Adivinar";
+
+        reiniciar.textContent =
+          "🔄 Jugar otra vez";
 
         botonIdioma.textContent =
           "🇪🇸 ES ▾";
 
-
-        document.getElementById(
-          "botonVolver"
-        ).textContent =
-          "← Volver";
-
-
-        document.getElementById(
-          "botonAdivinar"
-        ).textContent =
-          "🎯 Adivinar";
-
-
-        document.getElementById(
-          "reiniciar"
-        ).textContent =
-          "🔄 Jugar otra vez";
-
-
-        document.getElementById(
-          "intentos"
-        ).textContent =
-          obtenerTextoIntentos(intentos);
-
-
         document.title =
           "Adivina el número - MI WEB";
+
+      }
+
+
+      actualizarIntentos();
+
+    }
+
+
+    function actualizarIntentos() {
+
+      const idioma =
+        localStorage.getItem("idioma") || "es";
+
+
+      const elemento =
+        document.getElementById("intentos");
+
+
+      if (idioma === "en") {
+
+        elemento.textContent =
+          "Attempts: " + intentos;
+
+      }
+
+      else if (idioma === "hy") {
+
+        elemento.textContent =
+          "Փորձեր՝ " + intentos;
+
+      }
+
+      else {
+
+        elemento.textContent =
+          "Intentos: " + intentos;
 
       }
 
@@ -1055,15 +546,12 @@
 
     function cambiarIdioma(idioma) {
 
-
       localStorage.setItem(
         "idioma",
         idioma
       );
 
-
       aplicarIdioma();
-
 
       document
         .getElementById("menuIdioma")
@@ -1073,7 +561,6 @@
 
 
     function abrirIdioma() {
-
 
       document
         .getElementById("menuIdioma")
@@ -1088,27 +575,18 @@
       "click",
       function(event) {
 
-
         const menu =
-          document.getElementById(
-            "menuIdioma"
-          );
-
+          document.getElementById("menuIdioma");
 
         const boton =
-          document.getElementById(
-            "botonIdioma"
-          );
-
+          document.getElementById("botonIdioma");
 
         if (
           !menu.contains(event.target) &&
           !boton.contains(event.target)
         ) {
 
-          menu.classList.remove(
-            "mostrar"
-          );
+          menu.classList.remove("mostrar");
 
         }
 
@@ -1117,24 +595,218 @@
 
 
     /* =========================
+       COMPROBAR NÚMERO
+       ========================= */
+
+    function comprobarNumero() {
+
+      if (juegoTerminado) {
+        return;
+      }
+
+
+      const input =
+        document.getElementById("numero");
+
+      const mensaje =
+        document.getElementById("mensaje");
+
+      const numero =
+        Number(input.value);
+
+      const idioma =
+        localStorage.getItem("idioma") || "es";
+
+
+      if (input.value === "") {
+
+        if (idioma === "en") {
+          mensaje.textContent =
+            "⚠️ Enter a number.";
+        }
+
+        else if (idioma === "hy") {
+          mensaje.textContent =
+            "⚠️ Գրիր թիվ։";
+        }
+
+        else {
+          mensaje.textContent =
+            "⚠️ Escribe un número.";
+        }
+
+        return;
+      }
+
+
+      if (numero < 1 || numero > 100) {
+
+        if (idioma === "en") {
+          mensaje.textContent =
+            "⚠️ The number must be between 1 and 100.";
+        }
+
+        else if (idioma === "hy") {
+          mensaje.textContent =
+            "⚠️ Թիվը պետք է լինի 1-ից 100-ի միջև։";
+        }
+
+        else {
+          mensaje.textContent =
+            "⚠️ El número debe estar entre 1 y 100.";
+        }
+
+        return;
+      }
+
+
+      intentos++;
+
+      actualizarIntentos();
+
+
+      if (numero < numeroSecreto) {
+
+        if (idioma === "en") {
+          mensaje.textContent =
+            "🔼 It's higher.";
+        }
+
+        else if (idioma === "hy") {
+          mensaje.textContent =
+            "🔼 Ավելի բարձր է։";
+        }
+
+        else {
+          mensaje.textContent =
+            "🔼 Es más alto.";
+        }
+
+      }
+
+
+      else if (numero > numeroSecreto) {
+
+        if (idioma === "en") {
+          mensaje.textContent =
+            "🔽 It's lower.";
+        }
+
+        else if (idioma === "hy") {
+          mensaje.textContent =
+            "🔽 Ավելի ցածր է։";
+        }
+
+        else {
+          mensaje.textContent =
+            "🔽 Es más bajo.";
+        }
+
+      }
+
+
+      else {
+
+        if (idioma === "en") {
+          mensaje.textContent =
+            "🎉 You got it! It was " +
+            numeroSecreto + ".";
+        }
+
+        else if (idioma === "hy") {
+          mensaje.textContent =
+            "🎉 Ճիշտ է։ Թիվը " +
+            numeroSecreto + " էր։";
+        }
+
+        else {
+          mensaje.textContent =
+            "🎉 ¡Acertaste! Era el " +
+            numeroSecreto + ".";
+        }
+
+
+        juegoTerminado = true;
+
+        input.disabled = true;
+
+        document.getElementById(
+          "botonAdivinar"
+        ).style.display = "none";
+
+        document.getElementById(
+          "reiniciar"
+        ).style.display = "block";
+
+      }
+
+
+      input.value = "";
+
+      input.focus();
+
+    }
+
+
+    /* =========================
+       REINICIAR
+       ========================= */
+
+    function reiniciarJuego() {
+
+      numeroSecreto =
+        Math.floor(Math.random() * 100) + 1;
+
+      intentos = 0;
+
+      juegoTerminado = false;
+
+
+      const input =
+        document.getElementById("numero");
+
+
+      input.disabled = false;
+
+      input.value = "";
+
+
+      document.getElementById(
+        "mensaje"
+      ).textContent = "";
+
+
+      actualizarIntentos();
+
+
+      document.getElementById(
+        "botonAdivinar"
+      ).style.display = "block";
+
+
+      document.getElementById(
+        "reiniciar"
+      ).style.display = "none";
+
+
+      input.focus();
+
+    }
+
+
+    /* =========================
        TEMA
        ========================= */
 
     function aplicarTema() {
 
-
       const tema =
-        localStorage.getItem("tema") ||
-        "oscuro";
+        localStorage.getItem("tema") || "oscuro";
 
 
       if (tema === "claro") {
 
-
-        document.body.classList.add(
-          "claro"
-        );
-
+        document.body.classList.add("claro");
 
         document.getElementById(
           "botonTema"
@@ -1143,14 +815,9 @@
 
       }
 
-
       else {
 
-
-        document.body.classList.remove(
-          "claro"
-        );
-
+        document.body.classList.remove("claro");
 
         document.getElementById(
           "botonTema"
@@ -1164,10 +831,8 @@
 
     function cambiarTema() {
 
-
       const temaActual =
-        localStorage.getItem("tema") ||
-        "oscuro";
+        localStorage.getItem("tema") || "oscuro";
 
 
       if (temaActual === "oscuro") {
@@ -1194,7 +859,9 @@
     }
 
 
-    /* ENTER PARA ADIVINAR */
+    /* =========================
+       ENTER
+       ========================= */
 
     document
       .getElementById("numero")
@@ -1203,24 +870,22 @@
         function(event) {
 
           if (event.key === "Enter") {
-
             comprobarNumero();
-
           }
 
         }
       );
 
 
-    /* INICIAR */
-
-    aplicarTema();
+    /* =========================
+       INICIAR
+       ========================= */
 
     aplicarIdioma();
 
+    aplicarTema();
 
   </script>
-
 
 </body>
 
