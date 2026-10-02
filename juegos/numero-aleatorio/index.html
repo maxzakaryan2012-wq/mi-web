@@ -1,10 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Número aleatorio - MI WEB</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    min-height: 100vh;
+    transition: 0.3s;
+}
+
+body.claro {
+    background: #f2f2f2;
+    color: #111;
+}
+
+.barra {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #333;
+    background: #181818;
+}
+
+body.claro .barra {
+    background: white;
+    border-color: #ddd;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+body.claro .volver {
+    color: #111;
+}
+
+.controles {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    background: #292929;
+    color: white;
+    font-size: 14px;
+}
+
+body.claro button {
+    background: #e5e5e5;
+    color: #111;
+}
+
+.idioma {
+    position: relative;
+}
+
+.menu-idioma {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 48px;
+    background: #222;
+    border-radius: 10px;
+    padding: 6px;
+    width: 150px;
+    z-index: 10;
+}
+
+body.claro .menu-idioma {
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.menu-idioma button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+}
+
+.menu-idioma button:hover {
+    background: #333;
+}
+
+body.claro .menu-idioma button:hover {
+    background: #eee;
+}
+
+.contenido {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+.descripcion {
+    color: #aaa;
+    margin-bottom: 35px;
+}
+
+body.claro .descripcion {
+    color: #555;
+}
+
+.inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+input {
+    width: 180px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background: #1c1c1c;
+    color: white;
+    font-size: 16px;
+}
+
+body.claro input {
+    background: white;
+    color: #111;
+    border-color: #ccc;
+}
+
+.generar {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.resultado {
+    margin-top: 35px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="barra">
+
+<a href="../../" class="volver" id="volver">
+← Volver
+</a>
+
+<div class="controles">
+
+<div class="idioma">
+
+<button id="botonIdioma" onclick="abrirIdioma()">
+🇪🇸 ES ▾
+</button>
+
+<div class="menu-idioma" id="menuIdioma">
+
+<button onclick="cambiarIdioma('es')">
+🇪🇸 Español
+</button>
+
+<button onclick="cambiarIdioma('en')">
+🇬🇧 English
+</button>
+
+<button onclick="cambiarIdioma('hy')">
+🇦🇲 Հայերեն
+</button>
+
+</div>
+
+</div>
+
+<button id="botonTema" onclick="cambiarTema()">
+☀️ Claro
+</button>
+
+</div>
+
+</nav>
+
+
+<main class="contenido">
+
+<h1 id="titulo">
+🎲 Número aleatorio
+</h1>
+
+<p class="descripcion" id="descripcion">
+Escribe dos números:
+</p>
+
+<div class="inputs">
+
+<input
+    type="number"
+    id="numero1"
+    placeholder="Número 1"
+>
+
+<input
+    type="number"
+    id="numero2"
+    placeholder="Número 2"
+>
+
+</div>
+
+<button
+    class="generar"
+    id="botonGenerar"
+    onclick="generarNumero()"
+>
+🎲 Generar
+</button>
+
+<div class="resultado" id="resultado"></div>
+
+</main>
+
+
+<script>
+
+function aplicarIdioma() {
+
+    const idioma =
+        localStorage.getItem("idioma") || "es";
+
+    document.documentElement.lang = idioma;
+
+    if (idioma === "en") {
+
+        document.getElementById("titulo").textContent =
+            "🎲 Random number";
+
+        document.getElementById("descripcion").textContent =
+            "Enter two numbers:";
+
+        document.getElementById("volver").textContent =
+            "← Back";
+
+        document.getElementById("botonGenerar").textContent =
+            "🎲 Generate";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇬🇧 EN ▾";
+
+        document.getElementById("numero1").placeholder =
+            "Number 1";
+
+        document.getElementById("numero2").placeholder =
+            "Number 2";
+
+        document.title =
+            "Random number - MY WEBSITE";
+
+    } else if (idioma === "hy") {
+
+        document.getElementById("titulo").textContent =
+            "🎲 Պատահական թիվ";
+
+        document.getElementById("descripcion").textContent =
+            "Գրիր երկու թիվ։";
+
+        document.getElementById("volver").textContent =
+            "← Հետ";
+
+        document.getElementById("botonGenerar").textContent =
+            "🎲 Ստեղծել";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇦🇲 HY ▾";
+
+        document.getElementById("numero1").placeholder =
+            "Թիվ 1";
+
+        document.getElementById("numero2").placeholder =
+            "Թիվ 2";
+
+        document.title =
+            "Պատահական թիվ - ԻՄ ԿԱՅՔԸ";
+
+    } else {
+
+        document.getElementById("titulo").textContent =
+            "🎲 Número aleatorio";
+
+        document.getElementById("descripcion").textContent =
+            "Escribe dos números:";
+
+        document.getElementById("volver").textContent =
+            "← Volver";
+
+        document.getElementById("botonGenerar").textContent =
+            "🎲 Generar";
+
+        document.getElementById("botonIdioma").textContent =
+            "🇪🇸 ES ▾";
+
+        document.getElementById("numero1").placeholder =
+            "Número 1";
+
+        document.getElementById("numero2").placeholder =
+            "Número 2";
+
+        document.title =
+            "Número aleatorio - MI WEB";
+    }
+
+    actualizarTextoTema();
+}
+
+
+function cambiarIdioma(idioma) {
+
+    localStorage.setItem("idioma", idioma);
+
+    document.getElementById("menuIdioma").style.display =
+        "none";
+
+    aplicarIdioma();
+}
+
+
+function abrirIdioma() {
+
+    const menu =
+        document.getElementById("menuIdioma");
+
+    menu.style.display =
+        menu.style.display === "block"
+        ? "none"
+        : "block";
+}
+
+
+document.addEventListener("click", function(event) {
+
+    const idioma =
+        document.querySelector(".idioma");
+
+    if (!idioma.contains(event.target)) {
+
+        document.getElementById("menuIdioma").style.display =
+            "none";
+    }
+
+});
+
+
+function generarNumero() {
+
+    let numero1 =
+        Number(document.getElementById("numero1").value);
+
+    let numero2 =
+        Number(document.getElementById("numero2").value);
+
+    if (
+        document.getElementById("numero1").value === "" ||
+        document.getElementById("numero2").value === ""
+    ) {
+
+        document.getElementById("resultado").textContent =
+            "⚠️";
+
+        return;
+    }
+
+    if (numero1 > numero2) {
+
+        [numero1, numero2] =
+            [numero2, numero1];
+    }
+
+    const resultado =
+        Math.floor(
+            Math.random() *
+            (numero2 - numero1 + 1)
+        ) + numero1;
+
+    document.getElementById("resultado").textContent =
+        resultado;
+}
+
+
 function aplicarTema() {
 
-    const tema = localStorage.getItem("tema") || "oscuro";
+    const tema =
+        localStorage.getItem("tema") || "oscuro";
 
     if (tema === "claro") {
+
         document.body.classList.add("claro");
+
     } else {
+
         document.body.classList.remove("claro");
     }
 
@@ -18,7 +435,9 @@ function cambiarTema() {
         localStorage.getItem("tema") || "oscuro";
 
     const nuevoTema =
-        temaActual === "oscuro" ? "claro" : "oscuro";
+        temaActual === "oscuro"
+        ? "claro"
+        : "oscuro";
 
     localStorage.setItem("tema", nuevoTema);
 
@@ -40,16 +459,31 @@ function actualizarTextoTema() {
     if (idioma === "en") {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Light" : "🌙 Dark";
+            tema === "oscuro"
+            ? "☀️ Light"
+            : "🌙 Dark";
 
     } else if (idioma === "hy") {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Բաց" : "🌙 Մութ";
+            tema === "oscuro"
+            ? "☀️ Բաց"
+            : "🌙 Մութ";
 
     } else {
 
         boton.textContent =
-            tema === "oscuro" ? "☀️ Claro" : "🌙 Oscuro";
+            tema === "oscuro"
+            ? "☀️ Claro"
+            : "🌙 Oscuro";
     }
 }
+
+
+aplicarIdioma();
+aplicarTema();
+
+</script>
+
+</body>
+</html>
