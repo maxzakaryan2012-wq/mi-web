@@ -446,21 +446,17 @@
 
     <script>
 
-        /* =========================
+        /* =====================================================
            NÚMERO ALEATORIO
-        ========================= */
+        ===================================================== */
 
         function generarNumero() {
 
             const input1 =
-                document.getElementById(
-                    "numero1"
-                );
+                document.getElementById("numero1");
 
             const input2 =
-                document.getElementById(
-                    "numero2"
-                );
+                document.getElementById("numero2");
 
             let numero1 =
                 Number(input1.value);
@@ -469,9 +465,7 @@
                 Number(input2.value);
 
             const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
+                localStorage.getItem("idioma") || "es";
 
 
             if (
@@ -481,23 +475,17 @@
 
                 if (idioma === "en") {
 
-                    document.getElementById(
-                        "resultado"
-                    ).textContent =
+                    document.getElementById("resultado").textContent =
                         "⚠️ Enter two numbers.";
 
                 } else if (idioma === "hy") {
 
-                    document.getElementById(
-                        "resultado"
-                    ).textContent =
+                    document.getElementById("resultado").textContent =
                         "⚠️ Գրիր երկու թիվ։";
 
                 } else {
 
-                    document.getElementById(
-                        "resultado"
-                    ).textContent =
+                    document.getElementById("resultado").textContent =
                         "⚠️ Escribe dos números.";
                 }
 
@@ -507,14 +495,10 @@
 
             if (numero1 > numero2) {
 
-                const temporal =
-                    numero1;
+                const temporal = numero1;
 
-                numero1 =
-                    numero2;
-
-                numero2 =
-                    temporal;
+                numero1 = numero2;
+                numero2 = temporal;
             }
 
 
@@ -530,49 +514,39 @@
                 numero1;
 
 
-            document.getElementById(
-                "resultado"
-            ).textContent =
+            document.getElementById("resultado").textContent =
                 resultado;
 
-
-            /* GUARDAR ESTADÍSTICA */
 
             guardarNumeroGenerado();
         }
 
 
-        /* =========================
+        /* =====================================================
            USUARIO
-        ========================= */
+        ===================================================== */
 
         function obtenerNombreUsuario() {
 
             let nombre =
-                localStorage.getItem(
-                    "nombreUsuario"
-                );
+                localStorage.getItem("nombreUsuario");
 
 
             if (!nombre) {
 
                 let numero =
-                    localStorage.getItem(
-                        "numeroUsuario"
-                    );
+                    localStorage.getItem("numeroUsuario");
 
 
                 if (!numero) {
 
                     numero =
                         Math.floor(
-                            Math.random() *
-                            10000
+                            Math.random() * 10000
                         );
 
                     numero =
-                        String(numero)
-                            .padStart(4, "0");
+                        String(numero).padStart(4, "0");
 
                     localStorage.setItem(
                         "numeroUsuario",
@@ -582,8 +556,7 @@
 
 
                 nombre =
-                    "user_" +
-                    numero;
+                    "user_" + numero;
 
 
                 localStorage.setItem(
@@ -597,15 +570,19 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            ESTADÍSTICAS
-        ========================= */
+        ===================================================== */
+
+        const ESTADISTICAS_KEY =
+            "estadisticasNumeroAleatorio";
+
 
         function obtenerEstadisticas() {
 
             const datos =
                 localStorage.getItem(
-                    "estadisticasNumeroAleatorio"
+                    ESTADISTICAS_KEY
                 );
 
 
@@ -616,9 +593,64 @@
 
             try {
 
-                return JSON.parse(
-                    datos
+                const datosParseados =
+                    JSON.parse(datos);
+
+
+                if (
+                    !datosParseados ||
+                    typeof datosParseados !== "object" ||
+                    Array.isArray(datosParseados)
+                ) {
+
+                    return {};
+                }
+
+
+                const resultado = {};
+
+
+                Object.keys(datosParseados).forEach(
+                    function(nombre) {
+
+                        const jugador =
+                            datosParseados[nombre];
+
+
+                        if (
+                            !jugador ||
+                            typeof jugador !== "object"
+                        ) {
+
+                            return;
+                        }
+
+
+                        const generados =
+                            Number(jugador.generados);
+
+
+                        if (
+                            !Number.isFinite(generados) ||
+                            generados < 0
+                        ) {
+
+                            return;
+                        }
+
+
+                        resultado[nombre] = {
+
+                            generados:
+                                Math.floor(generados)
+
+                        };
+
+                    }
                 );
+
+
+                return resultado;
 
             } catch {
 
@@ -647,16 +679,13 @@
 
             } else {
 
-                estadisticas[nombre]
-                    .generados++;
+                estadisticas[nombre].generados += 1;
             }
 
 
             localStorage.setItem(
-                "estadisticasNumeroAleatorio",
-                JSON.stringify(
-                    estadisticas
-                )
+                ESTADISTICAS_KEY,
+                JSON.stringify(estadisticas)
             );
 
 
@@ -664,14 +693,10 @@
         }
 
 
-        function ordenarRanking(
-            estadisticas
-        ) {
+        function ordenarRanking(estadisticas) {
 
             const jugadores =
-                Object.keys(
-                    estadisticas
-                ).map(
+                Object.keys(estadisticas).map(
                     function(nombre) {
 
                         return {
@@ -679,9 +704,7 @@
                             nombre: nombre,
 
                             generados:
-                                estadisticas[
-                                    nombre
-                                ].generados
+                                estadisticas[nombre].generados
 
                         };
 
@@ -742,22 +765,14 @@
 
 
             const top10 =
-                ranking.slice(
-                    0,
-                    10
-                );
+                ranking.slice(0, 10);
 
 
             top10.forEach(
-                function(
-                    jugador,
-                    index
-                ) {
+                function(jugador, index) {
 
                     const fila =
-                        document.createElement(
-                            "tr"
-                        );
+                        document.createElement("tr");
 
 
                     if (
@@ -772,19 +787,15 @@
 
 
                     const puesto =
-                        document.createElement(
-                            "td"
-                        );
+                        document.createElement("td");
+
 
                     const nombre =
-                        document.createElement(
-                            "td"
-                        );
+                        document.createElement("td");
+
 
                     const generados =
-                        document.createElement(
-                            "td"
-                        );
+                        document.createElement("td");
 
 
                     puesto.textContent =
@@ -799,22 +810,12 @@
                         jugador.generados;
 
 
-                    fila.appendChild(
-                        puesto
-                    );
-
-                    fila.appendChild(
-                        nombre
-                    );
-
-                    fila.appendChild(
-                        generados
-                    );
+                    fila.appendChild(puesto);
+                    fila.appendChild(nombre);
+                    fila.appendChild(generados);
 
 
-                    tabla.appendChild(
-                        fila
-                    );
+                    tabla.appendChild(fila);
 
                 }
             );
@@ -851,16 +852,10 @@
                 );
 
 
-            if (posicion === -1) {
-
-                elemento.style.display =
-                    "none";
-
-                return;
-            }
-
-
-            if (posicion < 10) {
+            if (
+                posicion === -1 ||
+                posicion < 10
+            ) {
 
                 elemento.style.display =
                     "none";
@@ -921,9 +916,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            IDIOMAS
-        ========================= */
+        ===================================================== */
 
         function abrirIdioma() {
 
@@ -934,24 +929,19 @@
 
 
             if (
-                menu.style.display ===
-                "block"
+                menu.style.display === "block"
             ) {
 
-                menu.style.display =
-                    "none";
+                menu.style.display = "none";
 
             } else {
 
-                menu.style.display =
-                    "block";
+                menu.style.display = "block";
             }
         }
 
 
-        function cambiarIdioma(
-            idioma
-        ) {
+        function cambiarIdioma(idioma) {
 
             localStorage.setItem(
                 "idioma",
@@ -964,8 +954,7 @@
 
             document.getElementById(
                 "menuIdiomas"
-            ).style.display =
-                "none";
+            ).style.display = "none";
         }
 
 
@@ -978,39 +967,25 @@
 
 
             const titulo =
-                document.getElementById(
-                    "titulo"
-                );
+                document.getElementById("titulo");
 
             const descripcion =
-                document.getElementById(
-                    "descripcion"
-                );
+                document.getElementById("descripcion");
 
             const volver =
-                document.getElementById(
-                    "volver"
-                );
+                document.getElementById("volver");
 
             const botonGenerar =
-                document.getElementById(
-                    "botonGenerar"
-                );
+                document.getElementById("botonGenerar");
 
             const numero1 =
-                document.getElementById(
-                    "numero1"
-                );
+                document.getElementById("numero1");
 
             const numero2 =
-                document.getElementById(
-                    "numero2"
-                );
+                document.getElementById("numero2");
 
             const botonIdioma =
-                document.getElementById(
-                    "botonIdioma"
-                );
+                document.getElementById("botonIdioma");
 
 
             const tituloEstadisticas =
@@ -1019,19 +994,13 @@
                 );
 
             const thPuesto =
-                document.getElementById(
-                    "thPuesto"
-                );
+                document.getElementById("thPuesto");
 
             const thNombre =
-                document.getElementById(
-                    "thNombre"
-                );
+                document.getElementById("thNombre");
 
             const thGenerados =
-                document.getElementById(
-                    "thGenerados"
-                );
+                document.getElementById("thGenerados");
 
 
             if (idioma === "en") {
@@ -1178,17 +1147,16 @@
                     !boton.contains(event.target)
                 ) {
 
-                    menu.style.display =
-                        "none";
+                    menu.style.display = "none";
                 }
 
             }
         );
 
 
-        /* =========================
+        /* =====================================================
            TEMA
-        ========================= */
+        ===================================================== */
 
         function aplicarTema() {
 
@@ -1284,9 +1252,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            INICIO
-        ========================= */
+        ===================================================== */
 
         aplicarIdioma();
 
