@@ -459,8 +459,7 @@
 
                     </thead>
 
-                    <tbody id="tablaRanking">
-                    </tbody>
+                    <tbody id="tablaRanking"></tbody>
 
                 </table>
 
@@ -479,20 +478,25 @@
     <script>
 
         /* =========================
-           VARIABLES
+           VARIABLES DEL JUEGO
         ========================= */
 
         let puntos = 0;
-
         let tiempo = 30;
-
         let jugando = false;
-
         let intervalo = null;
 
 
         /* =========================
-           INICIAR
+           CLAVE DE ESTADÍSTICAS
+        ========================= */
+
+        const estadisticasKey =
+            "estadisticasPulsaBoton";
+
+
+        /* =========================
+           INICIAR JUEGO
         ========================= */
 
         function iniciarJuego() {
@@ -502,11 +506,8 @@
             }
 
             puntos = 0;
-
             tiempo = 30;
-
             jugando = true;
-
 
             document.getElementById(
                 "puntos"
@@ -516,24 +517,19 @@
                 "tiempo"
             ).textContent = tiempo;
 
-
             document.getElementById(
                 "mensaje"
             ).textContent = "";
-
 
             document.getElementById(
                 "botonInicio"
             ).style.display = "none";
 
-
             document.getElementById(
                 "botonJuego"
             ).style.display = "block";
 
-
             moverBoton();
-
 
             intervalo = setInterval(
                 function() {
@@ -542,25 +538,20 @@
 
                     document.getElementById(
                         "tiempo"
-                    ).textContent =
-                        tiempo;
-
+                    ).textContent = tiempo;
 
                     if (tiempo <= 0) {
-
                         terminarJuego();
-
                     }
 
                 },
                 1000
             );
-
         }
 
 
         /* =========================
-           PULSAR
+           PULSAR BOTÓN
         ========================= */
 
         function pulsarBoton() {
@@ -569,18 +560,13 @@
                 return;
             }
 
-
             puntos++;
-
 
             document.getElementById(
                 "puntos"
-            ).textContent =
-                puntos;
-
+            ).textContent = puntos;
 
             moverBoton();
-
         }
 
 
@@ -600,13 +586,11 @@
                     "botonJuego"
                 );
 
-
             const anchoZona =
                 zona.clientWidth;
 
             const altoZona =
                 zona.clientHeight;
-
 
             const anchoBoton =
                 boton.offsetWidth;
@@ -614,29 +598,21 @@
             const altoBoton =
                 boton.offsetHeight;
 
-
             const maxX =
-                anchoZona -
-                anchoBoton;
+                anchoZona - anchoBoton;
 
             const maxY =
-                altoZona -
-                altoBoton;
-
+                altoZona - altoBoton;
 
             const x =
                 Math.floor(
-                    Math.random() *
-                    maxX
+                    Math.random() * maxX
                 );
-
 
             const y =
                 Math.floor(
-                    Math.random() *
-                    maxY
+                    Math.random() * maxY
                 );
-
 
             boton.style.left =
                 x + "px";
@@ -647,7 +623,7 @@
 
 
         /* =========================
-           TERMINAR
+           TERMINAR JUEGO
         ========================= */
 
         function terminarJuego() {
@@ -656,33 +632,24 @@
                 return;
             }
 
-
             jugando = false;
 
-
-            clearInterval(
-                intervalo
-            );
-
+            clearInterval(intervalo);
 
             intervalo = null;
-
 
             document.getElementById(
                 "botonJuego"
             ).style.display = "none";
 
-
             document.getElementById(
                 "botonInicio"
             ).style.display = "inline-block";
-
 
             const idioma =
                 localStorage.getItem(
                     "idioma"
                 ) || "es";
-
 
             if (idioma === "en") {
 
@@ -712,9 +679,7 @@
                     " puntos.";
             }
 
-
             guardarEstadistica();
-
         }
 
 
@@ -729,7 +694,6 @@
                     "nombreUsuario"
                 );
 
-
             if (!nombre) {
 
                 let numero =
@@ -737,19 +701,16 @@
                         "numeroUsuario"
                     );
 
-
                 if (!numero) {
 
                     numero =
                         Math.floor(
-                            Math.random() *
-                            10000
+                            Math.random() * 10000
                         );
 
                     numero =
                         String(numero)
                             .padStart(4, "0");
-
 
                     localStorage.setItem(
                         "numeroUsuario",
@@ -757,11 +718,8 @@
                     );
                 }
 
-
                 nombre =
-                    "user_" +
-                    numero;
-
+                    "user_" + numero;
 
                 localStorage.setItem(
                     "nombreUsuario",
@@ -769,51 +727,105 @@
                 );
             }
 
-
             return nombre;
         }
 
 
         /* =========================
-           ESTADÍSTICAS
+           OBTENER ESTADÍSTICAS
         ========================= */
 
         function obtenerEstadisticas() {
 
             const datos =
                 localStorage.getItem(
-                    "estadisticasPulsaBoton"
+                    estadisticasKey
                 );
-
 
             if (!datos) {
                 return {};
             }
 
-
             try {
 
-                return JSON.parse(
-                    datos
+                const datosParseados =
+                    JSON.parse(datos);
+
+                if (
+                    !datosParseados ||
+                    typeof datosParseados !== "object" ||
+                    Array.isArray(datosParseados)
+                ) {
+                    return {};
+                }
+
+                const resultado = {};
+
+                Object.keys(
+                    datosParseados
+                ).forEach(
+                    function(nombre) {
+
+                        const jugador =
+                            datosParseados[nombre];
+
+                        if (
+                            !jugador ||
+                            typeof jugador !== "object"
+                        ) {
+                            return;
+                        }
+
+                        const mejorPuntuacion =
+                            Number(
+                                jugador.mejorPuntuacion
+                            );
+
+                        const partidas =
+                            Number(
+                                jugador.partidas
+                            );
+
+                        resultado[nombre] = {
+
+                            mejorPuntuacion:
+                                Number.isFinite(
+                                    mejorPuntuacion
+                                )
+                                    ? mejorPuntuacion
+                                    : 0,
+
+                            partidas:
+                                Number.isFinite(
+                                    partidas
+                                )
+                                    ? partidas
+                                    : 0
+                        };
+
+                    }
                 );
+
+                return resultado;
 
             } catch {
 
                 return {};
             }
-
         }
 
+
+        /* =========================
+           GUARDAR ESTADÍSTICA
+        ========================= */
 
         function guardarEstadistica() {
 
             const nombre =
                 obtenerNombreUsuario();
 
-
             const estadisticas =
                 obtenerEstadisticas();
-
 
             if (!estadisticas[nombre]) {
 
@@ -824,10 +836,12 @@
 
                     partidas:
                         1
-
                 };
 
             } else {
+
+                estadisticas[nombre]
+                    .partidas++;
 
                 if (
                     puntos >
@@ -839,25 +853,22 @@
                         .mejorPuntuacion =
                         puntos;
                 }
-
-
-                estadisticas[nombre]
-                    .partidas++;
             }
 
-
             localStorage.setItem(
-                "estadisticasPulsaBoton",
+                estadisticasKey,
                 JSON.stringify(
                     estadisticas
                 )
             );
 
-
             mostrarRanking();
-
         }
 
+
+        /* =========================
+           ORDENAR RANKING
+        ========================= */
 
         function ordenarRanking(
             estadisticas
@@ -871,23 +882,25 @@
 
                         return {
 
-                            nombre: nombre,
+                            nombre:
+                                nombre,
 
                             mejorPuntuacion:
-                                estadisticas[
-                                    nombre
-                                ].mejorPuntuacion,
+                                Number(
+                                    estadisticas[
+                                        nombre
+                                    ].mejorPuntuacion
+                                ),
 
                             partidas:
-                                estadisticas[
-                                    nombre
-                                ].partidas
-
+                                Number(
+                                    estadisticas[
+                                        nombre
+                                    ].partidas
+                                )
                         };
-
                     }
                 );
-
 
             jugadores.sort(
                 function(a, b) {
@@ -903,51 +916,50 @@
                         );
                     }
 
-
                     return (
                         b.partidas -
                         a.partidas
                     );
-
                 }
             );
-
 
             return jugadores;
         }
 
 
+        /* =========================
+           MOSTRAR RANKING
+        ========================= */
+
         function mostrarRanking() {
-
-            const estadisticas =
-                obtenerEstadisticas();
-
-
-            const ranking =
-                ordenarRanking(
-                    estadisticas
-                );
-
 
             const tabla =
                 document.getElementById(
                     "tablaRanking"
                 );
 
+            if (!tabla) {
+                return;
+            }
+
+            const estadisticas =
+                obtenerEstadisticas();
+
+            const ranking =
+                ordenarRanking(
+                    estadisticas
+                );
 
             const nombreUsuario =
                 obtenerNombreUsuario();
 
-
             tabla.innerHTML = "";
-
 
             const top10 =
                 ranking.slice(
                     0,
                     10
                 );
-
 
             top10.forEach(
                 function(
@@ -960,7 +972,6 @@
                             "tr"
                         );
 
-
                     if (
                         jugador.nombre ===
                         nombreUsuario
@@ -970,7 +981,6 @@
                             "tu-fila"
                         );
                     }
-
 
                     const puesto =
                         document.createElement(
@@ -982,7 +992,7 @@
                             "td"
                         );
 
-                    const puntos =
+                    const puntosCelda =
                         document.createElement(
                             "td"
                         );
@@ -992,22 +1002,17 @@
                             "td"
                         );
 
-
                     puesto.textContent =
                         index + 1;
-
 
                     nombre.textContent =
                         jugador.nombre;
 
-
-                    puntos.textContent =
+                    puntosCelda.textContent =
                         jugador.mejorPuntuacion;
-
 
                     partidas.textContent =
                         jugador.partidas;
-
 
                     fila.appendChild(
                         puesto
@@ -1018,29 +1023,29 @@
                     );
 
                     fila.appendChild(
-                        puntos
+                        puntosCelda
                     );
 
                     fila.appendChild(
                         partidas
                     );
 
-
                     tabla.appendChild(
                         fila
                     );
-
                 }
             );
-
 
             mostrarPosicionUsuario(
                 ranking,
                 nombreUsuario
             );
-
         }
 
+
+        /* =========================
+           POSICIÓN DEL USUARIO
+        ========================= */
 
         function mostrarPosicionUsuario(
             ranking,
@@ -1052,7 +1057,6 @@
                     "posicionUsuario"
                 );
 
-
             const posicion =
                 ranking.findIndex(
                     function(jugador) {
@@ -1061,10 +1065,8 @@
                             jugador.nombre ===
                             nombreUsuario
                         );
-
                     }
                 );
-
 
             if (
                 posicion === -1 ||
@@ -1077,16 +1079,13 @@
                 return;
             }
 
-
             const jugador =
                 ranking[posicion];
-
 
             const idioma =
                 localStorage.getItem(
                     "idioma"
                 ) || "es";
-
 
             if (idioma === "en") {
 
@@ -1101,7 +1100,6 @@
                     jugador.partidas +
                     " games";
 
-
             } else if (idioma === "hy") {
 
                 elemento.textContent =
@@ -1114,7 +1112,6 @@
                     " միավոր — " +
                     jugador.partidas +
                     " խաղ";
-
 
             } else {
 
@@ -1130,10 +1127,8 @@
                     " partidas";
             }
 
-
             elemento.style.display =
                 "block";
-
         }
 
 
@@ -1148,7 +1143,6 @@
                     "menuIdiomas"
                 );
 
-
             if (
                 menu.style.display ===
                 "block"
@@ -1162,7 +1156,6 @@
                 menu.style.display =
                     "block";
             }
-
         }
 
 
@@ -1175,15 +1168,12 @@
                 idioma
             );
 
-
             aplicarIdioma();
-
 
             document.getElementById(
                 "menuIdiomas"
             ).style.display =
                 "none";
-
         }
 
 
@@ -1193,7 +1183,6 @@
                 localStorage.getItem(
                     "idioma"
                 ) || "es";
-
 
             const titulo =
                 document.getElementById(
@@ -1230,7 +1219,6 @@
                     "tiempoTexto"
                 );
 
-
             const tituloEstadisticas =
                 document.getElementById(
                     "tituloEstadisticas"
@@ -1255,7 +1243,6 @@
                 document.getElementById(
                     "thPartidas"
                 );
-
 
             if (idioma === "en") {
 
@@ -1298,7 +1285,6 @@
                 document.title =
                     "Press the button - MY WEBSITE";
 
-
             } else if (idioma === "hy") {
 
                 titulo.textContent =
@@ -1339,7 +1325,6 @@
 
                 document.title =
                     "Սեղմիր կոճակը - ԻՄ ԿԱՅՔԸ";
-
 
             } else {
 
@@ -1383,15 +1368,15 @@
                     "Pulsa el botón - MI WEB";
             }
 
-
             actualizarTextoTema();
 
             mostrarRanking();
-
         }
 
 
-        /* CERRAR MENÚ */
+        /* =========================
+           CERRAR MENÚ IDIOMA
+        ========================= */
 
         document.addEventListener(
             "click",
@@ -1407,7 +1392,6 @@
                         "botonIdioma"
                     );
 
-
                 if (
                     !menu.contains(event.target) &&
                     !boton.contains(event.target)
@@ -1416,7 +1400,6 @@
                     menu.style.display =
                         "none";
                 }
-
             }
         );
 
@@ -1432,7 +1415,6 @@
                     "tema"
                 ) || "oscuro";
 
-
             if (tema === "claro") {
 
                 document.body.classList.add(
@@ -1446,9 +1428,7 @@
                 );
             }
 
-
             actualizarTextoTema();
-
         }
 
 
@@ -1459,21 +1439,17 @@
                     "tema"
                 ) || "oscuro";
 
-
             const nuevoTema =
                 temaActual === "oscuro"
-                ? "claro"
-                : "oscuro";
-
+                    ? "claro"
+                    : "oscuro";
 
             localStorage.setItem(
                 "tema",
                 nuevoTema
             );
 
-
             aplicarTema();
-
         }
 
 
@@ -1484,41 +1460,37 @@
                     "tema"
                 ) || "oscuro";
 
-
             const idioma =
                 localStorage.getItem(
                     "idioma"
                 ) || "es";
-
 
             const boton =
                 document.getElementById(
                     "botonTema"
                 );
 
-
             if (idioma === "en") {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Light"
-                    : "🌙 Dark";
+                        ? "☀️ Light"
+                        : "🌙 Dark";
 
             } else if (idioma === "hy") {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Բաց"
-                    : "🌙 Մութ";
+                        ? "☀️ Բաց"
+                        : "🌙 Մութ";
 
             } else {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Claro"
-                    : "🌙 Oscuro";
+                        ? "☀️ Claro"
+                        : "🌙 Oscuro";
             }
-
         }
 
 
