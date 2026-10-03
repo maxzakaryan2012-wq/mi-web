@@ -1,1662 +1,1248 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Adivino tu número</title>
 
-    <title>Adivino tu número - MI WEB</title>
+<style>
 
-    <style>
+*{
+    box-sizing:border-box;
+}
 
-        * {
-            box-sizing: border-box;
-        }
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f2f2f2;
+    color:#222;
+    transition:0.3s;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            transition: 0.3s;
-        }
+body.oscuro{
+    background:#121212;
+    color:white;
+}
 
-        /* =========================
-           BARRA
-        ========================= */
+.contenedor{
+    max-width:900px;
+    margin:auto;
+    padding:30px 20px;
+}
 
-        .barra {
-            height: 70px;
-            background: #181818;
-            display: flex;
-            align-items: center;
-            padding: 0 25px;
-            gap: 15px;
-            border-bottom: 1px solid #333;
-        }
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
 
-        .volver {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: bold;
-        }
+h1{
+    margin:0;
+    font-size:32px;
+}
 
-        .volver:hover {
-            opacity: 0.7;
-        }
+.botones-header{
+    display:flex;
+    gap:8px;
+}
 
-        .espacio {
-            flex: 1;
-        }
+button{
+    border:none;
+    border-radius:10px;
+    padding:12px 18px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.2s;
+}
 
-        .menu-idioma {
-            position: relative;
-        }
+button:hover{
+    transform:scale(1.03);
+}
 
-        .boton-idioma,
-        #botonTema {
-            background: #252525;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 10px 14px;
-            cursor: pointer;
-            font-size: 14px;
-        }
+#temaBtn,
+#idiomaBtn{
+    background:#ddd;
+}
 
-        .boton-idioma:hover,
-        #botonTema:hover {
-            background: #333;
-        }
+.oscuro #temaBtn,
+.oscuro #idiomaBtn{
+    background:#333;
+    color:white;
+}
 
-        .idiomas {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 45px;
-            background: #202020;
-            border: 1px solid #444;
-            border-radius: 8px;
-            overflow: hidden;
-            min-width: 150px;
-            z-index: 100;
-        }
+.juego{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.12);
+    text-align:center;
+}
 
-        .idiomas button {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 14px;
-        }
+.oscuro .juego{
+    background:#1e1e1e;
+}
 
-        .idiomas button:hover {
-            background: #333;
-        }
+.instrucciones{
+    font-size:18px;
+    margin-bottom:25px;
+}
 
-        /* =========================
-           CONTENIDO
-        ========================= */
+.numero{
+    font-size:70px;
+    font-weight:bold;
+    margin:25px 0;
+}
 
-        .contenedor {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            text-align: center;
-        }
+.rango{
+    font-size:18px;
+    opacity:0.75;
+    margin-bottom:25px;
+}
 
-        h1 {
-            font-size: 38px;
-            margin-bottom: 10px;
-        }
+.botones{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
 
-        #descripcion {
-            color: #bbb;
-            font-size: 17px;
-            margin-bottom: 35px;
-        }
+.boton-menor{
+    background:#ff7675;
+    color:white;
+}
 
-        .numero {
-            font-size: 72px;
-            font-weight: bold;
-            margin: 30px 0;
-        }
+.boton-correcto{
+    background:#00b894;
+    color:white;
+}
 
-        .mensaje {
-            min-height: 30px;
-            font-size: 18px;
-            color: #bbb;
-            margin-bottom: 25px;
-        }
+.boton-mayor{
+    background:#0984e3;
+    color:white;
+}
 
-        .botones {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+.intentos{
+    margin-top:25px;
+    font-size:20px;
+    font-weight:bold;
+}
 
-        .botones button {
-            padding: 14px 22px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            background: white;
-            color: #111;
-        }
+.mensaje{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
 
-        .botones button:hover {
-            transform: scale(1.04);
-        }
+.reiniciar{
+    margin-top:20px;
+    background:#6c5ce7;
+    color:white;
+    display:none;
+}
 
-        #botonMenor,
-        #botonMayor {
-            background: #252525;
-            color: white;
-            border: 1px solid #444;
-        }
+.estadisticas{
+    margin-top:30px;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.12);
+}
 
-        #botonReiniciar {
-            display: none;
-            margin: 25px auto 0;
-        }
+.oscuro .estadisticas{
+    background:#1e1e1e;
+}
 
-        /* =========================
-           ESTADÍSTICAS
-        ========================= */
+.estadisticas h2{
+    margin-top:0;
+}
 
-        .estadisticas {
-            margin-top: 70px;
-            text-align: left;
-        }
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
 
-        .estadisticas h2 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+th,
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
 
-        .tabla-contenedor {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid #333;
-        }
+.oscuro th,
+.oscuro td{
+    border-bottom:1px solid #444;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #181818;
-        }
+.tu-fila{
+    font-weight:bold;
+    background:rgba(108,92,231,0.15);
+}
 
-        th,
-        td {
-            padding: 14px 10px;
-            text-align: center;
-            border-bottom: 1px solid #333;
-        }
+.sin-datos{
+    opacity:0.7;
+}
 
-        th {
-            background: #222;
-            font-size: 14px;
-        }
+.posicion{
+    margin-top:15px;
+    font-weight:bold;
+}
 
-        td {
-            font-size: 15px;
-        }
+.nombre{
+    margin-bottom:20px;
+}
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+.nombre input{
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
 
-        .tu-fila {
-            background: #292929;
-            font-weight: bold;
-        }
+.oscuro input{
+    background:#333;
+    color:white;
+    border:1px solid #555;
+}
 
-        .posicion-usuario {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            background: #181818;
-            border: 1px solid #333;
-            text-align: center;
-            display: none;
-        }
+@media(max-width:600px){
 
-        /* =========================
-           TEMA CLARO
-        ========================= */
+    h1{
+        font-size:26px;
+    }
 
-        body.claro {
-            background: #f4f4f4;
-            color: #111;
-        }
+    .juego{
+        padding:20px;
+    }
 
-        body.claro .barra {
-            background: white;
-            border-bottom: 1px solid #ddd;
-        }
+    .numero{
+        font-size:55px;
+    }
 
-        body.claro .volver {
-            color: #111;
-        }
+    .botones button{
+        width:100%;
+    }
 
-        body.claro .boton-idioma,
-        body.claro #botonTema {
-            background: #f1f1f1;
-            color: #111;
-            border-color: #ccc;
-        }
+}
 
-        body.claro .boton-idioma:hover,
-        body.claro #botonTema:hover {
-            background: #e5e5e5;
-        }
-
-        body.claro .idiomas {
-            background: white;
-            border-color: #ccc;
-        }
-
-        body.claro .idiomas button {
-            color: #111;
-        }
-
-        body.claro .idiomas button:hover {
-            background: #eee;
-        }
-
-        body.claro #descripcion,
-        body.claro .mensaje {
-            color: #555;
-        }
-
-        body.claro #botonMenor,
-        body.claro #botonMayor {
-            background: #f1f1f1;
-            color: #111;
-            border-color: #ccc;
-        }
-
-        body.claro table {
-            background: white;
-        }
-
-        body.claro th {
-            background: #eee;
-        }
-
-        body.claro th,
-        body.claro td {
-            border-bottom-color: #ddd;
-        }
-
-        body.claro .tu-fila {
-            background: #e8e8e8;
-        }
-
-        body.claro .posicion-usuario {
-            background: white;
-            border-color: #ddd;
-        }
-
-    </style>
-
+</style>
 </head>
 
 <body>
 
-    <!-- =========================
-         BARRA SUPERIOR
-    ========================= -->
+<div class="contenedor">
 
-    <div class="barra">
+<header>
 
-        <a
-            href="../../index.html"
-            class="volver"
-            id="volver"
-        >
-            ← Volver
-        </a>
+<h1 id="titulo">🧠 Adivino tu número</h1>
 
-        <div class="espacio"></div>
+<div class="botones-header">
+    <button id="idiomaBtn">🇪🇸</button>
+    <button id="temaBtn">🌙</button>
+</div>
 
-        <div class="menu-idioma">
+</header>
 
-            <button
-                class="boton-idioma"
-                id="botonIdioma"
-                onclick="abrirIdioma()"
-            >
-                🇪🇸 ES ▾
-            </button>
 
-            <div
-                class="idiomas"
-                id="menuIdiomas"
-            >
+<div class="juego">
 
-                <button onclick="cambiarIdioma('es')">
-                    🇪🇸 Español
-                </button>
+<div class="instrucciones" id="instrucciones">
+    Piensa un número del 1 al 100 y yo intentaré adivinarlo.
+</div>
 
-                <button onclick="cambiarIdioma('en')">
-                    🇬🇧 English
-                </button>
 
-                <button onclick="cambiarIdioma('hy')">
-                    🇦🇲 Հայերեն
-                </button>
+<div class="nombre">
 
-            </div>
+    <input
+        type="text"
+        id="nombreInput"
+        placeholder="Tu nombre"
+        maxlength="20"
+    >
 
-        </div>
+</div>
 
-        <button
-            id="botonTema"
-            onclick="cambiarTema()"
-        >
-            ☀️ Claro
-        </button>
 
-    </div>
+<div class="numero" id="numeroActual">
+    50
+</div>
 
 
-    <!-- =========================
-         CONTENIDO
-    ========================= -->
+<div class="rango" id="rango">
+    Estoy buscando entre 1 y 100
+</div>
 
-    <main class="contenedor">
 
-        <h1 id="titulo">
-            🧠 Adivino tu número
-        </h1>
+<div class="botones">
 
-        <p id="descripcion">
-            Piensa un número del 1 al 100 y yo intentaré adivinarlo.
-        </p>
+    <button
+        class="boton-menor"
+        id="menorBtn"
+    >
+        ⬇️ Es menor
+    </button>
 
+    <button
+        class="boton-correcto"
+        id="correctoBtn"
+    >
+        ✅ Correcto
+    </button>
 
-        <div
-            class="numero"
-            id="numero"
-        >
-            50
-        </div>
+    <button
+        class="boton-mayor"
+        id="mayorBtn"
+    >
+        ⬆️ Es mayor
+    </button>
 
+</div>
 
-        <div
-            class="mensaje"
-            id="mensaje"
-        >
-            ¿Es 50?
-        </div>
 
+<div class="intentos">
+    <span id="textoIntentos">Intentos:</span>
+    <span id="intentos">1</span>
+</div>
 
-        <div class="botones">
 
-            <button
-                id="botonMenor"
-                onclick="numeroEsMenor()"
-            >
-                ⬇️ Es menor
-            </button>
+<div
+    class="mensaje"
+    id="mensaje"
+></div>
 
-            <button
-                id="botonCorrecto"
-                onclick="numeroEsCorrecto()"
-            >
-                ✅ Correcto
-            </button>
 
-            <button
-                id="botonMayor"
-                onclick="numeroEsMayor()"
-            >
-                ⬆️ Es mayor
-            </button>
+<button
+    class="reiniciar"
+    id="reiniciarBtn"
+>
+    🔄 Volver a jugar
+</button>
 
-        </div>
+</div>
 
 
-        <button
-            id="botonReiniciar"
-            onclick="reiniciarJuego()"
-        >
-            🔄 Jugar otra vez
-        </button>
+<div class="estadisticas">
 
+<h2 id="tituloRanking">
+    🏆 Ranking
+</h2>
 
-        <!-- =========================
-             ESTADÍSTICAS
-        ========================= -->
+<table>
 
-        <section class="estadisticas">
+<thead>
 
-            <h2 id="tituloEstadisticas">
-                🏆 Estadísticas
-            </h2>
+<tr>
+    <th>#</th>
+    <th id="nombreColumna">Nombre</th>
+    <th id="intentosColumna">Mejor resultado</th>
+    <th id="partidasColumna">Partidas</th>
+</tr>
 
-            <div class="tabla-contenedor">
+</thead>
 
-                <table>
+<tbody id="rankingBody">
+</tbody>
 
-                    <thead>
+</table>
 
-                        <tr>
+<div
+    class="posicion"
+    id="posicionUsuario"
+></div>
 
-                            <th id="thPuesto">
-                                Puesto
-                            </th>
+</div>
 
-                            <th id="thNombre">
-                                Nombre
-                            </th>
+</div>
 
-                            <th id="thIntentos">
-                                Menos intentos
-                            </th>
 
-                            <th id="thPartidas">
-                                Partidas ganadas
-                            </th>
+<script>
 
-                        </tr>
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
 
-                    </thead>
+const ESTADISTICAS_KEY = "estadisticasAdivinoNumero";
 
-                    <tbody id="tablaRanking">
-                    </tbody>
 
-                </table>
+/* =====================================================
+   IDIOMAS
+===================================================== */
 
-            </div>
+const idiomas = {
 
-            <div
-                class="posicion-usuario"
-                id="posicionUsuario"
-            ></div>
+    es: {
 
-        </section>
+        titulo:"🧠 Adivino tu número",
 
-    </main>
+        instrucciones:
+        "Piensa un número del 1 al 100 y yo intentaré adivinarlo.",
 
+        nombre:
+        "Tu nombre",
 
-    <script>
+        menor:
+        "⬇️ Es menor",
 
-        /* =====================================================
-           JUEGO
-        ===================================================== */
+        correcto:
+        "✅ Correcto",
 
-        let minimo = 1;
+        mayor:
+        "⬆️ Es mayor",
 
-        let maximo = 100;
+        intentos:
+        "Intentos:",
 
-        let numeroActual = 50;
+        rango:
+        "Estoy buscando entre {min} y {max}",
 
-        let intentos = 1;
+        ranking:
+        "🏆 Ranking",
 
-        let juegoTerminado = false;
+        nombreColumna:
+        "Nombre",
 
+        intentosColumna:
+        "Mejor resultado",
 
-        function actualizarNumero() {
+        partidasColumna:
+        "Partidas",
 
-            numeroActual =
-                Math.floor(
-                    (minimo + maximo) / 2
-                );
+        sinDatos:
+        "Todavía no hay partidas.",
 
+        posicion:
+        "Tu posición: #{pos}",
 
-            document.getElementById(
-                "numero"
-            ).textContent =
-                numeroActual;
+        victoria:
+        "🎉 ¡Lo he adivinado en {intentos} intentos!",
 
+        reiniciar:
+        "🔄 Volver a jugar"
 
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
+    },
 
 
-            if (idioma === "en") {
+    en: {
 
-                document.getElementById(
-                    "mensaje"
-                ).textContent =
-                    "Is it " +
-                    numeroActual +
-                    "?";
+        titulo:"🧠 I Guess Your Number",
 
-            } else if (idioma === "hy") {
+        instrucciones:
+        "Think of a number from 1 to 100 and I will try to guess it.",
 
-                document.getElementById(
-                    "mensaje"
-                ).textContent =
-                    "Սա " +
-                    numeroActual +
-                    " է՞։";
+        nombre:
+        "Your name",
 
-            } else {
+        menor:
+        "⬇️ Lower",
 
-                document.getElementById(
-                    "mensaje"
-                ).textContent =
-                    "¿Es " +
-                    numeroActual +
-                    "?";
-            }
+        correcto:
+        "✅ Correct",
+
+        mayor:
+        "⬆️ Higher",
+
+        intentos:
+        "Attempts:",
+
+        rango:
+        "I'm searching between {min} and {max}",
+
+        ranking:
+        "🏆 Ranking",
+
+        nombreColumna:
+        "Name",
+
+        intentosColumna:
+        "Best result",
+
+        partidasColumna:
+        "Games",
+
+        sinDatos:
+        "There are no games yet.",
+
+        posicion:
+        "Your position: #{pos}",
+
+        victoria:
+        "🎉 I guessed it in {intentos} attempts!",
+
+        reiniciar:
+        "🔄 Play again"
+
+    },
+
+
+    hy: {
+
+        titulo:"🧠 Գուշակում եմ քո թիվը",
+
+        instrucciones:
+        "Մտածիր 1-ից 100 թիվ, և ես կփորձեմ գուշակել այն։",
+
+        nombre:
+        "Քո անունը",
+
+        menor:
+        "⬇️ Ավելի փոքր է",
+
+        correcto:
+        "✅ Ճիշտ է",
+
+        mayor:
+        "⬆️ Ավելի մեծ է",
+
+        intentos:
+        "Փորձեր:",
+
+        rango:
+        "Փնտրում եմ {min}-ից մինչև {max}",
+
+        ranking:
+        "🏆 Վարկանիշ",
+
+        nombreColumna:
+        "Անուն",
+
+        intentosColumna:
+        "Լավագույն արդյունք",
+
+        partidasColumna:
+        "Խաղեր",
+
+        sinDatos:
+        "Դեռ խաղեր չկան։",
+
+        posicion:
+        "Քո դիրքը՝ #{pos}",
+
+        victoria:
+        "🎉 Գուշակեցի {intentos} փորձից հետո։",
+
+        reiniciar:
+        "🔄 Նորից խաղալ"
+
+    }
+
+};
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const numeroActual =
+    document.getElementById("numeroActual");
+
+const rango =
+    document.getElementById("rango");
+
+const intentosElemento =
+    document.getElementById("intentos");
+
+const mensaje =
+    document.getElementById("mensaje");
+
+const reiniciarBtn =
+    document.getElementById("reiniciarBtn");
+
+const menorBtn =
+    document.getElementById("menorBtn");
+
+const correctoBtn =
+    document.getElementById("correctoBtn");
+
+const mayorBtn =
+    document.getElementById("mayorBtn");
+
+const nombreInput =
+    document.getElementById("nombreInput");
+
+const rankingBody =
+    document.getElementById("rankingBody");
+
+const posicionUsuario =
+    document.getElementById("posicionUsuario");
+
+const idiomaBtn =
+    document.getElementById("idiomaBtn");
+
+const temaBtn =
+    document.getElementById("temaBtn");
+
+
+/* =====================================================
+   ESTADO DEL JUEGO
+===================================================== */
+
+let minimo = 1;
+
+let maximo = 100;
+
+let numeroAdivinado;
+
+let intentos = 1;
+
+let terminado = false;
+
+
+/* =====================================================
+   IDIOMA
+===================================================== */
+
+let idioma =
+    localStorage.getItem("idioma") || "es";
+
+
+function aplicarIdioma(){
+
+    const t = idiomas[idioma];
+
+    document.getElementById("titulo").textContent =
+        t.titulo;
+
+    document.getElementById("instrucciones").textContent =
+        t.instrucciones;
+
+    nombreInput.placeholder =
+        t.nombre;
+
+    menorBtn.textContent =
+        t.menor;
+
+    correctoBtn.textContent =
+        t.correcto;
+
+    mayorBtn.textContent =
+        t.mayor;
+
+    document.getElementById("textoIntentos").textContent =
+        t.intentos;
+
+    document.getElementById("tituloRanking").textContent =
+        t.ranking;
+
+    document.getElementById("nombreColumna").textContent =
+        t.nombreColumna;
+
+    document.getElementById("intentosColumna").textContent =
+        t.intentosColumna;
+
+    document.getElementById("partidasColumna").textContent =
+        t.partidasColumna;
+
+    reiniciarBtn.textContent =
+        t.reiniciar;
+
+    idiomaBtn.textContent =
+        idioma === "es"
+        ? "🇪🇸"
+        : idioma === "en"
+        ? "🇬🇧"
+        : "🇦🇲";
+
+    actualizarRango();
+
+    mostrarRanking();
+
+}
+
+
+idiomaBtn.addEventListener(
+    "click",
+    () => {
+
+        if(idioma === "es"){
+            idioma = "en";
+        }
+        else if(idioma === "en"){
+            idioma = "hy";
+        }
+        else{
+            idioma = "es";
         }
 
+        localStorage.setItem(
+            "idioma",
+            idioma
+        );
 
-        function numeroEsMenor() {
+        aplicarIdioma();
 
-            if (juegoTerminado) {
-                return;
-            }
+    }
+);
 
 
-            maximo =
-                numeroActual - 1;
+/* =====================================================
+   TEMA
+===================================================== */
 
+let tema =
+    localStorage.getItem("tema") || "claro";
 
-            intentos++;
 
+function aplicarTema(){
 
-            comprobarRango();
-        }
+    if(tema === "oscuro"){
 
+        document.body.classList.add("oscuro");
 
-        function numeroEsMayor() {
+        temaBtn.textContent = "☀️";
 
-            if (juegoTerminado) {
-                return;
-            }
+    }
+    else{
 
+        document.body.classList.remove("oscuro");
 
-            minimo =
-                numeroActual + 1;
+        temaBtn.textContent = "🌙";
 
+    }
 
-            intentos++;
+}
 
 
-            comprobarRango();
-        }
+temaBtn.addEventListener(
+    "click",
+    () => {
 
+        tema =
+            tema === "claro"
+            ? "oscuro"
+            : "claro";
 
-        function comprobarRango() {
+        localStorage.setItem(
+            "tema",
+            tema
+        );
 
-            if (minimo > maximo) {
+        aplicarTema();
 
-                finalizarJuego(
-                    false
-                );
+    }
+);
 
-                return;
-            }
 
+/* =====================================================
+   NOMBRE DEL USUARIO
+===================================================== */
 
-            actualizarNumero();
-        }
+function obtenerNombreUsuario(){
 
+    let nombre =
+        nombreInput.value.trim();
 
-        function numeroEsCorrecto() {
+    if(nombre){
+        localStorage.setItem(
+            "nombreUsuario",
+            nombre
+        );
 
-            if (juegoTerminado) {
-                return;
-            }
+        return nombre;
+    }
 
+    nombre =
+        localStorage.getItem("nombreUsuario");
 
-            finalizarJuego(
-                true
-            );
-        }
+    if(nombre){
+        return nombre;
+    }
 
+    const numero =
+        localStorage.getItem("numeroUsuario");
 
-        function finalizarJuego(
-            correcto
-        ) {
+    if(numero){
+        return "Jugador " + numero;
+    }
 
-            juegoTerminado = true;
+    return "Jugador";
 
+}
 
-            document.getElementById(
-                "botonMenor"
-            ).style.display =
-                "none";
 
-            document.getElementById(
-                "botonMayor"
-            ).style.display =
-                "none";
+/* =====================================================
+   ESTADÍSTICAS
+===================================================== */
 
-            document.getElementById(
-                "botonCorrecto"
-            ).style.display =
-                "none";
+function obtenerEstadisticas(){
 
+    try{
 
-            document.getElementById(
-                "botonReiniciar"
-            ).style.display =
-                "block";
-
-
-            const mensaje =
-                document.getElementById(
-                    "mensaje"
-                );
-
-
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
-
-
-            if (correcto) {
-
-                if (idioma === "en") {
-
-                    mensaje.textContent =
-                        "🎉 I got it in " +
-                        intentos +
-                        " attempts!";
-
-                } else if (idioma === "hy") {
-
-                    mensaje.textContent =
-                        "🎉 Գտա " +
-                        intentos +
-                        " փորձից։";
-
-                } else {
-
-                    mensaje.textContent =
-                        "🎉 ¡Lo he adivinado en " +
-                        intentos +
-                        " intentos!";
-                }
-
-
-                guardarEstadistica();
-
-            } else {
-
-                if (idioma === "en") {
-
-                    mensaje.textContent =
-                        "❌ Something went wrong.";
-
-                } else if (idioma === "hy") {
-
-                    mensaje.textContent =
-                        "❌ Ինչ-որ բան սխալ է։";
-
-                } else {
-
-                    mensaje.textContent =
-                        "❌ Algo ha salido mal.";
-                }
-            }
-        }
-
-
-        function reiniciarJuego() {
-
-            minimo = 1;
-
-            maximo = 100;
-
-            intentos = 1;
-
-            juegoTerminado = false;
-
-
-            document.getElementById(
-                "botonMenor"
-            ).style.display =
-                "inline-block";
-
-            document.getElementById(
-                "botonMayor"
-            ).style.display =
-                "inline-block";
-
-            document.getElementById(
-                "botonCorrecto"
-            ).style.display =
-                "inline-block";
-
-            document.getElementById(
-                "botonReiniciar"
-            ).style.display =
-                "none";
-
-
-            actualizarNumero();
-        }
-
-
-        /* =====================================================
-           USUARIO
-        ===================================================== */
-
-        function obtenerNombreUsuario() {
-
-            let nombre =
-                localStorage.getItem(
-                    "nombreUsuario"
-                );
-
-
-            if (!nombre) {
-
-                let numero =
-                    localStorage.getItem(
-                        "numeroUsuario"
-                    );
-
-
-                if (!numero) {
-
-                    numero =
-                        Math.floor(
-                            Math.random() * 10000
-                        );
-
-                    numero =
-                        String(numero)
-                            .padStart(4, "0");
-
-
-                    localStorage.setItem(
-                        "numeroUsuario",
-                        numero
-                    );
-                }
-
-
-                nombre =
-                    "user_" +
-                    numero;
-
-
-                localStorage.setItem(
-                    "nombreUsuario",
-                    nombre
-                );
-            }
-
-
-            return nombre;
-        }
-
-
-        /* =====================================================
-           ESTADÍSTICAS
-        ===================================================== */
-
-        const ESTADISTICAS_KEY =
-            "estadisticasAdivinoNumero";
-
-
-        function obtenerEstadisticas() {
-
-            const datos =
+        const datos =
+            JSON.parse(
                 localStorage.getItem(
                     ESTADISTICAS_KEY
-                );
-
-
-            if (!datos) {
-                return {};
-            }
-
-
-            try {
-
-                const datosParseados =
-                    JSON.parse(datos);
-
-
-                if (
-                    !datosParseados ||
-                    typeof datosParseados !== "object" ||
-                    Array.isArray(datosParseados)
-                ) {
-
-                    return {};
-                }
-
-
-                const resultado = {};
-
-
-                Object.keys(
-                    datosParseados
-                ).forEach(
-                    function(nombre) {
-
-                        const jugador =
-                            datosParseados[
-                                nombre
-                            ];
-
-
-                        if (
-                            !jugador ||
-                            typeof jugador !== "object"
-                        ) {
-
-                            return;
-                        }
-
-
-                        const mejorIntentos =
-                            Number(
-                                jugador.mejorIntentos
-                            );
-
-
-                        const partidas =
-                            Number(
-                                jugador.partidas
-                            );
-
-
-                        if (
-                            !Number.isFinite(
-                                mejorIntentos
-                            ) ||
-                            !Number.isFinite(
-                                partidas
-                            )
-                        ) {
-
-                            return;
-                        }
-
-
-                        resultado[nombre] = {
-
-                            mejorIntentos:
-                                mejorIntentos,
-
-                            partidas:
-                                partidas
-
-                        };
-
-                    }
-                );
-
-
-                return resultado;
-
-            } catch {
-
-                return {};
-            }
-        }
-
-
-        function guardarEstadistica() {
-
-            const nombre =
-                obtenerNombreUsuario();
-
-
-            const estadisticas =
-                obtenerEstadisticas();
-
-
-            if (!estadisticas[nombre]) {
-
-                estadisticas[nombre] = {
-
-                    mejorIntentos:
-                        intentos,
-
-                    partidas:
-                        1
-
-                };
-
-            } else {
-
-                estadisticas[nombre].partidas++;
-
-
-                if (
-                    intentos <
-                    estadisticas[nombre]
-                        .mejorIntentos
-                ) {
-
-                    estadisticas[nombre]
-                        .mejorIntentos =
-                        intentos;
-                }
-            }
-
-
-            localStorage.setItem(
-                ESTADISTICAS_KEY,
-                JSON.stringify(
-                    estadisticas
                 )
             );
 
-
-            mostrarRanking();
+        if(Array.isArray(datos)){
+            return datos;
         }
 
+    }
+    catch(e){}
 
-        function ordenarRanking(
-            estadisticas
-        ) {
+    return [];
 
-            const jugadores =
-                Object.keys(
-                    estadisticas
-                ).map(
-                    function(nombre) {
+}
 
-                        return {
 
-                            nombre:
-                                nombre,
+function guardarEstadisticas(datos){
 
-                            mejorIntentos:
-                                estadisticas[
-                                    nombre
-                                ].mejorIntentos,
+    localStorage.setItem(
+        ESTADISTICAS_KEY,
+        JSON.stringify(datos)
+    );
 
-                            partidas:
-                                estadisticas[
-                                    nombre
-                                ].partidas
+}
 
-                        };
 
-                    }
+/* =====================================================
+   ORDENAR RANKING
+===================================================== */
+
+function ordenarRanking(datos){
+
+    return datos.sort(
+        (a,b) => {
+
+            if(
+                a.mejorIntentos !==
+                b.mejorIntentos
+            ){
+
+                return (
+                    a.mejorIntentos -
+                    b.mejorIntentos
                 );
 
+            }
 
-            jugadores.sort(
-                function(a, b) {
+            if(
+                a.partidas !==
+                b.partidas
+            ){
 
-                    if (
-                        a.mejorIntentos !==
-                        b.mejorIntentos
-                    ) {
+                return (
+                    b.partidas -
+                    a.partidas
+                );
 
-                        return (
-                            a.mejorIntentos -
-                            b.mejorIntentos
-                        );
-                    }
+            }
 
+            return a.nombre.localeCompare(
+                b.nombre
+            );
 
-                    if (
-                        a.partidas !==
-                        b.partidas
-                    ) {
+        }
+    );
 
-                        return (
-                            b.partidas -
-                            a.partidas
-                        );
-                    }
+}
 
 
-                    return a.nombre.localeCompare(
-                        b.nombre
+/* =====================================================
+   MOSTRAR RANKING
+===================================================== */
+
+function mostrarRanking(){
+
+    const datos =
+        ordenarRanking(
+            obtenerEstadisticas()
+        );
+
+    rankingBody.innerHTML = "";
+
+    const t = idiomas[idioma];
+
+    if(datos.length === 0){
+
+        rankingBody.innerHTML =
+            `<tr>
+                <td colspan="4" class="sin-datos">
+                    ${t.sinDatos}
+                </td>
+            </tr>`;
+
+        posicionUsuario.textContent = "";
+
+        return;
+
+    }
+
+
+    const nombreActual =
+        obtenerNombreUsuario();
+
+
+    datos
+        .slice(0,10)
+        .forEach(
+            (jugador,index) => {
+
+                const fila =
+                    document.createElement("tr");
+
+                if(
+                    jugador.nombre ===
+                    nombreActual
+                ){
+
+                    fila.classList.add(
+                        "tu-fila"
                     );
 
                 }
-            );
 
+                fila.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${jugador.nombre}</td>
+                    <td>${jugador.mejorIntentos}</td>
+                    <td>${jugador.partidas}</td>
+                `;
 
-            return jugadores;
-        }
-
-
-        function mostrarRanking() {
-
-            const estadisticas =
-                obtenerEstadisticas();
-
-
-            const ranking =
-                ordenarRanking(
-                    estadisticas
+                rankingBody.appendChild(
+                    fila
                 );
-
-
-            const tabla =
-                document.getElementById(
-                    "tablaRanking"
-                );
-
-
-            const nombreUsuario =
-                obtenerNombreUsuario();
-
-
-            tabla.innerHTML = "";
-
-
-            const top10 =
-                ranking.slice(
-                    0,
-                    10
-                );
-
-
-            top10.forEach(
-                function(
-                    jugador,
-                    index
-                ) {
-
-                    const fila =
-                        document.createElement(
-                            "tr"
-                        );
-
-
-                    if (
-                        jugador.nombre ===
-                        nombreUsuario
-                    ) {
-
-                        fila.classList.add(
-                            "tu-fila"
-                        );
-                    }
-
-
-                    const puesto =
-                        document.createElement(
-                            "td"
-                        );
-
-                    const nombre =
-                        document.createElement(
-                            "td"
-                        );
-
-                    const intentosCelda =
-                        document.createElement(
-                            "td"
-                        );
-
-                    const partidasCelda =
-                        document.createElement(
-                            "td"
-                        );
-
-
-                    puesto.textContent =
-                        index + 1;
-
-
-                    nombre.textContent =
-                        jugador.nombre;
-
-
-                    intentosCelda.textContent =
-                        jugador.mejorIntentos;
-
-
-                    partidasCelda.textContent =
-                        jugador.partidas;
-
-
-                    fila.appendChild(
-                        puesto
-                    );
-
-                    fila.appendChild(
-                        nombre
-                    );
-
-                    fila.appendChild(
-                        intentosCelda
-                    );
-
-                    fila.appendChild(
-                        partidasCelda
-                    );
-
-
-                    tabla.appendChild(
-                        fila
-                    );
-
-                }
-            );
-
-
-            mostrarPosicionUsuario(
-                ranking,
-                nombreUsuario
-            );
-        }
-
-
-        function mostrarPosicionUsuario(
-            ranking,
-            nombreUsuario
-        ) {
-
-            const elemento =
-                document.getElementById(
-                    "posicionUsuario"
-                );
-
-
-            const posicion =
-                ranking.findIndex(
-                    function(jugador) {
-
-                        return (
-                            jugador.nombre ===
-                            nombreUsuario
-                        );
-
-                    }
-                );
-
-
-            if (
-                posicion === -1 ||
-                posicion < 10
-            ) {
-
-                elemento.style.display =
-                    "none";
-
-                return;
-            }
-
-
-            const jugador =
-                ranking[posicion];
-
-
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
-
-
-            if (idioma === "en") {
-
-                elemento.textContent =
-                    "👤 Your position: " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.mejorIntentos +
-                    " attempts minimum — " +
-                    jugador.partidas +
-                    " games won";
-
-
-            } else if (idioma === "hy") {
-
-                elemento.textContent =
-                    "👤 Քո դիրքը՝ " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.mejorIntentos +
-                    " նվազագույն փորձ — " +
-                    jugador.partidas +
-                    " հաղթած խաղ";
-
-
-            } else {
-
-                elemento.textContent =
-                    "👤 Tu posición: " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.mejorIntentos +
-                    " intentos mínimos — " +
-                    jugador.partidas +
-                    " partidas ganadas";
-            }
-
-
-            elemento.style.display =
-                "block";
-        }
-
-
-        /* =====================================================
-           IDIOMAS
-        ===================================================== */
-
-        function abrirIdioma() {
-
-            const menu =
-                document.getElementById(
-                    "menuIdiomas"
-                );
-
-
-            if (
-                menu.style.display ===
-                "block"
-            ) {
-
-                menu.style.display =
-                    "none";
-
-            } else {
-
-                menu.style.display =
-                    "block";
-            }
-        }
-
-
-        function cambiarIdioma(
-            idioma
-        ) {
-
-            localStorage.setItem(
-                "idioma",
-                idioma
-            );
-
-
-            aplicarIdioma();
-
-
-            document.getElementById(
-                "menuIdiomas"
-            ).style.display =
-                "none";
-        }
-
-
-        function aplicarIdioma() {
-
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
-
-
-            const titulo =
-                document.getElementById(
-                    "titulo"
-                );
-
-            const descripcion =
-                document.getElementById(
-                    "descripcion"
-                );
-
-            const volver =
-                document.getElementById(
-                    "volver"
-                );
-
-            const botonMenor =
-                document.getElementById(
-                    "botonMenor"
-                );
-
-            const botonCorrecto =
-                document.getElementById(
-                    "botonCorrecto"
-                );
-
-            const botonMayor =
-                document.getElementById(
-                    "botonMayor"
-                );
-
-            const botonReiniciar =
-                document.getElementById(
-                    "botonReiniciar"
-                );
-
-            const botonIdioma =
-                document.getElementById(
-                    "botonIdioma"
-                );
-
-
-            const tituloEstadisticas =
-                document.getElementById(
-                    "tituloEstadisticas"
-                );
-
-            const thPuesto =
-                document.getElementById(
-                    "thPuesto"
-                );
-
-            const thNombre =
-                document.getElementById(
-                    "thNombre"
-                );
-
-            const thIntentos =
-                document.getElementById(
-                    "thIntentos"
-                );
-
-            const thPartidas =
-                document.getElementById(
-                    "thPartidas"
-                );
-
-
-            if (idioma === "en") {
-
-                titulo.textContent =
-                    "🧠 I Guess Your Number";
-
-                descripcion.textContent =
-                    "Think of a number from 1 to 100 and I will try to guess it.";
-
-                volver.textContent =
-                    "← Back";
-
-                botonMenor.textContent =
-                    "⬇️ It is lower";
-
-                botonCorrecto.textContent =
-                    "✅ Correct";
-
-                botonMayor.textContent =
-                    "⬆️ It is higher";
-
-                botonReiniciar.textContent =
-                    "🔄 Play again";
-
-                botonIdioma.textContent =
-                    "🇬🇧 EN ▾";
-
-                tituloEstadisticas.textContent =
-                    "🏆 Statistics";
-
-                thPuesto.textContent =
-                    "Place";
-
-                thNombre.textContent =
-                    "Name";
-
-                thIntentos.textContent =
-                    "Fewest attempts";
-
-                thPartidas.textContent =
-                    "Games won";
-
-                document.title =
-                    "I Guess Your Number - MY WEBSITE";
-
-
-            } else if (idioma === "hy") {
-
-                titulo.textContent =
-                    "🧠 Գուշակում եմ քո թիվը";
-
-                descripcion.textContent =
-                    "Մտածիր 1-ից 100 թիվ և ես կփորձեմ գուշակել այն։";
-
-                volver.textContent =
-                    "← Հետ";
-
-                botonMenor.textContent =
-                    "⬇️ Ավելի փոքր է";
-
-                botonCorrecto.textContent =
-                    "✅ Ճիշտ է";
-
-                botonMayor.textContent =
-                    "⬆️ Ավելի մեծ է";
-
-                botonReiniciar.textContent =
-                    "🔄 Նոր խաղ";
-
-                botonIdioma.textContent =
-                    "🇦🇲 HY ▾";
-
-                tituloEstadisticas.textContent =
-                    "🏆 Վիճակագրություն";
-
-                thPuesto.textContent =
-                    "Դիրք";
-
-                thNombre.textContent =
-                    "Անուն";
-
-                thIntentos.textContent =
-                    "Նվազագույն փորձեր";
-
-                thPartidas.textContent =
-                    "Հաղթած խաղեր";
-
-                document.title =
-                    "Գուշակում եմ քո թիվը - ԻՄ ԿԱՅՔԸ";
-
-
-            } else {
-
-                titulo.textContent =
-                    "🧠 Adivino tu número";
-
-                descripcion.textContent =
-                    "Piensa un número del 1 al 100 y yo intentaré adivinarlo.";
-
-                volver.textContent =
-                    "← Volver";
-
-                botonMenor.textContent =
-                    "⬇️ Es menor";
-
-                botonCorrecto.textContent =
-                    "✅ Correcto";
-
-                botonMayor.textContent =
-                    "⬆️ Es mayor";
-
-                botonReiniciar.textContent =
-                    "🔄 Jugar otra vez";
-
-                botonIdioma.textContent =
-                    "🇪🇸 ES ▾";
-
-                tituloEstadisticas.textContent =
-                    "🏆 Estadísticas";
-
-                thPuesto.textContent =
-                    "Puesto";
-
-                thNombre.textContent =
-                    "Nombre";
-
-                thIntentos.textContent =
-                    "Menos intentos";
-
-                thPartidas.textContent =
-                    "Partidas ganadas";
-
-                document.title =
-                    "Adivino tu número - MI WEB";
-            }
-
-
-            actualizarNumero();
-
-            mostrarRanking();
-
-            actualizarTextoTema();
-        }
-
-
-        /* =====================================================
-           CERRAR MENÚ DE IDIOMAS
-        ===================================================== */
-
-        document.addEventListener(
-            "click",
-            function(event) {
-
-                const menu =
-                    document.getElementById(
-                        "menuIdiomas"
-                    );
-
-                const boton =
-                    document.getElementById(
-                        "botonIdioma"
-                    );
-
-
-                if (
-                    !menu.contains(event.target) &&
-                    !boton.contains(event.target)
-                ) {
-
-                    menu.style.display =
-                        "none";
-                }
 
             }
         );
 
 
-        /* =====================================================
-           TEMA
-        ===================================================== */
-
-        function aplicarTema() {
-
-            const tema =
-                localStorage.getItem(
-                    "tema"
-                ) || "oscuro";
+    const posicion =
+        datos.findIndex(
+            jugador =>
+            jugador.nombre ===
+            nombreActual
+        );
 
 
-            if (tema === "claro") {
+    if(posicion >= 10){
 
-                document.body.classList.add(
-                    "claro"
-                );
+        posicionUsuario.textContent =
+            t.posicion.replace(
+                "{pos}",
+                posicion + 1
+            );
 
-            } else {
+    }
+    else{
 
-                document.body.classList.remove(
-                    "claro"
-                );
-            }
+        posicionUsuario.textContent = "";
+
+    }
+
+}
 
 
-            actualizarTextoTema();
+/* =====================================================
+   ACTUALIZAR RANGO
+===================================================== */
+
+function actualizarRango(){
+
+    const t =
+        idiomas[idioma];
+
+    rango.textContent =
+        t.rango
+        .replace("{min}", minimo)
+        .replace("{max}", maximo);
+
+}
+
+
+/* =====================================================
+   NUEVO NÚMERO
+===================================================== */
+
+/*
+   IMPORTANTE:
+
+   Antes usábamos el punto medio:
+
+   1 - 100
+   → 50
+   → 75
+   → 87
+   → ...
+
+   Eso hace que el número se encuentre
+   demasiado rápido.
+
+   Ahora elegimos un número ALEATORIO
+   dentro del rango disponible.
+
+   Así se necesitan muchos más intentos.
+*/
+
+function generarNumero(){
+
+    if(minimo > maximo){
+
+        mensaje.textContent =
+            "❌";
+
+        return;
+
+    }
+
+
+    numeroAdivinado =
+        Math.floor(
+            Math.random() *
+            (maximo - minimo + 1)
+        ) + minimo;
+
+
+    numeroActual.textContent =
+        numeroAdivinado;
+
+    actualizarRango();
+
+}
+
+
+/* =====================================================
+   INICIAR JUEGO
+===================================================== */
+
+function iniciarJuego(){
+
+    minimo = 1;
+
+    maximo = 100;
+
+    intentos = 1;
+
+    terminado = false;
+
+    mensaje.textContent = "";
+
+    reiniciarBtn.style.display =
+        "none";
+
+    intentosElemento.textContent =
+        intentos;
+
+    menorBtn.disabled = false;
+
+    correctoBtn.disabled = false;
+
+    mayorBtn.disabled = false;
+
+    generarNumero();
+
+}
+
+
+/* =====================================================
+   RESPUESTA: ES MENOR
+===================================================== */
+
+menorBtn.addEventListener(
+    "click",
+    () => {
+
+        if(terminado){
+            return;
         }
 
 
-        function cambiarTema() {
-
-            const temaActual =
-                localStorage.getItem(
-                    "tema"
-                ) || "oscuro";
+        maximo =
+            numeroAdivinado - 1;
 
 
-            const nuevoTema =
-                temaActual === "oscuro"
-                ? "claro"
-                : "oscuro";
+        intentos++;
+
+        intentosElemento.textContent =
+            intentos;
 
 
-            localStorage.setItem(
-                "tema",
-                nuevoTema
+        if(minimo > maximo){
+
+            mensaje.textContent =
+                "🤔 Creo que algo no cuadra.";
+
+            return;
+
+        }
+
+
+        generarNumero();
+
+    }
+);
+
+
+/* =====================================================
+   RESPUESTA: ES MAYOR
+===================================================== */
+
+mayorBtn.addEventListener(
+    "click",
+    () => {
+
+        if(terminado){
+            return;
+        }
+
+
+        minimo =
+            numeroAdivinado + 1;
+
+
+        intentos++;
+
+        intentosElemento.textContent =
+            intentos;
+
+
+        if(minimo > maximo){
+
+            mensaje.textContent =
+                "🤔 Creo que algo no cuadra.";
+
+            return;
+
+        }
+
+
+        generarNumero();
+
+    }
+);
+
+
+/* =====================================================
+   RESPUESTA: CORRECTO
+===================================================== */
+
+correctoBtn.addEventListener(
+    "click",
+    () => {
+
+        if(terminado){
+            return;
+        }
+
+
+        terminado = true;
+
+
+        menorBtn.disabled = true;
+
+        correctoBtn.disabled = true;
+
+        mayorBtn.disabled = true;
+
+
+        const t =
+            idiomas[idioma];
+
+
+        mensaje.textContent =
+            t.victoria.replace(
+                "{intentos}",
+                intentos
             );
 
 
-            aplicarTema();
+        reiniciarBtn.style.display =
+            "inline-block";
+
+
+        const nombre =
+            obtenerNombreUsuario();
+
+
+        const datos =
+            obtenerEstadisticas();
+
+
+        let jugador =
+            datos.find(
+                j =>
+                j.nombre === nombre
+            );
+
+
+        if(!jugador){
+
+            jugador = {
+
+                nombre: nombre,
+
+                mejorIntentos: intentos,
+
+                partidas: 1
+
+            };
+
+            datos.push(jugador);
+
         }
+        else{
 
+            jugador.partidas++;
 
-        function actualizarTextoTema() {
+            if(
+                intentos <
+                jugador.mejorIntentos
+            ){
 
-            const tema =
-                localStorage.getItem(
-                    "tema"
-                ) || "oscuro";
+                jugador.mejorIntentos =
+                    intentos;
 
-
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
-
-
-            const boton =
-                document.getElementById(
-                    "botonTema"
-                );
-
-
-            if (idioma === "en") {
-
-                boton.textContent =
-                    tema === "oscuro"
-                    ? "☀️ Light"
-                    : "🌙 Dark";
-
-            } else if (idioma === "hy") {
-
-                boton.textContent =
-                    tema === "oscuro"
-                    ? "☀️ Բաց"
-                    : "🌙 Մութ";
-
-            } else {
-
-                boton.textContent =
-                    tema === "oscuro"
-                    ? "☀️ Claro"
-                    : "🌙 Oscuro";
             }
+
         }
 
 
-        /* =====================================================
-           INICIO
-        ===================================================== */
-
-        aplicarIdioma();
-
-        aplicarTema();
+        guardarEstadisticas(datos);
 
         mostrarRanking();
 
-    </script>
+    }
+);
+
+
+/* =====================================================
+   REINICIAR
+===================================================== */
+
+reiniciarBtn.addEventListener(
+    "click",
+    iniciarJuego
+);
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+const nombreGuardado =
+    localStorage.getItem(
+        "nombreUsuario"
+    );
+
+if(nombreGuardado){
+
+    nombreInput.value =
+        nombreGuardado;
+
+}
+
+
+aplicarTema();
+
+aplicarIdioma();
+
+iniciarJuego();
+
+</script>
 
 </body>
 </html>
