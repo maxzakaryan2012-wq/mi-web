@@ -394,16 +394,12 @@
         <section class="juego">
 
             <div id="mensaje">
-                Piensa un número del 1 al 100
+                Pulsa comenzar para que intente adivinarlo.
             </div>
 
-            <div id="numero">
-                ¿Listo?
-            </div>
+            <div id="numero"></div>
 
-            <div id="rango">
-                Cuando estés preparado, pulsa comenzar.
-            </div>
+            <div id="rango"></div>
 
 
             <button
@@ -519,13 +515,9 @@
         ===================================================== */
 
         let minimo = 1;
-
         let maximo = 100;
-
         let numeroAdivinado = 0;
-
         let intentos = 0;
-
         let jugando = false;
 
 
@@ -556,31 +548,23 @@
         function comenzar() {
 
             minimo = 1;
-
             maximo = 100;
-
             intentos = 0;
-
             jugando = true;
 
-
             generarNumeroAleatorio();
-
 
             document.getElementById(
                 "comenzarBtn"
             ).style.display = "none";
 
-
             document.getElementById(
                 "reiniciarBtn"
             ).style.display = "none";
 
-
             document.getElementById(
                 "botonesJuego"
             ).style.display = "flex";
-
 
             mostrarNumero();
 
@@ -595,11 +579,8 @@
 
             intentos++;
 
-
             const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
+                localStorage.getItem("idioma") || "es";
 
 
             document.getElementById(
@@ -611,9 +592,7 @@
             document.getElementById(
                 "rango"
             ).textContent =
-                minimo +
-                " - " +
-                maximo;
+                "1 - 100";
 
 
             if (idioma === "en") {
@@ -636,6 +615,7 @@
                     "mensaje"
                 ).textContent =
                     "Creo que tu número es";
+
             }
 
         }
@@ -651,18 +631,16 @@
                 return;
             }
 
-
             maximo =
                 numeroAdivinado - 1;
-
 
             if (minimo > maximo) {
 
                 terminar(false);
 
                 return;
-            }
 
+            }
 
             generarNumeroAleatorio();
 
@@ -681,18 +659,16 @@
                 return;
             }
 
-
             minimo =
                 numeroAdivinado + 1;
-
 
             if (minimo > maximo) {
 
                 terminar(false);
 
                 return;
-            }
 
+            }
 
             generarNumeroAleatorio();
 
@@ -711,7 +687,6 @@
                 return;
             }
 
-
             terminar(true);
 
         }
@@ -725,11 +700,9 @@
 
             jugando = false;
 
-
             document.getElementById(
                 "botonesJuego"
             ).style.display = "none";
-
 
             document.getElementById(
                 "reiniciarBtn"
@@ -737,9 +710,7 @@
 
 
             const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
+                localStorage.getItem("idioma") || "es";
 
 
             if (acertado) {
@@ -782,6 +753,7 @@
                     ).textContent =
                         "Intentos: " +
                         intentos;
+
                 }
 
 
@@ -841,15 +813,14 @@
 
                     numero =
                         Math.floor(
-                            Math.random() *
-                            10000
+                            Math.random() * 10000
                         );
 
-
                     numero =
-                        String(numero)
-                            .padStart(4, "0");
-
+                        String(numero).padStart(
+                            4,
+                            "0"
+                        );
 
                     localStorage.setItem(
                         "numeroUsuario",
@@ -860,8 +831,7 @@
 
 
                 nombre =
-                    "user_" +
-                    numero;
+                    "user_" + numero;
 
 
                 localStorage.setItem(
@@ -942,7 +912,6 @@
                                 jugador.mejorIntentos
                             );
 
-
                         const partidas =
                             Number(
                                 jugador.partidas
@@ -955,7 +924,9 @@
                             ) ||
                             !Number.isFinite(
                                 partidas
-                            )
+                            ) ||
+                            mejorIntentos < 1 ||
+                            partidas < 0
                         ) {
 
                             return;
@@ -1019,8 +990,14 @@
                 estadisticas[nombre].partidas += 1;
 
 
+                /*
+                 * AQUÍ ESTÁ EL CAMBIO:
+                 *
+                 * MÁS INTENTOS = MEJOR PARTIDA
+                 */
+
                 if (
-                    intentos <
+                    intentos >
                     estadisticas[nombre]
                         .mejorIntentos
                 ) {
@@ -1085,18 +1062,27 @@
             jugadores.sort(
                 function(a, b) {
 
+                    /*
+                     * MÁS INTENTOS = MEJOR
+                     */
+
                     if (
                         a.mejorIntentos !==
                         b.mejorIntentos
                     ) {
 
                         return (
-                            a.mejorIntentos -
-                            b.mejorIntentos
+                            b.mejorIntentos -
+                            a.mejorIntentos
                         );
 
                     }
 
+
+                    /*
+                     * Si empatan:
+                     * más partidas ganadas
+                     */
 
                     if (
                         a.partidas !==
@@ -1202,39 +1188,23 @@
                     puesto.textContent =
                         index + 1;
 
-
                     nombre.textContent =
                         jugador.nombre;
 
-
                     mejor.textContent =
                         jugador.mejorIntentos;
-
 
                     partidas.textContent =
                         jugador.partidas;
 
 
-                    fila.appendChild(
-                        puesto
-                    );
-
-                    fila.appendChild(
-                        nombre
-                    );
-
-                    fila.appendChild(
-                        mejor
-                    );
-
-                    fila.appendChild(
-                        partidas
-                    );
+                    fila.appendChild(puesto);
+                    fila.appendChild(nombre);
+                    fila.appendChild(mejor);
+                    fila.appendChild(partidas);
 
 
-                    tabla.appendChild(
-                        fila
-                    );
+                    tabla.appendChild(fila);
 
                 }
             );
@@ -1424,11 +1394,6 @@
             const botonIdioma =
                 document.getElementById(
                     "botonIdioma"
-                );
-
-            const botonTema =
-                document.getElementById(
-                    "botonTema"
                 );
 
             const tituloEstadisticas =
@@ -1636,7 +1601,7 @@
 
 
         /* =====================================================
-           CERRAR MENÚ DE IDIOMAS
+           CERRAR MENÚ
         ===================================================== */
 
         document.addEventListener(
