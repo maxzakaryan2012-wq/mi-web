@@ -570,6 +570,7 @@
         ========================= */
 
         @media (max-width: 500px) {
+
             .barra-superior {
                 padding: 0 10px;
             }
@@ -597,7 +598,9 @@
                 padding: 9px 5px;
                 font-size: 13px;
             }
+
         }
+
     </style>
 </head>
 
@@ -610,6 +613,7 @@
     <header class="barra-superior">
 
         <div class="izquierda">
+
             <button
                 class="boton"
                 onclick="volverInicio()"
@@ -617,6 +621,7 @@
             >
                 ← Volver
             </button>
+
         </div>
 
         <div class="derecha">
@@ -625,9 +630,11 @@
                 id="selectorIdioma"
                 onchange="cambiarIdioma()"
             >
+
                 <option value="es">🇪🇸 Español</option>
                 <option value="en">🇬🇧 English</option>
                 <option value="hy">🇦🇲 Հայերեն</option>
+
             </select>
 
             <button
@@ -666,6 +673,7 @@
         <div class="marcador">
 
             <div class="marcador-caja">
+
                 <div
                     class="marcador-titulo"
                     id="textoPuntos"
@@ -679,10 +687,12 @@
                 >
                     0
                 </div>
+
             </div>
 
 
             <div class="marcador-caja">
+
                 <div
                     class="marcador-titulo"
                     id="textoTiempo"
@@ -696,6 +706,7 @@
                 >
                     0.0 s
                 </div>
+
             </div>
 
         </div>
@@ -705,7 +716,10 @@
              ZONA DEL JUEGO
         ========================= -->
 
-        <div class="zona-juego" id="zonaJuego">
+        <div
+            class="zona-juego"
+            id="zonaJuego"
+        >
 
             <div class="carretera">
 
@@ -726,12 +740,16 @@
                 <div class="antena-punta"></div>
 
                 <div class="cabeza">
+
                     <div class="ojo ojo1"></div>
                     <div class="ojo ojo2"></div>
+
                 </div>
 
                 <div class="cuerpo">
+
                     <div class="panel"></div>
+
                 </div>
 
                 <div class="brazo brazo1"></div>
@@ -821,16 +839,26 @@
                 <thead>
 
                     <tr>
+
                         <th>#</th>
-                        <th id="cabeceraJugador">Jugador</th>
-                        <th id="cabeceraPuntos">Puntos</th>
-                        <th id="cabeceraTiempo">Tiempo</th>
+
+                        <th id="cabeceraJugador">
+                            Jugador
+                        </th>
+
+                        <th id="cabeceraPuntos">
+                            Puntos
+                        </th>
+
+                        <th id="cabeceraTiempo">
+                            Tiempo
+                        </th>
+
                     </tr>
 
                 </thead>
 
-                <tbody id="tablaRecords">
-                </tbody>
+                <tbody id="tablaRecords"></tbody>
 
             </table>
 
@@ -877,11 +905,26 @@
 
         const tiempo =
             document.getElementById("tiempo");
-const SUPABASE_URL =
-    "https://bxbjbbylswiocymrqaqk.supabase.co";
 
-const SUPABASE_KEY =
-    "sb_publishable_fUqvcSbYMb1gfJdrqS-7Lw_nhLtaEp_";
+
+        /* =====================================================
+           CONFIGURACIÓN DE ESTADÍSTICAS
+        ===================================================== */
+
+        const estadisticasKey =
+            "estadisticasCarreraInfinita";
+
+
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "https://bxbjbbylswiocymrqaqk.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_fUqvcSbYMb1gfJdrqS-7Lw_nhLtaEp_";
+
 
         /* =====================================================
            IDIOMAS
@@ -931,7 +974,8 @@ const SUPABASE_KEY =
                 sinRecords:
                     "Todavía no hay récords.",
 
-                segundos: "s"
+                segundos:
+                    "s"
 
             },
 
@@ -977,7 +1021,8 @@ const SUPABASE_KEY =
                 sinRecords:
                     "There are no records yet.",
 
-                segundos: "s"
+                segundos:
+                    "s"
 
             },
 
@@ -1023,7 +1068,8 @@ const SUPABASE_KEY =
                 sinRecords:
                     "Դեռ ռեկորդներ չկան։",
 
-                segundos: "վ"
+                segundos:
+                    "վ"
 
             }
 
@@ -1037,7 +1083,10 @@ const SUPABASE_KEY =
         function obtenerNumeroUsuario() {
 
             let numero =
-                localStorage.getItem("numeroUsuario");
+                localStorage.getItem(
+                    "numeroUsuario"
+                );
+
 
             if (!numero) {
 
@@ -1046,23 +1095,34 @@ const SUPABASE_KEY =
                         Math.random() * 10000
                     );
 
+
                 numero =
-                    String(numero).padStart(4, "0");
+                    String(numero).padStart(
+                        4,
+                        "0"
+                    );
+
 
                 localStorage.setItem(
                     "numeroUsuario",
                     numero
                 );
+
             }
 
+
             return numero;
+
         }
 
 
         function obtenerNombreUsuario() {
 
             let nombre =
-                localStorage.getItem("nombreUsuario");
+                localStorage.getItem(
+                    "nombreUsuario"
+                );
+
 
             if (!nombre) {
 
@@ -1070,13 +1130,17 @@ const SUPABASE_KEY =
                     "user_" +
                     obtenerNumeroUsuario();
 
+
                 localStorage.setItem(
                     "nombreUsuario",
                     nombre
                 );
+
             }
 
+
             return nombre;
+
         }
 
 
@@ -1090,17 +1154,24 @@ const SUPABASE_KEY =
                 localStorage.getItem("tema") ||
                 "oscuro";
 
+
             if (tema === "claro") {
 
-                document.body.classList.add("claro");
+                document.body.classList.add(
+                    "claro"
+                );
 
             } else {
 
-                document.body.classList.remove("claro");
+                document.body.classList.remove(
+                    "claro"
+                );
 
             }
 
+
             actualizarTextoTema();
+
         }
 
 
@@ -1110,17 +1181,21 @@ const SUPABASE_KEY =
                 localStorage.getItem("tema") ||
                 "oscuro";
 
+
             const nuevoTema =
                 temaActual === "oscuro"
                     ? "claro"
                     : "oscuro";
+
 
             localStorage.setItem(
                 "tema",
                 nuevoTema
             );
 
+
             aplicarTema();
+
         }
 
 
@@ -1130,12 +1205,17 @@ const SUPABASE_KEY =
                 localStorage.getItem("tema") ||
                 "oscuro";
 
+
             const idioma =
                 localStorage.getItem("idioma") ||
                 "es";
 
+
             const boton =
-                document.getElementById("botonTema");
+                document.getElementById(
+                    "botonTema"
+                );
+
 
             if (idioma === "en") {
 
@@ -1172,6 +1252,7 @@ const SUPABASE_KEY =
             const idioma =
                 localStorage.getItem("idioma") ||
                 "es";
+
 
             const t =
                 textos[idioma] ||
@@ -1289,10 +1370,12 @@ const SUPABASE_KEY =
                     "selectorIdioma"
                 ).value;
 
+
             localStorage.setItem(
                 "idioma",
                 idioma
             );
+
 
             aplicarIdioma();
 
@@ -1308,6 +1391,7 @@ const SUPABASE_KEY =
             const ancho =
                 zonaJuego.clientWidth;
 
+
             const posiciones = [
 
                 ancho * 0.1666,
@@ -1317,6 +1401,7 @@ const SUPABASE_KEY =
                 ancho * 0.8333
 
             ];
+
 
             return posiciones[carril];
 
@@ -1341,6 +1426,7 @@ const SUPABASE_KEY =
 
             if (!jugando) return;
 
+
             if (carrilJugador > 0) {
 
                 carrilJugador--;
@@ -1348,12 +1434,14 @@ const SUPABASE_KEY =
                 actualizarJugador();
 
             }
+
         }
 
 
         function moverDerecha() {
 
             if (!jugando) return;
+
 
             if (carrilJugador < 2) {
 
@@ -1362,6 +1450,7 @@ const SUPABASE_KEY =
                 actualizarJugador();
 
             }
+
         }
 
 
@@ -1377,6 +1466,7 @@ const SUPABASE_KEY =
                     moverIzquierda();
 
                 }
+
 
                 if (
                     event.key === "ArrowRight" ||
@@ -1399,7 +1489,9 @@ const SUPABASE_KEY =
 
             limpiarJuego();
 
+
             jugando = true;
+
 
             puntosActuales = 0;
 
@@ -1413,21 +1505,28 @@ const SUPABASE_KEY =
 
             contadorMonedas = 0;
 
-            puntos.textContent = "0";
 
-            tiempo.textContent = "0.0 s";
+            puntos.textContent =
+                "0";
+
+
+            tiempo.textContent =
+                "0.0 s";
+
 
             actualizarJugador();
 
 
             document.getElementById(
                 "pantallaInicio"
-            ).style.display = "none";
+            ).style.display =
+                "none";
 
 
             document.getElementById(
                 "pantallaFinal"
-            ).style.display = "none";
+            ).style.display =
+                "none";
 
 
             tiempoInicio =
@@ -1458,16 +1557,22 @@ const SUPABASE_KEY =
 
             if (!jugando) return;
 
+
             tiempoActual =
-                (performance.now() -
-                    tiempoInicio) / 1000;
+                (
+                    performance.now() -
+                    tiempoInicio
+                ) / 1000;
+
 
             const idioma =
                 localStorage.getItem("idioma") ||
                 "es";
 
+
             const unidad =
                 textos[idioma].segundos;
+
 
             tiempo.textContent =
                 tiempoActual.toFixed(1) +
@@ -1490,8 +1595,7 @@ const SUPABASE_KEY =
 
 
             if (
-                Math.random() <
-                0.012
+                Math.random() < 0.012
             ) {
 
                 crearObstaculo();
@@ -1500,16 +1604,13 @@ const SUPABASE_KEY =
 
 
             if (
-                Math.random() <
-                0.008
+                Math.random() < 0.008
             ) {
 
                 crearMoneda();
 
             }
 
-
-            /* Aumentar velocidad cada cierto tiempo */
 
             velocidad =
                 Math.min(
@@ -1607,7 +1708,9 @@ const SUPABASE_KEY =
         function crearObstaculo() {
 
             const obstaculo =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             obstaculo.classList.add(
@@ -1675,7 +1778,9 @@ const SUPABASE_KEY =
         function crearMoneda() {
 
             const moneda =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             moneda.classList.add(
@@ -1690,13 +1795,16 @@ const SUPABASE_KEY =
             let valor;
 
 
-            if (aleatorio < 0.65) {
+            if (
+                aleatorio < 0.65
+            ) {
 
                 moneda.classList.add(
                     "moneda-bronce"
                 );
 
-                moneda.textContent = "1";
+                moneda.textContent =
+                    "1";
 
                 valor = 1;
 
@@ -1708,7 +1816,8 @@ const SUPABASE_KEY =
                     "moneda-plata"
                 );
 
-                moneda.textContent = "5";
+                moneda.textContent =
+                    "5";
 
                 valor = 5;
 
@@ -1718,7 +1827,8 @@ const SUPABASE_KEY =
                     "moneda-oro"
                 );
 
-                moneda.textContent = "20";
+                moneda.textContent =
+                    "20";
 
                 valor = 20;
 
@@ -1764,6 +1874,7 @@ const SUPABASE_KEY =
             const jugadorRect =
                 jugador.getBoundingClientRect();
 
+
             const elementoRect =
                 elemento.getBoundingClientRect();
 
@@ -1800,7 +1911,8 @@ const SUPABASE_KEY =
                 ) || 1;
 
 
-            puntosActuales += valor;
+            puntosActuales +=
+                valor;
 
 
             puntos.textContent =
@@ -1828,6 +1940,7 @@ const SUPABASE_KEY =
                 intervaloJuego
             );
 
+
             clearInterval(
                 intervaloTiempo
             );
@@ -1844,7 +1957,8 @@ const SUPABASE_KEY =
 
             document.getElementById(
                 "pantallaFinal"
-            ).style.display = "flex";
+            ).style.display =
+                "flex";
 
 
             mostrarRecords();
@@ -1902,6 +2016,7 @@ const SUPABASE_KEY =
                 intervaloJuego
             );
 
+
             clearInterval(
                 intervaloTiempo
             );
@@ -1945,7 +2060,22 @@ const SUPABASE_KEY =
 
             try {
 
-                return JSON.parse(datos);
+                const resultado =
+                    JSON.parse(datos);
+
+
+                if (
+                    typeof resultado !== "object" ||
+                    resultado === null ||
+                    Array.isArray(resultado)
+                ) {
+
+                    return {};
+
+                }
+
+
+                return resultado;
 
             } catch {
 
@@ -1984,12 +2114,29 @@ const SUPABASE_KEY =
 
             } else {
 
+                datos[nombre].partidas =
+                    Number(
+                        datos[nombre].partidas
+                    ) || 0;
+
                 datos[nombre].partidas++;
+
+
+                const mejorPuntuacionAnterior =
+                    Number(
+                        datos[nombre].mejorPuntuacion
+                    ) || 0;
+
+
+                const mejorTiempoAnterior =
+                    Number(
+                        datos[nombre].mejorTiempo
+                    ) || 0;
 
 
                 if (
                     puntosActuales >
-                    datos[nombre].mejorPuntuacion
+                    mejorPuntuacionAnterior
                 ) {
 
                     datos[nombre].mejorPuntuacion =
@@ -2000,18 +2147,13 @@ const SUPABASE_KEY =
 
                 } else if (
                     puntosActuales ===
-                    datos[nombre].mejorPuntuacion
+                    mejorPuntuacionAnterior &&
+                    tiempoActual >
+                    mejorTiempoAnterior
                 ) {
 
-                    if (
-                        tiempoActual >
-                        datos[nombre].mejorTiempo
-                    ) {
-
-                        datos[nombre].mejorTiempo =
-                            tiempoActual;
-
-                    }
+                    datos[nombre].mejorTiempo =
+                        tiempoActual;
 
                 }
 
@@ -2027,7 +2169,7 @@ const SUPABASE_KEY =
 
 
         /* =====================================================
-           RECORDS
+           MOSTRAR RECORDS
         ===================================================== */
 
         function mostrarRecords() {
@@ -2036,6 +2178,9 @@ const SUPABASE_KEY =
                 document.getElementById(
                     "tablaRecords"
                 );
+
+
+            if (!tabla) return;
 
 
             tabla.innerHTML = "";
@@ -2063,9 +2208,11 @@ const SUPABASE_KEY =
             ) {
 
                 tabla.innerHTML =
-                    '<tr><td colspan="4" class="sin-records">' +
+                    '<tr>' +
+                    '<td colspan="4" class="sin-records">' +
                     t.sinRecords +
-                    "</td></tr>";
+                    "</td>" +
+                    "</tr>";
 
                 return;
 
@@ -2076,10 +2223,15 @@ const SUPABASE_KEY =
                 function(a, b) {
 
                     const puntosA =
-                        datos[a].mejorPuntuacion || 0;
+                        Number(
+                            datos[a].mejorPuntuacion
+                        ) || 0;
+
 
                     const puntosB =
-                        datos[b].mejorPuntuacion || 0;
+                        Number(
+                            datos[b].mejorPuntuacion
+                        ) || 0;
 
 
                     if (
@@ -2093,10 +2245,15 @@ const SUPABASE_KEY =
 
 
                     const tiempoA =
-                        datos[a].mejorTiempo || 0;
+                        Number(
+                            datos[a].mejorTiempo
+                        ) || 0;
+
 
                     const tiempoB =
-                        datos[b].mejorTiempo || 0;
+                        Number(
+                            datos[b].mejorTiempo
+                        ) || 0;
 
 
                     return tiempoB -
@@ -2107,18 +2264,26 @@ const SUPABASE_KEY =
 
 
             const top =
-                jugadores.slice(0, 10);
+                jugadores.slice(
+                    0,
+                    10
+                );
 
 
             top.forEach(
-                function(nombre, indice) {
+                function(
+                    nombre,
+                    indice
+                ) {
 
                     const jugadorDatos =
                         datos[nombre];
 
 
                     const fila =
-                        document.createElement("tr");
+                        document.createElement(
+                            "tr"
+                        );
 
 
                     fila.innerHTML =
@@ -2128,17 +2293,24 @@ const SUPABASE_KEY =
                         "</td>" +
 
                         "<td>" +
-                        escaparHTML(nombre) +
-                        "</td>" +
-
-                        "<td>" +
-                        (jugadorDatos.mejorPuntuacion || 0) +
+                        escaparHTML(
+                            nombre
+                        ) +
                         "</td>" +
 
                         "<td>" +
                         (
-                            jugadorDatos.mejorTiempo ||
-                            0
+                            Number(
+                                jugadorDatos.mejorPuntuacion
+                            ) || 0
+                        ) +
+                        "</td>" +
+
+                        "<td>" +
+                        (
+                            Number(
+                                jugadorDatos.mejorTiempo
+                            ) || 0
                         ).toFixed(1) +
                         " " +
                         t.segundos +
@@ -2162,10 +2334,14 @@ const SUPABASE_KEY =
         function escaparHTML(texto) {
 
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             div.textContent =
                 texto;
+
 
             return div.innerHTML;
 
