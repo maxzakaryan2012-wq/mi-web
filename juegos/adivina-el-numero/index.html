@@ -410,6 +410,7 @@
 
                     <thead>
                         <tr>
+
                             <th id="thPuesto">
                                 Puesto
                             </th>
@@ -425,11 +426,11 @@
                             <th id="thAciertos">
                                 Números acertados
                             </th>
+
                         </tr>
                     </thead>
 
-                    <tbody id="tablaRanking">
-                    </tbody>
+                    <tbody id="tablaRanking"></tbody>
 
                 </table>
 
@@ -438,8 +439,7 @@
             <div
                 class="posicion-usuario"
                 id="posicionUsuario"
-            >
-            </div>
+            ></div>
 
         </section>
 
@@ -449,7 +449,7 @@
     <script>
 
         /* =========================
-           JUEGO
+           VARIABLES
         ========================= */
 
         let numeroSecreto =
@@ -459,6 +459,18 @@
 
         let juegoTerminado = false;
 
+
+        /* =========================
+           CLAVE DE ESTADÍSTICAS
+        ========================= */
+
+        const estadisticasKey =
+            "estadisticasAdivinaNumero";
+
+
+        /* =========================
+           COMPROBAR NÚMERO
+        ========================= */
 
         function comprobarNumero() {
 
@@ -479,14 +491,19 @@
             if (input.value === "") {
 
                 if (idioma === "en") {
+
                     mostrarMensaje(
                         "⚠️ Enter a number."
                     );
+
                 } else if (idioma === "hy") {
+
                     mostrarMensaje(
                         "⚠️ Գրիր թիվ։"
                     );
+
                 } else {
+
                     mostrarMensaje(
                         "⚠️ Escribe un número."
                     );
@@ -502,14 +519,19 @@
             ) {
 
                 if (idioma === "en") {
+
                     mostrarMensaje(
                         "⚠️ The number must be between 1 and 100."
                     );
+
                 } else if (idioma === "hy") {
+
                     mostrarMensaje(
                         "⚠️ Թիվը պետք է լինի 1-ից 100-ի միջև։"
                     );
+
                 } else {
+
                     mostrarMensaje(
                         "⚠️ El número debe estar entre 1 y 100."
                     );
@@ -527,34 +549,46 @@
             if (numero < numeroSecreto) {
 
                 if (idioma === "en") {
+
                     mostrarMensaje(
                         "🔼 It's higher."
                     );
+
                 } else if (idioma === "hy") {
+
                     mostrarMensaje(
                         "🔼 Ավելի բարձր է։"
                     );
+
                 } else {
+
                     mostrarMensaje(
                         "🔼 Es más alto."
                     );
                 }
 
+
             } else if (numero > numeroSecreto) {
 
                 if (idioma === "en") {
+
                     mostrarMensaje(
                         "🔽 It's lower."
                     );
+
                 } else if (idioma === "hy") {
+
                     mostrarMensaje(
                         "🔽 Ավելի ցածր է։"
                     );
+
                 } else {
+
                     mostrarMensaje(
                         "🔽 Es más bajo."
                     );
                 }
+
 
             } else {
 
@@ -608,6 +642,10 @@
         }
 
 
+        /* =========================
+           MENSAJE
+        ========================= */
+
         function mostrarMensaje(texto) {
 
             document.getElementById(
@@ -615,6 +653,10 @@
             ).textContent = texto;
         }
 
+
+        /* =========================
+           INTENTOS
+        ========================= */
 
         function actualizarIntentos() {
 
@@ -646,6 +688,10 @@
         }
 
 
+        /* =========================
+           REINICIAR
+        ========================= */
+
         function reiniciarJuego() {
 
             numeroSecreto =
@@ -663,23 +709,29 @@
 
             input.disabled = false;
 
+
             document.getElementById(
                 "botonAdivinar"
             ).style.display = "block";
+
 
             document.getElementById(
                 "reiniciar"
             ).style.display = "none";
 
+
             document.getElementById(
                 "mensaje"
             ).textContent = "";
+
 
             actualizarIntentos();
 
             input.focus();
         }
 
+
+        /* ENTER PARA ADIVINAR */
 
         document.getElementById(
             "numero"
@@ -696,7 +748,7 @@
 
 
         /* =========================
-           ESTADÍSTICAS
+           USUARIO
         ========================= */
 
         function obtenerNombreUsuario() {
@@ -743,20 +795,93 @@
         }
 
 
+        /* =========================
+           OBTENER ESTADÍSTICAS
+        ========================= */
+
         function obtenerEstadisticas() {
 
             const datos =
                 localStorage.getItem(
-                    "estadisticasAdivinaNumero"
+                    estadisticasKey
                 );
 
             if (!datos) {
                 return {};
             }
 
+
             try {
 
-                return JSON.parse(datos);
+                const datosParseados =
+                    JSON.parse(datos);
+
+
+                if (
+                    !datosParseados ||
+                    typeof datosParseados !== "object" ||
+                    Array.isArray(datosParseados)
+                ) {
+
+                    return {};
+                }
+
+
+                const resultado = {};
+
+
+                Object.keys(
+                    datosParseados
+                ).forEach(
+                    function(nombre) {
+
+                        const jugador =
+                            datosParseados[nombre];
+
+
+                        if (
+                            !jugador ||
+                            typeof jugador !== "object"
+                        ) {
+
+                            return;
+                        }
+
+
+                        const mejorIntentos =
+                            Number(
+                                jugador.mejorIntentos
+                            );
+
+
+                        const aciertos =
+                            Number(
+                                jugador.aciertos
+                            );
+
+
+                        resultado[nombre] = {
+
+                            mejorIntentos:
+                                Number.isFinite(
+                                    mejorIntentos
+                                )
+                                    ? mejorIntentos
+                                    : 999999,
+
+                            aciertos:
+                                Number.isFinite(
+                                    aciertos
+                                )
+                                    ? aciertos
+                                    : 0
+                        };
+
+                    }
+                );
+
+
+                return resultado;
 
             } catch {
 
@@ -764,6 +889,10 @@
             }
         }
 
+
+        /* =========================
+           GUARDAR ESTADÍSTICA
+        ========================= */
 
         function guardarEstadistica(
             intentos
@@ -789,6 +918,10 @@
 
             } else {
 
+                estadisticas[nombre]
+                    .aciertos++;
+
+
                 if (
                     intentos <
                     estadisticas[nombre]
@@ -799,14 +932,11 @@
                         .mejorIntentos =
                         intentos;
                 }
-
-                estadisticas[nombre]
-                    .aciertos++;
             }
 
 
             localStorage.setItem(
-                "estadisticasAdivinaNumero",
+                estadisticasKey,
                 JSON.stringify(
                     estadisticas
                 )
@@ -816,6 +946,10 @@
             mostrarRanking();
         }
 
+
+        /* =========================
+           ORDENAR RANKING
+        ========================= */
 
         function ordenarRanking(
             estadisticas
@@ -829,25 +963,31 @@
 
                         return {
 
-                            nombre: nombre,
+                            nombre:
+                                nombre,
 
                             mejorIntentos:
-                                estadisticas[
-                                    nombre
-                                ].mejorIntentos,
+                                Number(
+                                    estadisticas[
+                                        nombre
+                                    ].mejorIntentos
+                                ),
 
                             aciertos:
-                                estadisticas[
-                                    nombre
-                                ].aciertos
+                                Number(
+                                    estadisticas[
+                                        nombre
+                                    ].aciertos
+                                )
                         };
-
                     }
                 );
 
 
             jugadores.sort(
                 function(a, b) {
+
+                    /* MENOS INTENTOS = MEJOR */
 
                     if (
                         a.mejorIntentos !==
@@ -861,6 +1001,9 @@
                     }
 
 
+                    /* EMPATE:
+                       MÁS ACIERTOS = MEJOR */
+
                     if (
                         a.aciertos !==
                         b.aciertos
@@ -873,6 +1016,9 @@
                     }
 
 
+                    /* ÚLTIMO DESEMPATE:
+                       NOMBRE */
+
                     return a.nombre.localeCompare(
                         b.nombre
                     );
@@ -884,20 +1030,32 @@
         }
 
 
+        /* =========================
+           MOSTRAR RANKING
+        ========================= */
+
         function mostrarRanking() {
+
+            const tabla =
+                document.getElementById(
+                    "tablaRanking"
+                );
+
+
+            if (!tabla) {
+                return;
+            }
+
 
             const estadisticas =
                 obtenerEstadisticas();
+
 
             const ranking =
                 ordenarRanking(
                     estadisticas
                 );
 
-            const tabla =
-                document.getElementById(
-                    "tablaRanking"
-                );
 
             const nombreUsuario =
                 obtenerNombreUsuario();
@@ -907,11 +1065,17 @@
 
 
             const top10 =
-                ranking.slice(0, 10);
+                ranking.slice(
+                    0,
+                    10
+                );
 
 
             top10.forEach(
-                function(jugador, index) {
+                function(
+                    jugador,
+                    index
+                ) {
 
                     const fila =
                         document.createElement(
@@ -954,11 +1118,14 @@
                     puesto.textContent =
                         index + 1;
 
+
                     nombre.textContent =
                         jugador.nombre;
 
+
                     intentos.textContent =
                         jugador.mejorIntentos;
+
 
                     aciertos.textContent =
                         jugador.aciertos;
@@ -996,6 +1163,10 @@
         }
 
 
+        /* =========================
+           POSICIÓN DEL USUARIO
+        ========================= */
+
         function mostrarPosicionUsuario(
             ranking,
             nombreUsuario
@@ -1005,6 +1176,7 @@
                 document.getElementById(
                     "posicionUsuario"
                 );
+
 
             const posicion =
                 ranking.findIndex(
@@ -1018,16 +1190,10 @@
                 );
 
 
-            if (posicion === -1) {
-
-                elemento.style.display =
-                    "none";
-
-                return;
-            }
-
-
-            if (posicion < 10) {
+            if (
+                posicion === -1 ||
+                posicion < 10
+            ) {
 
                 elemento.style.display =
                     "none";
@@ -1038,6 +1204,7 @@
 
             const jugador =
                 ranking[posicion];
+
 
             const idioma =
                 localStorage.getItem(
@@ -1058,6 +1225,7 @@
                     jugador.aciertos +
                     " numbers guessed";
 
+
             } else if (idioma === "hy") {
 
                 elemento.textContent =
@@ -1070,6 +1238,7 @@
                     " նվազագույն փորձ — " +
                     jugador.aciertos +
                     " ճիշտ թիվ";
+
 
             } else {
 
@@ -1102,6 +1271,7 @@
                     "menuIdiomas"
                 );
 
+
             if (
                 menu.style.display ===
                 "block"
@@ -1127,11 +1297,14 @@
                 idioma
             );
 
+
             aplicarIdioma();
+
 
             document.getElementById(
                 "menuIdiomas"
-            ).style.display = "none";
+            ).style.display =
+                "none";
         }
 
 
@@ -1172,7 +1345,6 @@
                 document.getElementById(
                     "botonIdioma"
                 );
-
 
             const tituloEstadisticas =
                 document.getElementById(
@@ -1326,6 +1498,10 @@
         }
 
 
+        /* =========================
+           CERRAR MENÚ
+        ========================= */
+
         document.addEventListener(
             "click",
             function(event) {
@@ -1394,8 +1570,8 @@
 
             const nuevoTema =
                 temaActual === "oscuro"
-                ? "claro"
-                : "oscuro";
+                    ? "claro"
+                    : "oscuro";
 
 
             localStorage.setItem(
@@ -1415,6 +1591,7 @@
                     "tema"
                 ) || "oscuro";
 
+
             const idioma =
                 localStorage.getItem(
                     "idioma"
@@ -1431,22 +1608,22 @@
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Light"
-                    : "🌙 Dark";
+                        ? "☀️ Light"
+                        : "🌙 Dark";
 
             } else if (idioma === "hy") {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Բաց"
-                    : "🌙 Մութ";
+                        ? "☀️ Բաց"
+                        : "🌙 Մութ";
 
             } else {
 
                 boton.textContent =
                     tema === "oscuro"
-                    ? "☀️ Claro"
-                    : "🌙 Oscuro";
+                        ? "☀️ Claro"
+                        : "🌙 Oscuro";
             }
         }
 
