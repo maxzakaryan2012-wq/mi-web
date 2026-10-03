@@ -1,1143 +1,851 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>🧠 Adivino tu número</title>
-
-<style>
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f2f2f2;
-    color:#222;
-    transition:0.3s;
-}
-
-body.oscuro{
-    background:#111;
-    color:#fff;
-}
-
-
-/* ================================
-   CONTENEDOR
-================================ */
-
-.contenedor{
-    width:100%;
-    max-width:1200px;
-    margin:0 auto;
-    padding:25px;
-}
-
-
-/* ================================
-   CABECERA
-================================ */
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:25px;
-    flex-wrap:wrap;
-}
-
-header h1{
-    margin:0;
-    font-size:32px;
-}
-
-.botones-header{
-    display:flex;
-    gap:8px;
-}
-
-
-/* ================================
-   BOTONES GENERALES
-================================ */
-
-button{
-    border:none;
-    border-radius:10px;
-    padding:12px 18px;
-    font-size:16px;
-    cursor:pointer;
-    background:#ddd;
-    color:#222;
-    transition:0.2s;
-}
-
-button:hover{
-    transform:scale(1.03);
-    background:#cfcfcf;
-}
-
-button:disabled{
-    opacity:0.5;
-    cursor:not-allowed;
-    transform:none;
-}
-
-.oscuro button{
-    background:#333;
-    color:#fff;
-}
-
-.oscuro button:hover{
-    background:#444;
-}
-
-
-/* ================================
-   BOTÓN VOLVER
-================================ */
-
-.volver{
-    display:inline-block;
-    text-decoration:none;
-    background:#ddd;
-    color:#222;
-    padding:12px 18px;
-    border-radius:10px;
-    font-size:16px;
-    transition:0.2s;
-}
-
-.volver:hover{
-    background:#cfcfcf;
-    transform:scale(1.03);
-}
-
-.oscuro .volver{
-    background:#333;
-    color:#fff;
-}
-
-.oscuro .volver:hover{
-    background:#444;
-}
-
-
-/* ================================
-   JUEGO
-================================ */
-
-.juego{
-    width:100%;
-    min-height:520px;
-    background:#fff;
-    border-radius:20px;
-    padding:45px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.12);
-    text-align:center;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
-
-.oscuro .juego{
-    background:#1d1d1d;
-}
-
-.instrucciones{
-    font-size:19px;
-    margin-bottom:30px;
-}
-
-
-/* ================================
-   NOMBRE
-================================ */
-
-.nombre{
-    margin-bottom:20px;
-}
-
-.nombre input{
-    width:260px;
-    max-width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #bbb;
-    font-size:16px;
-    text-align:center;
-    outline:none;
-}
-
-.oscuro .nombre input{
-    background:#292929;
-    color:#fff;
-    border-color:#555;
-}
-
-
-/* ================================
-   NÚMERO
-================================ */
-
-.numero{
-    font-size:90px;
-    font-weight:bold;
-    margin:20px 0;
-    letter-spacing:2px;
-}
-
-.rango{
-    font-size:18px;
-    color:#666;
-    margin-bottom:30px;
-}
-
-.oscuro .rango{
-    color:#aaa;
-}
-
-
-/* ================================
-   BOTONES DEL JUEGO
-================================ */
-
-.botones{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-.botones button{
-    min-width:170px;
-    background:#333;
-    color:white;
-}
-
-.botones button:hover{
-    background:#555;
-}
-
-.oscuro .botones button{
-    background:#555;
-}
-
-.oscuro .botones button:hover{
-    background:#666;
-}
-
-
-/* ================================
-   INTENTOS
-================================ */
-
-.intentos{
-    margin-top:30px;
-    font-size:20px;
-    font-weight:bold;
-}
-
-
-/* ================================
-   MENSAJE
-================================ */
-
-.mensaje{
-    margin-top:20px;
-    font-size:21px;
-    font-weight:bold;
-    min-height:25px;
-}
-
-
-/* ================================
-   REINICIAR
-================================ */
-
-.reiniciar{
-    margin:20px auto 0;
-    background:#222;
-    color:white;
-    display:none;
-}
-
-.reiniciar:hover{
-    background:#444;
-}
-
-.oscuro .reiniciar{
-    background:#eee;
-    color:#111;
-}
-
-.oscuro .reiniciar:hover{
-    background:#ccc;
-}
-
-
-/* ================================
-   ESTADÍSTICAS
-================================ */
-
-.estadisticas{
-    width:100%;
-    margin-top:30px;
-    background:#fff;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.12);
-}
-
-.oscuro .estadisticas{
-    background:#1d1d1d;
-}
-
-.estadisticas h2{
-    margin-top:0;
-    margin-bottom:20px;
-}
-
-
-/* ================================
-   TABLA
-================================ */
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,
-td{
-    padding:13px 10px;
-    border-bottom:1px solid #ddd;
-    text-align:center;
-}
-
-.oscuro th,
-.oscuro td{
-    border-bottom:1px solid #444;
-}
-
-th{
-    font-weight:bold;
-}
-
-.tu-fila{
-    font-weight:bold;
-    background:#e8e8e8;
-}
-
-.oscuro .tu-fila{
-    background:#303030;
-}
-
-.sin-datos{
-    opacity:0.7;
-}
-
-.posicion{
-    margin-top:18px;
-    font-weight:bold;
-}
-
-
-/* ================================
-   MÓVIL
-================================ */
-
-@media(max-width:700px){
-
-    .contenedor{
-        padding:15px;
-    }
-
-    header h1{
-        font-size:26px;
-    }
-
-    .juego{
-        min-height:500px;
-        padding:25px 15px;
-    }
-
-    .numero{
-        font-size:65px;
-    }
-
-    .botones{
-        flex-direction:column;
-        width:100%;
-    }
-
-    .botones button{
-        width:100%;
-    }
-
-    table{
-        font-size:14px;
-    }
-
-    th,
-    td{
-        padding:9px 4px;
-    }
-
-}
-
-</style>
+    <title>Adivino tu número</title>
 
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f2f2f2;
+            color: #222;
+            transition: 0.2s;
+        }
+
+        body.oscuro {
+            background: #181818;
+            color: #eee;
+        }
+
+        header {
+            width: 100%;
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            border-bottom: 1px solid #ccc;
+
+            background: #fff;
+        }
+
+        body.oscuro header {
+            background: #222;
+            border-color: #444;
+        }
+
+        .volver {
+            text-decoration: none;
+            color: #222;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            padding: 10px 16px;
+
+            border: 1px solid #bbb;
+            border-radius: 8px;
+
+            background: #eee;
+        }
+
+        .volver:hover {
+            background: #ddd;
+        }
+
+        body.oscuro .volver {
+            color: #eee;
+            background: #333;
+            border-color: #555;
+        }
+
+        .controles {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control {
+            border: 1px solid #aaa;
+            background: #eee;
+            color: #222;
+
+            padding: 9px 13px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .control:hover {
+            background: #ddd;
+        }
+
+        body.oscuro .control {
+            background: #333;
+            color: #eee;
+            border-color: #555;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+            padding: 0 20px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .titulo h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+        }
+
+        .titulo p {
+            margin: 0;
+            color: #666;
+            font-size: 17px;
+        }
+
+        body.oscuro .titulo p {
+            color: #aaa;
+        }
+
+        /*
+        =====================================================
+        PANTALLA DEL JUEGO
+        =====================================================
+        */
+
+        .juego {
+            width: 100%;
+
+            background: #fff;
+
+            border: 1px solid #ccc;
+            border-radius: 14px;
+
+            padding: 35px;
+
+            min-height: 420px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        body.oscuro .juego {
+            background: #222;
+            border-color: #444;
+        }
+
+        .mensaje {
+            font-size: 25px;
+            font-weight: bold;
+
+            margin-bottom: 25px;
+        }
+
+        .numero {
+            font-size: 60px;
+            font-weight: bold;
+
+            margin: 15px 0 30px;
+        }
+
+        .rango {
+            font-size: 17px;
+
+            color: #666;
+
+            margin-bottom: 25px;
+        }
+
+        body.oscuro .rango {
+            color: #aaa;
+        }
+
+        .botones {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .boton {
+            border: none;
+
+            background: #333;
+            color: white;
+
+            padding: 14px 22px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            min-width: 150px;
+        }
+
+        .boton:hover {
+            background: #111;
+        }
+
+        body.oscuro .boton {
+            background: #ddd;
+            color: #222;
+        }
+
+        body.oscuro .boton:hover {
+            background: #fff;
+        }
+
+        .reiniciar {
+            margin-top: 25px;
+
+            background: #eee;
+            color: #222;
+
+            border: 1px solid #aaa;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .reiniciar:hover {
+            background: #ddd;
+        }
+
+        body.oscuro .reiniciar {
+            background: #333;
+            color: #eee;
+            border-color: #555;
+        }
+
+        /*
+        =====================================================
+        ESTADÍSTICAS
+        =====================================================
+        */
+
+        .estadisticas {
+            margin-top: 35px;
+
+            background: #fff;
+
+            border: 1px solid #ccc;
+            border-radius: 14px;
+
+            padding: 25px;
+        }
+
+        body.oscuro .estadisticas {
+            background: #222;
+            border-color: #444;
+        }
+
+        .estadisticas h2 {
+            margin-top: 0;
+
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom: 1px solid #ccc;
+
+            text-align: center;
+        }
+
+        body.oscuro th,
+        body.oscuro td {
+            border-color: #444;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        body.oscuro th {
+            background: #333;
+        }
+
+        .tu-fila {
+            font-weight: bold;
+            background: #e5e5e5;
+        }
+
+        body.oscuro .tu-fila {
+            background: #333;
+        }
+
+        /*
+        =====================================================
+        RESPONSIVE
+        =====================================================
+        */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 15px;
+            }
+
+            main {
+                margin-top: 20px;
+
+                padding: 0 10px;
+            }
+
+            .juego {
+                padding: 25px 15px;
+
+                min-height: 400px;
+            }
+
+            .numero {
+                font-size: 48px;
+            }
+
+            .boton {
+                width: 100%;
+            }
+
+            .botones {
+                width: 100%;
+            }
+
+            .estadisticas {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
 </head>
-
 
 <body>
 
-
-<div class="contenedor">
-
-
 <header>
 
-<h1 id="titulo">
-    🧠 Adivino tu número
-</h1>
+    <a
+        href="../../index.html"
+        class="volver"
+        id="volverBtn"
+    >
+        ← Volver
+    </a>
 
+    <div class="controles">
 
-<div class="botones-header">
+        <button
+            class="control"
+            id="idiomaBtn"
+        >
+            🇪🇸 ES
+        </button>
 
-<a
-    href="../../index.html"
-    class="volver"
-    id="volverBtn"
->
-    ← Volver
-</a>
+        <button
+            class="control"
+            id="temaBtn"
+        >
+            🌙
+        </button>
 
-<button id="idiomaBtn">
-    🇪🇸
-</button>
-
-<button id="temaBtn">
-    🌙
-</button>
-
-</div>
+    </div>
 
 </header>
 
 
+<main>
 
-<!-- ================================
-     JUEGO
-================================ -->
+    <div class="titulo">
 
-<div class="juego">
+        <h1 id="tituloJuego">
+            🧠 Adivino tu número
+        </h1>
 
+        <p id="descripcionJuego">
+            Piensa un número y trataré de adivinarlo.
+        </p>
 
-<div
-    class="instrucciones"
-    id="instrucciones"
->
-    Piensa un número del 1 al 100 y yo intentaré adivinarlo.
-</div>
+    </div>
 
 
+    <!-- =====================================================
+         JUEGO
+    ====================================================== -->
 
-<div class="nombre">
+    <section class="juego">
 
-<input
-    type="text"
-    id="nombreInput"
-    placeholder="Tu nombre"
-    maxlength="20"
->
+        <div
+            class="mensaje"
+            id="mensaje"
+        >
+            Piensa un número del 1 al 100
+        </div>
 
-</div>
 
+        <div
+            class="numero"
+            id="numero"
+        >
+            ¿Listo?
+        </div>
 
 
-<div
-    class="numero"
-    id="numeroActual"
->
-    50
-</div>
+        <div
+            class="rango"
+            id="rango"
+        >
+            Cuando estés preparado, pulsa comenzar.
+        </div>
 
 
+        <div class="botones">
 
-<div
-    class="rango"
-    id="rango"
->
-    Estoy buscando entre 1 y 100
-</div>
+            <button
+                class="boton"
+                id="menorBtn"
+                style="display:none;"
+            >
+                ⬇️ Es menor
+            </button>
 
+            <button
+                class="boton"
+                id="correctoBtn"
+                style="display:none;"
+            >
+                ✓ Correcto
+            </button>
 
+            <button
+                class="boton"
+                id="mayorBtn"
+                style="display:none;"
+            >
+                ⬆️ Es mayor
+            </button>
 
-<div class="botones">
+        </div>
 
-<button
-    id="menorBtn"
->
-    ⬇️ Es menor
-</button>
 
+        <button
+            class="boton"
+            id="comenzarBtn"
+        >
+            🧠 Comenzar
+        </button>
 
-<button
-    id="correctoBtn"
->
-    ✓ Correcto
-</button>
 
+        <button
+            class="reiniciar"
+            id="reiniciarBtn"
+            style="display:none;"
+        >
+            🔄 Nueva partida
+        </button>
 
-<button
-    id="mayorBtn"
->
-    ⬆️ Es mayor
-</button>
+    </section>
 
-</div>
 
+    <!-- =====================================================
+         ESTADÍSTICAS
+    ====================================================== -->
 
+    <section class="estadisticas">
 
-<div class="intentos">
+        <h2 id="estadisticasTitulo">
+            🏆 Estadísticas
+        </h2>
 
-<span id="textoIntentos">
-    Intentos:
-</span>
+        <table>
 
-<span id="intentos">
-    1
-</span>
+            <thead>
 
-</div>
+                <tr>
 
+                    <th>
+                        #
+                    </th>
 
+                    <th>
+                        Jugador
+                    </th>
 
-<div
-    class="mensaje"
-    id="mensaje"
-></div>
+                    <th id="intentosColumna">
+                        Mejor partida
+                    </th>
 
+                    <th id="partidasColumna">
+                        Partidas ganadas
+                    </th>
 
+                </tr>
 
-<button
-    class="reiniciar"
-    id="reiniciarBtn"
->
-    🔄 Volver a jugar
-</button>
+            </thead>
 
+            <tbody id="ranking">
 
-</div>
+            </tbody>
 
+        </table>
 
+    </section>
 
-<!-- ================================
-     ESTADÍSTICAS
-================================ -->
-
-<div class="estadisticas">
-
-
-<h2 id="tituloRanking">
-    🏆 Ranking
-</h2>
-
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-    #
-</th>
-
-<th id="nombreColumna">
-    Nombre
-</th>
-
-<th id="intentosColumna">
-    Mejor partida
-</th>
-
-<th id="partidasColumna">
-    Partidas ganadas
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="rankingBody">
-</tbody>
-
-</table>
-
-
-<div
-    class="posicion"
-    id="posicionUsuario"
-></div>
-
-
-</div>
-
-
-</div>
-
+</main>
 
 
 <script>
 
+    /* =====================================================
+       IDIOMAS
+    ===================================================== */
 
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
+    const idiomas = {
 
-const ESTADISTICAS_KEY =
-    "estadisticasAdivinoNumero";
+        es: {
 
+            titulo: "🧠 Adivino tu número",
 
-/* =====================================================
-   IDIOMAS
-===================================================== */
+            descripcion:
+                "Piensa un número y trataré de adivinarlo.",
 
-const idiomas = {
+            volver:
+                "← Volver",
 
-es:{
+            comenzar:
+                "🧠 Comenzar",
 
-titulo:
-"🧠 Adivino tu número",
+            nueva:
+                "🔄 Nueva partida",
 
-instrucciones:
-"Piensa un número del 1 al 100 y yo intentaré adivinarlo.",
+            piensa:
+                "Piensa un número del 1 al 100",
 
-nombre:
-"Tu nombre",
+            listo:
+                "Cuando estés preparado, pulsa comenzar.",
 
-volver:
-"← Volver",
+            menor:
+                "⬇️ Es menor",
 
-menor:
-"⬇️ Es menor",
+            correcto:
+                "✓ Correcto",
 
-correcto:
-"✓ Correcto",
+            mayor:
+                "⬆️ Es mayor",
 
-mayor:
-"⬆️ Es mayor",
+            estadisticas:
+                "🏆 Estadísticas",
 
-intentos:
-"Intentos:",
+            jugador:
+                "Jugador",
 
-rango:
-"Estoy buscando entre {min} y {max}",
+            mejor:
+                "Mejor partida",
 
-ranking:
-"🏆 Ranking",
+            partidas:
+                "Partidas ganadas",
 
-nombreColumna:
-"Nombre",
+            numero:
+                "Creo que tu número es",
 
-intentosColumna:
-"Mejor partida",
+            acierto:
+                "¡He acertado! 🎉",
 
-partidasColumna:
-"Partidas ganadas",
+            intentos:
+                "Intentos"
 
-sinDatos:
-"Todavía no hay partidas.",
+        },
 
-posicion:
-"Tu posición: #{pos}",
 
-victoria:
-"🎉 ¡Lo he adivinado en {intentos} intentos!",
+        en: {
 
-reiniciar:
-"🔄 Volver a jugar"
+            titulo: "🧠 I Guess Your Number",
 
-},
+            descripcion:
+                "Think of a number and I will try to guess it.",
 
+            volver:
+                "← Back",
 
-en:{
+            comenzar:
+                "🧠 Start",
 
-titulo:
-"🧠 I Guess Your Number",
+            nueva:
+                "🔄 New game",
 
-instrucciones:
-"Think of a number from 1 to 100 and I will try to guess it.",
+            piensa:
+                "Think of a number from 1 to 100",
 
-nombre:
-"Your name",
+            listo:
+                "When you're ready, press start.",
 
-volver:
-"← Back",
+            menor:
+                "⬇️ Lower",
 
-menor:
-"⬇️ Lower",
+            correcto:
+                "✓ Correct",
 
-correcto:
-"✓ Correct",
+            mayor:
+                "⬆️ Higher",
 
-mayor:
-"⬆️ Higher",
+            estadisticas:
+                "🏆 Statistics",
 
-intentos:
-"Attempts:",
+            jugador:
+                "Player",
 
-rango:
-"I'm searching between {min} and {max}",
+            mejor:
+                "Best game",
 
-ranking:
-"🏆 Ranking",
+            partidas:
+                "Games won",
 
-nombreColumna:
-"Name",
+            numero:
+                "I think your number is",
 
-intentosColumna:
-"Best game",
+            acierto:
+                "I got it! 🎉",
 
-partidasColumna:
-"Games won",
+            intentos:
+                "Attempts"
 
-sinDatos:
-"There are no games yet.",
+        },
 
-posicion:
-"Your position: #{pos}",
 
-victoria:
-"🎉 I guessed it in {intentos} attempts!",
+        hy: {
 
-reiniciar:
-"🔄 Play again"
+            titulo: "🧠 Գուշակում եմ քո թիվը",
 
-},
+            descripcion:
+                "Մտածիր թիվ և ես կփորձեմ գուշակել այն։",
 
+            volver:
+                "← Վերադառնալ",
 
-hy:{
+            comenzar:
+                "🧠 Սկսել",
 
-titulo:
-"🧠 Գուշակում եմ քո թիվը",
+            nueva:
+                "🔄 Նոր խաղ",
 
-instrucciones:
-"Մտածիր 1-ից 100 թիվ, և ես կփորձեմ գուշակել այն։",
+            piensa:
+                "Մտածիր 1-ից 100 թիվ",
 
-nombre:
-"Քո անունը",
+            listo:
+                "Երբ պատրաստ լինես, սեղմիր սկսելու կոճակը։",
 
-volver:
-"← Հետ",
+            menor:
+                "⬇️ Ավելի փոքր է",
 
-menor:
-"⬇️ Ավելի փոքր է",
+            correcto:
+                "✓ Ճիշտ է",
 
-correcto:
-"✓ Ճիշտ է",
+            mayor:
+                "⬆️ Ավելի մեծ է",
 
-mayor:
-"⬆️ Ավելի մեծ է",
+            estadisticas:
+                "🏆 Վիճակագրություն",
 
-intentos:
-"Փորձեր:",
+            jugador:
+                "Խաղացող",
 
-rango:
-"Փնտրում եմ {min}-ից մինչև {max}",
+            mejor:
+                "Լավագույն խաղ",
 
-ranking:
-"🏆 Վարկանիշ",
+            partidas:
+                "Հաղթած խաղեր",
 
-nombreColumna:
-"Անուն",
+            numero:
+                "Կարծում եմ՝ քո թիվը",
 
-intentosColumna:
-"Լավագույն խաղ",
+            acierto:
+                "Գուշակեցի! 🎉",
 
-partidasColumna:
-"Հաղթած խաղեր",
+            intentos:
+                "Փորձեր"
 
-sinDatos:
-"Դեռ խաղեր չկան։",
+        }
 
-posicion:
-"Քո դիրքը՝ #{pos}",
+    };
 
-victoria:
-"🎉 Գուշակեցի {intentos} փորձից հետո։",
 
-reiniciar:
-"🔄 Նորից խաղալ"
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
 
-}
-
-};
-
-
-/* =====================================================
-   ELEMENTOS
-===================================================== */
-
-const numeroActual =
-document.getElementById("numeroActual");
-
-const rango =
-document.getElementById("rango");
-
-const intentosElemento =
-document.getElementById("intentos");
-
-const mensaje =
-document.getElementById("mensaje");
-
-const reiniciarBtn =
-document.getElementById("reiniciarBtn");
-
-const menorBtn =
-document.getElementById("menorBtn");
-
-const correctoBtn =
-document.getElementById("correctoBtn");
-
-const mayorBtn =
-document.getElementById("mayorBtn");
-
-const nombreInput =
-document.getElementById("nombreInput");
-
-const rankingBody =
-document.getElementById("rankingBody");
-
-const posicionUsuario =
-document.getElementById("posicionUsuario");
-
-const idiomaBtn =
-document.getElementById("idiomaBtn");
-
-const temaBtn =
-document.getElementById("temaBtn");
-
-const volverBtn =
-document.getElementById("volverBtn");
-
-
-/* =====================================================
-   ESTADO
-===================================================== */
-
-let minimo = 1;
-
-let maximo = 100;
-
-let numeroAdivinado = 1;
-
-let intentos = 1;
-
-let terminado = false;
-
-
-/* =====================================================
-   IDIOMA
-===================================================== */
-
-let idioma =
-localStorage.getItem("idioma") || "es";
-
-
-function aplicarIdioma(){
-
-    const t =
-    idiomas[idioma];
-
-
-    document.getElementById("titulo")
-    .textContent =
-    t.titulo;
-
-
-    document.getElementById("instrucciones")
-    .textContent =
-    t.instrucciones;
-
-
-    nombreInput.placeholder =
-    t.nombre;
-
-
-    volverBtn.textContent =
-    t.volver;
-
-
-    menorBtn.textContent =
-    t.menor;
-
-
-    correctoBtn.textContent =
-    t.correcto;
-
-
-    mayorBtn.textContent =
-    t.mayor;
-
-
-    document.getElementById(
-        "textoIntentos"
-    ).textContent =
-    t.intentos;
-
-
-    document.getElementById(
-        "tituloRanking"
-    ).textContent =
-    t.ranking;
-
-
-    document.getElementById(
-        "nombreColumna"
-    ).textContent =
-    t.nombreColumna;
-
-
-    document.getElementById(
-        "intentosColumna"
-    ).textContent =
-    t.intentosColumna;
-
-
-    document.getElementById(
-        "partidasColumna"
-    ).textContent =
-    t.partidasColumna;
-
-
-    reiniciarBtn.textContent =
-    t.reiniciar;
-
-
-    idiomaBtn.textContent =
-    idioma === "es"
-    ? "🇪🇸"
-    : idioma === "en"
-    ? "🇬🇧"
-    : "🇦🇲";
-
-
-    actualizarRango();
-
-    mostrarRanking();
-
-}
-
-
-idiomaBtn.addEventListener(
-"click",
-()=>{
-
-    if(idioma === "es"){
-
-        idioma = "en";
-
-    }
-    else if(idioma === "en"){
-
-        idioma = "hy";
-
-    }
-    else{
-
-        idioma = "es";
-
-    }
-
-
-    localStorage.setItem(
-        "idioma",
-        idioma
-    );
-
-
-    aplicarIdioma();
-
-});
-
-
-/* =====================================================
-   TEMA
-===================================================== */
-
-let tema =
-localStorage.getItem("tema") || "claro";
-
-
-function aplicarTema(){
-
-    if(tema === "oscuro"){
-
-        document.body.classList.add(
-            "oscuro"
-        );
-
-        temaBtn.textContent =
-        "☀️";
-
-    }
-    else{
-
-        document.body.classList.remove(
-            "oscuro"
-        );
-
-        temaBtn.textContent =
-        "🌙";
-
-    }
-
-}
-
-
-temaBtn.addEventListener(
-"click",
-()=>{
-
-    tema =
-    tema === "claro"
-    ? "oscuro"
-    : "claro";
-
-
-    localStorage.setItem(
-        "tema",
-        tema
-    );
-
-
-    aplicarTema();
-
-});
-
-
-/* =====================================================
-   NOMBRE
-===================================================== */
-
-function obtenerNombreUsuario(){
-
-    let nombre =
-    nombreInput.value.trim();
-
-
-    if(nombre){
-
-        localStorage.setItem(
-            "nombreUsuario",
-            nombre
-        );
-
-        return nombre;
-
-    }
-
-
-    nombre =
-    localStorage.getItem(
-        "nombreUsuario"
-    );
-
-
-    if(nombre){
-
-        return nombre;
-
-    }
-
+    const mensaje =
+        document.getElementById("mensaje");
 
     const numero =
-    localStorage.getItem(
-        "numeroUsuario"
-    );
+        document.getElementById("numero");
+
+    const rango =
+        document.getElementById("rango");
+
+    const comenzarBtn =
+        document.getElementById("comenzarBtn");
+
+    const menorBtn =
+        document.getElementById("menorBtn");
+
+    const correctoBtn =
+        document.getElementById("correctoBtn");
+
+    const mayorBtn =
+        document.getElementById("mayorBtn");
+
+    const reiniciarBtn =
+        document.getElementById("reiniciarBtn");
+
+    const ranking =
+        document.getElementById("ranking");
+
+    const idiomaBtn =
+        document.getElementById("idiomaBtn");
+
+    const temaBtn =
+        document.getElementById("temaBtn");
 
 
-    if(numero){
+    /* =====================================================
+       ESTADÍSTICAS
+    ===================================================== */
 
-        return "Jugador " + numero;
+    const ESTADISTICAS_KEY =
+        "estadisticasAdivinoTuNumero";
+
+
+    function obtenerNombreUsuario() {
+
+        let nombre =
+            localStorage.getItem("nombreUsuario");
+
+        if (nombre) {
+            return nombre;
+        }
+
+        let numeroUsuario =
+            localStorage.getItem("numeroUsuario");
+
+        if (!numeroUsuario) {
+
+            numeroUsuario =
+                Math.floor(
+                    1000 +
+                    Math.random() * 9000
+                );
+
+            localStorage.setItem(
+                "numeroUsuario",
+                numeroUsuario
+            );
+
+        }
+
+        return "Jugador " + numeroUsuario;
 
     }
 
 
-    return "Jugador";
+    function obtenerEstadisticas() {
 
-}
+        try {
 
+            const datos =
+                localStorage.getItem(
+                    ESTADISTICAS_KEY
+                );
 
-/* =====================================================
-   ESTADÍSTICAS
-===================================================== */
+            if (!datos) {
+                return [];
+            }
 
-function obtenerEstadisticas(){
+            const resultado =
+                JSON.parse(datos);
 
-    try{
+            return Array.isArray(resultado)
+                ? resultado
+                : [];
 
-        const datos =
-        JSON.parse(
-            localStorage.getItem(
-                ESTADISTICAS_KEY
-            )
-        );
+        } catch {
 
-
-        if(Array.isArray(datos)){
-
-            return datos;
+            return [];
 
         }
 
     }
-    catch(e){}
 
 
-    return [];
+    function guardarEstadisticas(datos) {
 
-}
+        localStorage.setItem(
+            ESTADISTICAS_KEY,
+            JSON.stringify(datos)
+        );
 
-
-function guardarEstadisticas(
-datos
-){
-
-    localStorage.setItem(
-        ESTADISTICAS_KEY,
-        JSON.stringify(datos)
-    );
-
-}
+    }
 
 
-/* =====================================================
-   ORDENAR
-===================================================== */
+    /* =====================================================
+       RANKING
+    ===================================================== */
 
-function ordenarRanking(
-datos
-){
+    function mostrarRanking() {
 
-    return datos.sort(
-        (a,b)=>{
+        const datos =
+            obtenerEstadisticas();
 
-            if(
+        datos.sort((a, b) => {
+
+            if (
                 a.mejorIntentos !==
                 b.mejorIntentos
-            ){
+            ) {
 
                 return (
                     a.mejorIntentos -
@@ -1146,11 +854,10 @@ datos
 
             }
 
-
-            if(
+            if (
                 a.partidas !==
                 b.partidas
-            ){
+            ) {
 
                 return (
                     b.partidas -
@@ -1159,447 +866,599 @@ datos
 
             }
 
-
             return a.nombre.localeCompare(
                 b.nombre
             );
 
-        }
-    );
-
-}
+        });
 
 
-/* =====================================================
-   RANKING
-===================================================== */
-
-function mostrarRanking(){
-
-    const datos =
-    ordenarRanking(
-        obtenerEstadisticas()
-    );
+        ranking.innerHTML = "";
 
 
-    rankingBody.innerHTML =
-    "";
+        const nombreUsuario =
+            obtenerNombreUsuario();
 
 
-    const t =
-    idiomas[idioma];
+        datos
+            .slice(0, 10)
+            .forEach((jugador, index) => {
+
+                const fila =
+                    document.createElement("tr");
 
 
-    if(datos.length === 0){
+                if (
+                    jugador.nombre ===
+                    nombreUsuario
+                ) {
 
-        rankingBody.innerHTML =
-        `<tr>
-            <td colspan="4"
-                class="sin-datos">
-                ${t.sinDatos}
-            </td>
-        </tr>`;
+                    fila.className =
+                        "tu-fila";
+
+                }
 
 
-        posicionUsuario.textContent =
-        "";
+                fila.innerHTML = `
 
-        return;
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${jugador.nombre}
+                    </td>
+
+                    <td>
+                        ${jugador.mejorIntentos}
+                    </td>
+
+                    <td>
+                        ${jugador.partidas}
+                    </td>
+
+                `;
+
+
+                ranking.appendChild(fila);
+
+            });
 
     }
 
 
-    const nombreActual =
-    obtenerNombreUsuario();
+    /* =====================================================
+       VARIABLES DEL JUEGO
+    ===================================================== */
+
+    let minimo = 1;
+
+    let maximo = 100;
+
+    let numeroAdivinado = 0;
+
+    let intentos = 0;
+
+    let jugando = false;
 
 
-    datos
-    .slice(0,10)
-    .forEach(
-        (jugador,index)=>{
+    /* =====================================================
+       NÚMERO ALEATORIO
+    ===================================================== */
 
-            const fila =
-            document.createElement(
-                "tr"
-            );
+    function generarNumero() {
+
+        numeroAdivinado =
+            Math.floor(
+                Math.random() *
+                (maximo - minimo + 1)
+            ) + minimo;
+
+    }
 
 
-            if(
-                jugador.nombre ===
-                nombreActual
-            ){
+    /* =====================================================
+       COMENZAR
+    ===================================================== */
 
-                fila.classList.add(
-                    "tu-fila"
-                );
+    comenzarBtn.addEventListener(
+        "click",
+        comenzar
+    );
+
+
+    function comenzar() {
+
+        minimo = 1;
+
+        maximo = 100;
+
+        intentos = 0;
+
+        jugando = true;
+
+
+        generarNumero();
+
+
+        comenzarBtn.style.display =
+            "none";
+
+        reiniciarBtn.style.display =
+            "none";
+
+
+        menorBtn.style.display =
+            "inline-block";
+
+        correctoBtn.style.display =
+            "inline-block";
+
+        mayorBtn.style.display =
+            "inline-block";
+
+
+        mostrarNumero();
+
+    }
+
+
+    /* =====================================================
+       MOSTRAR NÚMERO
+    ===================================================== */
+
+    function mostrarNumero() {
+
+        intentos++;
+
+
+        numero.textContent =
+            numeroAdivinado;
+
+
+        rango.textContent =
+            minimo +
+            " - " +
+            maximo;
+
+
+        mensaje.textContent =
+            idiomas[
+                idiomaActual
+            ].numero;
+
+    }
+
+
+    /* =====================================================
+       MENOR
+    ===================================================== */
+
+    menorBtn.addEventListener(
+        "click",
+        () => {
+
+            if (!jugando) {
+                return;
+            }
+
+
+            maximo =
+                numeroAdivinado - 1;
+
+
+            if (minimo > maximo) {
+
+                terminar(false);
+
+                return;
 
             }
 
 
-            fila.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${jugador.nombre}</td>
-                <td>${jugador.mejorIntentos}</td>
-                <td>${jugador.partidas}</td>
-            `;
+            generarNumero();
+
+            mostrarNumero();
+
+        }
+    );
 
 
-            rankingBody.appendChild(
-                fila
+    /* =====================================================
+       MAYOR
+    ===================================================== */
+
+    mayorBtn.addEventListener(
+        "click",
+        () => {
+
+            if (!jugando) {
+                return;
+            }
+
+
+            minimo =
+                numeroAdivinado + 1;
+
+
+            if (minimo > maximo) {
+
+                terminar(false);
+
+                return;
+
+            }
+
+
+            generarNumero();
+
+            mostrarNumero();
+
+        }
+    );
+
+
+    /* =====================================================
+       CORRECTO
+    ===================================================== */
+
+    correctoBtn.addEventListener(
+        "click",
+        () => {
+
+            if (!jugando) {
+                return;
+            }
+
+
+            terminar(true);
+
+        }
+    );
+
+
+    /* =====================================================
+       TERMINAR
+    ===================================================== */
+
+    function terminar(acertado) {
+
+        jugando = false;
+
+
+        menorBtn.style.display =
+            "none";
+
+        correctoBtn.style.display =
+            "none";
+
+        mayorBtn.style.display =
+            "none";
+
+
+        reiniciarBtn.style.display =
+            "inline-block";
+
+
+        if (acertado) {
+
+            mensaje.textContent =
+                idiomas[
+                    idiomaActual
+                ].acierto;
+
+
+            rango.textContent =
+                idiomas[
+                    idiomaActual
+                ].intentos +
+                ": " +
+                intentos;
+
+
+            guardarVictoria();
+
+        } else {
+
+            mensaje.textContent =
+                "❌";
+
+            rango.textContent =
+                "No puedo continuar con ese rango.";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GUARDAR VICTORIA
+    ===================================================== */
+
+    function guardarVictoria() {
+
+        const nombre =
+            obtenerNombreUsuario();
+
+        const datos =
+            obtenerEstadisticas();
+
+
+        let jugador =
+            datos.find(
+                j =>
+                    j.nombre === nombre
             );
 
+
+        if (!jugador) {
+
+            jugador = {
+
+                nombre:
+                    nombre,
+
+                mejorIntentos:
+                    intentos,
+
+                partidas:
+                    1
+
+            };
+
+
+            datos.push(jugador);
+
+        } else {
+
+            jugador.partidas++;
+
+
+            if (
+                intentos <
+                jugador.mejorIntentos
+            ) {
+
+                jugador.mejorIntentos =
+                    intentos;
+
+            }
+
         }
+
+
+        guardarEstadisticas(datos);
+
+        mostrarRanking();
+
+    }
+
+
+    /* =====================================================
+       NUEVA PARTIDA
+    ===================================================== */
+
+    reiniciarBtn.addEventListener(
+        "click",
+        comenzar
     );
 
 
-    const posicion =
-    datos.findIndex(
-        jugador =>
-        jugador.nombre ===
-        nombreActual
-    );
+    /* =====================================================
+       IDIOMA
+    ===================================================== */
 
+    let idiomaActual =
+        localStorage.getItem("idioma") ||
+        "es";
 
-    if(posicion >= 10){
 
-        posicionUsuario.textContent =
-        t.posicion.replace(
-            "{pos}",
-            posicion + 1
-        );
+    function actualizarIdioma() {
 
-    }
-    else{
+        const t =
+            idiomas[idiomaActual];
 
-        posicionUsuario.textContent =
-        "";
 
-    }
+        document.getElementById(
+            "tituloJuego"
+        ).textContent =
+            t.titulo;
 
-}
 
+        document.getElementById(
+            "descripcionJuego"
+        ).textContent =
+            t.descripcion;
 
-/* =====================================================
-   RANGO
-===================================================== */
 
-function actualizarRango(){
+        document.getElementById(
+            "volverBtn"
+        ).textContent =
+            t.volver;
 
-    const t =
-    idiomas[idioma];
 
+        comenzarBtn.textContent =
+            t.comenzar;
 
-    rango.textContent =
-    t.rango
-    .replace(
-        "{min}",
-        minimo
-    )
-    .replace(
-        "{max}",
-        maximo
-    );
 
-}
+        reiniciarBtn.textContent =
+            t.nueva;
 
 
-/* =====================================================
-   NÚMERO ALEATORIO
-===================================================== */
+        menorBtn.textContent =
+            t.menor;
 
-function generarNumero(){
 
-    if(minimo > maximo){
+        correctoBtn.textContent =
+            t.correcto;
 
-        return;
 
-    }
+        mayorBtn.textContent =
+            t.mayor;
 
 
-    /*
-        Elegimos un número completamente
-        aleatorio dentro del rango actual.
-    */
+        document.getElementById(
+            "estadisticasTitulo"
+        ).textContent =
+            t.estadisticas;
 
-    numeroAdivinado =
-    Math.floor(
-        Math.random() *
-        (maximo - minimo + 1)
-    ) + minimo;
 
+        document.getElementById(
+            "intentosColumna"
+        ).textContent =
+            t.mejor;
 
-    numeroActual.textContent =
-    numeroAdivinado;
 
+        document.getElementById(
+            "partidasColumna"
+        ).textContent =
+            t.partidas;
 
-    actualizarRango();
 
-}
+        if (!jugando) {
 
+            if (
+                intentos === 0
+            ) {
 
-/* =====================================================
-   INICIAR
-===================================================== */
+                mensaje.textContent =
+                    t.piensa;
 
-function iniciarJuego(){
+                numero.textContent =
+                    "¿Listo?";
 
-    minimo = 1;
+                rango.textContent =
+                    t.listo;
 
-    maximo = 100;
+            }
 
-    intentos = 1;
+        }
 
-    terminado = false;
 
-    mensaje.textContent =
-    "";
+        if (
+            idiomaActual === "es"
+        ) {
 
-    reiniciarBtn.style.display =
-    "none";
+            idiomaBtn.textContent =
+                "🇪🇸 ES";
 
+        } else if (
+            idiomaActual === "en"
+        ) {
 
-    menorBtn.disabled =
-    false;
+            idiomaBtn.textContent =
+                "🇬🇧 EN";
 
-    correctoBtn.disabled =
-    false;
+        } else {
 
-    mayorBtn.disabled =
-    false;
-
-
-    intentosElemento.textContent =
-    intentos;
-
-
-    generarNumero();
-
-}
-
-
-/* =====================================================
-   ES MENOR
-===================================================== */
-
-menorBtn.addEventListener(
-"click",
-()=>{
-
-    if(terminado){
-
-        return;
-
-    }
-
-
-    maximo =
-    numeroAdivinado - 1;
-
-
-    intentos++;
-
-
-    intentosElemento.textContent =
-    intentos;
-
-
-    if(minimo > maximo){
-
-        mensaje.textContent =
-        "🤔 Algo no cuadra.";
-
-        return;
-
-    }
-
-
-    generarNumero();
-
-});
-
-
-/* =====================================================
-   ES MAYOR
-===================================================== */
-
-mayorBtn.addEventListener(
-"click",
-()=>{
-
-    if(terminado){
-
-        return;
-
-    }
-
-
-    minimo =
-    numeroAdivinado + 1;
-
-
-    intentos++;
-
-
-    intentosElemento.textContent =
-    intentos;
-
-
-    if(minimo > maximo){
-
-        mensaje.textContent =
-        "🤔 Algo no cuadra.";
-
-        return;
-
-    }
-
-
-    generarNumero();
-
-});
-
-
-/* =====================================================
-   CORRECTO
-===================================================== */
-
-correctoBtn.addEventListener(
-"click",
-()=>{
-
-    if(terminado){
-
-        return;
-
-    }
-
-
-    terminado = true;
-
-
-    menorBtn.disabled =
-    true;
-
-    correctoBtn.disabled =
-    true;
-
-    mayorBtn.disabled =
-    true;
-
-
-    const t =
-    idiomas[idioma];
-
-
-    mensaje.textContent =
-    t.victoria.replace(
-        "{intentos}",
-        intentos
-    );
-
-
-    reiniciarBtn.style.display =
-    "block";
-
-
-    const nombre =
-    obtenerNombreUsuario();
-
-
-    const datos =
-    obtenerEstadisticas();
-
-
-    let jugador =
-    datos.find(
-        j =>
-        j.nombre ===
-        nombre
-    );
-
-
-    if(!jugador){
-
-        jugador = {
-
-            nombre:
-            nombre,
-
-            mejorIntentos:
-            intentos,
-
-            partidas:
-            1
-
-        };
-
-
-        datos.push(
-            jugador
-        );
-
-    }
-    else{
-
-        jugador.partidas++;
-
-
-        if(
-            intentos <
-            jugador.mejorIntentos
-        ){
-
-            jugador.mejorIntentos =
-            intentos;
+            idiomaBtn.textContent =
+                "🇦🇲 HY";
 
         }
 
     }
 
 
-    guardarEstadisticas(
-        datos
+    idiomaBtn.addEventListener(
+        "click",
+        () => {
+
+            if (
+                idiomaActual === "es"
+            ) {
+
+                idiomaActual = "en";
+
+            } else if (
+                idiomaActual === "en"
+            ) {
+
+                idiomaActual = "hy";
+
+            } else {
+
+                idiomaActual = "es";
+
+            }
+
+
+            localStorage.setItem(
+                "idioma",
+                idiomaActual
+            );
+
+
+            actualizarIdioma();
+
+        }
     );
 
+
+    /* =====================================================
+       TEMA
+    ===================================================== */
+
+    let tema =
+        localStorage.getItem("tema") ||
+        "claro";
+
+
+    function actualizarTema() {
+
+        if (tema === "oscuro") {
+
+            document.body.classList.add(
+                "oscuro"
+            );
+
+            temaBtn.textContent =
+                "☀️";
+
+        } else {
+
+            document.body.classList.remove(
+                "oscuro"
+            );
+
+            temaBtn.textContent =
+                "🌙";
+
+        }
+
+    }
+
+
+    temaBtn.addEventListener(
+        "click",
+        () => {
+
+            tema =
+                tema === "claro"
+                    ? "oscuro"
+                    : "claro";
+
+
+            localStorage.setItem(
+                "tema",
+                tema
+            );
+
+
+            actualizarTema();
+
+        }
+    );
+
+
+    /* =====================================================
+       INICIO
+    ===================================================== */
+
+    actualizarIdioma();
+
+    actualizarTema();
 
     mostrarRanking();
-
-});
-
-
-/* =====================================================
-   REINICIAR
-===================================================== */
-
-reiniciarBtn.addEventListener(
-"click",
-iniciarJuego
-);
-
-
-/* =====================================================
-   INICIO
-===================================================== */
-
-const nombreGuardado =
-localStorage.getItem(
-    "nombreUsuario"
-);
-
-
-if(nombreGuardado){
-
-    nombreInput.value =
-    nombreGuardado;
-
-}
-
-
-aplicarTema();
-
-aplicarIdioma();
-
-iniciarJuego();
 
 </script>
 
