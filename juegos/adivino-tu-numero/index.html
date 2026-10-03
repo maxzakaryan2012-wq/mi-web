@@ -63,6 +63,12 @@ button:hover{
     transform:scale(1.03);
 }
 
+button:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+    transform:none;
+}
+
 #temaBtn,
 #idiomaBtn{
     background:#ddd;
@@ -240,8 +246,15 @@ td{
 <h1 id="titulo">🧠 Adivino tu número</h1>
 
 <div class="botones-header">
-    <button id="idiomaBtn">🇪🇸</button>
-    <button id="temaBtn">🌙</button>
+
+    <button id="idiomaBtn">
+        🇪🇸
+    </button>
+
+    <button id="temaBtn">
+        🌙
+    </button>
+
 </div>
 
 </header>
@@ -249,7 +262,10 @@ td{
 
 <div class="juego">
 
-<div class="instrucciones" id="instrucciones">
+<div
+    class="instrucciones"
+    id="instrucciones"
+>
     Piensa un número del 1 al 100 y yo intentaré adivinarlo.
 </div>
 
@@ -266,12 +282,18 @@ td{
 </div>
 
 
-<div class="numero" id="numeroActual">
+<div
+    class="numero"
+    id="numeroActual"
+>
     50
 </div>
 
 
-<div class="rango" id="rango">
+<div
+    class="rango"
+    id="rango"
+>
     Estoy buscando entre 1 y 100
 </div>
 
@@ -303,8 +325,15 @@ td{
 
 
 <div class="intentos">
-    <span id="textoIntentos">Intentos:</span>
-    <span id="intentos">1</span>
+
+    <span id="textoIntentos">
+        Intentos:
+    </span>
+
+    <span id="intentos">
+        1
+    </span>
+
 </div>
 
 
@@ -335,10 +364,21 @@ td{
 <thead>
 
 <tr>
+
     <th>#</th>
-    <th id="nombreColumna">Nombre</th>
-    <th id="intentosColumna">Mejor resultado</th>
-    <th id="partidasColumna">Partidas</th>
+
+    <th id="nombreColumna">
+        Nombre
+    </th>
+
+    <th id="intentosColumna">
+        Mejor partida
+    </th>
+
+    <th id="partidasColumna">
+        Partidas ganadas
+    </th>
+
 </tr>
 
 </thead>
@@ -364,7 +404,8 @@ td{
    CONFIGURACIÓN
 ===================================================== */
 
-const ESTADISTICAS_KEY = "estadisticasAdivinoNumero";
+const ESTADISTICAS_KEY =
+    "estadisticasAdivinoNumero";
 
 
 /* =====================================================
@@ -375,7 +416,8 @@ const idiomas = {
 
     es: {
 
-        titulo:"🧠 Adivino tu número",
+        titulo:
+        "🧠 Adivino tu número",
 
         instrucciones:
         "Piensa un número del 1 al 100 y yo intentaré adivinarlo.",
@@ -405,10 +447,10 @@ const idiomas = {
         "Nombre",
 
         intentosColumna:
-        "Mejor resultado",
+        "Mejor partida",
 
         partidasColumna:
-        "Partidas",
+        "Partidas ganadas",
 
         sinDatos:
         "Todavía no hay partidas.",
@@ -427,7 +469,8 @@ const idiomas = {
 
     en: {
 
-        titulo:"🧠 I Guess Your Number",
+        titulo:
+        "🧠 I Guess Your Number",
 
         instrucciones:
         "Think of a number from 1 to 100 and I will try to guess it.",
@@ -457,10 +500,10 @@ const idiomas = {
         "Name",
 
         intentosColumna:
-        "Best result",
+        "Best game",
 
         partidasColumna:
-        "Games",
+        "Games won",
 
         sinDatos:
         "There are no games yet.",
@@ -479,7 +522,8 @@ const idiomas = {
 
     hy: {
 
-        titulo:"🧠 Գուշակում եմ քո թիվը",
+        titulo:
+        "🧠 Գուշակում եմ քո թիվը",
 
         instrucciones:
         "Մտածիր 1-ից 100 թիվ, և ես կփորձեմ գուշակել այն։",
@@ -509,10 +553,10 @@ const idiomas = {
         "Անուն",
 
         intentosColumna:
-        "Լավագույն արդյունք",
+        "Լավագույն խաղ",
 
         partidasColumna:
-        "Խաղեր",
+        "Հաղթած խաղեր",
 
         sinDatos:
         "Դեռ խաղեր չկան։",
@@ -536,43 +580,69 @@ const idiomas = {
 ===================================================== */
 
 const numeroActual =
-    document.getElementById("numeroActual");
+    document.getElementById(
+        "numeroActual"
+    );
 
 const rango =
-    document.getElementById("rango");
+    document.getElementById(
+        "rango"
+    );
 
 const intentosElemento =
-    document.getElementById("intentos");
+    document.getElementById(
+        "intentos"
+    );
 
 const mensaje =
-    document.getElementById("mensaje");
+    document.getElementById(
+        "mensaje"
+    );
 
 const reiniciarBtn =
-    document.getElementById("reiniciarBtn");
+    document.getElementById(
+        "reiniciarBtn"
+    );
 
 const menorBtn =
-    document.getElementById("menorBtn");
+    document.getElementById(
+        "menorBtn"
+    );
 
 const correctoBtn =
-    document.getElementById("correctoBtn");
+    document.getElementById(
+        "correctoBtn"
+    );
 
 const mayorBtn =
-    document.getElementById("mayorBtn");
+    document.getElementById(
+        "mayorBtn"
+    );
 
 const nombreInput =
-    document.getElementById("nombreInput");
+    document.getElementById(
+        "nombreInput"
+    );
 
 const rankingBody =
-    document.getElementById("rankingBody");
+    document.getElementById(
+        "rankingBody"
+    );
 
 const posicionUsuario =
-    document.getElementById("posicionUsuario");
+    document.getElementById(
+        "posicionUsuario"
+    );
 
 const idiomaBtn =
-    document.getElementById("idiomaBtn");
+    document.getElementById(
+        "idiomaBtn"
+    );
 
 const temaBtn =
-    document.getElementById("temaBtn");
+    document.getElementById(
+        "temaBtn"
+    );
 
 
 /* =====================================================
@@ -595,17 +665,23 @@ let terminado = false;
 ===================================================== */
 
 let idioma =
-    localStorage.getItem("idioma") || "es";
+    localStorage.getItem("idioma")
+    || "es";
 
 
 function aplicarIdioma(){
 
-    const t = idiomas[idioma];
+    const t =
+        idiomas[idioma];
 
-    document.getElementById("titulo").textContent =
+    document.getElementById(
+        "titulo"
+    ).textContent =
         t.titulo;
 
-    document.getElementById("instrucciones").textContent =
+    document.getElementById(
+        "instrucciones"
+    ).textContent =
         t.instrucciones;
 
     nombreInput.placeholder =
@@ -620,19 +696,29 @@ function aplicarIdioma(){
     mayorBtn.textContent =
         t.mayor;
 
-    document.getElementById("textoIntentos").textContent =
+    document.getElementById(
+        "textoIntentos"
+    ).textContent =
         t.intentos;
 
-    document.getElementById("tituloRanking").textContent =
+    document.getElementById(
+        "tituloRanking"
+    ).textContent =
         t.ranking;
 
-    document.getElementById("nombreColumna").textContent =
+    document.getElementById(
+        "nombreColumna"
+    ).textContent =
         t.nombreColumna;
 
-    document.getElementById("intentosColumna").textContent =
+    document.getElementById(
+        "intentosColumna"
+    ).textContent =
         t.intentosColumna;
 
-    document.getElementById("partidasColumna").textContent =
+    document.getElementById(
+        "partidasColumna"
+    ).textContent =
         t.partidasColumna;
 
     reiniciarBtn.textContent =
@@ -657,13 +743,19 @@ idiomaBtn.addEventListener(
     () => {
 
         if(idioma === "es"){
+
             idioma = "en";
+
         }
         else if(idioma === "en"){
+
             idioma = "hy";
+
         }
         else{
+
             idioma = "es";
+
         }
 
         localStorage.setItem(
@@ -682,23 +774,30 @@ idiomaBtn.addEventListener(
 ===================================================== */
 
 let tema =
-    localStorage.getItem("tema") || "claro";
+    localStorage.getItem("tema")
+    || "claro";
 
 
 function aplicarTema(){
 
     if(tema === "oscuro"){
 
-        document.body.classList.add("oscuro");
+        document.body.classList.add(
+            "oscuro"
+        );
 
-        temaBtn.textContent = "☀️";
+        temaBtn.textContent =
+            "☀️";
 
     }
     else{
 
-        document.body.classList.remove("oscuro");
+        document.body.classList.remove(
+            "oscuro"
+        );
 
-        temaBtn.textContent = "🌙";
+        temaBtn.textContent =
+            "🌙";
 
     }
 
@@ -735,26 +834,36 @@ function obtenerNombreUsuario(){
         nombreInput.value.trim();
 
     if(nombre){
+
         localStorage.setItem(
             "nombreUsuario",
             nombre
         );
 
         return nombre;
+
     }
 
     nombre =
-        localStorage.getItem("nombreUsuario");
+        localStorage.getItem(
+            "nombreUsuario"
+        );
 
     if(nombre){
+
         return nombre;
+
     }
 
     const numero =
-        localStorage.getItem("numeroUsuario");
+        localStorage.getItem(
+            "numeroUsuario"
+        );
 
     if(numero){
+
         return "Jugador " + numero;
+
     }
 
     return "Jugador";
@@ -778,7 +887,9 @@ function obtenerEstadisticas(){
             );
 
         if(Array.isArray(datos)){
+
             return datos;
+
         }
 
     }
@@ -789,7 +900,9 @@ function obtenerEstadisticas(){
 }
 
 
-function guardarEstadisticas(datos){
+function guardarEstadisticas(
+    datos
+){
 
     localStorage.setItem(
         ESTADISTICAS_KEY,
@@ -803,7 +916,9 @@ function guardarEstadisticas(datos){
    ORDENAR RANKING
 ===================================================== */
 
-function ordenarRanking(datos){
+function ordenarRanking(
+    datos
+){
 
     return datos.sort(
         (a,b) => {
@@ -855,18 +970,21 @@ function mostrarRanking(){
 
     rankingBody.innerHTML = "";
 
-    const t = idiomas[idioma];
+    const t =
+        idiomas[idioma];
 
     if(datos.length === 0){
 
         rankingBody.innerHTML =
             `<tr>
-                <td colspan="4" class="sin-datos">
+                <td colspan="4"
+                    class="sin-datos">
                     ${t.sinDatos}
                 </td>
             </tr>`;
 
-        posicionUsuario.textContent = "";
+        posicionUsuario.textContent =
+            "";
 
         return;
 
@@ -883,7 +1001,9 @@ function mostrarRanking(){
             (jugador,index) => {
 
                 const fila =
-                    document.createElement("tr");
+                    document.createElement(
+                        "tr"
+                    );
 
                 if(
                     jugador.nombre ===
@@ -930,7 +1050,8 @@ function mostrarRanking(){
     }
     else{
 
-        posicionUsuario.textContent = "";
+        posicionUsuario.textContent =
+            "";
 
     }
 
@@ -948,53 +1069,128 @@ function actualizarRango(){
 
     rango.textContent =
         t.rango
-        .replace("{min}", minimo)
-        .replace("{max}", maximo);
+        .replace(
+            "{min}",
+            minimo
+        )
+        .replace(
+            "{max}",
+            maximo
+        );
 
 }
 
 
 /* =====================================================
-   NUEVO NÚMERO
+   GENERAR NÚMERO
 ===================================================== */
 
 /*
-   IMPORTANTE:
+    Ya no usamos siempre el centro.
 
-   Antes usábamos el punto medio:
+    Pero tampoco elegimos un número
+    completamente aleatorio.
 
-   1 - 100
-   → 50
-   → 75
-   → 87
-   → ...
+    Elegimos posiciones que están
+    ligeramente alejadas del centro.
 
-   Eso hace que el número se encuentre
-   demasiado rápido.
-
-   Ahora elegimos un número ALEATORIO
-   dentro del rango disponible.
-
-   Así se necesitan muchos más intentos.
+    Esto hace que normalmente tarde
+    más intentos que una búsqueda binaria
+    normal, pero siga pareciendo lógico.
 */
 
 function generarNumero(){
 
     if(minimo > maximo){
 
-        mensaje.textContent =
-            "❌";
-
         return;
 
     }
 
 
-    numeroAdivinado =
-        Math.floor(
-            Math.random() *
-            (maximo - minimo + 1)
-        ) + minimo;
+    const cantidad =
+        maximo - minimo + 1;
+
+
+    if(cantidad <= 3){
+
+        numeroAdivinado =
+            minimo;
+
+    }
+    else{
+
+        const centro =
+            Math.floor(
+                (minimo + maximo) / 2
+            );
+
+
+        const distancia =
+            Math.max(
+                2,
+                Math.floor(
+                    cantidad * 0.25
+                )
+            );
+
+
+        let opciones = [];
+
+
+        const izquierda =
+            centro - distancia;
+
+        const derecha =
+            centro + distancia;
+
+
+        if(
+            izquierda >= minimo &&
+            izquierda <= maximo
+        ){
+
+            opciones.push(
+                izquierda
+            );
+
+        }
+
+
+        if(
+            derecha >= minimo &&
+            derecha <= maximo
+        ){
+
+            opciones.push(
+                derecha
+            );
+
+        }
+
+
+        if(
+            centro >= minimo &&
+            centro <= maximo &&
+            opciones.length === 0
+        ){
+
+            opciones.push(
+                centro
+            );
+
+        }
+
+
+        numeroAdivinado =
+            opciones[
+                Math.floor(
+                    Math.random() *
+                    opciones.length
+                )
+            ];
+
+    }
 
 
     numeroActual.textContent =
@@ -1019,7 +1215,8 @@ function iniciarJuego(){
 
     terminado = false;
 
-    mensaje.textContent = "";
+    mensaje.textContent =
+        "";
 
     reiniciarBtn.style.display =
         "none";
@@ -1027,11 +1224,14 @@ function iniciarJuego(){
     intentosElemento.textContent =
         intentos;
 
-    menorBtn.disabled = false;
+    menorBtn.disabled =
+        false;
 
-    correctoBtn.disabled = false;
+    correctoBtn.disabled =
+        false;
 
-    mayorBtn.disabled = false;
+    mayorBtn.disabled =
+        false;
 
     generarNumero();
 
@@ -1039,7 +1239,7 @@ function iniciarJuego(){
 
 
 /* =====================================================
-   RESPUESTA: ES MENOR
+   ES MENOR
 ===================================================== */
 
 menorBtn.addEventListener(
@@ -1047,7 +1247,9 @@ menorBtn.addEventListener(
     () => {
 
         if(terminado){
+
             return;
+
         }
 
 
@@ -1078,7 +1280,7 @@ menorBtn.addEventListener(
 
 
 /* =====================================================
-   RESPUESTA: ES MAYOR
+   ES MAYOR
 ===================================================== */
 
 mayorBtn.addEventListener(
@@ -1086,7 +1288,9 @@ mayorBtn.addEventListener(
     () => {
 
         if(terminado){
+
             return;
+
         }
 
 
@@ -1117,7 +1321,7 @@ mayorBtn.addEventListener(
 
 
 /* =====================================================
-   RESPUESTA: CORRECTO
+   CORRECTO
 ===================================================== */
 
 correctoBtn.addEventListener(
@@ -1125,18 +1329,23 @@ correctoBtn.addEventListener(
     () => {
 
         if(terminado){
+
             return;
+
         }
 
 
         terminado = true;
 
 
-        menorBtn.disabled = true;
+        menorBtn.disabled =
+            true;
 
-        correctoBtn.disabled = true;
+        correctoBtn.disabled =
+            true;
 
-        mayorBtn.disabled = true;
+        mayorBtn.disabled =
+            true;
 
 
         const t =
@@ -1165,7 +1374,8 @@ correctoBtn.addEventListener(
         let jugador =
             datos.find(
                 j =>
-                j.nombre === nombre
+                j.nombre ===
+                nombre
             );
 
 
@@ -1173,20 +1383,26 @@ correctoBtn.addEventListener(
 
             jugador = {
 
-                nombre: nombre,
+                nombre:
+                nombre,
 
-                mejorIntentos: intentos,
+                mejorIntentos:
+                intentos,
 
-                partidas: 1
+                partidas:
+                1
 
             };
 
-            datos.push(jugador);
+            datos.push(
+                jugador
+            );
 
         }
         else{
 
             jugador.partidas++;
+
 
             if(
                 intentos <
@@ -1201,7 +1417,9 @@ correctoBtn.addEventListener(
         }
 
 
-        guardarEstadisticas(datos);
+        guardarEstadisticas(
+            datos
+        );
 
         mostrarRanking();
 
