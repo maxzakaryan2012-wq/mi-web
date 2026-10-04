@@ -54,6 +54,7 @@ $('formulario').addEventListener('submit',e=>{
  if(!r){const texto=$('respuesta').value.trim(),n=Number(texto);r=!texto||!Number.isInteger(n)?{error:'invalid'}:{correcto:n===juego.respuesta,respuesta:juego.respuesta}}
  const t=T[lang()];if(r.error){$('mensaje').textContent=t.invalid;return}
  resuelto=true;jugadas++;if(r.correcto){aciertos++;racha++;$('mensaje').textContent=t.correct}else{racha=0;$('mensaje').textContent=t.wrong+' '+r.respuesta}
+ MiWeb.updateExtraStats('secuencia',v=>({...v,jugadas:(v.jugadas||0)+1,aciertos:(v.aciertos||0)+(r.correcto?1:0),mejorRacha:Math.max(v.mejorRacha||0,racha)}));
  $('explicacion').textContent=traducirExplicacion(juego);$('botonComprobar').disabled=true;$('botonNueva').disabled=false;actualizarMarcador();
 });
 
@@ -62,4 +63,4 @@ $('botonIdioma').onclick=()=>{$('menuIdiomas').style.display=$('menuIdiomas').st
 $('menuIdiomas').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;localStorage.setItem('idioma',b.dataset.lang);$('menuIdiomas').style.display='none';renderText();if(resuelto&&juego)$('explicacion').textContent=traducirExplicacion(juego)});
 $('botonTema').onclick=()=>{localStorage.setItem('tema',localStorage.getItem('tema')==='claro'?'oscuro':'claro');renderText()};
 document.addEventListener('click',e=>{if(!e.target.closest('.menu-idioma'))$('menuIdiomas').style.display='none'});
-actualizarMarcador();init();
+MiWeb.mountRanking({game:'secuencia',columns:[{key:'mejorRacha',label:{es:'Mejor racha',en:'Best streak',hy:'Լավագույն շարք'}},{key:'aciertos',label:{es:'Aciertos',en:'Correct',hy:'Ճիշտ'}},{key:'jugadas',label:{es:'Jugadas',en:'Plays',hy:'Փորձեր'}}],compare:(a,b)=>(b.mejorRacha||0)-(a.mejorRacha||0)||(b.aciertos||0)-(a.aciertos||0)||(b.jugadas||0)-(a.jugadas||0)});actualizarMarcador();init();
