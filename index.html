@@ -538,6 +538,13 @@
 
             <div class="juegos">
 
+
+                <div class="tarjeta">
+                    <h2 id="tituloCollatz">🔗 Conjetura de Collatz</h2>
+                    <p id="descripcionCollatz">Introduce un número y observa su secuencia, sus pasos y su gráfica.</p>
+                    <a href="juegos/collatz/index.html" id="botonCollatz">🔗 Explorar</a>
+                </div>
+
                 <div class="tarjeta">
                     <h2 id="tituloPitagoras">📐 Triángulo de Pitágoras</h2>
                     <p id="descripcionPitagoras">Introduce dos lados y calcula el tercero paso a paso.</p>
@@ -789,6 +796,12 @@
                 hy: ['📐 Պյութագորասի եռանկյուն', 'Մուտքագրիր երկու կողմը և քայլ առ քայլ հաշվիր երրորդը։', '📐 Հաշվել']
             }[document.documentElement.lang];
             ['tituloPitagoras', 'descripcionPitagoras', 'botonPitagoras'].forEach((id, i) => document.getElementById(id).textContent = pitagoras[i]);
+            const collatz = {
+                es: ['🔗 Conjetura de Collatz', 'Introduce un número y observa su secuencia, sus pasos y su gráfica.', '🔗 Explorar'],
+                en: ['🔗 Collatz Conjecture', 'Enter a number and explore its sequence, steps and graph.', '🔗 Explore'],
+                hy: ['🔗 Կոլացի վարկած', 'Գրիր թիվ և դիտիր հաջորդականությունը, քայլերը և գրաֆիկը։', '🔗 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloCollatz', 'descripcionCollatz', 'botonCollatz'].forEach((id, i) => document.getElementById(id).textContent = collatz[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
