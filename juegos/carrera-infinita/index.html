@@ -829,6 +829,7 @@
         ========================= -->
 
         <section class="records">
+            <p id="avisoLocal"></p>
 
             <h2 id="tituloRecords">
                 🏆 Récords
@@ -867,6 +868,7 @@
     </main>
 
 
+    <script src="../../assets/common.js"></script>
     <script>
 
         /* =====================================================
@@ -1116,32 +1118,7 @@
         }
 
 
-        function obtenerNombreUsuario() {
-
-            let nombre =
-                localStorage.getItem(
-                    "nombreUsuario"
-                );
-
-
-            if (!nombre) {
-
-                nombre =
-                    "user_" +
-                    obtenerNumeroUsuario();
-
-
-                localStorage.setItem(
-                    "nombreUsuario",
-                    nombre
-                );
-
-            }
-
-
-            return nombre;
-
-        }
+        function obtenerNombreUsuario() { return MiWeb.profile().name; }
 
 
         /* =====================================================
@@ -1248,6 +1225,7 @@
         ===================================================== */
 
         function aplicarIdioma() {
+            MiWeb.applyLanguage();
 
             const idioma =
                 localStorage.getItem("idioma") ||
@@ -2043,47 +2021,7 @@
            ESTADÍSTICAS
         ===================================================== */
 
-        function obtenerEstadisticas() {
-
-            let datos =
-                localStorage.getItem(
-                    estadisticasKey
-                );
-
-
-            if (!datos) {
-
-                return {};
-
-            }
-
-
-            try {
-
-                const resultado =
-                    JSON.parse(datos);
-
-
-                if (
-                    typeof resultado !== "object" ||
-                    resultado === null ||
-                    Array.isArray(resultado)
-                ) {
-
-                    return {};
-
-                }
-
-
-                return resultado;
-
-            } catch {
-
-                return {};
-
-            }
-
-        }
+        function obtenerEstadisticas() { return MiWeb.readStats(estadisticasKey); }
 
 
         function guardarEstadistica() {
@@ -2093,7 +2031,7 @@
 
 
             const nombre =
-                obtenerNombreUsuario();
+                MiWeb.profile().id;
 
 
             if (
@@ -2160,10 +2098,7 @@
             }
 
 
-            localStorage.setItem(
-                estadisticasKey,
-                JSON.stringify(datos)
-            );
+            MiWeb.writeStats(estadisticasKey, datos);
 
         }
 
@@ -2293,9 +2228,7 @@
                         "</td>" +
 
                         "<td>" +
-                        escaparHTML(
-                            nombre
-                        ) +
+                        escaparHTML(MiWeb.playerName(nombre)) +
                         "</td>" +
 
                         "<td>" +

@@ -373,13 +373,13 @@
 
             <input
                 type="number"
-                id="numero1"
+                id="numero1" step="1" min="-1000000000" max="1000000000"
                 placeholder="Número 1"
             >
 
             <input
                 type="number"
-                id="numero2"
+                id="numero2" step="1" min="-1000000000" max="1000000000"
                 placeholder="Número 2"
             >
 
@@ -398,6 +398,7 @@
         <!-- ESTADÍSTICAS -->
 
         <section class="estadisticas">
+            <p id="avisoLocal"></p>
 
             <h2 id="tituloEstadisticas">
                 🏆 Estadísticas
@@ -444,6 +445,7 @@
     </main>
 
 
+    <script src="../../assets/common.js"></script>
     <script>
 
         /* =====================================================
@@ -468,30 +470,14 @@
                 localStorage.getItem("idioma") || "es";
 
 
-            if (
-                input1.value === "" ||
-                input2.value === ""
-            ) {
-
-                if (idioma === "en") {
-
-                    document.getElementById("resultado").textContent =
-                        "⚠️ Enter two numbers.";
-
-                } else if (idioma === "hy") {
-
-                    document.getElementById("resultado").textContent =
-                        "⚠️ Գրիր երկու թիվ։";
-
-                } else {
-
-                    document.getElementById("resultado").textContent =
-                        "⚠️ Escribe dos números.";
-                }
-
+            if (!MiWeb.validIntegerRange(input1.value, input2.value)) {
+                document.getElementById("resultado").textContent = {
+                    es: "⚠️ Escribe dos números enteros entre −1.000.000.000 y 1.000.000.000.",
+                    en: "⚠️ Enter two whole numbers between −1,000,000,000 and 1,000,000,000.",
+                    hy: "⚠️ Գրիր երկու ամբողջ թիվ՝ −1 000 000 000-ից մինչև 1 000 000 000։"
+                }[idioma] || "⚠️ Escribe dos números enteros válidos.";
                 return;
             }
-
 
             if (numero1 > numero2) {
 
@@ -526,48 +512,7 @@
            USUARIO
         ===================================================== */
 
-        function obtenerNombreUsuario() {
-
-            let nombre =
-                localStorage.getItem("nombreUsuario");
-
-
-            if (!nombre) {
-
-                let numero =
-                    localStorage.getItem("numeroUsuario");
-
-
-                if (!numero) {
-
-                    numero =
-                        Math.floor(
-                            Math.random() * 10000
-                        );
-
-                    numero =
-                        String(numero).padStart(4, "0");
-
-                    localStorage.setItem(
-                        "numeroUsuario",
-                        numero
-                    );
-                }
-
-
-                nombre =
-                    "user_" + numero;
-
-
-                localStorage.setItem(
-                    "nombreUsuario",
-                    nombre
-                );
-            }
-
-
-            return nombre;
-        }
+        function obtenerNombreUsuario() { return MiWeb.profile().name; }
 
 
         /* =====================================================
@@ -578,91 +523,13 @@
             "estadisticasNumeroAleatorio";
 
 
-        function obtenerEstadisticas() {
-
-            const datos =
-                localStorage.getItem(
-                    ESTADISTICAS_KEY
-                );
-
-
-            if (!datos) {
-                return {};
-            }
-
-
-            try {
-
-                const datosParseados =
-                    JSON.parse(datos);
-
-
-                if (
-                    !datosParseados ||
-                    typeof datosParseados !== "object" ||
-                    Array.isArray(datosParseados)
-                ) {
-
-                    return {};
-                }
-
-
-                const resultado = {};
-
-
-                Object.keys(datosParseados).forEach(
-                    function(nombre) {
-
-                        const jugador =
-                            datosParseados[nombre];
-
-
-                        if (
-                            !jugador ||
-                            typeof jugador !== "object"
-                        ) {
-
-                            return;
-                        }
-
-
-                        const generados =
-                            Number(jugador.generados);
-
-
-                        if (
-                            !Number.isFinite(generados) ||
-                            generados < 0
-                        ) {
-
-                            return;
-                        }
-
-
-                        resultado[nombre] = {
-
-                            generados:
-                                Math.floor(generados)
-
-                        };
-
-                    }
-                );
-
-
-                return resultado;
-
-            } catch {
-
-                return {};
-            }
-        }
+        function obtenerEstadisticas() { return MiWeb.readStats(ESTADISTICAS_KEY); }
 
 
         function guardarNumeroGenerado() {
 
             const nombre =
-                obtenerNombreUsuario();
+                MiWeb.profile().id;
 
 
             const estadisticas =
@@ -683,10 +550,7 @@
             }
 
 
-            localStorage.setItem(
-                ESTADISTICAS_KEY,
-                JSON.stringify(estadisticas)
-            );
+            MiWeb.writeStats(ESTADISTICAS_KEY, estadisticas);
 
 
             mostrarRanking();
@@ -701,7 +565,8 @@
 
                         return {
 
-                            nombre: nombre,
+                            id: nombre,
+                            nombre: MiWeb.playerName(nombre),
 
                             generados:
                                 estadisticas[nombre].generados
@@ -776,8 +641,7 @@
 
 
                     if (
-                        jugador.nombre ===
-                        nombreUsuario
+                        jugador.id === MiWeb.profile().id
                     ) {
 
                         fila.classList.add(
@@ -844,8 +708,7 @@
                     function(jugador) {
 
                         return (
-                            jugador.nombre ===
-                            nombreUsuario
+                            jugador.id === MiWeb.profile().id
                         );
 
                     }
@@ -959,6 +822,7 @@
 
 
         function aplicarIdioma() {
+            MiWeb.applyLanguage();
 
             const idioma =
                 localStorage.getItem(

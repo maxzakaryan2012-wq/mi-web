@@ -457,6 +457,7 @@
         <!-- ESTADÍSTICAS -->
 
         <section class="estadisticas">
+            <p id="avisoLocal"></p>
 
             <h2 id="tituloEstadisticas">
                 🏆 Estadísticas
@@ -508,6 +509,7 @@
     </main>
 
 
+    <script src="../../assets/common.js"></script>
     <script>
 
         /* =====================================================
@@ -793,58 +795,7 @@
            USUARIO
         ===================================================== */
 
-        function obtenerNombreUsuario() {
-
-            let nombre =
-                localStorage.getItem(
-                    "nombreUsuario"
-                );
-
-
-            if (!nombre) {
-
-                let numero =
-                    localStorage.getItem(
-                        "numeroUsuario"
-                    );
-
-
-                if (!numero) {
-
-                    numero =
-                        Math.floor(
-                            Math.random() * 10000
-                        );
-
-                    numero =
-                        String(numero).padStart(
-                            4,
-                            "0"
-                        );
-
-                    localStorage.setItem(
-                        "numeroUsuario",
-                        numero
-                    );
-
-                }
-
-
-                nombre =
-                    "user_" + numero;
-
-
-                localStorage.setItem(
-                    "nombreUsuario",
-                    nombre
-                );
-
-            }
-
-
-            return nombre;
-
-        }
+        function obtenerNombreUsuario() { return MiWeb.profile().name; }
 
 
         /* =====================================================
@@ -855,118 +806,13 @@
             "estadisticasAdivinoTuNumero";
 
 
-        function obtenerEstadisticas() {
-
-            const datos =
-                localStorage.getItem(
-                    ESTADISTICAS_KEY
-                );
-
-
-            if (!datos) {
-                return {};
-            }
-
-
-            try {
-
-                const datosParseados =
-                    JSON.parse(datos);
-
-
-                if (
-                    !datosParseados ||
-                    typeof datosParseados !== "object" ||
-                    Array.isArray(datosParseados)
-                ) {
-
-                    return {};
-
-                }
-
-
-                const resultado = {};
-
-
-                Object.keys(
-                    datosParseados
-                ).forEach(
-                    function(nombre) {
-
-                        const jugador =
-                            datosParseados[nombre];
-
-
-                        if (
-                            !jugador ||
-                            typeof jugador !== "object"
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const mejorIntentos =
-                            Number(
-                                jugador.mejorIntentos
-                            );
-
-                        const partidas =
-                            Number(
-                                jugador.partidas
-                            );
-
-
-                        if (
-                            !Number.isFinite(
-                                mejorIntentos
-                            ) ||
-                            !Number.isFinite(
-                                partidas
-                            ) ||
-                            mejorIntentos < 1 ||
-                            partidas < 0
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        resultado[nombre] = {
-
-                            mejorIntentos:
-                                Math.floor(
-                                    mejorIntentos
-                                ),
-
-                            partidas:
-                                Math.floor(
-                                    partidas
-                                )
-
-                        };
-
-                    }
-                );
-
-
-                return resultado;
-
-            } catch {
-
-                return {};
-
-            }
-
-        }
+        function obtenerEstadisticas() { return MiWeb.readStats(ESTADISTICAS_KEY); }
 
 
         function guardarVictoria() {
 
             const nombre =
-                obtenerNombreUsuario();
+                MiWeb.profile().id;
 
 
             const estadisticas =
@@ -1011,12 +857,7 @@
             }
 
 
-            localStorage.setItem(
-                ESTADISTICAS_KEY,
-                JSON.stringify(
-                    estadisticas
-                )
-            );
+            MiWeb.writeStats(ESTADISTICAS_KEY, estadisticas);
 
 
             mostrarRanking();
@@ -1040,8 +881,8 @@
 
                         return {
 
-                            nombre:
-                                nombre,
+                            id: nombre,
+                            nombre: MiWeb.playerName(nombre),
 
                             mejorIntentos:
                                 estadisticas[
@@ -1153,8 +994,7 @@
 
 
                     if (
-                        jugador.nombre ===
-                        nombreUsuario
+                        jugador.id === MiWeb.profile().id
                     ) {
 
                         fila.classList.add(
@@ -1238,8 +1078,7 @@
                     function(jugador) {
 
                         return (
-                            jugador.nombre ===
-                            nombreUsuario
+                            jugador.id === MiWeb.profile().id
                         );
 
                     }
@@ -1369,6 +1208,7 @@
 
 
         function aplicarIdioma() {
+            MiWeb.applyLanguage();
 
             const idioma =
                 localStorage.getItem(
