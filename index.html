@@ -65,7 +65,8 @@
             transition: 0.2s;
         }
 
-        .navegacion a:hover {
+        .navegacion a:hover,
+        .navegacion a.activo {
             background: #292929;
         }
 
@@ -73,7 +74,8 @@
             color: #111;
         }
 
-        body.claro .navegacion a:hover {
+        body.claro .navegacion a:hover,
+        body.claro .navegacion a.activo {
             background: #eee;
         }
 
@@ -334,6 +336,24 @@
             background: #d8d8d8;
         }
 
+        .registro-titulo {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+
+        .registro-descripcion {
+            color: #aaa;
+            margin: 0 0 18px;
+        }
+
+        body.claro .registro-descripcion {
+            color: #555;
+        }
+
+        .tarjeta[hidden] {
+            display: none;
+        }
+
         /* =========================
            MÓVIL
         ========================= */
@@ -345,11 +365,28 @@
             }
 
             .barra {
-                padding: 0 12px;
+                height: auto;
+                min-height: 65px;
+                padding: 10px 12px;
+                flex-wrap: wrap;
+                gap: 8px;
             }
 
             .navegacion {
-                display: none;
+                display: flex;
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 2px;
+                scrollbar-width: thin;
+            }
+
+            .navegacion a {
+                flex: 0 0 auto;
+                padding: 9px 11px;
+                font-size: 14px;
             }
 
             .cabecera h1 {
@@ -391,14 +428,26 @@
             🎮 MI WEB
         </div>
 
-        <nav class="navegacion">
+        <nav class="navegacion" aria-label="Secciones principales">
 
-            <a href="index.html" id="inicio">
+            <a href="#inicio" id="inicio" data-view="inicio">
                 🏠 Inicio
             </a>
 
-            <a href="#juegos" id="juegosNav">
+            <a href="#juegos" id="juegosNav" data-view="juegos">
                 🎮 Juegos
+            </a>
+
+            <a href="#interesantes" id="interesantesNav" data-view="interesantes">
+                ✨ Cosas interesantes
+            </a>
+
+            <a href="#calculadora" id="calculadoraNav" data-view="calculadora">
+                🧮 Calculadora
+            </a>
+
+            <a href="#registro" id="registroNav" data-view="registro">
+                👤 Registrarse
             </a>
 
         </nav>
@@ -472,7 +521,10 @@
              USUARIO
         ========================= -->
 
-        <section class="registro-usuario">
+        <section class="registro-usuario" id="registro">
+
+            <h2 class="registro-titulo" id="tituloRegistro">👤 Registrarse</h2>
+            <p class="registro-descripcion" id="descripcionRegistro">Elige el nombre que aparecerá en tus estadísticas y rankings.</p>
 
             <div class="usuario-principal">
 
@@ -538,38 +590,38 @@
 
             <div class="juegos">
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
                     <h2 id="tituloDuelo">⚡ Duelo de cálculo mental</h2>
                     <p id="descripcionDuelo">Resuelve tantas operaciones como puedas en 30 segundos.</p>
                     <a href="juegos/duelo-calculo/index.html" id="botonDuelo">⚡ Jugar</a>
                 </div>
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
                     <h2 id="tituloSecuencia">🔢 Secuencia matemática</h2>
                     <p id="descripcionSecuencia">Descubre qué número viene después en distintas secuencias.</p>
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
                 </div>
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloAreas">📐 Calculador de áreas</h2>
                     <p id="descripcionAreas">Elige una figura e introduce sus medidas para calcular el área paso a paso.</p>
                     <a href="juegos/areas/index.html" id="botonAreas">📐 Calcular</a>
                 </div>
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloPorcentajes">📊 Calculadora de porcentajes</h2>
                     <p id="descripcionPorcentajes">Calcula subidas, bajadas y descubre el valor inicial desde el resultado final.</p>
                     <a href="juegos/porcentajes/index.html" id="botonPorcentajes">📊 Calcular</a>
                 </div>
 
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="interesantes">
                     <h2 id="tituloCollatz">🔗 Conjetura de Collatz</h2>
                     <p id="descripcionCollatz">Introduce un número y observa su secuencia, sus pasos y su gráfica.</p>
                     <a href="juegos/collatz/index.html" id="botonCollatz">🔗 Explorar</a>
                 </div>
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloPitagoras">📐 Triángulo de Pitágoras</h2>
                     <p id="descripcionPitagoras">Introduce dos lados y calcula el tercero paso a paso.</p>
                     <a href="juegos/pitagoras/index.html" id="botonPitagoras">📐 Calcular</a>
@@ -577,7 +629,7 @@
 
                 <!-- JUEGO 1 -->
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="interesantes">
 
                     <h2 id="tituloAleatorio">
                         🎲 Número aleatorio
@@ -599,7 +651,7 @@
 
                 <!-- JUEGO 2 -->
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
 
                     <h2 id="tituloAdivina">
                         🔢 Adivina el número
@@ -621,7 +673,7 @@
 
                 <!-- JUEGO 3 -->
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
 
                     <h2 id="tituloPulsa">
                         🟢 Pulsa el botón
@@ -643,7 +695,7 @@
 
                 <!-- JUEGO 4 -->
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
 
                     <h2 id="tituloReflejos">
                         🏃 Carrera Infinita
@@ -665,7 +717,7 @@
 
                 <!-- JUEGO 5 -->
 
-                <div class="tarjeta">
+                <div class="tarjeta" data-categoria="juegos">
 
                     <h2 id="tituloAdivino">
                         🧠 Adivino tu número
@@ -775,6 +827,112 @@
             }
 
         }
+
+
+        /* =========================
+           SECCIONES DE LA PORTADA
+        ========================= */
+
+        let vistaActual = "inicio";
+
+        function textosSecciones() {
+            const idioma = localStorage.getItem("idioma") || "es";
+            return {
+                es: {
+                    inicio: "🏠 Inicio",
+                    juegos: "🎮 Juegos",
+                    interesantes: "✨ Cosas interesantes",
+                    calculadora: "🧮 Calculadora",
+                    registro: "👤 Registrarse",
+                    todo: "🎮 Todo",
+                    registroTitulo: "👤 Registrarse",
+                    registroDescripcion: "Elige el nombre que aparecerá en tus estadísticas y rankings."
+                },
+                en: {
+                    inicio: "🏠 Home",
+                    juegos: "🎮 Games",
+                    interesantes: "✨ Interesting things",
+                    calculadora: "🧮 Calculators",
+                    registro: "👤 Register",
+                    todo: "🎮 Everything",
+                    registroTitulo: "👤 Register",
+                    registroDescripcion: "Choose the name that will appear in your statistics and rankings."
+                },
+                hy: {
+                    inicio: "🏠 Գլխավոր",
+                    juegos: "🎮 Խաղեր",
+                    interesantes: "✨ Հետաքրքիր բաներ",
+                    calculadora: "🧮 Հաշվիչներ",
+                    registro: "👤 Գրանցվել",
+                    todo: "🎮 Ամեն ինչ",
+                    registroTitulo: "👤 Գրանցվել",
+                    registroDescripcion: "Ընտրիր այն անունը, որը կերևա քո վիճակագրության և վարկանիշների մեջ։"
+                }
+            }[idioma];
+        }
+
+        function actualizarNavegacionSeccion() {
+            const t = textosSecciones();
+            document.getElementById("inicio").textContent = t.inicio;
+            document.getElementById("juegosNav").textContent = t.juegos;
+            document.getElementById("interesantesNav").textContent = t.interesantes;
+            document.getElementById("calculadoraNav").textContent = t.calculadora;
+            document.getElementById("registroNav").textContent = t.registro;
+            document.getElementById("tituloRegistro").textContent = t.registroTitulo;
+            document.getElementById("descripcionRegistro").textContent = t.registroDescripcion;
+
+            if (vistaActual === "inicio") document.getElementById("tituloJuegos").textContent = t.todo;
+            else if (vistaActual === "juegos") document.getElementById("tituloJuegos").textContent = t.juegos;
+            else if (vistaActual === "interesantes") document.getElementById("tituloJuegos").textContent = t.interesantes;
+            else if (vistaActual === "calculadora") document.getElementById("tituloJuegos").textContent = t.calculadora;
+
+            document.querySelectorAll(".navegacion a[data-view]").forEach(a => {
+                a.classList.toggle("activo", a.dataset.view === vistaActual);
+            });
+        }
+
+        function mostrarSeccion(seccion, actualizarHash = true) {
+            const validas = ["inicio", "juegos", "interesantes", "calculadora", "registro"];
+            if (!validas.includes(seccion)) seccion = "inicio";
+            vistaActual = seccion;
+
+            const cabecera = document.querySelector(".cabecera");
+            const registro = document.getElementById("registro");
+            const juegos = document.getElementById("juegos");
+            const formulario = document.getElementById("formularioUsuario");
+
+            cabecera.style.display = seccion === "inicio" ? "" : "none";
+            registro.style.display = (seccion === "inicio" || seccion === "registro") ? "" : "none";
+            juegos.style.display = seccion === "registro" ? "none" : "";
+
+            document.querySelectorAll(".tarjeta[data-categoria]").forEach(tarjeta => {
+                tarjeta.hidden = !(seccion === "inicio" || tarjeta.dataset.categoria === seccion);
+            });
+
+            if (seccion === "registro") {
+                formulario.style.display = "flex";
+                document.getElementById("nombreUsuario").value = obtenerNombreUsuario();
+            }
+
+            actualizarNavegacionSeccion();
+
+            if (actualizarHash && location.hash !== "#" + seccion) {
+                history.pushState(null, "", "#" + seccion);
+            }
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        document.querySelectorAll(".navegacion a[data-view]").forEach(a => {
+            a.addEventListener("click", function(event) {
+                event.preventDefault();
+                mostrarSeccion(this.dataset.view);
+            });
+        });
+
+        window.addEventListener("hashchange", () => {
+            mostrarSeccion(location.hash.slice(1) || "inicio", false);
+        });
 
 
         /* =========================
@@ -1339,6 +1497,8 @@
 
             mostrarNombreUsuario();
 
+            actualizarNavegacionSeccion();
+
         }
 
 
@@ -1498,6 +1658,8 @@
         aplicarIdioma();
 
         mostrarNombreUsuario();
+
+        mostrarSeccion(location.hash.slice(1) || "inicio", false);
 
     </script>
 
