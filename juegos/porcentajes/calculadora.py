@@ -1,6 +1,7 @@
 """Calculadora de subidas y bajadas porcentuales, sin dependencias."""
 import json
 import math
+import sys
 
 MAX_VALUE = 10**15
 MAX_PERCENT = 10**6
@@ -59,7 +60,7 @@ def calcular_json(modo, tipo, valor, porcentaje):
     except ValueError as error:
         return json.dumps({"error": str(error)})
 
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.platform != "emscripten":
     print("Calculadora de porcentajes")
     modo = input("Modo (desde_inicial / desde_final): ").strip()
     tipo = input("Cambio (subida / bajada): ").strip()
