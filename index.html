@@ -539,6 +539,12 @@
             <div class="juegos">
 
                 <div class="tarjeta">
+                    <h2 id="tituloAreas">📐 Calculador de áreas</h2>
+                    <p id="descripcionAreas">Elige una figura e introduce sus medidas para calcular el área paso a paso.</p>
+                    <a href="juegos/areas/index.html" id="botonAreas">📐 Calcular</a>
+                </div>
+
+                <div class="tarjeta">
                     <h2 id="tituloPorcentajes">📊 Calculadora de porcentajes</h2>
                     <p id="descripcionPorcentajes">Calcula subidas, bajadas y descubre el valor inicial desde el resultado final.</p>
                     <a href="juegos/porcentajes/index.html" id="botonPorcentajes">📊 Calcular</a>
@@ -814,6 +820,12 @@
                 hy: ['📊 Տոկոսների հաշվիչ', 'Հաշվիր աճը, նվազումը և վերջնական արժեքից գտիր սկզբնականը։', '📊 Հաշվել']
             }[document.documentElement.lang];
             ['tituloPorcentajes', 'descripcionPorcentajes', 'botonPorcentajes'].forEach((id, i) => document.getElementById(id).textContent = porcentajes[i]);
+            const areas = {
+                es: ['📐 Calculador de áreas', 'Elige una figura e introduce sus medidas para calcular el área paso a paso.', '📐 Calcular'],
+                en: ['📐 Area calculator', 'Choose a shape and enter its measurements to calculate the area step by step.', '📐 Calculate'],
+                hy: ['📐 Մակերեսի հաշվիչ', 'Ընտրիր պատկերը և գրիր չափերը՝ մակերեսը քայլ առ քայլ հաշվելու համար։', '📐 Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloAreas', 'descripcionAreas', 'botonAreas'].forEach((id, i) => document.getElementById(id).textContent = areas[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
