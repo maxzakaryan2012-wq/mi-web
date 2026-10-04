@@ -1,27 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Triángulo de Pitágoras</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triángulo de Pitágoras - MI WEB</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101827;color:#edf2ff;font:17px system-ui,sans-serif;line-height:1.6}body.claro{background:#eef3fb;color:#182538}header{max-width:1000px;margin:auto;padding:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}a{color:inherit}header a{margin-right:auto}button,select,input{font:inherit;border-radius:12px;padding:12px;border:1px solid #71829e;background:transparent;color:inherit}option{color:#182538;background:white}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}main{max-width:1000px;margin:auto;padding:20px}h1{font-size:clamp(28px,5vw,44px);line-height:1.15}h1+p{color:#98abc7}body.claro h1+p{color:#526581}.panel{border:1px solid #71829e55;background:#71829e0d;border-radius:24px;padding:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}label{display:block;margin-bottom:8px}input,form select{width:100%;margin-bottom:20px}input{background:#71829e0c}.primary{background:#6588ff;color:#fff;border:0;width:100%;font-weight:700}svg{width:100%;max-height:290px;color:#89a4ff}svg text{fill:currentColor;font:20px system-ui}#resultado{font-size:26px;font-weight:700;overflow-wrap:anywhere}#pasos{white-space:pre-line;overflow-wrap:anywhere}#estado{min-height:28px}.note{font-size:14px;opacity:.75}.formula{font-size:30px;text-align:center}footer{margin-top:28px}button:focus-visible,a:focus-visible{outline:3px solid #edc75a;outline-offset:4px}@media(max-width:650px){.grid{grid-template-columns:1fr}.panel{padding:18px}header{padding-bottom:0}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:white;transition:.3s}
+.barra{height:70px;background:#181818;display:flex;align-items:center;padding:0 25px;gap:15px;border-bottom:1px solid #333}
+.volver{color:white;text-decoration:none;font-size:18px;font-weight:bold}.volver:hover{opacity:.7}.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#252525;color:white;border:1px solid #444;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:14px}
+.boton-idioma:hover,#botonTema:hover{background:#333}.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:8px;overflow:hidden;min-width:150px;z-index:100}
+.idiomas button{width:100%;border:0;background:transparent;color:white;padding:12px;text-align:left;cursor:pointer;font-size:14px}.idiomas button:hover{background:#333}
+.contenedor{max-width:850px;margin:0 auto;padding:50px 20px;text-align:center}h1{font-size:38px;margin:0 0 10px}#descripcion{color:#bbb;font-size:17px;margin-bottom:30px}
+.panel{background:#1d1d1d;border:1px solid #333;border-radius:18px;padding:24px;margin-top:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.campo-completo{grid-column:1/-1}label{display:block;margin:0 0 7px;font-weight:bold}select,input{width:100%;padding:14px;font-size:16px;border-radius:10px;border:1px solid #555;background:#202020;color:white;outline:none}
+select:focus,input:focus{border-color:#888}.nota{color:#aaa;font-size:14px;line-height:1.5;margin:14px 0 0}
+#botonCalcular{display:block;width:100%;margin:20px auto 0;padding:13px 25px;font-size:17px;border:0;border-radius:10px;cursor:pointer;background:white;color:#111;font-weight:bold}
+#botonCalcular:hover:not(:disabled){transform:scale(1.01)}#botonCalcular:disabled{opacity:.5;cursor:wait}
+#estado{min-height:24px;color:#aaa;font-size:14px}.resultado-grid{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:center;text-align:left}
+svg{width:100%;color:#fff}.formula{font-size:27px;font-weight:bold;text-align:center}.resultado{font-size:29px;font-weight:bold;margin:0 0 12px}.pasos{white-space:pre-line;line-height:1.7;margin:0}
+.descarga{display:inline-block;margin-top:25px;color:#bbb}.descarga:hover{color:white}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:white;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:white;border-color:#ccc}body.claro .idiomas button{color:#111}body.claro .idiomas button:hover{background:#eee}
+body.claro #descripcion,body.claro .nota,body.claro #estado,body.claro .descarga{color:#555}body.claro .panel{background:white;border-color:#ddd}body.claro select,body.claro input{background:white;color:#111;border-color:#bbb}body.claro svg{color:#111}
+@media(max-width:700px){.form-grid,.resultado-grid{grid-template-columns:1fr}.campo-completo{grid-column:auto}.barra{padding:0 12px}.contenedor{padding:35px 15px}h1{font-size:32px}}
 </style>
-<script src="../../assets/common.js" defer></script>
-<script src="app.js" defer></script>
 </head>
 <body>
-<header><a href="../../index.html" data-text="home">← Inicio</a><select id="idioma" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="hy">Հայերեն</option></select><button id="tema" type="button">☀ / ☾</button></header>
-<main><h1 data-text="title">Triángulo de Pitágoras</h1><p data-text="intro">Dos medidas conocidas. Un lado por descubrir.</p>
-<div class="grid"><section class="panel"><form id="formulario">
-<label for="lado" data-text="missing">¿Qué lado falta?</label><select id="lado"><option value="c" data-text="c">Hipotenusa (c)</option><option value="a" data-text="a">Cateto (a)</option><option value="b" data-text="b">Cateto (b)</option></select>
-<label for="primero" id="etiqueta1">Cateto (a)</label><input id="primero" type="text" inputmode="decimal" required autocomplete="off" placeholder="3">
-<label for="segundo" id="etiqueta2">Cateto (b)</label><input id="segundo" type="text" inputmode="decimal" required autocomplete="off" placeholder="4">
-<p class="note" data-text="units">Usa la misma unidad en ambas medidas. Se admiten decimales con punto o coma.</p>
-<button class="primary" id="calcular" disabled data-text="calculate">Calcular</button>
-<p id="estado" role="status" aria-live="polite"></p><button id="reintentar" type="button" hidden data-text="retry">Reintentar carga</button>
-</form></section>
-<section class="panel"><svg viewBox="0 0 340 240" role="img" aria-labelledby="svgTitle"><title id="svgTitle">Triángulo rectángulo con catetos a y b e hipotenusa c</title><path d="M65 25V195H300Z" fill="#6588ff18" stroke="currentColor" stroke-width="3"/><path d="M65 174H86V195" fill="none" stroke="currentColor" stroke-width="2"/><text x="30" y="115">a</text><text x="180" y="225">b</text><text x="198" y="90">c</text><text x="98" y="178" font-size="14">90°</text></svg>
-<p class="formula">a² + b² = c²</p><p class="note" data-text="diagram">Dibujo orientativo, no a escala. La hipotenusa está enfrente del ángulo de 90°.</p>
-<div aria-live="polite"><p id="resultado"></p><p id="pasos"></p></div></section></div>
-<footer><a href="calculadora.py" download data-text="download">Descargar código Python</a></footer>
-</main></body></html>
+<div class="barra">
+<a href="../../index.html" class="volver" id="volver">← Volver</a><div class="espacio"></div>
+<div class="menu-idioma"><button class="boton-idioma" id="botonIdioma" type="button">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas"><button data-lang="es">🇪🇸 Español</button><button data-lang="en">🇬🇧 English</button><button data-lang="hy">🇦🇲 Հայերեն</button></div></div>
+<button id="botonTema" type="button">☀️ Claro</button>
+</div>
+<main class="contenedor">
+<h1 id="titulo">📐 Triángulo de Pitágoras</h1>
+<p id="descripcion">Introduce dos lados y calcula el tercero paso a paso.</p>
+<section class="panel">
+<form id="formulario">
+<div class="form-grid">
+<div class="campo-completo"><label for="lado" id="labelFalta">¿Qué lado falta?</label><select id="lado"><option value="c">Hipotenusa (c)</option><option value="a">Cateto (a)</option><option value="b">Cateto (b)</option></select></div>
+<div><label for="primero" id="etiqueta1">Cateto (a)</label><input id="primero" inputmode="decimal" autocomplete="off" placeholder="3"></div>
+<div><label for="segundo" id="etiqueta2">Cateto (b)</label><input id="segundo" inputmode="decimal" autocomplete="off" placeholder="4"></div>
+</div>
+<p class="nota" id="nota">Usa la misma unidad en ambas medidas. Puedes usar punto o coma para los decimales.</p>
+<button id="botonCalcular" type="submit" disabled>📐 Calcular</button>
+<p id="estado" role="status" aria-live="polite"></p>
+</form>
+</section>
+<section class="panel resultado-grid">
+<div>
+<svg viewBox="0 0 340 240" role="img" aria-labelledby="svgTitle"><title id="svgTitle">Triángulo rectángulo</title><path d="M65 25V195H300Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M65 174H86V195" fill="none" stroke="currentColor" stroke-width="2"/><text x="30" y="115" fill="currentColor" font-size="20">a</text><text x="180" y="225" fill="currentColor" font-size="20">b</text><text x="198" y="90" fill="currentColor" font-size="20">c</text><text x="98" y="178" fill="currentColor" font-size="14">90°</text></svg>
+<div class="formula">a² + b² = c²</div>
+</div>
+<div><p class="resultado" id="resultado">—</p><p class="pasos" id="pasos"></p></div>
+</section>
+<a class="descarga" href="calculadora.py" download id="descarga">Descargar código Python</a>
+</main>
+<script src="../../assets/common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

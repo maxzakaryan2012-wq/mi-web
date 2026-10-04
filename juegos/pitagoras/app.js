@@ -1,51 +1,31 @@
-const translations = {
- es:{home:'← Inicio',title:'Triángulo de Pitágoras',intro:'Dos medidas conocidas. Un lado por descubrir.',missing:'¿Qué lado falta?',a:'Cateto (a)',b:'Cateto (b)',c:'Hipotenusa (c)',units:'Usa la misma unidad en ambas medidas. Se admiten decimales con punto o coma.',calculate:'Calcular',retry:'Reintentar carga',loading:'Preparando la calculadora… La primera carga puede tardar.',ready:'Calculadora lista.',failed:'No se ha podido cargar. Comprueba tu conexión y reintenta.',positive:'Introduce medidas positivas y finitas, como máximo 1.000.000.000.000.',hypotenuse:'La hipotenusa debe ser mayor que el cateto.',side:'Selecciona el lado que falta.',diagram:'Dibujo orientativo, no a escala. La hipotenusa está enfrente del ángulo de 90°.',download:'Descargar código Python',svg:'Triángulo rectángulo con catetos a y b e hipotenusa c',theme:'Cambiar tema',rounded:'Resultado aproximado; hasta 10 cifras significativas.'},
- en:{home:'← Home',title:'Pythagorean triangle',intro:'Two known lengths. One side to discover.',missing:'Which side is missing?',a:'Leg (a)',b:'Leg (b)',c:'Hypotenuse (c)',units:'Use the same unit for both lengths. Decimal points and commas are accepted.',calculate:'Calculate',retry:'Retry loading',loading:'Preparing the calculator… The first load may take a while.',ready:'Calculator ready.',failed:'Could not load. Check your connection and retry.',positive:'Enter finite positive lengths, at most 1,000,000,000,000.',hypotenuse:'The hypotenuse must be longer than the leg.',side:'Select the missing side.',diagram:'Illustration, not to scale. The hypotenuse is opposite the 90° angle.',download:'Download Python code',svg:'Right triangle with legs a and b and hypotenuse c',theme:'Change theme',rounded:'Approximate result; up to 10 significant digits.'},
- hy:{home:'← Գլխավոր',title:'Պյութագորասի եռանկյուն',intro:'Երկու հայտնի երկարություն։ Գտիր երրորդը։',missing:'Ո՞ր կողմն է անհայտ։',a:'Էջ (a)',b:'Էջ (b)',c:'Ներքնաձիգ (c)',units:'Երկու չափերի համար օգտագործիր նույն միավորը։ Կարելի է գրել տասնորդական կետով կամ ստորակետով։',calculate:'Հաշվել',retry:'Կրկին բեռնել',loading:'Հաշվիչը բեռնվում է… Առաջին բեռնումը կարող է տևել։',ready:'Հաշվիչը պատրաստ է։',failed:'Չհաջողվեց բեռնել։ Ստուգիր կապը և կրկին փորձիր։',positive:'Մուտքագրիր դրական վերջավոր չափեր՝ առավելագույնը 1 000 000 000 000։',hypotenuse:'Ներքնաձիգը պետք է էջից մեծ լինի։',side:'Ընտրիր անհայտ կողմը։',diagram:'Գծապատկերը մասշտաբային չէ։ Ներքնաձիգը 90° անկյան դիմաց է։',download:'Ներբեռնել Python կոդը',svg:'Ուղղանկյուն եռանկյուն՝ a և b էջերով ու c ներքնաձիգով',theme:'Փոխել թեման',rounded:'Մոտավոր արդյունք՝ մինչև 10 նշանակալի թվանշան։'}
+const T={
+es:{title:'📐 Triángulo de Pitágoras',desc:'Introduce dos lados y calcula el tercero paso a paso.',back:'← Volver',light:'☀️ Claro',dark:'🌙 Oscuro',missing:'¿Qué lado falta?',a:'Cateto (a)',b:'Cateto (b)',c:'Hipotenusa (c)',note:'Usa la misma unidad en ambas medidas. Puedes usar punto o coma para los decimales.',calc:'📐 Calcular',loading:'Preparando Python…',ready:'Listo.',failed:'⚠️ No se pudo cargar Python. Revisa la conexión y recarga.',positive:'⚠️ Escribe dos medidas positivas válidas.',hypotenuse:'⚠️ La hipotenusa debe ser mayor que el cateto.',download:'Descargar código Python',rounded:'Resultado aproximado.'},
+en:{title:'📐 Pythagorean triangle',desc:'Enter two sides and calculate the third step by step.',back:'← Back',light:'☀️ Light',dark:'🌙 Dark',missing:'Which side is missing?',a:'Leg (a)',b:'Leg (b)',c:'Hypotenuse (c)',note:'Use the same unit for both measurements. Decimal points or commas are accepted.',calc:'📐 Calculate',loading:'Preparing Python…',ready:'Ready.',failed:'⚠️ Python could not be loaded. Check your connection and reload.',positive:'⚠️ Enter two valid positive measurements.',hypotenuse:'⚠️ The hypotenuse must be longer than the leg.',download:'Download Python code',rounded:'Approximate result.'},
+hy:{title:'📐 Պյութագորասի եռանկյուն',desc:'Մուտքագրիր երկու կողմը և քայլ առ քայլ հաշվիր երրորդը։',back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',missing:'Ո՞ր կողմն է անհայտ։',a:'Էջ (a)',b:'Էջ (b)',c:'Ներքնաձիգ (c)',note:'Երկու չափերի համար օգտագործիր նույն միավորը։ Կարելի է գրել կետով կամ ստորակետով։',calc:'📐 Հաշվել',loading:'Python-ը պատրաստվում է…',ready:'Պատրաստ է։',failed:'⚠️ Python-ը չբեռնվեց։ Ստուգիր կապը և թարմացրու էջը։',positive:'⚠️ Գրիր երկու ճիշտ դրական չափ։',hypotenuse:'⚠️ Ներքնաձիգը պետք է էջից մեծ լինի։',download:'Ներբեռնել Python կոդը',rounded:'Մոտավոր արդյունք։'}
 };
-const $ = id => document.getElementById(id);
-let state='loading', answer=null, runtime=null;
-function language(){return translations[localStorage.getItem('idioma')] ? localStorage.getItem('idioma') : 'es';}
+const $=id=>document.getElementById(id);let py=null,state='loading',answer=null;
+function lang(){const x=localStorage.getItem('idioma');return T[x]?x:'es'}
+function setTheme(){const claro=localStorage.getItem('tema')==='claro';document.body.classList.toggle('claro',claro);$('botonTema').textContent=T[lang()][claro?'dark':'light']}
 function render(){
- const lang=language(), t=translations[lang];
- document.documentElement.lang=lang;document.title=t.title;$('idioma').value=lang;
- document.querySelectorAll('[data-text]').forEach(el=>el.textContent=t[el.dataset.text]);
- $('svgTitle').textContent=t.svg;$('tema').setAttribute('aria-label',t.theme);
- document.body.classList.toggle('claro',localStorage.getItem('tema')==='claro');
- const side=$('lado').value;$('etiqueta1').textContent=t[side==='c'?'a':'c'];$('etiqueta2').textContent=t[side==='b'?'a':'b'];
- $('primero').placeholder=side==='c'?'3':'5';$('segundo').placeholder=side==='b'?'3':'4';
- $('estado').textContent=t[state] || t.failed;$('calcular').disabled=!runtime;$('reintentar').hidden=state!=='failed';
- $('resultado').textContent='';$('pasos').textContent='';
- if(answer){
-  if(answer.error){$('resultado').textContent=t[answer.error] || t.failed;return;}
-  const f=n=>new Intl.NumberFormat(lang,{maximumSignificantDigits:10}).format(n);
-  const {lado,x,y,resultado,cuadrado}=answer, sign=lado==='c'?'+':'−';
-  $('resultado').textContent=`${lado} ≈ ${f(resultado)}`;
-  $('pasos').textContent=`a² + b² = c²\n${lado}² = ${lado==='c'?'a² + b²':`c² − ${lado==='a'?'b':'a'}²`}\n${lado}² = ${f(x)}² ${sign} ${f(y)}² ≈ ${f(cuadrado)}\n${lado} = √(${f(x)}² ${sign} ${f(y)}²) ≈ ${f(resultado)}\n${t.rounded}`;
- }
+ const l=lang(),t=T[l];document.documentElement.lang=l;document.title=t.title.replace(/^📐 /,'')+' - MI WEB';MiWeb.applyLanguage();
+ $('titulo').textContent=t.title;$('descripcion').textContent=t.desc;$('volver').textContent=t.back;$('labelFalta').textContent=t.missing;$('nota').textContent=t.note;$('botonCalcular').textContent=t.calc;$('descarga').textContent=t.download;
+ $('botonIdioma').textContent=l==='en'?'🇬🇧 EN ▾':l==='hy'?'🇦🇲 HY ▾':'🇪🇸 ES ▾';const side=$('lado').value;
+ [...$('lado').options].forEach(o=>o.textContent=t[o.value]);$('etiqueta1').textContent=t[side==='c'?'a':'c'];$('etiqueta2').textContent=t[side==='b'?'a':'b'];$('primero').placeholder=side==='c'?'3':'5';$('segundo').placeholder=side==='b'?'3':'4';
+ $('botonCalcular').disabled=!py;$('estado').textContent=state==='loading'?t.loading:state==='failed'?t.failed:state==='ready'?t.ready:'';
+ if(!answer){$('resultado').textContent='—';$('pasos').textContent='';}else if(answer.error){$('resultado').textContent=t[answer.error]||t.failed;$('pasos').textContent='';}else{
+  const f=n=>new Intl.NumberFormat(l,{maximumSignificantDigits:10}).format(n),s=answer.lado,sign=s==='c'?'+':'−';
+  $('resultado').textContent=`${s} ≈ ${f(answer.resultado)}`;
+  $('pasos').textContent=`a² + b² = c²\n${s}² = ${s==='c'?'a² + b²':`c² − ${s==='a'?'b':'a'}²`}\n${s}² = ${f(answer.x)}² ${sign} ${f(answer.y)}²\n${s} = √(${f(answer.cuadrado)}) ≈ ${f(answer.resultado)}\n${t.rounded}`;
+ } setTheme();
 }
-async function initialize(){
- state='loading';render();
- try{
-  if(!window.loadPyodide) await new Promise((resolve,reject)=>{
-   const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyodide.js';
-   script.onload=resolve;script.onerror=()=>{script.remove();reject(new Error('load'));};document.head.appendChild(script);
-  });
-  const python=await window.loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v314.0.7/full/'});
-  const response=await fetch('calculadora.py');if(!response.ok)throw new Error('source');
-  await python.runPythonAsync(await response.text());runtime=python;state='ready';
- }catch(error){state='failed';console.error(error);}
- render();
-}
-$('formulario').addEventListener('submit',event=>{
- event.preventDefault();if(!runtime)return;
- const calculate=runtime.globals.get('calcular_json');
- try{answer=JSON.parse(calculate($('lado').value,$('primero').value,$('segundo').value));}
- catch{answer={error:'failed'};}
- finally{calculate.destroy();}render();
-});
-['lado','primero','segundo'].forEach(id=>$(id).addEventListener('input',()=>{answer=null;render();}));
-$('idioma').addEventListener('change',()=>{localStorage.setItem('idioma',$('idioma').value);render();});
-$('tema').addEventListener('click',()=>{localStorage.setItem('tema',localStorage.getItem('tema')==='claro'?'oscuro':'claro');render();});
-$('reintentar').addEventListener('click',initialize);
-initialize();
+async function initPython(){state='loading';render();try{
+ if(!window.loadPyodide)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+ py=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/'});const r=await fetch('calculadora.py');if(!r.ok)throw Error();await py.runPythonAsync(await r.text());state='ready';
+}catch(e){console.error(e);state='failed'}render()}
+$('formulario').addEventListener('submit',e=>{e.preventDefault();if(!py)return;const fn=py.globals.get('calcular_json');try{answer=JSON.parse(fn($('lado').value,$('primero').value,$('segundo').value))}catch(e){answer={error:'failed'}}finally{fn.destroy()}render()});
+$('lado').addEventListener('change',()=>{answer=null;render()});['primero','segundo'].forEach(id=>$(id).addEventListener('input',()=>{answer=null;render()}));
+$('botonIdioma').onclick=()=>{$('menuIdiomas').style.display=$('menuIdiomas').style.display==='block'?'none':'block'};
+$('menuIdiomas').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;localStorage.setItem('idioma',b.dataset.lang);$('menuIdiomas').style.display='none';render()});
+$('botonTema').onclick=()=>{localStorage.setItem('tema',localStorage.getItem('tema')==='claro'?'oscuro':'claro');render()};
+document.addEventListener('click',e=>{if(!e.target.closest('.menu-idioma'))$('menuIdiomas').style.display='none'});
+render();initPython();
