@@ -98,6 +98,7 @@ window.MiWeb = (() => {
         user.name = name;
         localStorage.setItem(PROFILE_KEY, JSON.stringify(user));
         localStorage.setItem('nombreUsuario', name);
+        refreshRankings();
     }
 
     function applyLanguage() {
@@ -112,11 +113,170 @@ window.MiWeb = (() => {
         }[language];
     }
 
+
+    const EXTRA_STATS_KEY = 'miWebExtraStatsV1';
+    const rankingConfigs = new Map();
+
+    function sanitizeExtra(source) {
+        const result = Object.create(null);
+        for (const [id, entry] of Object.entries(source || {})) {
+            if (!entry || typeof entry !== 'object' || Array.isArray(entry)) continue;
+            const clean = {};
+            for (const [key, value] of Object.entries(entry)) {
+                const number = Number(value);
+                if (Number.isFinite(number) && number >= 0 && number <= Number.MAX_SAFE_INTEGER) {
+                    clean[key] = Number.isInteger(number) ? Math.floor(number) : number;
+                }
+            }
+            result[id] = clean;
+        }
+        return result;
+    }
+
+    function readExtraStats(game) {
+        const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+        return sanitizeExtra(all[game] || {});
+    }
+
+    function writeExtraStats(game, data) {
+        const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+        all[game] = sanitizeExtra(data);
+        localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
+    }
+
+    function updateExtraStats(game, updater) {
+        const data = readExtraStats(game);
+        const user = profile();
+        const current = data[user.id] || {};
+        const next = updater({ ...current }) || current;
+        data[user.id] = next;
+        writeExtraStats(game, data);
+        refreshRanking(game);
+        return data[user.id];
+    }
+
+    function rankingText() {
+        const language = ['es', 'en', 'hy'].includes(document.documentElement.lang)
+            ? document.documentElement.lang : 'es';
+        const values = {
+            es: { title: '🏆 Clasificación', position: 'Puesto', player: 'Jugador', empty: 'Todavía no hay estadísticas.', notice: 'Estadísticas guardadas en este navegador.' },
+            en: { title: '🏆 Ranking', position: 'Rank', player: 'Player', empty: 'No statistics yet.', notice: 'Statistics saved in this browser.' },
+            hy: { title: '🏆 Վարկանիշ', position: 'Տեղ', player: 'Խաղացող', empty: 'Դեռ վիճակագրություն չկա։', notice: 'Վիճակագրությունը պահվում է այս դիտարկիչում։' }
+        };
+        return values[language];
+    }
+
+    function ensureRankingStyles() {
+        if (document.getElementById('miweb-ranking-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'miweb-ranking-styles';
+        style.textContent = `
+            .miweb-ranking{max-width:950px;margin:35px auto 0;padding:22px;background:#1d1d1d;border:1px solid #333;border-radius:18px;text-align:left}
+            .miweb-ranking h2{text-align:center;margin:0 0 8px;font-size:26px}
+            .miweb-ranking .miweb-ranking-note{text-align:center;color:#aaa;font-size:13px;margin:0 0 16px}
+            .miweb-ranking-wrap{overflow-x:auto;border:1px solid #333;border-radius:12px}
+            .miweb-ranking table{width:100%;border-collapse:collapse;background:#181818}
+            .miweb-ranking th,.miweb-ranking td{padding:12px 10px;text-align:center;border-bottom:1px solid #333}
+            .miweb-ranking th{background:#222;font-size:14px}
+            .miweb-ranking tr:last-child td{border-bottom:0}
+            .miweb-ranking tr.miweb-you{background:#292929;font-weight:bold}
+            body.claro .miweb-ranking{background:#fff;border-color:#ddd}
+            body.claro .miweb-ranking .miweb-ranking-note{color:#555}
+            body.claro .miweb-ranking-wrap{border-color:#ddd}
+            body.claro .miweb-ranking table{background:#fff}
+            body.claro .miweb-ranking th{background:#eee}
+            body.claro .miweb-ranking th,body.claro .miweb-ranking td{border-bottom-color:#ddd}
+            body.claro .miweb-ranking tr.miweb-you{background:#e8e8e8}
+        `;
+        document.head.appendChild(style);
+    }
+
+    function labelFor(value) {
+        if (typeof value === 'string') return value;
+        const language = document.documentElement.lang || 'es';
+        return value?.[language] || value?.es || '';
+    }
+
+    function refreshRanking(game) {
+        const config = rankingConfigs.get(game);
+        if (!config) return;
+        const section = document.getElementById('miweb-ranking-' + game);
+        if (!section) return;
+        const text = rankingText();
+        const data = readExtraStats(game);
+        const currentId = profile().id;
+        const rows = Object.entries(data).map(([id, values]) => ({ id, name: playerName(id), ...values }));
+        rows.sort(config.compare || ((a, b) => 0));
+
+        const title = section.querySelector('.miweb-ranking-title');
+        const note = section.querySelector('.miweb-ranking-note');
+        const head = section.querySelector('thead');
+        const body = section.querySelector('tbody');
+        title.textContent = labelFor(config.title) || text.title;
+        note.textContent = text.notice;
+        head.innerHTML = '';
+        body.innerHTML = '';
+
+        const hr = document.createElement('tr');
+        [text.position, text.player, ...config.columns.map(c => labelFor(c.label))].forEach(value => {
+            const th = document.createElement('th');
+            th.textContent = value;
+            hr.appendChild(th);
+        });
+        head.appendChild(hr);
+
+        if (!rows.length) {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = 2 + config.columns.length;
+            td.textContent = text.empty;
+            tr.appendChild(td);
+            body.appendChild(tr);
+            return;
+        }
+
+        rows.slice(0, 20).forEach((row, index) => {
+            const tr = document.createElement('tr');
+            if (row.id === currentId) tr.classList.add('miweb-you');
+            const pos = document.createElement('td');
+            const name = document.createElement('td');
+            pos.textContent = index + 1;
+            name.textContent = row.name;
+            tr.append(pos, name);
+            config.columns.forEach(column => {
+                const td = document.createElement('td');
+                const value = row[column.key] ?? 0;
+                td.textContent = column.format ? column.format(value, row) : value;
+                tr.appendChild(td);
+            });
+            body.appendChild(tr);
+        });
+    }
+
+    function refreshRankings() {
+        for (const game of rankingConfigs.keys()) refreshRanking(game);
+    }
+
+    function mountRanking(config) {
+        if (!config || !config.game || !Array.isArray(config.columns)) return;
+        rankingConfigs.set(config.game, config);
+        ensureRankingStyles();
+        let section = document.getElementById('miweb-ranking-' + config.game);
+        if (!section) {
+            section = document.createElement('section');
+            section.id = 'miweb-ranking-' + config.game;
+            section.className = 'miweb-ranking';
+            section.innerHTML = '<h2 class="miweb-ranking-title"></h2><p class="miweb-ranking-note"></p><div class="miweb-ranking-wrap"><table><thead></thead><tbody></tbody></table></div>';
+            (document.querySelector('main') || document.body).appendChild(section);
+        }
+        refreshRanking(config.game);
+    }
+
     function validIntegerRange(first, second) {
         return [first, second].every(value => typeof value === 'string' &&
             value.trim() !== '' && Number.isSafeInteger(Number(value)) &&
             Math.abs(Number(value)) <= 1000000000);
     }
 
-    return { profile, rename, readStats, writeStats, playerName, applyLanguage, validIntegerRange };
+    return { profile, rename, readStats, writeStats, playerName, applyLanguage, validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats, mountRanking, refreshRanking, refreshRankings };
 })();
