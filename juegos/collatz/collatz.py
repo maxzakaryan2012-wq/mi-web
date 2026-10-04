@@ -1,5 +1,6 @@
 """Explorador de la secuencia de Collatz, sin dependencias externas."""
 import json
+import sys
 
 MAX_START = 10**18
 MAX_STEPS = 10000
@@ -35,7 +36,7 @@ def collatz_json(numero):
     except ValueError as error:
         return json.dumps({"error": str(error)})
 
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.platform != "emscripten":
     dato = input("Número entero positivo: ")
     try:
         r = collatz(dato)

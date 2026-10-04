@@ -1,6 +1,7 @@
 """Juego de secuencias matemáticas, sin dependencias externas."""
 import json
 import random
+import sys
 
 def nueva_secuencia():
     tipo = random.choice(["aritmetica", "geometrica", "fibonacci", "alternante"])
@@ -47,7 +48,7 @@ def comprobar_json(respuesta_correcta, respuesta_usuario):
         return json.dumps({"error": "invalid"})
     return json.dumps({"correcto": usuario == correcta, "respuesta": correcta})
 
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.platform != "emscripten":
     juego = nueva_secuencia()
     print("Secuencia:", ", ".join(map(str, juego["visible"])), ", ?")
     try:
