@@ -538,6 +538,12 @@
 
             <div class="juegos">
 
+                <div class="tarjeta">
+                    <h2 id="tituloPorcentajes">📊 Calculadora de porcentajes</h2>
+                    <p id="descripcionPorcentajes">Calcula subidas, bajadas y descubre el valor inicial desde el resultado final.</p>
+                    <a href="juegos/porcentajes/index.html" id="botonPorcentajes">📊 Calcular</a>
+                </div>
+
 
                 <div class="tarjeta">
                     <h2 id="tituloCollatz">🔗 Conjetura de Collatz</h2>
@@ -802,6 +808,12 @@
                 hy: ['🔗 Կոլացի վարկած', 'Գրիր թիվ և դիտիր հաջորդականությունը, քայլերը և գրաֆիկը։', '🔗 Դիտել']
             }[document.documentElement.lang];
             ['tituloCollatz', 'descripcionCollatz', 'botonCollatz'].forEach((id, i) => document.getElementById(id).textContent = collatz[i]);
+            const porcentajes = {
+                es: ['📊 Calculadora de porcentajes', 'Calcula subidas, bajadas y descubre el valor inicial desde el resultado final.', '📊 Calcular'],
+                en: ['📊 Percentage calculator', 'Calculate increases, decreases, and recover the starting value from the final result.', '📊 Calculate'],
+                hy: ['📊 Տոկոսների հաշվիչ', 'Հաշվիր աճը, նվազումը և վերջնական արժեքից գտիր սկզբնականը։', '📊 Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloPorcentajes', 'descripcionPorcentajes', 'botonPorcentajes'].forEach((id, i) => document.getElementById(id).textContent = porcentajes[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
