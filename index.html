@@ -912,6 +912,8 @@
             if (seccion === "registro") {
                 formulario.style.display = "flex";
                 document.getElementById("nombreUsuario").value = obtenerNombreUsuario();
+            } else {
+                formulario.style.display = "none";
             }
 
             actualizarNavegacionSeccion();
