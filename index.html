@@ -539,6 +539,12 @@
             <div class="juegos">
 
                 <div class="tarjeta">
+                    <h2 id="tituloSecuencia">🔢 Secuencia matemática</h2>
+                    <p id="descripcionSecuencia">Descubre qué número viene después en distintas secuencias.</p>
+                    <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
+                </div>
+
+                <div class="tarjeta">
                     <h2 id="tituloAreas">📐 Calculador de áreas</h2>
                     <p id="descripcionAreas">Elige una figura e introduce sus medidas para calcular el área paso a paso.</p>
                     <a href="juegos/areas/index.html" id="botonAreas">📐 Calcular</a>
@@ -826,6 +832,12 @@
                 hy: ['📐 Մակերեսի հաշվիչ', 'Ընտրիր պատկերը և գրիր չափերը՝ մակերեսը քայլ առ քայլ հաշվելու համար։', '📐 Հաշվել']
             }[document.documentElement.lang];
             ['tituloAreas', 'descripcionAreas', 'botonAreas'].forEach((id, i) => document.getElementById(id).textContent = areas[i]);
+            const secuencia = {
+                es: ['🔢 Secuencia matemática', 'Descubre qué número viene después en distintas secuencias.', '🔢 Jugar'],
+                en: ['🔢 Math sequence', 'Work out which number comes next in different sequences.', '🔢 Play'],
+                hy: ['🔢 Թվային հաջորդականություն', 'Գուշակիր, թե որ թիվն է հաջորդը տարբեր հաջորդականություններում։', '🔢 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloSecuencia', 'descripcionSecuencia', 'botonSecuencia'].forEach((id, i) => document.getElementById(id).textContent = secuencia[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
