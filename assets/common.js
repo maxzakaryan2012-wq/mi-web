@@ -98,6 +98,7 @@ window.MiWeb = (() => {
         user.name = name;
         localStorage.setItem(PROFILE_KEY, JSON.stringify(user));
         localStorage.setItem('nombreUsuario', name);
+        refreshRankings();
     }
 
     function applyLanguage() {
@@ -155,21 +156,14 @@ window.MiWeb = (() => {
     }
 
     function rankingText() {
-        const language = document.documentElement.lang || 'es';
-        return {
-            title: { es: '🏆 Clasificación', en: '🏆 Ranking', hy: '🏆 Վարկանիշ' },
-            position: { es: 'Puesto', en: 'Rank', hy: 'Տեղ' },
-            player: { es: 'Jugador', en: 'Player', hy: 'Խաղացող' },
-            empty: { es: 'Todavía no hay estadísticas.', en: 'No statistics yet.', hy: 'Դեռ վիճակագրություն չկա։' },
-            notice: {
-                es: 'Estadísticas guardadas en este navegador.',
-                en: 'Statistics saved in this browser.',
-                hy: 'Վիճակագրությունը պահվում է այս դիտարկիչում։'
-            }
-        }[language] || {
-            title: '🏆 Clasificación', position: 'Puesto', player: 'Jugador',
-            empty: 'Todavía no hay estadísticas.', notice: 'Estadísticas guardadas en este navegador.'
+        const language = ['es', 'en', 'hy'].includes(document.documentElement.lang)
+            ? document.documentElement.lang : 'es';
+        const values = {
+            es: { title: '🏆 Clasificación', position: 'Puesto', player: 'Jugador', empty: 'Todavía no hay estadísticas.', notice: 'Estadísticas guardadas en este navegador.' },
+            en: { title: '🏆 Ranking', position: 'Rank', player: 'Player', empty: 'No statistics yet.', notice: 'Statistics saved in this browser.' },
+            hy: { title: '🏆 Վարկանիշ', position: 'Տեղ', player: 'Խաղացող', empty: 'Դեռ վիճակագրություն չկա։', notice: 'Վիճակագրությունը պահվում է այս դիտարկիչում։' }
         };
+        return values[language];
     }
 
     function ensureRankingStyles() {
