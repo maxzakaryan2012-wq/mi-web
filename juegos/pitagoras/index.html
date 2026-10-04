@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Triángulo de Pitágoras</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101827;color:#edf2ff;font:17px system-ui,sans-serif;line-height:1.6}body.claro{background:#eef3fb;color:#182538}header{max-width:1000px;margin:auto;padding:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}a{color:inherit}header a{margin-right:auto}button,select,input{font:inherit;border-radius:12px;padding:12px;border:1px solid #71829e;background:transparent;color:inherit}option{color:#182538;background:white}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}main{max-width:1000px;margin:auto;padding:20px}h1{font-size:clamp(28px,5vw,44px);line-height:1.15}h1+p{color:#98abc7}body.claro h1+p{color:#526581}.panel{border:1px solid #71829e55;background:#71829e0d;border-radius:24px;padding:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}label{display:block;margin-bottom:8px}input,form select{width:100%;margin-bottom:20px}input{background:#71829e0c}.primary{background:#6588ff;color:#fff;border:0;width:100%;font-weight:700}svg{width:100%;max-height:290px;color:#89a4ff}svg text{fill:currentColor;font:20px system-ui}#resultado{font-size:26px;font-weight:700;overflow-wrap:anywhere}#pasos{white-space:pre-line;overflow-wrap:anywhere}#estado{min-height:28px}.note{font-size:14px;opacity:.75}.formula{font-size:30px;text-align:center}footer{margin-top:28px}button:focus-visible,a:focus-visible{outline:3px solid #edc75a;outline-offset:4px}@media(max-width:650px){.grid{grid-template-columns:1fr}.panel{padding:18px}header{padding-bottom:0}}
+</style>
+<script src="../../assets/common.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<header><a href="../../index.html" data-text="home">← Inicio</a><select id="idioma" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="hy">Հայերեն</option></select><button id="tema" type="button">☀ / ☾</button></header>
+<main><h1 data-text="title">Triángulo de Pitágoras</h1><p data-text="intro">Dos medidas conocidas. Un lado por descubrir.</p>
+<div class="grid"><section class="panel"><form id="formulario">
+<label for="lado" data-text="missing">¿Qué lado falta?</label><select id="lado"><option value="c" data-text="c">Hipotenusa (c)</option><option value="a" data-text="a">Cateto (a)</option><option value="b" data-text="b">Cateto (b)</option></select>
+<label for="primero" id="etiqueta1">Cateto (a)</label><input id="primero" type="text" inputmode="decimal" required autocomplete="off" placeholder="3">
+<label for="segundo" id="etiqueta2">Cateto (b)</label><input id="segundo" type="text" inputmode="decimal" required autocomplete="off" placeholder="4">
+<p class="note" data-text="units">Usa la misma unidad en ambas medidas. Se admiten decimales con punto o coma.</p>
+<button class="primary" id="calcular" disabled data-text="calculate">Calcular</button>
+<p id="estado" role="status" aria-live="polite"></p><button id="reintentar" type="button" hidden data-text="retry">Reintentar carga</button>
+</form></section>
+<section class="panel"><svg viewBox="0 0 340 240" role="img" aria-labelledby="svgTitle"><title id="svgTitle">Triángulo rectángulo con catetos a y b e hipotenusa c</title><path d="M65 25V195H300Z" fill="#6588ff18" stroke="currentColor" stroke-width="3"/><path d="M65 174H86V195" fill="none" stroke="currentColor" stroke-width="2"/><text x="30" y="115">a</text><text x="180" y="225">b</text><text x="198" y="90">c</text><text x="98" y="178" font-size="14">90°</text></svg>
+<p class="formula">a² + b² = c²</p><p class="note" data-text="diagram">Dibujo orientativo, no a escala. La hipotenusa está enfrente del ángulo de 90°.</p>
+<div aria-live="polite"><p id="resultado"></p><p id="pasos"></p></div></section></div>
+<footer><a href="calculadora.py" download data-text="download">Descargar código Python</a></footer>
+</main></body></html>

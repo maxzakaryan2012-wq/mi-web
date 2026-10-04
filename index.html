@@ -538,6 +538,12 @@
 
             <div class="juegos">
 
+                <div class="tarjeta">
+                    <h2 id="tituloPitagoras">📐 Triángulo de Pitágoras</h2>
+                    <p id="descripcionPitagoras">Introduce dos lados y calcula el tercero paso a paso.</p>
+                    <a href="juegos/pitagoras/index.html" id="botonPitagoras">📐 Calcular</a>
+                </div>
+
                 <!-- JUEGO 1 -->
 
                 <div class="tarjeta">
@@ -777,6 +783,12 @@
 
         function aplicarIdioma() {
             MiWeb.applyLanguage();
+            const pitagoras = {
+                es: ['📐 Triángulo de Pitágoras', 'Introduce dos lados y calcula el tercero paso a paso.', '📐 Calcular'],
+                en: ['📐 Pythagorean triangle', 'Enter two sides and calculate the third step by step.', '📐 Calculate'],
+                hy: ['📐 Պյութագորասի եռանկյուն', 'Մուտքագրիր երկու կողմը և քայլ առ քայլ հաշվիր երրորդը։', '📐 Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloPitagoras', 'descripcionPitagoras', 'botonPitagoras'].forEach((id, i) => document.getElementById(id).textContent = pitagoras[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
