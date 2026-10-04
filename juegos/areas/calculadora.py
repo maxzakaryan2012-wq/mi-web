@@ -1,6 +1,7 @@
 """Calculadora de áreas de figuras planas, sin dependencias."""
 import json
 import math
+import sys
 
 MAX_VALUE = 10**12
 
@@ -71,7 +72,7 @@ def calcular_json(figura, valores_json):
         clave = str(error) if isinstance(error, ValueError) else "value"
         return json.dumps({"error": clave})
 
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.platform != "emscripten":
     print("Calculadora de áreas")
     print("Figuras:", ", ".join(CAMPOS))
     figura = input("Figura: ").strip().lower()
