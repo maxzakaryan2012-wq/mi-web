@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secuencia matemática - MI WEB</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#111;color:white;transition:.3s}.barra{height:70px;background:#181818;display:flex;align-items:center;padding:0 25px;gap:15px;border-bottom:1px solid #333}
+.volver{color:white;text-decoration:none;font-size:18px;font-weight:bold}.volver:hover{opacity:.7}.espacio{flex:1}.menu-idioma{position:relative}.boton-idioma,#botonTema{background:#252525;color:white;border:1px solid #444;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:14px}
+.boton-idioma:hover,#botonTema:hover{background:#333}.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:8px;overflow:hidden;min-width:150px;z-index:100}.idiomas button{width:100%;border:0;background:transparent;color:white;padding:12px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+.contenedor{max-width:800px;margin:auto;padding:50px 20px;text-align:center}h1{font-size:38px;margin:0 0 10px}#descripcion{color:#bbb;font-size:17px;margin-bottom:30px}.panel{background:#1d1d1d;border:1px solid #333;border-radius:18px;padding:26px;margin-top:20px}
+.secuencia{font-size:clamp(28px,6vw,48px);font-weight:bold;letter-spacing:2px;overflow-wrap:anywhere;margin:15px 0 25px}.entrada{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+input{width:220px;padding:14px;font-size:18px;border-radius:10px;border:1px solid #555;background:#202020;color:white;outline:none;text-align:center}input:focus{border-color:#888}
+button.accion{padding:13px 22px;font-size:16px;border:0;border-radius:10px;cursor:pointer;background:white;color:#111;font-weight:bold}button.accion:disabled{opacity:.5;cursor:wait}
+#mensaje{min-height:32px;font-size:20px;font-weight:bold;margin:20px 0 8px}.explicacion{color:#bbb;min-height:24px}.marcador{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:25px}.dato{background:#181818;border:1px solid #333;border-radius:12px;padding:13px 20px;min-width:135px}.dato strong{font-size:24px;display:block}.dato span{font-size:13px;color:#aaa}
+.secundario{margin-top:18px;background:#292929!important;color:white!important}.nota{color:#aaa;font-size:14px;margin-top:22px}.descarga{display:inline-block;margin-top:22px;color:#bbb}.oculto{display:none}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:white;border-bottom-color:#ddd}body.claro .volver{color:#111}body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:white;border-color:#ccc}body.claro .idiomas button{color:#111}body.claro .idiomas button:hover{background:#eee}
+body.claro #descripcion,body.claro .explicacion,body.claro .dato span,body.claro .nota,body.claro .descarga{color:#555}body.claro .panel{background:white;border-color:#ddd}body.claro input{background:white;color:#111;border-color:#bbb}body.claro .dato{background:#f8f8f8;border-color:#ddd}body.claro .secundario{background:#e8e8e8!important;color:#111!important}
+@media(max-width:600px){.barra{padding:0 12px}.contenedor{padding:35px 15px}h1{font-size:31px}.entrada input,.entrada button{width:100%}}
+</style>
+</head>
+<body>
+<div class="barra"><a href="../../index.html" class="volver" id="volver">← Volver</a><div class="espacio"></div>
+<div class="menu-idioma"><button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button><div class="idiomas" id="menuIdiomas"><button data-lang="es">🇪🇸 Español</button><button data-lang="en">🇬🇧 English</button><button data-lang="hy">🇦🇲 Հայերեն</button></div></div>
+<button id="botonTema">☀️ Claro</button></div>
+<main class="contenedor">
+<h1 id="titulo">🔢 Secuencia matemática</h1><p id="descripcion">Descubre qué número viene después.</p>
+<section class="panel"><div class="secuencia" id="secuencia">…</div>
+<form id="formulario" class="entrada"><input id="respuesta" inputmode="numeric" autocomplete="off" placeholder="Tu respuesta"><button class="accion" id="botonComprobar" disabled>✅ Comprobar</button></form>
+<div id="mensaje" role="status" aria-live="polite"></div><div class="explicacion" id="explicacion"></div>
+<button class="accion secundario" id="botonNueva" type="button" disabled>🔄 Nueva secuencia</button>
+<div class="marcador"><div class="dato"><strong id="aciertos">0</strong><span id="textoAciertos">Aciertos</span></div><div class="dato"><strong id="racha">0</strong><span id="textoRacha">Racha</span></div><div class="dato"><strong id="jugadas">0</strong><span id="textoJugadas">Jugadas</span></div></div>
+</section>
+<p class="nota" id="nota">Las secuencias pueden ser de suma/resta, multiplicación, tipo Fibonacci o alternantes.</p>
+<a class="descarga" id="descarga" href="secuencia.py" download>Descargar código Python</a>
+</main>
+<script src="../../assets/common.js"></script><script src="app.js"></script>
+</body></html>
