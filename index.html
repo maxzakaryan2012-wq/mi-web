@@ -539,6 +539,12 @@
             <div class="juegos">
 
                 <div class="tarjeta">
+                    <h2 id="tituloDuelo">⚡ Duelo de cálculo mental</h2>
+                    <p id="descripcionDuelo">Resuelve tantas operaciones como puedas en 30 segundos.</p>
+                    <a href="juegos/duelo-calculo/index.html" id="botonDuelo">⚡ Jugar</a>
+                </div>
+
+                <div class="tarjeta">
                     <h2 id="tituloSecuencia">🔢 Secuencia matemática</h2>
                     <p id="descripcionSecuencia">Descubre qué número viene después en distintas secuencias.</p>
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
@@ -838,6 +844,12 @@
                 hy: ['🔢 Թվային հաջորդականություն', 'Գուշակիր, թե որ թիվն է հաջորդը տարբեր հաջորդականություններում։', '🔢 Խաղալ']
             }[document.documentElement.lang];
             ['tituloSecuencia', 'descripcionSecuencia', 'botonSecuencia'].forEach((id, i) => document.getElementById(id).textContent = secuencia[i]);
+            const duelo = {
+                es: ['⚡ Duelo de cálculo mental', 'Resuelve tantas operaciones como puedas en 30 segundos.', '⚡ Jugar'],
+                en: ['⚡ Mental math duel', 'Solve as many operations as you can in 30 seconds.', '⚡ Play'],
+                hy: ['⚡ Մտավոր հաշվարկի մենամարտ', '30 վայրկյանում լուծիր որքան հնարավոր է շատ գործողություններ։', '⚡ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloDuelo', 'descripcionDuelo', 'botonDuelo'].forEach((id, i) => document.getElementById(id).textContent = duelo[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";

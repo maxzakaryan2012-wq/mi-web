@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duelo de cálculo mental - MI WEB</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;transition:.3s}.barra{height:70px;background:#181818;display:flex;align-items:center;padding:0 25px;gap:15px;border-bottom:1px solid #333}.volver{color:#fff;text-decoration:none;font-size:18px;font-weight:bold}.volver:hover{opacity:.7}.espacio{flex:1}.menu-idioma{position:relative}.boton-idioma,#botonTema{background:#252525;color:#fff;border:1px solid #444;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:14px}.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:8px;overflow:hidden;min-width:150px;z-index:100}.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:12px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+.contenedor{max-width:850px;margin:auto;padding:45px 20px;text-align:center}h1{font-size:38px;margin:0 0 10px}#descripcion{color:#bbb;font-size:17px;margin-bottom:25px}.panel{background:#1d1d1d;border:1px solid #333;border-radius:18px;padding:24px;margin-top:20px}.config{display:flex;justify-content:center;align-items:end;gap:12px;flex-wrap:wrap}.config label{display:block;text-align:left;margin-bottom:7px;font-weight:bold}.config select{min-width:180px;padding:12px;border-radius:10px;background:#202020;color:#fff;border:1px solid #555;font-size:16px}
+#botonInicio,#botonComprobar{padding:13px 24px;border:0;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;background:#fff;color:#111}.info{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.dato{background:#181818;border:1px solid #333;border-radius:13px;padding:14px}.dato span{display:block;color:#aaa;font-size:13px}.dato strong{display:block;font-size:25px;margin-top:5px}.operacion{font-size:clamp(42px,9vw,72px);font-weight:bold;margin:25px 0}.entrada{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.entrada input{width:220px;padding:14px;border-radius:10px;border:1px solid #555;background:#202020;color:#fff;font-size:20px;text-align:center;outline:none}.entrada input:focus{border-color:#888}#mensaje{min-height:30px;margin-top:16px;font-size:18px;font-weight:bold}.records{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.record{background:#181818;border:1px solid #333;border-radius:13px;padding:16px}.record span{display:block;color:#aaa;font-size:13px}.record strong{font-size:24px;display:block;margin-top:5px}.nota{color:#aaa;font-size:14px;margin-top:20px}.descarga{display:inline-block;margin-top:22px;color:#bbb}.oculto{display:none}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}body.claro .idiomas button:hover{background:#eee}body.claro #descripcion,body.claro .dato span,body.claro .record span,body.claro .nota,body.claro .descarga{color:#555}body.claro .panel{background:#fff;border-color:#ddd}body.claro .dato,body.claro .record{background:#f8f8f8;border-color:#ddd}body.claro .config select,body.claro .entrada input{background:#fff;color:#111;border-color:#bbb}
+@media(max-width:650px){.barra{padding:0 12px}.contenedor{padding:35px 15px}h1{font-size:31px}.info{grid-template-columns:repeat(2,1fr)}.records{grid-template-columns:1fr}.entrada input,.entrada button,#botonInicio{width:100%}}
+</style>
+</head>
+<body>
+<div class="barra"><a href="../../index.html" class="volver" id="volver">← Volver</a><div class="espacio"></div><div class="menu-idioma"><button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button><div class="idiomas" id="menuIdiomas"><button data-lang="es">🇪🇸 Español</button><button data-lang="en">🇬🇧 English</button><button data-lang="hy">🇦🇲 Հայերեն</button></div></div><button id="botonTema">☀️ Claro</button></div>
+<main class="contenedor">
+<h1 id="titulo">⚡ Duelo de cálculo mental</h1><p id="descripcion">Resuelve tantas operaciones como puedas en 30 segundos.</p>
+<section class="panel">
+<div class="config"><div><label for="dificultad" id="labelDificultad">Dificultad</label><select id="dificultad"><option value="facil">Fácil</option><option value="medio">Medio</option><option value="dificil">Difícil</option></select></div><button id="botonInicio" type="button">▶️ Empezar</button></div>
+<div class="info"><div class="dato"><span id="textoTiempo">Tiempo</span><strong id="tiempo">30</strong></div><div class="dato"><span id="textoPuntos">Puntos</span><strong id="puntos">0</strong></div><div class="dato"><span id="textoRacha">Racha</span><strong id="racha">0</strong></div><div class="dato"><span id="textoAciertos">Aciertos</span><strong id="aciertos">0</strong></div></div>
+<div class="operacion" id="operacion">—</div>
+<form class="entrada" id="formulario"><input id="respuesta" inputmode="numeric" autocomplete="off" placeholder="Respuesta" disabled><button id="botonComprobar" disabled>✅ Responder</button></form>
+<div id="mensaje" role="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2 id="tituloRecords">🏆 Tus récords</h2><div class="records"><div class="record"><span id="textoRecordPuntos">Mejor puntuación</span><strong id="recordPuntos">0</strong></div><div class="record"><span id="textoRecordRacha">Mejor racha</span><strong id="recordRacha">0</strong></div><div class="record"><span id="textoPartidas">Partidas</span><strong id="recordPartidas">0</strong></div></div></section>
+<p class="nota" id="nota">Fácil: suma y resta. Medio: añade multiplicaciones. Difícil: incluye divisiones exactas y números mayores.</p>
+<a class="descarga" id="descarga" href="calculo.py" download>Descargar código Python</a>
+</main>
+<script src="../../assets/common.js"></script><script src="app.js"></script>
+</body></html>
