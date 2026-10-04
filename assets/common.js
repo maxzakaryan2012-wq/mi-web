@@ -9,6 +9,18 @@ window.MiWeb = (() => {
         estadisticasCarreraInfinita: ['mejorPuntuacion', 'mejorTiempo', 'partidas']
     };
 
+    // A new season isolates new scores from tabs still running older code.
+    const STATS_VERSION = ':season-2026-10-04-reset-1';
+    const RESET_KEY = 'miWebStatsReset';
+    if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
+        for (const key of Object.keys(fields)) {
+            localStorage.removeItem(key);
+            localStorage.removeItem(key + ':v2');
+            localStorage.setItem(key + STATS_VERSION, '{}');
+        }
+        localStorage.setItem(RESET_KEY, STATS_VERSION);
+    }
+
     function parseObject(raw) {
         try {
             const value = JSON.parse(raw);
@@ -54,7 +66,7 @@ window.MiWeb = (() => {
 
     function readStats(key) {
         if (!fields[key]) throw new Error('Unknown statistics key');
-        const current = localStorage.getItem(key + ':v2');
+        const current = localStorage.getItem(key + STATS_VERSION);
         if (current !== null) return sanitize(key, parseObject(current));
         // Keep the original data untouched. Only the current name can safely be
         // attributed to this player; older, unknown names remain separate rows.
@@ -69,7 +81,7 @@ window.MiWeb = (() => {
     }
 
     function writeStats(key, data) {
-        localStorage.setItem(key + ':v2', JSON.stringify(sanitize(key, data)));
+        localStorage.setItem(key + STATS_VERSION, JSON.stringify(sanitize(key, data)));
     }
 
     function playerName(id) {

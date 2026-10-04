@@ -15,7 +15,7 @@ const assert = require('node:assert/strict');
   estadisticasCarreraInfinita:{mejorPuntuacion:50,mejorTiempo:12.5,partidas:4}
  };
  await page.evaluate(f=>{
-  localStorage.clear(); localStorage.setItem('nombreUsuario','Max');
+  localStorage.clear(); localStorage.setItem('miWebStatsReset', ':season-2026-10-04-reset-1'); localStorage.setItem('nombreUsuario','Max');
   for(const [key,value] of Object.entries(f)) localStorage.setItem(key,JSON.stringify({Max:value,Other:value}));
  },fixtures);
  await page.reload();

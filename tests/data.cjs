@@ -3,7 +3,7 @@ const {readFileSync}=require('node:fs');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
 const {randomUUID}=require('node:crypto');
-const storage=new Map();
+const storage=new Map([['miWebStatsReset', ':season-2026-10-04-reset-1']]);
 const notice={textContent:''};
 const context=vm.createContext({window:{},crypto:{randomUUID},
  localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,String(v))},
@@ -33,7 +33,7 @@ app.rename('Other');assert.equal(Object.keys(app.readStats('estadisticasNumeroAl
 for(const pair of [['','5'],[' ','5'],['1.5','5'],['NaN','5'],['Infinity','5'],['1000000001','1'],['1e309','2']]) assert.equal(app.validIntegerRange(...pair),false);
 for(const pair of [['10','1'],['-5','-1'],['7','7'],['-1000000000','1000000000']]) assert.equal(app.validIntegerRange(...pair),true);
 for(const lang of ['es','en','hy']) {storage.set('idioma',lang);app.applyLanguage();assert.equal(context.document.documentElement.lang,lang);assert.ok(notice.textContent);}
-storage.set('estadisticasNumeroAleatorio:v2','{broken');assert.equal(Object.keys(app.readStats('estadisticasNumeroAleatorio')).length,0);
-storage.set('estadisticasNumeroAleatorio:v2',JSON.stringify({bad:{generados:-2},null:null,good:{generados:3}}));
+storage.set('estadisticasNumeroAleatorio:season-2026-10-04-reset-1','{broken');assert.equal(Object.keys(app.readStats('estadisticasNumeroAleatorio')).length,0);
+storage.set('estadisticasNumeroAleatorio:season-2026-10-04-reset-1',JSON.stringify({bad:{generados:-2},null:null,good:{generados:3}}));
 assert.equal(Object.keys(app.readStats('estadisticasNumeroAleatorio')).join(','),'good');
 console.log('PASS: migration of five games, stable identity, preserved legacy data, repeat migration, special names, validation, languages and corrupt data.');

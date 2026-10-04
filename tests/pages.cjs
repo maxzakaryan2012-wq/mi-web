@@ -1,7 +1,7 @@
 // Run with node tests/pages.cjs (jsdom required).
 const {JSDOM}=require('jsdom');
 const fs=require('node:fs');const path=require('node:path');const assert=require('node:assert/strict');
-const root=path.join(__dirname,'..');const storage=new Map([['nombreUsuario','Max']]);
+const root=path.join(__dirname,'..');const storage=new Map([['nombreUsuario','Max'],['miWebStatsReset', ':season-2026-10-04-reset-1']]);
 const fixtures={estadisticasNumeroAleatorio:{generados:7},estadisticasAdivinaNumero:{mejorIntentos:3,aciertos:4},estadisticasAdivinoTuNumero:{mejorIntentos:12,partidas:2},estadisticasPulsaBoton:{mejorPuntuacion:20,partidas:3},estadisticasCarreraInfinita:{mejorPuntuacion:50,mejorTiempo:12.5,partidas:4}};
 for(const [key,value] of Object.entries(fixtures))storage.set(key,JSON.stringify({Max:value}));
 function load(file){
