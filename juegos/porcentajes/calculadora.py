@@ -23,7 +23,7 @@ def calcular(modo, tipo, valor, porcentaje):
     conocido = _numero(valor, "value")
     p = _numero(porcentaje, "percent")
     if p > MAX_PERCENT:
-        raise ValueError("percent")
+        raise ValueError("percentErr")
 
     if tipo == "bajada" and p > 100:
         raise ValueError("decrease100")
