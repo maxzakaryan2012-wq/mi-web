@@ -927,6 +927,12 @@
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="titulo2048">🔢 2048</h2>
+                    <p id="descripcion2048">Une fichas iguales, suma puntos y trata de llegar a 2048.</p>
+                    <a href="juegos/2048/index.html" id="boton2048">🔢 Jugar</a>
+                </div>
+
                 
 
                 
@@ -1431,6 +1437,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("secuencia"));
                     return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
                 }
+                if (titleId === "titulo2048") {
+                    row = valorUsuario(MiWeb.readExtraStats("2048"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
                 
                 
                 
@@ -1633,6 +1643,12 @@
                 hy: ['🔢 Թվային հաջորդականություն', 'Գուշակիր, թե որ թիվն է հաջորդը տարբեր հաջորդականություններում։', '🔢 Խաղալ']
             }[document.documentElement.lang];
             ['tituloSecuencia', 'descripcionSecuencia', 'botonSecuencia'].forEach((id, i) => document.getElementById(id).textContent = secuencia[i]);
+            const juego2048 = {
+                es: ['🔢 2048', 'Une fichas iguales, suma puntos y trata de llegar a 2048.', '🔢 Jugar'],
+                en: ['🔢 2048', 'Merge equal tiles, score points and try to reach 2048.', '🔢 Play'],
+                hy: ['🔢 2048', 'Միացրու նույն թվերով վանդակները, հավաքիր միավորներ և փորձիր հասնել 2048-ի։', '🔢 Խաղալ']
+            }[document.documentElement.lang];
+            ['titulo2048', 'descripcion2048', 'boton2048'].forEach((id, i) => document.getElementById(id).textContent = juego2048[i]);
             
             
             

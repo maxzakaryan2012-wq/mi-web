@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2048 - MI WEB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;transition:.25s}
+.barra{min-height:70px;background:#181818;border-bottom:1px solid #333;display:flex;align-items:center;padding:12px 22px;gap:12px}
+.volver{color:#fff;text-decoration:none;font-weight:bold;font-size:18px}
+.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#252525;color:#fff;border:1px solid #444;border-radius:9px;padding:10px 13px;cursor:pointer}
+.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:9px;overflow:hidden;min-width:145px;z-index:30}
+.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:11px;text-align:left;cursor:pointer}
+.idiomas button:hover{background:#333}
+.contenedor{max-width:760px;margin:auto;padding:38px 18px;text-align:center}
+h1{font-size:42px;margin:0 0 8px}.descripcion{color:#aaa;line-height:1.5;margin:0 0 20px}
+.panel{background:#1d1d1d;border:1px solid #333;border-radius:18px;padding:20px;margin-top:18px}
+.hud{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.dato{background:#181818;border:1px solid #333;border-radius:12px;padding:12px}
+.dato span{display:block;color:#aaa;font-size:12px}.dato strong{display:block;font-size:24px;margin-top:3px}
+.acciones{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.accion{border:0;border-radius:10px;padding:12px 18px;background:#fff;color:#111;font-weight:bold;cursor:pointer;font-size:15px}
+.tablero{width:min(92vw,500px);aspect-ratio:1;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px;background:#2a2a2a;border:1px solid #444;border-radius:16px;touch-action:none;user-select:none}
+.celda{display:flex;align-items:center;justify-content:center;border-radius:11px;background:#3b3b3b;font-weight:800;font-size:clamp(24px,7vw,44px);transition:transform .08s,background .15s;color:#fff;min-width:0}
+.celda.nueva{animation:pop .14s ease-out}.celda.merge{animation:merge .18s ease-out}
+@keyframes pop{0%{transform:scale(.45)}100%{transform:scale(1)}}
+@keyframes merge{0%{transform:scale(1)}50%{transform:scale(1.13)}100%{transform:scale(1)}}
+.v2{background:#eee4da;color:#473f37}.v4{background:#ede0c8;color:#473f37}.v8{background:#f2b179}.v16{background:#f59563}.v32{background:#f67c5f}.v64{background:#f65e3b}
+.v128{background:#edcf72;font-size:clamp(21px,6vw,38px)}.v256{background:#edcc61;font-size:clamp(21px,6vw,38px)}.v512{background:#edc850;font-size:clamp(21px,6vw,38px)}
+.v1024{background:#edc53f;font-size:clamp(18px,5.4vw,34px)}.v2048{background:#edc22e;font-size:clamp(18px,5.4vw,34px);box-shadow:0 0 18px rgba(237,194,46,.45)}
+.v4096,.v8192,.vbig{background:#3c3a32;font-size:clamp(16px,4.8vw,30px);box-shadow:0 0 16px rgba(255,255,255,.18)}
+.mensaje{min-height:26px;margin-top:14px;font-weight:bold}.nota{color:#aaa;font-size:14px;line-height:1.5}
+.controles-movil{display:grid;grid-template-columns:repeat(3,58px);justify-content:center;gap:6px;margin-top:14px}
+.controles-movil button{height:48px;border:1px solid #444;border-radius:9px;background:#292929;color:#fff;font-size:21px;cursor:pointer}.controles-movil .vacio{visibility:hidden}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}
+body.claro .panel{background:#fff;border-color:#ddd}body.claro .dato{background:#f8f8f8;border-color:#ddd}body.claro .descripcion,body.claro .nota,body.claro .dato span{color:#555}
+body.claro .tablero{background:#bbb1a5;border-color:#aaa095}body.claro .celda{background:#cdc1b4}
+body.claro .controles-movil button{background:#e8e8e8;color:#111;border-color:#ccc}
+@media(max-width:620px){.barra{padding:10px 12px}.contenedor{padding:28px 10px}h1{font-size:36px}.panel{padding:14px}.tablero{gap:7px;padding:7px}.hud{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="barra">
+<a class="volver" id="volver" href="../../index.html">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma">
+<button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas">
+<button data-lang="es">🇪🇸 Español</button>
+<button data-lang="en">🇬🇧 English</button>
+<button data-lang="hy">🇦🇲 Հայերեն</button>
+</div>
+</div>
+<button id="botonTema">☀️ Claro</button>
+</div>
+
+<main class="contenedor">
+<h1 id="titulo">🔢 2048</h1>
+<p class="descripcion" id="descripcion">Une fichas iguales hasta conseguir 2048. Puedes seguir jugando después.</p>
+
+<section class="panel">
+<div class="hud">
+<div class="dato"><span id="txtPuntos">Puntos</span><strong id="puntos">0</strong></div>
+<div class="dato"><span id="txtMejor">Mejor</span><strong id="mejor">0</strong></div>
+<div class="dato"><span id="txtMayor">Mayor ficha</span><strong id="mayor">2</strong></div>
+</div>
+
+<div class="acciones">
+<button class="accion" id="nuevo">🔄 Nueva partida</button>
+</div>
+
+<div class="tablero" id="tablero" aria-label="Tablero de 2048"></div>
+
+<div class="controles-movil" aria-label="Controles">
+<span class="vacio"></span><button data-dir="up">▲</button><span class="vacio"></span>
+<button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button>
+</div>
+
+<div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
+<p class="nota" id="nota">Usa las flechas o WASD. En móvil también puedes deslizar sobre el tablero.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
