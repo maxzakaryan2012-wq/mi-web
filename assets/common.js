@@ -1,6 +1,11 @@
-/* Shared browser-local identity, statistics and language metadata. */
+/* Shared identity, local fallback and global Supabase rankings. */
 window.MiWeb = (() => {
     const PROFILE_KEY = 'miWebProfileV1';
+    const EXTRA_STATS_KEY = 'miWebExtraStatsV1';
+    const GLOBAL_TOKEN_KEY = 'miWebGlobalPlayerTokenV1';
+    const SUPABASE_URL = 'https://bxbjbbylswiocymrqaqk.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_fUqvcSbYMb1gfJdrqS-7Lw_nhLtaEp_';
+
     const fields = {
         estadisticasNumeroAleatorio: ['generados'],
         estadisticasAdivinaNumero: ['mejorIntentos', 'aciertos'],
@@ -9,9 +14,22 @@ window.MiWeb = (() => {
         estadisticasCarreraInfinita: ['mejorPuntuacion', 'mejorTiempo', 'partidas']
     };
 
-    // A new season isolates new scores from tabs still running older code.
+    const oldGameMap = {
+        estadisticasNumeroAleatorio: 'numero-aleatorio',
+        estadisticasAdivinaNumero: 'adivina-el-numero',
+        estadisticasAdivinoTuNumero: 'adivino-tu-numero',
+        estadisticasPulsaBoton: 'pulsa-el-boton',
+        estadisticasCarreraInfinita: 'carrera-infinita'
+    };
+
     const STATS_VERSION = ':season-2026-10-04-reset-1';
     const RESET_KEY = 'miWebStatsReset';
+    const rankingConfigs = new Map();
+    const globalCache = new Map();
+    const globalNames = new Map();
+    const syncPending = new Map();
+    const initialSyncStarted = new Set();
+
     if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
         for (const key of Object.keys(fields)) {
             localStorage.removeItem(key);
@@ -46,9 +64,18 @@ window.MiWeb = (() => {
         return value;
     }
 
+    function globalToken() {
+        let token = localStorage.getItem(GLOBAL_TOKEN_KEY);
+        if (!token || token.length < 30) {
+            token = crypto.randomUUID() + crypto.randomUUID();
+            localStorage.setItem(GLOBAL_TOKEN_KEY, token);
+        }
+        return token;
+    }
+
     function sanitize(key, source) {
         const result = Object.create(null);
-        for (const [id, entry] of Object.entries(source)) {
+        for (const [id, entry] of Object.entries(source || {})) {
             if (!entry || typeof entry !== 'object' || Array.isArray(entry)) continue;
             const values = {};
             let valid = true;
@@ -63,59 +90,6 @@ window.MiWeb = (() => {
         }
         return result;
     }
-
-    function readStats(key) {
-        if (!fields[key]) throw new Error('Unknown statistics key');
-        const current = localStorage.getItem(key + STATS_VERSION);
-        if (current !== null) return sanitize(key, parseObject(current));
-        // Keep the original data untouched. Only the current name can safely be
-        // attributed to this player; older, unknown names remain separate rows.
-        const user = profile();
-        const legacy = sanitize(key, parseObject(localStorage.getItem(key)));
-        const migrated = Object.create(null);
-        for (const [name, value] of Object.entries(legacy)) {
-            migrated[name === user.name ? user.id : 'legacy:' + name] = value;
-        }
-        writeStats(key, migrated);
-        return migrated;
-    }
-
-    function writeStats(key, data) {
-        localStorage.setItem(key + STATS_VERSION, JSON.stringify(sanitize(key, data)));
-    }
-
-    function playerName(id) {
-        const user = profile();
-        return id === user.id ? user.name : id.startsWith('legacy:') ? id.slice(7) : id;
-    }
-
-    function rename(name) {
-        name = name.trim();
-        if (!name) return;
-        const user = profile();
-        // Migrate all five games before changing the legacy name.
-        Object.keys(fields).forEach(readStats);
-        user.name = name;
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(user));
-        localStorage.setItem('nombreUsuario', name);
-        refreshRankings();
-    }
-
-    function applyLanguage() {
-        const selected = localStorage.getItem('idioma');
-        const language = ['es', 'en', 'hy'].includes(selected) ? selected : 'es';
-        document.documentElement.lang = language;
-        const notice = document.getElementById('avisoLocal');
-        if (notice) notice.textContent = {
-            es: 'Récords y estadísticas de este navegador. No se comparten entre dispositivos y se pierden si borras los datos del sitio.',
-            en: 'Records and statistics for this browser. They are not shared between devices and are lost if you clear site data.',
-            hy: 'Այս դիտարկիչի ռեկորդներն ու վիճակագրությունը։ Այլ սարքերի հետ չեն համաժամացվում և ջնջվում են կայքի տվյալները մաքրելիս։'
-        }[language];
-    }
-
-
-    const EXTRA_STATS_KEY = 'miWebExtraStatsV1';
-    const rankingConfigs = new Map();
 
     function sanitizeExtra(source) {
         const result = Object.create(null);
@@ -133,35 +107,226 @@ window.MiWeb = (() => {
         return result;
     }
 
-    function readExtraStats(game) {
+    function readLocalOld(key) {
+        const current = localStorage.getItem(key + STATS_VERSION);
+        if (current !== null) return sanitize(key, parseObject(current));
+        const user = profile();
+        const legacy = sanitize(key, parseObject(localStorage.getItem(key)));
+        const migrated = Object.create(null);
+        for (const [name, value] of Object.entries(legacy)) {
+            migrated[name === user.name ? user.id : 'legacy:' + name] = value;
+        }
+        localStorage.setItem(key + STATS_VERSION, JSON.stringify(migrated));
+        return migrated;
+    }
+
+    function readLocalExtra(game) {
         const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
         return sanitizeExtra(all[game] || {});
     }
 
+    async function rpc(name, args) {
+        const response = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + name, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_KEY,
+                'Content-Type': 'application/json',
+                'x-player-token': globalToken()
+            },
+            body: JSON.stringify(args)
+        });
+        const text = await response.text();
+        if (!response.ok) throw new Error('Supabase ' + response.status + ': ' + text);
+        if (!text) return null;
+        try { return JSON.parse(text); } catch { return null; }
+    }
+
+    function cacheOwn(game, stats) {
+        const user = profile();
+        const data = globalCache.get(game) || Object.create(null);
+        data[user.id] = { ...stats };
+        globalNames.set(user.id, user.name);
+        globalCache.set(game, data);
+    }
+
+    function notifyGlobal(game) {
+        refreshRanking(game);
+        window.dispatchEvent(new CustomEvent('miweb-global-stats', { detail: { game } }));
+        queueMicrotask(() => {
+            if (typeof window.mostrarRanking === 'function') window.mostrarRanking();
+            if (typeof window.mostrarRecords === 'function') window.mostrarRecords();
+            if (typeof window.actualizarPortadaMejorada === 'function') window.actualizarPortadaMejorada();
+        });
+    }
+
+    async function syncGlobalGame(game, force = false) {
+        if (!game) return null;
+        if (syncPending.has(game) && !force) return syncPending.get(game);
+
+        const promise = (async () => {
+            try {
+                const rows = await rpc('get_game_leaderboard', {
+                    p_game: game
+                });
+                const data = Object.create(null);
+                for (const row of Array.isArray(rows) ? rows : []) {
+                    const id = row.is_you ? profile().id : 'global:' + row.player_id;
+                    const clean = sanitizeExtra({ [id]: row.stats || {} });
+                    if (clean[id]) data[id] = clean[id];
+                    globalNames.set(id, String(row.player_name || 'Jugador').slice(0, 20));
+                }
+                globalCache.set(game, data);
+                notifyGlobal(game);
+                return data;
+            } catch (error) {
+                console.warn('Ranking global no disponible; usando datos locales.', error);
+                return null;
+            } finally {
+                syncPending.delete(game);
+            }
+        })();
+
+        syncPending.set(game, promise);
+        return promise;
+    }
+
+    async function submitGlobal(game, stats) {
+        if (!game || !stats || typeof stats !== 'object') return;
+        try {
+            await rpc('submit_game_stats', {
+                p_game: game,
+                p_name: profile().name.slice(0, 20),
+                p_stats: stats
+            });
+            await syncGlobalGame(game, true);
+        } catch (error) {
+            console.warn('No se pudo guardar el ranking global; queda guardado localmente.', error);
+        }
+    }
+
+    function initialSync(game, localOwn) {
+        if (!game || initialSyncStarted.has(game)) return;
+        initialSyncStarted.add(game);
+        (async () => {
+            const remote = await syncGlobalGame(game);
+            if (!remote) return;
+            const userId = profile().id;
+            if (!remote[userId] && localOwn && Object.keys(localOwn).length) {
+                await submitGlobal(game, localOwn);
+            }
+        })();
+    }
+
+    function readStats(key) {
+        if (!fields[key]) throw new Error('Unknown statistics key');
+        const game = oldGameMap[key];
+        const local = readLocalOld(key);
+        const own = local[profile().id];
+        initialSync(game, own);
+        const remote = globalCache.get(game);
+        return remote ? sanitize(key, remote) : local;
+    }
+
+    function writeStats(key, data) {
+        if (!fields[key]) throw new Error('Unknown statistics key');
+        const clean = sanitize(key, data);
+        localStorage.setItem(key + STATS_VERSION, JSON.stringify(clean));
+        const game = oldGameMap[key];
+        const own = clean[profile().id];
+        if (own) {
+            cacheOwn(game, own);
+            notifyGlobal(game);
+            submitGlobal(game, own);
+        }
+    }
+
+    function readExtraStats(game) {
+        const local = readLocalExtra(game);
+        const own = local[profile().id];
+        initialSync(game, own);
+        return globalCache.has(game) ? sanitizeExtra(globalCache.get(game)) : local;
+    }
+
     function writeExtraStats(game, data) {
         const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
-        all[game] = sanitizeExtra(data);
+        const clean = sanitizeExtra(data);
+        all[game] = clean;
         localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
+        const own = clean[profile().id];
+        if (own) {
+            cacheOwn(game, own);
+            notifyGlobal(game);
+            submitGlobal(game, own);
+        }
     }
 
     function updateExtraStats(game, updater) {
-        const data = readExtraStats(game);
+        const local = readLocalExtra(game);
         const user = profile();
-        const current = data[user.id] || {};
+        const current = local[user.id] || {};
         const next = updater({ ...current }) || current;
-        data[user.id] = next;
-        writeExtraStats(game, data);
-        refreshRanking(game);
-        return data[user.id];
+        local[user.id] = next;
+        writeExtraStats(game, local);
+        return local[user.id];
+    }
+
+    function playerName(id) {
+        const user = profile();
+        if (id === user.id) return user.name;
+        if (globalNames.has(id)) return globalNames.get(id);
+        return id.startsWith('legacy:') ? id.slice(7) : id.startsWith('global:') ? 'Jugador' : id;
+    }
+
+    function syncCurrentName() {
+        const user = profile();
+        for (const [key, game] of Object.entries(oldGameMap)) {
+            const own = readLocalOld(key)[user.id];
+            if (own) submitGlobal(game, own);
+        }
+        const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+        for (const [game, rows] of Object.entries(all)) {
+            const own = sanitizeExtra(rows)[user.id];
+            if (own) submitGlobal(game, own);
+        }
+        for (const [game, rows] of globalCache.entries()) {
+            const own = rows[user.id];
+            if (own) submitGlobal(game, own);
+        }
+    }
+
+    function rename(name) {
+        name = name.trim();
+        if (!name) return;
+        const user = profile();
+        Object.keys(fields).forEach(readLocalOld);
+        user.name = name.slice(0, 20);
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(user));
+        localStorage.setItem('nombreUsuario', user.name);
+        globalNames.set(user.id, user.name);
+        syncCurrentName();
+        refreshRankings();
+    }
+
+    function applyLanguage() {
+        const selected = localStorage.getItem('idioma');
+        const language = ['es', 'en', 'hy'].includes(selected) ? selected : 'es';
+        document.documentElement.lang = language;
+        const notice = document.getElementById('avisoLocal');
+        if (notice) notice.textContent = {
+            es: 'Clasificación global compartida entre jugadores. Si no hay Internet, tus estadísticas se guardan localmente y se sincronizan después.',
+            en: 'Global leaderboard shared between players. If you are offline, your stats are saved locally and sync later.',
+            hy: 'Ընդհանուր վարկանիշ բոլոր խաղացողների համար։ Առանց ինտերնետի տվյալները պահվում են տեղային և հետո համաժամացվում։'
+        }[language];
     }
 
     function rankingText() {
         const language = ['es', 'en', 'hy'].includes(document.documentElement.lang)
             ? document.documentElement.lang : 'es';
         const values = {
-            es: { title: '🏆 Clasificación', position: 'Puesto', player: 'Jugador', empty: 'Todavía no hay estadísticas.', notice: 'Estadísticas guardadas en este navegador.' },
-            en: { title: '🏆 Ranking', position: 'Rank', player: 'Player', empty: 'No statistics yet.', notice: 'Statistics saved in this browser.' },
-            hy: { title: '🏆 Վարկանիշ', position: 'Տեղ', player: 'Խաղացող', empty: 'Դեռ վիճակագրություն չկա։', notice: 'Վիճակագրությունը պահվում է այս դիտարկիչում։' }
+            es: { title: '🏆 Clasificación global', position: 'Puesto', player: 'Jugador', empty: 'Todavía no hay estadísticas.', notice: 'Ranking global · respaldo local si no hay conexión.' },
+            en: { title: '🏆 Global ranking', position: 'Rank', player: 'Player', empty: 'No statistics yet.', notice: 'Global ranking · local fallback when offline.' },
+            hy: { title: '🏆 Ընդհանուր վարկանիշ', position: 'Տեղ', player: 'Խաղացող', empty: 'Դեռ վիճակագրություն չկա։', notice: 'Ընդհանուր վարկանիշ · տեղային պահուստ առանց կապի։' }
         };
         return values[language];
     }
@@ -270,6 +435,7 @@ window.MiWeb = (() => {
             (document.querySelector('main') || document.body).appendChild(section);
         }
         refreshRanking(config.game);
+        syncGlobalGame(config.game);
     }
 
     function validIntegerRange(first, second) {
@@ -278,5 +444,9 @@ window.MiWeb = (() => {
             Math.abs(Number(value)) <= 1000000000);
     }
 
-    return { profile, rename, readStats, writeStats, playerName, applyLanguage, validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats, mountRanking, refreshRanking, refreshRankings };
+    return {
+        profile, rename, readStats, writeStats, playerName, applyLanguage,
+        validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
+        mountRanking, refreshRanking, refreshRankings, syncGlobalGame
+    };
 })();
