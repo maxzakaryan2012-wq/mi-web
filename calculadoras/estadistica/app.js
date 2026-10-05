@@ -61,18 +61,20 @@ function parseNumbers(){
         .filter(Number.isFinite);
 }
 
-function calculate(){
+function calculate(track=false){
     const t=T[lang()];
     const nums=parseNumbers();
 
     if(!nums.length){
         $('mensaje').textContent='⚠️ '+t.bad;
         ['media','mediana','moda','minimo','maximo'].forEach(id=>$(id).textContent='—');
+        if(track)MiWeb.xpAction('tool_invalid');
         return;
     }
 
     if(nums.length>1000){
         $('mensaje').textContent='⚠️ '+t.tooMany;
+        if(track)MiWeb.xpAction('tool_invalid');
         return;
     }
 
@@ -102,6 +104,7 @@ function calculate(){
     $('minimo').textContent=fmt(sorted[0]);
     $('maximo').textContent=fmt(sorted[sorted.length-1]);
     $('mensaje').textContent='';
+    if(track)MiWeb.xpAction('tool_success');
 }
 
 function setTheme(){
@@ -134,7 +137,7 @@ function renderText(){
 
 $('form').addEventListener('submit',e=>{
     e.preventDefault();
-    calculate();
+    calculate(true);
 });
 
 $('limpiar').addEventListener('click',()=>{
