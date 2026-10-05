@@ -927,29 +927,13 @@
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
                 </div>
 
-                <div class="tarjeta" data-categoria="juegos">
-                    <h2 id="tituloMultiplicaciones">✖️ Reto de multiplicaciones</h2>
-                    <p id="descripcionMultiplicaciones">Resuelve todas las multiplicaciones que puedas antes de que termine el tiempo.</p>
-                    <a href="juegos/reto-multiplicaciones/index.html" id="botonMultiplicaciones">✖️ Jugar</a>
-                </div>
+                
 
-                <div class="tarjeta" data-categoria="juegos">
-                    <h2 id="tituloFracciones">🍰 Quiz de fracciones</h2>
-                    <p id="descripcionFracciones">Suma y resta fracciones y elige la respuesta correcta.</p>
-                    <a href="juegos/quiz-fracciones/index.html" id="botonFracciones">🍰 Jugar</a>
-                </div>
+                
 
-                <div class="tarjeta" data-categoria="juegos">
-                    <h2 id="tituloOperacion">❓ Operación perdida</h2>
-                    <p id="descripcionOperacion">Descubre qué operación falta para que la igualdad sea correcta.</p>
-                    <a href="juegos/operacion-perdida/index.html" id="botonOperacion">❓ Jugar</a>
-                </div>
+                
 
-                <div class="tarjeta" data-categoria="juegos">
-                    <h2 id="tituloMathSnake">🐍 Math Snake</h2>
-                    <p id="descripcionMathSnake">Mueve la serpiente y come únicamente la respuesta correcta.</p>
-                    <a href="juegos/math-snake/index.html" id="botonMathSnake">🐍 Jugar</a>
-                </div>
+                
 
                 <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloAreas">📐 Calculador de áreas</h2>
@@ -977,15 +961,47 @@
                 </div>
 
                 <div class="tarjeta" data-categoria="interesantes">
-                    <h2 id="tituloConstructorEcuaciones">🧩 Constructor de ecuaciones</h2>
-                    <p id="descripcionConstructorEcuaciones">Construye una ecuación ax + b = c y mira cómo se resuelve paso a paso.</p>
-                    <a href="experimentos/constructor-ecuaciones/index.html" id="botonConstructorEcuaciones">🧩 Explorar</a>
+                    <h2 id="tituloFactorizacion">🧬 Factorización prima</h2>
+                    <p id="descripcionFactorizacion">Descompón un número en sus factores primos y descubre cuántos divisores tiene.</p>
+                    <a href="experimentos/factorizacion-prima/index.html" id="botonFactorizacion">🧬 Explorar</a>
                 </div>
+
+                <div class="tarjeta" data-categoria="interesantes">
+                    <h2 id="tituloPascal">🔺 Triángulo de Pascal</h2>
+                    <p id="descripcionPascal">Genera sus filas y observa sus patrones matemáticos.</p>
+                    <a href="experimentos/triangulo-pascal/index.html" id="botonPascal">🔺 Explorar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="interesantes">
+                    <h2 id="tituloFibonacci">🌀 Explorador de Fibonacci</h2>
+                    <p id="descripcionFibonacci">Genera la sucesión y observa cómo aparece el número áureo.</p>
+                    <a href="experimentos/fibonacci/index.html" id="botonFibonacci">🌀 Explorar</a>
+                </div>
+
+                
 
                 <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloPitagoras">📐 Triángulo de Pitágoras</h2>
                     <p id="descripcionPitagoras">Introduce dos lados y calcula el tercero paso a paso.</p>
                     <a href="juegos/pitagoras/index.html" id="botonPitagoras">📐 Calcular</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="calculadora">
+                    <h2 id="tituloDivisibilidad">➗ Divisibilidad</h2>
+                    <p id="descripcionDivisibilidad">Escribe un número y descubre por qué números es divisible.</p>
+                    <a href="calculadoras/divisibilidad/index.html" id="botonDivisibilidad">➗ Calcular</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="calculadora">
+                    <h2 id="tituloMcdMcm">🔢 MCD y MCM</h2>
+                    <p id="descripcionMcdMcm">Calcula el máximo común divisor y el mínimo común múltiplo de varios números.</p>
+                    <a href="calculadoras/mcd-mcm/index.html" id="botonMcdMcm">🔢 Calcular</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="calculadora">
+                    <h2 id="tituloFraccionesCalc">➕ Calculadora de fracciones</h2>
+                    <p id="descripcionFraccionesCalc">Suma, resta, multiplica o divide dos fracciones y simplifica el resultado.</p>
+                    <a href="calculadoras/fracciones/index.html" id="botonFraccionesCalc">➕ Calcular</a>
                 </div>
 
                 <!-- JUEGO 1 -->
@@ -1441,22 +1457,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("secuencia"));
                     return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
                 }
-                if (titleId === "tituloMultiplicaciones") {
-                    row = valorUsuario(MiWeb.readExtraStats("reto-multiplicaciones"));
-                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloFracciones") {
-                    row = valorUsuario(MiWeb.readExtraStats("quiz-fracciones"));
-                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloOperacion") {
-                    row = valorUsuario(MiWeb.readExtraStats("operacion-perdida"));
-                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloMathSnake") {
-                    row = valorUsuario(MiWeb.readExtraStats("math-snake"));
-                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
-                }
+                
+                
+                
+                
                 if (titleId === "tituloAleatorio") {
                     const total = MiWeb.readRandomGlobalTotal();
                     return total === null
@@ -1663,36 +1667,11 @@
                 hy: ['🔢 Թվային հաջորդականություն', 'Գուշակիր, թե որ թիվն է հաջորդը տարբեր հաջորդականություններում։', '🔢 Խաղալ']
             }[document.documentElement.lang];
             ['tituloSecuencia', 'descripcionSecuencia', 'botonSecuencia'].forEach((id, i) => document.getElementById(id).textContent = secuencia[i]);
-            const multiplicaciones = {
-                es: ['✖️ Reto de multiplicaciones', 'Resuelve todas las multiplicaciones que puedas antes de que termine el tiempo.', '✖️ Jugar'],
-                en: ['✖️ Multiplication challenge', 'Solve as many multiplications as you can before time runs out.', '✖️ Play'],
-                hy: ['✖️ Բազմապատկման մարտահրավեր', 'Լուծիր որքան հնարավոր է շատ բազմապատկումներ մինչև ժամանակը վերջանա։', '✖️ Խաղալ']
-            }[document.documentElement.lang];
-            ['tituloMultiplicaciones', 'descripcionMultiplicaciones', 'botonMultiplicaciones'].forEach((id, i) => document.getElementById(id).textContent = multiplicaciones[i]);
-            const fracciones = {
-                es: ['🍰 Quiz de fracciones', 'Suma y resta fracciones y elige la respuesta correcta.', '🍰 Jugar'],
-                en: ['🍰 Fraction quiz', 'Add and subtract fractions and choose the correct answer.', '🍰 Play'],
-                hy: ['🍰 Կոտորակների հարցաշար', 'Գումարիր և հանիր կոտորակները ու ընտրիր ճիշտ պատասխանը։', '🍰 Խաղալ']
-            }[document.documentElement.lang];
-            ['tituloFracciones', 'descripcionFracciones', 'botonFracciones'].forEach((id, i) => document.getElementById(id).textContent = fracciones[i]);
-            const operacion = {
-                es: ['❓ Operación perdida', 'Descubre qué operación falta para que la igualdad sea correcta.', '❓ Jugar'],
-                en: ['❓ Missing operation', 'Find the missing operation that makes the equation correct.', '❓ Play'],
-                hy: ['❓ Բացակայող գործողություն', 'Գտիր այն գործողությունը, որը հավասարությունը դարձնում է ճիշտ։', '❓ Խաղալ']
-            }[document.documentElement.lang];
-            ['tituloOperacion', 'descripcionOperacion', 'botonOperacion'].forEach((id, i) => document.getElementById(id).textContent = operacion[i]);
-            const mathSnake = {
-                es: ['🐍 Math Snake', 'Mueve la serpiente y come únicamente la respuesta correcta.', '🐍 Jugar'],
-                en: ['🐍 Math Snake', 'Move the snake and eat only the correct answer.', '🐍 Play'],
-                hy: ['🐍 Math Snake', 'Շարժիր օձին և կեր միայն ճիշտ պատասխանը։', '🐍 Խաղալ']
-            }[document.documentElement.lang];
-            ['tituloMathSnake', 'descripcionMathSnake', 'botonMathSnake'].forEach((id, i) => document.getElementById(id).textContent = mathSnake[i]);
-            const constructorEcuaciones = {
-                es: ['🧩 Constructor de ecuaciones', 'Construye una ecuación ax + b = c y mira cómo se resuelve paso a paso.', '🧩 Explorar'],
-                en: ['🧩 Equation builder', 'Build an equation ax + b = c and see how it is solved step by step.', '🧩 Explore'],
-                hy: ['🧩 Հավասարումների կառուցիչ', 'Կառուցիր ax + b = c տեսքի հավասարում և տես դրա լուծումը քայլ առ քայլ։', '🧩 Դիտել']
-            }[document.documentElement.lang];
-            ['tituloConstructorEcuaciones', 'descripcionConstructorEcuaciones', 'botonConstructorEcuaciones'].forEach((id, i) => document.getElementById(id).textContent = constructorEcuaciones[i]);
+            
+            
+            
+            
+            
             const duelo = {
                 es: ['⚡ Duelo de cálculo mental', 'Resuelve tantas operaciones como puedas en 30 segundos.', '⚡ Jugar'],
                 en: ['⚡ Mental math duel', 'Solve as many operations as you can in 30 seconds.', '⚡ Play'],
@@ -1711,6 +1690,42 @@
                 hy: ['🧪 Էրատոսթենեսի մաղ', 'Դիտիր, թե ինչպես են բազմապատիկները հեռացվում և մնում միայն պարզ թվերը։', '🧪 Դիտել']
             }[document.documentElement.lang];
             ['tituloCriba', 'descripcionCriba', 'botonCriba'].forEach((id, i) => document.getElementById(id).textContent = criba[i]);
+            const divisibilidad = {
+                es: ['➗ Divisibilidad', 'Escribe un número y descubre por qué números es divisible.', '➗ Calcular'],
+                en: ['➗ Divisibility', 'Enter a number and discover which numbers divide it exactly.', '➗ Calculate'],
+                hy: ['➗ Բաժանելիություն', 'Գրիր թիվ և տես, թե որ թվերի է այն բաժանվում առանց մնացորդի։', '➗ Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloDivisibilidad', 'descripcionDivisibilidad', 'botonDivisibilidad'].forEach((id, i) => document.getElementById(id).textContent = divisibilidad[i]);
+            const mcdMcm = {
+                es: ['🔢 MCD y MCM', 'Calcula el máximo común divisor y el mínimo común múltiplo de varios números.', '🔢 Calcular'],
+                en: ['🔢 GCD and LCM', 'Calculate the greatest common divisor and least common multiple of several numbers.', '🔢 Calculate'],
+                hy: ['🔢 ԱՄԲ և ԱՓԲ', 'Հաշվիր մի քանի թվերի ամենամեծ ընդհանուր բաժանարարը և ամենափոքր ընդհանուր բազմապատիկը։', '🔢 Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloMcdMcm', 'descripcionMcdMcm', 'botonMcdMcm'].forEach((id, i) => document.getElementById(id).textContent = mcdMcm[i]);
+            const fraccionesCalc = {
+                es: ['➕ Calculadora de fracciones', 'Suma, resta, multiplica o divide dos fracciones y simplifica el resultado.', '➕ Calcular'],
+                en: ['➕ Fraction calculator', 'Add, subtract, multiply or divide two fractions and simplify the result.', '➕ Calculate'],
+                hy: ['➕ Կոտորակների հաշվիչ', 'Գումարիր, հանիր, բազմապատկիր կամ բաժանիր երկու կոտորակ և պարզեցրու արդյունքը։', '➕ Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloFraccionesCalc', 'descripcionFraccionesCalc', 'botonFraccionesCalc'].forEach((id, i) => document.getElementById(id).textContent = fraccionesCalc[i]);
+            const factorizacion = {
+                es: ['🧬 Factorización prima', 'Descompón un número en sus factores primos y descubre cuántos divisores tiene.', '🧬 Explorar'],
+                en: ['🧬 Prime factorization', 'Break a number into prime factors and discover how many divisors it has.', '🧬 Explore'],
+                hy: ['🧬 Պարզ արտադրիչներ', 'Թիվը բաժանիր պարզ արտադրիչների և տես բաժանարարների քանակը։', '🧬 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloFactorizacion', 'descripcionFactorizacion', 'botonFactorizacion'].forEach((id, i) => document.getElementById(id).textContent = factorizacion[i]);
+            const pascal = {
+                es: ['🔺 Triángulo de Pascal', 'Genera sus filas y observa sus patrones matemáticos.', '🔺 Explorar'],
+                en: ['🔺 Pascal triangle', 'Generate its rows and observe its mathematical patterns.', '🔺 Explore'],
+                hy: ['🔺 Պասկալի եռանկյուն', 'Ստեղծիր դրա տողերը և դիտիր մաթեմատիկական օրինաչափությունները։', '🔺 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloPascal', 'descripcionPascal', 'botonPascal'].forEach((id, i) => document.getElementById(id).textContent = pascal[i]);
+            const fibonacci = {
+                es: ['🌀 Explorador de Fibonacci', 'Genera la sucesión y observa cómo aparece el número áureo.', '🌀 Explorar'],
+                en: ['🌀 Fibonacci explorer', 'Generate the sequence and see how the golden ratio appears.', '🌀 Explore'],
+                hy: ['🌀 Ֆիբոնաչիի ուսումնասիրիչ', 'Ստեղծիր հաջորդականությունը և տես, թե ինչպես է հայտնվում ոսկե հատումը։', '🌀 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloFibonacci', 'descripcionFibonacci', 'botonFibonacci'].forEach((id, i) => document.getElementById(id).textContent = fibonacci[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
