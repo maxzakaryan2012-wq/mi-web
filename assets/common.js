@@ -28,6 +28,13 @@ window.MiWeb = (() => {
     const syncPending = new Map();
     const initialSyncStarted = new Set();
 
+    const XP_LOCAL_KEY = 'miWebXpProgressV1';
+    const XP_MAX_LEVEL = 100;
+    const XP_MAX_TOTAL = 131175;
+    let xpCache = null;
+    let xpActiveTimer = null;
+    let xpRefreshPending = null;
+
     if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
         for (const key of Object.keys(fields)) {
             localStorage.removeItem(key);
@@ -469,6 +476,258 @@ window.MiWeb = (() => {
         syncGlobalGame(config.game);
     }
 
+    function xpRequiredForLevel(level) {
+        if (level >= XP_MAX_LEVEL) return 0;
+        return 100 + 25 * (level - 1);
+    }
+
+    function xpProgressFromTotal(total) {
+        total = Math.max(0, Math.min(XP_MAX_TOTAL, Math.floor(Number(total) || 0)));
+        let level = 1;
+        let remaining = total;
+        while (level < XP_MAX_LEVEL) {
+            const need = xpRequiredForLevel(level);
+            if (remaining < need) break;
+            remaining -= need;
+            level++;
+        }
+        return {
+            total_xp: total,
+            level,
+            current_xp: level >= XP_MAX_LEVEL ? 0 : remaining,
+            next_xp: level >= XP_MAX_LEVEL ? 0 : xpRequiredForLevel(level),
+            max_level: level >= XP_MAX_LEVEL
+        };
+    }
+
+    function readLocalXp() {
+        const saved = parseObject(localStorage.getItem(XP_LOCAL_KEY));
+        return xpProgressFromTotal(saved.total_xp || 0);
+    }
+
+    function storeXp(progress) {
+        if (!progress || typeof progress !== 'object') return;
+        const clean = xpProgressFromTotal(progress.total_xp);
+        xpCache = {
+            ...clean,
+            level: Number.isFinite(Number(progress.level)) ? Math.max(1, Math.min(100, Math.floor(Number(progress.level)))) : clean.level,
+            current_xp: Number.isFinite(Number(progress.current_xp)) ? Math.max(0, Math.floor(Number(progress.current_xp))) : clean.current_xp,
+            next_xp: Number.isFinite(Number(progress.next_xp)) ? Math.max(0, Math.floor(Number(progress.next_xp))) : clean.next_xp,
+            max_level: Boolean(progress.max_level ?? clean.max_level)
+        };
+        localStorage.setItem(XP_LOCAL_KEY, JSON.stringify(xpCache));
+        renderXpWidget();
+        window.dispatchEvent(new CustomEvent('miweb-xp', { detail: { ...xpCache } }));
+    }
+
+    function xpContext() {
+        const path = location.pathname.toLowerCase();
+        const entries = [
+            ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
+            ['2048','game'],['saltos-multiplos','game'],['adivina-el-numero','game'],
+            ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
+            ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
+            ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
+            ['estadistica','calculator'],
+            ['collatz','experiment'],['criba-eratostenes','experiment'],
+            ['factorizacion-prima','experiment'],['triangulo-pascal','experiment'],['fibonacci','experiment']
+        ];
+        for (const [name, category] of entries) {
+            if (path.includes('/' + name + '/')) return { context: name, category };
+        }
+        if (/\/mi-web\/?(?:index\.html)?$/.test(path) || path.endsWith('/mi-web/') || path.endsWith('/mi-web/index.html')) {
+            return { context: 'home', category: 'home' };
+        }
+        return null;
+    }
+
+    function localXpPoints(event, contextInfo = xpContext()) {
+        if (!contextInfo) return 0;
+        const { context, category } = contextInfo;
+        if (event === 'page_enter') return category === 'home' ? 1 : category === 'game' ? 3 : 2;
+        if (event === 'active_minute') return category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0;
+        if (event === 'correct' && category === 'game') {
+            if (context === 'pulsa-el-boton') return 1;
+            if (context === '2048') return 2;
+            if (context === 'disparador-primos') return 4;
+            if (['duelo-calculo','secuencia','saltos-multiplos'].includes(context)) return 5;
+            if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 8;
+            return 4;
+        }
+        if (event === 'wrong' && category === 'game') return 1;
+        if (event === 'game_finish' && category === 'game') return context === 'pulsa-el-boton' ? 6 : context === '2048' ? 10 : 8;
+        if (event === 'tool_success' && category === 'calculator') return 4;
+        if (event === 'tool_invalid' && category === 'calculator') return 1;
+        if (event === 'experiment_run' && category === 'experiment') return 3;
+        if (event === 'experiment_invalid' && category === 'experiment') return 1;
+        return 0;
+    }
+
+    function xpText() {
+        const language = ['es','en','hy'].includes(document.documentElement.lang) ? document.documentElement.lang : 'es';
+        return {
+            es: { level:'Nivel', max:'MÁX', total:'XP total', next:'para el siguiente nivel', gained:'XP', title:'Progreso' },
+            en: { level:'Level', max:'MAX', total:'Total XP', next:'to next level', gained:'XP', title:'Progress' },
+            hy: { level:'Մակարդակ', max:'MAX', total:'Ընդհանուր XP', next:'հաջորդ մակարդակին', gained:'XP', title:'Առաջընթաց' }
+        }[language];
+    }
+
+    function ensureXpStyles() {
+        if (document.getElementById('miweb-xp-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'miweb-xp-styles';
+        style.textContent = `
+            .miweb-xp-widget{position:fixed;right:14px;bottom:14px;z-index:9998;width:min(290px,calc(100vw - 28px));font-family:Arial,sans-serif}
+            .miweb-xp-chip{width:100%;border:1px solid #444;background:#1d1d1d;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 7px 24px rgba(0,0,0,.28);cursor:pointer;text-align:left}
+            .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800}
+            .miweb-xp-small{font-size:12px;color:#aaa;font-weight:600}
+            .miweb-xp-bar{height:7px;background:#333;border-radius:99px;overflow:hidden;margin-top:8px}
+            .miweb-xp-fill{height:100%;background:linear-gradient(90deg,#ffd84d,#ff9f3d);width:0%;transition:width .25s ease}
+            .miweb-xp-detail{display:none;margin-top:7px;padding-top:8px;border-top:1px solid #3a3a3a;color:#bbb;font-size:12px;line-height:1.45}
+            .miweb-xp-widget.abierto .miweb-xp-detail{display:block}
+            .miweb-xp-toast{position:fixed;right:24px;bottom:104px;z-index:9999;background:#252525;color:#fff;border:1px solid #555;border-radius:999px;padding:8px 12px;font-weight:bold;pointer-events:none;animation:miwebXpToast 1.25s ease forwards}
+            @keyframes miwebXpToast{0%{opacity:0;transform:translateY(8px)}15%,70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px)}}
+            body.claro .miweb-xp-chip{background:#fff;color:#111;border-color:#d4d4d4;box-shadow:0 7px 24px rgba(0,0,0,.12)}
+            body.claro .miweb-xp-small,body.claro .miweb-xp-detail{color:#555}
+            body.claro .miweb-xp-bar{background:#e6e6e6}
+            body.claro .miweb-xp-detail{border-top-color:#ddd}
+            @media(max-width:520px){.miweb-xp-widget{right:9px;bottom:9px;width:min(245px,calc(100vw - 18px))}.miweb-xp-toast{right:16px;bottom:95px}}
+            @media(prefers-reduced-motion:reduce){.miweb-xp-fill{transition:none}.miweb-xp-toast{animation:none;opacity:1}}
+        `;
+        document.head.appendChild(style);
+    }
+
+    function ensureXpWidget() {
+        ensureXpStyles();
+        let widget = document.getElementById('miweb-xp-widget');
+        if (widget) return widget;
+        widget = document.createElement('div');
+        widget.id = 'miweb-xp-widget';
+        widget.className = 'miweb-xp-widget';
+        widget.innerHTML = `
+            <button type="button" class="miweb-xp-chip" aria-expanded="false">
+                <div class="miweb-xp-row"><span class="miweb-xp-level">⭐ Nivel 1</span><span class="miweb-xp-small miweb-xp-count">0 / 100 XP</span></div>
+                <div class="miweb-xp-bar"><div class="miweb-xp-fill"></div></div>
+                <div class="miweb-xp-detail"></div>
+            </button>
+        `;
+        widget.querySelector('.miweb-xp-chip').addEventListener('click', () => {
+            const open = widget.classList.toggle('abierto');
+            widget.querySelector('.miweb-xp-chip').setAttribute('aria-expanded', String(open));
+        });
+        document.body.appendChild(widget);
+        return widget;
+    }
+
+    function renderXpWidget() {
+        if (!document.body) return;
+        const widget = ensureXpWidget();
+        const progress = xpCache || readLocalXp();
+        const text = xpText();
+        const level = Math.max(1, Math.min(100, progress.level || 1));
+        const max = level >= 100 || progress.max_level;
+        const pct = max ? 100 : Math.max(0, Math.min(100, (progress.current_xp / Math.max(1, progress.next_xp)) * 100));
+        widget.querySelector('.miweb-xp-level').textContent = '⭐ ' + text.level + ' ' + level;
+        widget.querySelector('.miweb-xp-count').textContent = max
+            ? text.max
+            : progress.current_xp + ' / ' + progress.next_xp + ' XP';
+        widget.querySelector('.miweb-xp-fill').style.width = pct + '%';
+        widget.querySelector('.miweb-xp-detail').textContent = max
+            ? text.total + ': ' + progress.total_xp + ' XP · ' + text.level + ' 100 ' + text.max
+            : text.total + ': ' + progress.total_xp + ' XP · ' + (progress.next_xp - progress.current_xp) + ' XP ' + text.next;
+    }
+
+    function showXpToast(amount, leveledUp = false) {
+        if (!amount || !document.body) return;
+        const toast = document.createElement('div');
+        toast.className = 'miweb-xp-toast';
+        toast.textContent = (leveledUp ? '🎉 ' : '⭐ ') + '+' + amount + ' XP';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1350);
+    }
+
+    async function refreshXp(force = false) {
+        if (xpRefreshPending && !force) return xpRefreshPending;
+        xpRefreshPending = (async () => {
+            try {
+                const rows = await rpc('get_xp_progress', {});
+                const row = Array.isArray(rows) ? rows[0] : rows;
+                if (row) storeXp(row);
+                else storeXp(readLocalXp());
+                return xpCache;
+            } catch (error) {
+                console.warn('XP global no disponible; usando progreso local.', error);
+                xpCache = readLocalXp();
+                renderXpWidget();
+                return xpCache;
+            } finally {
+                xpRefreshPending = null;
+            }
+        })();
+        return xpRefreshPending;
+    }
+
+    async function awardXP(event, contextOverride = null) {
+        const info = contextOverride
+            ? (typeof contextOverride === 'string' ? { context: contextOverride } : contextOverride)
+            : xpContext();
+        if (!info || !info.context) return { awarded:0, ...(xpCache || readLocalXp()) };
+        const previous = xpCache || readLocalXp();
+
+        try {
+            const rows = await rpc('award_xp', {
+                p_event: event,
+                p_context: info.context,
+                p_name: profile().name.slice(0,20)
+            });
+            const row = Array.isArray(rows) ? rows[0] : rows;
+            if (row) {
+                storeXp(row);
+                const amount = Math.max(0, Math.floor(Number(row.awarded) || 0));
+                showXpToast(amount, Number(row.level) > Number(previous.level || 1));
+                return row;
+            }
+        } catch (error) {
+            console.warn('No se pudo sincronizar XP; aplicando respaldo local.', error);
+            const amount = localXpPoints(event, info.category ? info : xpContext());
+            if (amount > 0) {
+                const local = xpProgressFromTotal(Math.min(XP_MAX_TOTAL, (previous.total_xp || 0) + amount));
+                storeXp(local);
+                showXpToast(amount, local.level > (previous.level || 1));
+                return { awarded:amount, ...local, offline:true };
+            }
+        }
+        return { awarded:0, ...(xpCache || readLocalXp()) };
+    }
+
+    function xpAction(event) {
+        return awardXP(event);
+    }
+
+    function initXpTracking() {
+        const info = xpContext();
+        if (!info || !document.body) return;
+        ensureXpWidget();
+        xpCache = readLocalXp();
+        renderXpWidget();
+        refreshXp().finally(() => awardXP('page_enter'));
+
+        clearInterval(xpActiveTimer);
+        xpActiveTimer = setInterval(() => {
+            if (document.visibilityState === 'visible') awardXP('active_minute');
+        }, 60000);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') refreshXp();
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initXpTracking, { once:true });
+    } else {
+        queueMicrotask(initXpTracking);
+    }
+
     function validIntegerRange(first, second) {
         return [first, second].every(value => typeof value === 'string' &&
             value.trim() !== '' && Number.isSafeInteger(Number(value)) &&
@@ -478,6 +737,7 @@ window.MiWeb = (() => {
     return {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
-        mountRanking, refreshRanking, refreshRankings, syncGlobalGame
+        mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
+        awardXP, xpAction, refreshXp, xpRequiredForLevel, xpProgressFromTotal
     };
 })();
