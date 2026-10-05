@@ -550,6 +550,8 @@
 
             if (numero < numeroSecreto) {
 
+                MiWeb.xpAction("wrong");
+
                 if (idioma === "en") {
 
                     mostrarMensaje(
@@ -571,6 +573,8 @@
 
 
             } else if (numero > numeroSecreto) {
+
+                MiWeb.xpAction("wrong");
 
                 if (idioma === "en") {
 
@@ -636,6 +640,9 @@
                     "reiniciar"
                 ).style.display = "block";
 
+
+                MiWeb.xpAction("correct");
+                MiWeb.xpAction("game_finish");
 
                 guardarEstadistica(
                     intentosFinales
