@@ -123,6 +123,7 @@ function renderText(){
     setTheme();
     showStats();
     MiWeb.refreshRanking('disparador-primos');
+    MiWeb.xpAction('game_finish');
 }
 
 function stats(){
@@ -381,7 +382,7 @@ function tick(ts){
             return true;
         });
 
-        if(escaped.length)loseLife(T[lang()].escaped);
+        if(escaped.length){MiWeb.xpAction('wrong');loseLife(T[lang()].escaped);}
     }
 
     updateEffects(dt);
@@ -467,8 +468,10 @@ function pointer(e){
             streak++;
             bestRunStreak=Math.max(bestRunStreak,streak);
             $('mensaje').textContent=T[lang()].prime;
+            MiWeb.xpAction('correct');
         }else{
             color=COMPOSITE_COLOR;
+            MiWeb.xpAction('wrong');
             loseLife(T[lang()].composite);
         }
 
