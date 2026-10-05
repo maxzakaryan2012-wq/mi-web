@@ -131,7 +131,8 @@ window.MiWeb = (() => {
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': 'Bearer ' + SUPABASE_KEY,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-player-token': globalToken()
             },
             body: JSON.stringify(args)
         });
@@ -166,8 +167,7 @@ window.MiWeb = (() => {
         const promise = (async () => {
             try {
                 const rows = await rpc('get_game_leaderboard', {
-                    p_game: game,
-                    p_token: globalToken()
+                    p_game: game
                 });
                 const data = Object.create(null);
                 for (const row of Array.isArray(rows) ? rows : []) {
@@ -195,7 +195,6 @@ window.MiWeb = (() => {
         if (!game || !stats || typeof stats !== 'object') return;
         try {
             await rpc('submit_game_stats', {
-                p_token: globalToken(),
                 p_game: game,
                 p_name: profile().name.slice(0, 20),
                 p_stats: stats
