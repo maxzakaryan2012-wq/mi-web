@@ -150,10 +150,66 @@
             cursor: pointer;
             font-size: 30px;
             transition: left 0.05s, top 0.05s;
+            z-index: 2;
         }
 
         #botonJuego:hover {
             transform: scale(1.08);
+        }
+
+        .rastro-boton {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid rgba(57, 211, 83, 0.55);
+            background: rgba(57, 211, 83, 0.12);
+            pointer-events: none;
+            z-index: 1;
+            animation: desvanecerRastro 0.75s ease-out forwards;
+        }
+
+        .onda-boton {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 4px solid rgba(57, 211, 83, 0.9);
+            pointer-events: none;
+            z-index: 3;
+            transform: scale(0.45);
+            animation: ondaExpansiva 0.55s ease-out forwards;
+        }
+
+        @keyframes desvanecerRastro {
+            0% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.35);
+            }
+        }
+
+        @keyframes ondaExpansiva {
+            0% {
+                opacity: 1;
+                transform: scale(0.45);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2.6);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rastro-boton,
+            .onda-boton {
+                animation-duration: 0.01ms;
+            }
         }
 
         #botonInicio {
@@ -487,6 +543,7 @@
         let tiempo = 30;
         let jugando = false;
         let intervalo = null;
+        let posicionBoton = null;
 
 
         /* =========================
@@ -531,6 +588,8 @@
                 "botonJuego"
             ).style.display = "block";
 
+            posicionBoton = null;
+            limpiarEfectos();
             moverBoton();
 
             intervalo = setInterval(
@@ -568,7 +627,8 @@
                 "puntos"
             ).textContent = puntos;
 
-            moverBoton();
+            crearOndaExpansiva();
+            moverBoton(true);
         }
 
 
@@ -576,7 +636,7 @@
            MOVER BOTÓN
         ========================= */
 
-        function moverBoton() {
+        function moverBoton(dejarRastro = false) {
 
             const zona =
                 document.getElementById(
@@ -616,11 +676,121 @@
                     Math.random() * maxY
                 );
 
+            if (
+                dejarRastro &&
+                posicionBoton
+            ) {
+                crearRastro(
+                    posicionBoton.x,
+                    posicionBoton.y
+                );
+            }
+
             boton.style.left =
                 x + "px";
 
             boton.style.top =
                 y + "px";
+
+            posicionBoton = {
+                x: x,
+                y: y
+            };
+        }
+
+
+        /* =========================
+           EFECTOS VISUALES
+        ========================= */
+
+        function crearRastro(x, y) {
+
+            const zona =
+                document.getElementById(
+                    "zonaJuego"
+                );
+
+            const rastro =
+                document.createElement(
+                    "div"
+                );
+
+            rastro.className =
+                "rastro-boton";
+
+            rastro.style.left =
+                x + "px";
+
+            rastro.style.top =
+                y + "px";
+
+            zona.appendChild(
+                rastro
+            );
+
+            rastro.addEventListener(
+                "animationend",
+                function() {
+                    rastro.remove();
+                }
+            );
+        }
+
+
+        function crearOndaExpansiva() {
+
+            const zona =
+                document.getElementById(
+                    "zonaJuego"
+                );
+
+            const boton =
+                document.getElementById(
+                    "botonJuego"
+                );
+
+            const onda =
+                document.createElement(
+                    "div"
+                );
+
+            const x =
+                boton.offsetLeft;
+
+            const y =
+                boton.offsetTop;
+
+            onda.className =
+                "onda-boton";
+
+            onda.style.left =
+                x + "px";
+
+            onda.style.top =
+                y + "px";
+
+            zona.appendChild(
+                onda
+            );
+
+            onda.addEventListener(
+                "animationend",
+                function() {
+                    onda.remove();
+                }
+            );
+        }
+
+
+        function limpiarEfectos() {
+
+            document.querySelectorAll(
+                ".rastro-boton, .onda-boton"
+            ).forEach(
+                function(elemento) {
+                    elemento.remove();
+                }
+            );
         }
 
 
@@ -643,6 +813,8 @@
             document.getElementById(
                 "botonJuego"
             ).style.display = "none";
+
+            posicionBoton = null;
 
             document.getElementById(
                 "botonInicio"
