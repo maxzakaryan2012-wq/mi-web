@@ -633,6 +633,8 @@
                 return;
             }
 
+            MiWeb.xpAction("wrong");
+
             maximo =
                 numeroAdivinado - 1;
 
@@ -660,6 +662,8 @@
             if (!jugando) {
                 return;
             }
+
+            MiWeb.xpAction("wrong");
 
             minimo =
                 numeroAdivinado + 1;
@@ -689,6 +693,7 @@
                 return;
             }
 
+            MiWeb.xpAction("correct");
             terminar(true);
 
         }
@@ -787,6 +792,8 @@
                 }
 
             }
+
+            MiWeb.xpAction("game_finish");
 
         }
 

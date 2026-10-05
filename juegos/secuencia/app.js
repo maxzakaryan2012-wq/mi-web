@@ -53,7 +53,7 @@ $('formulario').addEventListener('submit',e=>{
  if(py){const fn=py.globals.get('comprobar_json');try{r=JSON.parse(fn(String(juego.respuesta),$('respuesta').value))}catch(e){console.warn('Python check fallback',e)}finally{fn.destroy()}}
  if(!r){const texto=$('respuesta').value.trim(),n=Number(texto);r=!texto||!Number.isInteger(n)?{error:'invalid'}:{correcto:n===juego.respuesta,respuesta:juego.respuesta}}
  const t=T[lang()];if(r.error){$('mensaje').textContent=t.invalid;return}
- resuelto=true;jugadas++;if(r.correcto){aciertos++;racha++;$('mensaje').textContent=t.correct}else{racha=0;$('mensaje').textContent=t.wrong+' '+r.respuesta}
+ resuelto=true;jugadas++;if(r.correcto){aciertos++;racha++;$('mensaje').textContent=t.correct;MiWeb.xpAction('correct')}else{racha=0;$('mensaje').textContent=t.wrong+' '+r.respuesta;MiWeb.xpAction('wrong')}
  MiWeb.updateExtraStats('secuencia',v=>({...v,jugadas:(v.jugadas||0)+1,aciertos:(v.aciertos||0)+(r.correcto?1:0),mejorRacha:Math.max(v.mejorRacha||0,racha)}));
  $('explicacion').textContent=traducirExplicacion(juego);$('botonComprobar').disabled=true;$('botonNueva').disabled=false;actualizarMarcador();
 });
