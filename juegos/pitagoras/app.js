@@ -28,4 +28,4 @@ $('botonIdioma').onclick=()=>{$('menuIdiomas').style.display=$('menuIdiomas').st
 $('menuIdiomas').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;localStorage.setItem('idioma',b.dataset.lang);$('menuIdiomas').style.display='none';render()});
 $('botonTema').onclick=()=>{localStorage.setItem('tema',localStorage.getItem('tema')==='claro'?'oscuro':'claro');render()};
 document.addEventListener('click',e=>{if(!e.target.closest('.menu-idioma'))$('menuIdiomas').style.display='none'});
-MiWeb.mountRanking({game:'pitagoras',columns:[{key:'calculos',label:{es:'Cálculos',en:'Calculations',hy:'Հաշվարկներ'}}],compare:(a,b)=>(b.calculos||0)-(a.calculos||0)});render();initPython();
+render();initPython();
