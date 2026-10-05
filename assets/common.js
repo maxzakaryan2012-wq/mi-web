@@ -152,6 +152,11 @@ window.MiWeb = (() => {
     function notifyGlobal(game) {
         refreshRanking(game);
         window.dispatchEvent(new CustomEvent('miweb-global-stats', { detail: { game } }));
+        queueMicrotask(() => {
+            if (typeof window.mostrarRanking === 'function') window.mostrarRanking();
+            if (typeof window.mostrarRecords === 'function') window.mostrarRecords();
+            if (typeof window.actualizarPortadaMejorada === 'function') window.actualizarPortadaMejorada();
+        });
     }
 
     async function syncGlobalGame(game, force = false) {
