@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Saltos de múltiplos - MI WEB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;transition:.25s}
+.barra{min-height:70px;background:#181818;display:flex;align-items:center;padding:12px 22px;gap:12px;border-bottom:1px solid #333}
+.volver{color:#fff;text-decoration:none;font-weight:bold;font-size:18px}.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#252525;color:#fff;border:1px solid #444;border-radius:9px;padding:10px 13px;cursor:pointer}
+.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:9px;overflow:hidden;min-width:145px;z-index:30}
+.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:11px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+.contenedor{max-width:920px;margin:auto;padding:36px 18px;text-align:center}
+h1{font-size:40px;margin:0 0 8px}.descripcion{color:#aaa;line-height:1.5;margin:0 0 18px}
+.panel{background:#1d1d1d;border:1px solid #333;border-radius:18px;padding:20px;margin-top:18px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.dato{background:#181818;border:1px solid #333;border-radius:12px;padding:11px}.dato span{display:block;color:#aaa;font-size:12px}.dato strong{display:block;font-size:24px;margin-top:3px}
+.objetivo{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-size:22px;font-weight:800;margin:8px 0 12px}
+.objetivo strong{font-size:30px}
+.timer{height:9px;background:#292929;border-radius:999px;overflow:hidden;margin:0 auto 14px;max-width:720px}
+.timer-fill{height:100%;width:100%;background:#57d66b;transform-origin:left center}
+.zona{position:relative;height:410px;max-width:760px;margin:auto;border:1px solid #333;border-radius:16px;overflow:hidden;background:linear-gradient(#111923 0%,#16212e 62%,#1c2822 63%,#142018 100%);touch-action:manipulation}
+.estrellas{position:absolute;inset:0;pointer-events:none;opacity:.42;background-image:radial-gradient(circle at 12% 17%,#fff 0 1px,transparent 2px),radial-gradient(circle at 26% 31%,#fff 0 1px,transparent 2px),radial-gradient(circle at 48% 11%,#fff 0 1px,transparent 2px),radial-gradient(circle at 69% 27%,#fff 0 1px,transparent 2px),radial-gradient(circle at 88% 14%,#fff 0 1px,transparent 2px),radial-gradient(circle at 77% 48%,#fff 0 1px,transparent 2px)}
+.plataformas{position:absolute;left:5%;right:5%;top:74px;display:grid;grid-template-columns:repeat(3,1fr);gap:7%}
+.plataforma-wrap{position:relative;min-width:0}
+.plataforma{width:100%;height:102px;border:0;border-radius:18px 18px 25px 25px;background:#303942;color:#fff;box-shadow:0 9px 0 #1c2228,0 13px 18px rgba(0,0,0,.35);font-size:34px;font-weight:900;cursor:pointer;transition:transform .12s,filter .12s,background .18s;position:relative;z-index:2}
+.plataforma::after{content:"";position:absolute;left:13%;right:13%;bottom:11px;height:5px;border-radius:99px;background:rgba(255,255,255,.12)}
+.plataforma:hover{transform:translateY(-4px);filter:brightness(1.12)}
+.plataforma.correcta{background:#24783a;box-shadow:0 9px 0 #174b27,0 13px 18px rgba(0,0,0,.35)}
+.plataforma.incorrecta{background:#9b2f39;box-shadow:0 9px 0 #5c1d23,0 13px 18px rgba(0,0,0,.35)}
+.tecla{position:absolute;top:7px;left:9px;width:24px;height:24px;border-radius:7px;background:rgba(0,0,0,.28);display:grid;place-items:center;font-size:12px;font-weight:bold;color:#ddd;z-index:3;pointer-events:none}
+.suelo{position:absolute;left:0;right:0;bottom:0;height:104px;background:linear-gradient(transparent 0 24%,rgba(25,51,33,.25) 24%),repeating-linear-gradient(90deg,transparent 0 56px,rgba(255,255,255,.025) 56px 58px)}
+.base{position:absolute;left:50%;bottom:39px;transform:translateX(-50%);width:120px;height:21px;border-radius:50%;background:#303942;box-shadow:0 5px 0 #1b2026}
+.jugador{position:absolute;left:50%;bottom:53px;transform:translateX(-50%);font-size:49px;line-height:1;z-index:7;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35));will-change:transform}
+.particula{position:absolute;width:9px;height:9px;border-radius:50%;pointer-events:none;z-index:8;animation:particula .55s ease-out forwards}
+@keyframes particula{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+.flash{position:absolute;inset:0;pointer-events:none;z-index:10;opacity:0}.flash.ok{animation:flashOk .35s}.flash.bad{animation:flashBad .35s}
+@keyframes flashOk{50%{background:rgba(70,210,100,.13);opacity:1}}@keyframes flashBad{50%{background:rgba(255,65,75,.13);opacity:1}}
+.acciones{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}.accion{border:0;border-radius:10px;padding:12px 18px;background:#fff;color:#111;font-weight:bold;cursor:pointer;font-size:15px}
+.mensaje{min-height:26px;margin-top:12px;font-weight:bold}.nota{color:#aaa;font-size:14px;line-height:1.55}
+.overlay{position:absolute;inset:0;background:rgba(10,12,15,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;z-index:20;backdrop-filter:blur(3px)}.overlay.oculto{display:none}
+.overlay h2{font-size:31px;margin:0 0 8px}.overlay p{max-width:540px;color:#ccc;line-height:1.5;margin:0 0 16px}.overlay .accion{font-size:17px;padding:13px 22px}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}
+body.claro .panel{background:#fff;border-color:#ddd}body.claro .dato{background:#f8f8f8;border-color:#ddd}body.claro .descripcion,body.claro .nota,body.claro .dato span{color:#555}
+body.claro .timer{background:#e3e3e3}body.claro .zona{border-color:#ccc;background:linear-gradient(#dcecff 0%,#e9f3ff 62%,#dcebdc 63%,#cfe1d1 100%)}
+body.claro .plataforma{background:#e2e5e8;color:#111;box-shadow:0 9px 0 #b9bec4,0 13px 18px rgba(0,0,0,.15)}body.claro .plataforma.correcta{background:#99e4a6;box-shadow:0 9px 0 #61ad70}body.claro .plataforma.incorrecta{background:#ff9da5;box-shadow:0 9px 0 #c96b74}
+body.claro .base{background:#c2c7cc;box-shadow:0 5px 0 #92999f}body.claro .overlay{background:rgba(245,247,249,.9)}body.claro .overlay p{color:#555}
+@media(max-width:650px){.barra{padding:10px 12px}.contenedor{padding:27px 10px}h1{font-size:31px}.panel{padding:13px}.hud{grid-template-columns:repeat(2,1fr)}.zona{height:390px}.plataformas{left:3%;right:3%;gap:3%;top:75px}.plataforma{height:94px;font-size:28px}.jugador{font-size:46px}.objetivo{font-size:19px}.objetivo strong{font-size:27px}}
+@media(prefers-reduced-motion:reduce){.plataforma,.jugador{transition:none!important}.particula{display:none}}
+</style>
+</head>
+<body>
+<div class="barra">
+<a class="volver" id="volver" href="../../index.html">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma"><button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button><div class="idiomas" id="menuIdiomas"><button data-lang="es">🇪🇸 Español</button><button data-lang="en">🇬🇧 English</button><button data-lang="hy">🇦🇲 Հայերեն</button></div></div>
+<button id="botonTema">☀️ Claro</button>
+</div>
+
+<main class="contenedor">
+<h1 id="titulo">🦘 Saltos de múltiplos</h1>
+<p class="descripcion" id="descripcion">Elige la plataforma que sea múltiplo del número objetivo y salta antes de que se acabe el tiempo.</p>
+
+<section class="panel">
+<div class="hud">
+<div class="dato"><span id="txtPuntos">Puntos</span><strong id="puntos">0</strong></div>
+<div class="dato"><span id="txtRacha">Racha</span><strong id="racha">0</strong></div>
+<div class="dato"><span id="txtVidas">Vidas</span><strong id="vidas">❤️❤️❤️</strong></div>
+<div class="dato"><span id="txtNivel">Nivel</span><strong id="nivel">1</strong></div>
+</div>
+
+<div class="objetivo"><span id="txtObjetivo">Salta a un múltiplo de</span> <strong id="multiploObjetivo">4</strong></div>
+<div class="timer"><div class="timer-fill" id="timerFill"></div></div>
+
+<div class="zona" id="zonaJuego">
+<div class="estrellas"></div>
+<div class="plataformas" id="plataformas">
+<div class="plataforma-wrap"><span class="tecla">1</span><button class="plataforma" data-index="0">—</button></div>
+<div class="plataforma-wrap"><span class="tecla">2</span><button class="plataforma" data-index="1">—</button></div>
+<div class="plataforma-wrap"><span class="tecla">3</span><button class="plataforma" data-index="2">—</button></div>
+</div>
+<div class="suelo"></div>
+<div class="base"></div>
+<div class="jugador" id="jugador" aria-hidden="true">🦘</div>
+<div class="flash" id="flash"></div>
+
+<div class="overlay" id="overlay">
+<h2 id="overlayTitulo">¿Preparado?</h2>
+<p id="overlayTexto">Busca el múltiplo correcto. Puedes pulsar una plataforma o usar las teclas 1, 2 y 3.</p>
+<button class="accion" id="botonInicio">▶️ Empezar</button>
+</div>
+</div>
+
+<div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
+<p class="nota" id="nota">Cada 5 aciertos subes de nivel. El número objetivo cambia y tienes menos tiempo para elegir.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

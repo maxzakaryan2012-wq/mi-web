@@ -933,6 +933,12 @@
                     <a href="juegos/2048/index.html" id="boton2048">🔢 Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloSaltosMultiplos">🦘 Saltos de múltiplos</h2>
+                    <p id="descripcionSaltosMultiplos">Encuentra el múltiplo correcto y salta de plataforma en plataforma antes de que se acabe el tiempo.</p>
+                    <a href="juegos/saltos-multiplos/index.html" id="botonSaltosMultiplos">🦘 Jugar</a>
+                </div>
+
                 
 
                 
@@ -1447,6 +1453,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("2048"));
                     return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
                 }
+                if (titleId === "tituloSaltosMultiplos") {
+                    row = valorUsuario(MiWeb.readExtraStats("saltos-multiplos"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
                 
                 
                 
@@ -1655,6 +1665,12 @@
                 hy: ['🔢 2048', 'Միացրու նույն թվերով վանդակները, հավաքիր միավորներ և փորձիր հասնել 2048-ի։', '🔢 Խաղալ']
             }[document.documentElement.lang];
             ['titulo2048', 'descripcion2048', 'boton2048'].forEach((id, i) => document.getElementById(id).textContent = juego2048[i]);
+            const saltosMultiplos = {
+                es: ['🦘 Saltos de múltiplos', 'Encuentra el múltiplo correcto y salta de plataforma en plataforma antes de que se acabe el tiempo.', '🦘 Jugar'],
+                en: ['🦘 Multiple jumps', 'Find the correct multiple and jump from platform to platform before time runs out.', '🦘 Play'],
+                hy: ['🦘 Բազմապատիկների ցատկեր', 'Գտիր ճիշտ բազմապատիկը և ցատկիր հարթակից հարթակ մինչև ժամանակը վերջանա։', '🦘 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloSaltosMultiplos', 'descripcionSaltosMultiplos', 'botonSaltosMultiplos'].forEach((id, i) => document.getElementById(id).textContent = saltosMultiplos[i]);
             
             
             
