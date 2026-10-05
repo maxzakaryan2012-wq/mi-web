@@ -25,6 +25,7 @@ window.MiWeb = (() => {
     const STATS_VERSION = ':season-2026-10-04-reset-1';
     const RESET_KEY = 'miWebStatsReset';
     const NON_GAME_STATS_CLEANUP_KEY = 'miWebNonGameStatsCleanupV1';
+    const DISABLED_STATS_GAMES = new Set(['pitagoras', 'porcentajes', 'areas', 'collatz', 'criba-eratostenes']);
     const rankingConfigs = new Map();
     const globalCache = new Map();
     const globalNames = new Map();
@@ -52,7 +53,7 @@ window.MiWeb = (() => {
     function cleanupNonGameStats() {
         if (localStorage.getItem(NON_GAME_STATS_CLEANUP_KEY) === '1') return;
         const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
-        ['pitagoras', 'porcentajes', 'areas', 'collatz', 'criba-eratostenes'].forEach(game => {
+        DISABLED_STATS_GAMES.forEach(game => {
             delete all[game];
         });
         localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
@@ -206,7 +207,7 @@ window.MiWeb = (() => {
     }
 
     async function syncGlobalGame(game, force = false) {
-        if (!game) return null;
+        if (!game || DISABLED_STATS_GAMES.has(game)) return null;
         if (syncPending.has(game) && !force) return syncPending.get(game);
 
         const promise = (async () => {
@@ -237,7 +238,7 @@ window.MiWeb = (() => {
     }
 
     async function submitGlobal(game, stats) {
-        if (!game || !stats || typeof stats !== 'object') return;
+        if (!game || DISABLED_STATS_GAMES.has(game) || !stats || typeof stats !== 'object') return;
         try {
             await rpc('submit_game_stats', {
                 p_game: game,
@@ -289,6 +290,7 @@ window.MiWeb = (() => {
     }
 
     function readExtraStats(game) {
+        if (DISABLED_STATS_GAMES.has(game)) return Object.create(null);
         const local = readLocalExtra(game);
         const own = local[profile().id];
         initialSync(game, own);
@@ -296,6 +298,12 @@ window.MiWeb = (() => {
     }
 
     function writeExtraStats(game, data) {
+        if (DISABLED_STATS_GAMES.has(game)) {
+            const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+            delete all[game];
+            localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
+            return;
+        }
         const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
         const clean = sanitizeExtra(data);
         all[game] = clean;
@@ -309,6 +317,7 @@ window.MiWeb = (() => {
     }
 
     function updateExtraStats(game, updater) {
+        if (DISABLED_STATS_GAMES.has(game)) return {};
         const local = readLocalExtra(game);
         const user = profile();
         const current = local[user.id] || {};
