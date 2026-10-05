@@ -283,8 +283,9 @@ window.MiWeb = (() => {
         if (own) {
             cacheOwn(game, own);
             notifyGlobal(game);
-            submitGlobal(game, own);
+            return submitGlobal(game, own);
         }
+        return Promise.resolve();
     }
 
     function readExtraStats(game) {
