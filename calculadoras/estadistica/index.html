@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora estadística - MI WEB</title>
+<link rel="stylesheet" href="../../assets/simple-game.css">
+<style>
+textarea{width:100%;min-height:130px;resize:vertical;padding:14px;border-radius:12px;border:1px solid #555;background:#181818;color:#fff;font:inherit}
+.resultados{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.resultado{background:#181818;border:1px solid #333;border-radius:12px;padding:14px;min-width:0}
+.resultado span{display:block;color:#aaa;font-size:12px}
+.resultado strong{display:block;margin-top:5px;font-size:23px;overflow-wrap:anywhere}
+body.claro textarea{background:#fff;color:#111;border-color:#bbb}
+body.claro .resultado{background:#f8f8f8;border-color:#ddd}
+body.claro .resultado span{color:#555}
+@media(max-width:720px){.resultados{grid-template-columns:repeat(2,1fr)}.resultado:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="barra">
+<a class="volver" id="volver" href="../../index.html">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma">
+<button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas">
+<button data-lang="es">🇪🇸 Español</button>
+<button data-lang="en">🇬🇧 English</button>
+<button data-lang="hy">🇦🇲 Հայերեն</button>
+</div>
+</div>
+<button id="botonTema">☀️ Claro</button>
+</div>
+
+<main class="contenedor">
+<h1 id="titulo">📊 Calculadora estadística</h1>
+<p class="descripcion" id="descripcion">Escribe varios números y calcula cinco medidas estadísticas básicas.</p>
+
+<section class="panel">
+<form id="form">
+<div class="campo">
+<label id="labelNumeros" for="numeros">Números separados por espacios, comas o punto y coma</label>
+<textarea id="numeros">2, 4, 4, 5, 7, 9</textarea>
+</div>
+<div class="fila" style="margin-top:14px">
+<button class="accion" id="calcular">📊 Calcular</button>
+<button class="accion sec" type="button" id="limpiar">Limpiar</button>
+</div>
+</form>
+
+<div class="resultados">
+<div class="resultado"><span id="txtMedia">Media</span><strong id="media">—</strong></div>
+<div class="resultado"><span id="txtMediana">Mediana</span><strong id="mediana">—</strong></div>
+<div class="resultado"><span id="txtModa">Moda</span><strong id="moda">—</strong></div>
+<div class="resultado"><span id="txtMinimo">Mínimo</span><strong id="minimo">—</strong></div>
+<div class="resultado"><span id="txtMaximo">Máximo</span><strong id="maximo">—</strong></div>
+</div>
+
+<div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
+<p class="nota" id="nota">Ejemplo: 2, 4, 4, 5, 7, 9. Los decimales se escriben con punto, por ejemplo 2.5.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
