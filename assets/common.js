@@ -7,19 +7,15 @@ window.MiWeb = (() => {
     const SUPABASE_KEY = 'sb_publishable_fUqvcSbYMb1gfJdrqS-7Lw_nhLtaEp_';
 
     const fields = {
-        estadisticasNumeroAleatorio: ['generados'],
         estadisticasAdivinaNumero: ['mejorIntentos', 'aciertos'],
         estadisticasAdivinoTuNumero: ['mejorIntentos', 'partidas'],
-        estadisticasPulsaBoton: ['mejorPuntuacion', 'partidas'],
-        estadisticasCarreraInfinita: ['mejorPuntuacion', 'mejorTiempo', 'partidas']
+        estadisticasPulsaBoton: ['mejorPuntuacion', 'partidas']
     };
 
     const oldGameMap = {
-        estadisticasNumeroAleatorio: 'numero-aleatorio',
         estadisticasAdivinaNumero: 'adivina-el-numero',
         estadisticasAdivinoTuNumero: 'adivino-tu-numero',
-        estadisticasPulsaBoton: 'pulsa-el-boton',
-        estadisticasCarreraInfinita: 'carrera-infinita'
+        estadisticasPulsaBoton: 'pulsa-el-boton'
     };
 
     const STATS_VERSION = ':season-2026-10-04-reset-1';
@@ -31,8 +27,6 @@ window.MiWeb = (() => {
     const globalNames = new Map();
     const syncPending = new Map();
     const initialSyncStarted = new Set();
-    let randomGlobalTotalCache = null;
-    let randomGlobalTotalPending = null;
 
     if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
         for (const key of Object.keys(fields)) {
@@ -61,6 +55,18 @@ window.MiWeb = (() => {
     }
 
     cleanupNonGameStats();
+    if (localStorage.getItem('miWebRemovedGamesCleanupV1') !== '1') {
+        [
+            'estadisticasNumeroAleatorio',
+            'estadisticasNumeroAleatorio' + STATS_VERSION,
+            'estadisticasCarreraInfinita',
+            'estadisticasCarreraInfinita' + STATS_VERSION
+        ].forEach(key => localStorage.removeItem(key));
+        const extra = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+        delete extra['math-snake'];
+        localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(extra));
+        localStorage.setItem('miWebRemovedGamesCleanupV1', '1');
+    }
 
     function profile() {
         const saved = parseObject(localStorage.getItem(PROFILE_KEY));
@@ -158,36 +164,6 @@ window.MiWeb = (() => {
         try { return JSON.parse(text); } catch { return null; }
     }
 
-    async function refreshRandomGlobalTotal(force = false) {
-        if (randomGlobalTotalPending && !force) return randomGlobalTotalPending;
-        randomGlobalTotalPending = (async () => {
-            try {
-                const total = await rpc('get_random_global_total', {});
-                randomGlobalTotalCache = Math.max(0, Number(total) || 0);
-                window.dispatchEvent(new CustomEvent('miweb-random-global-total', {
-                    detail: { total: randomGlobalTotalCache }
-                }));
-                if (typeof window.actualizarPortadaMejorada === 'function') {
-                    queueMicrotask(() => window.actualizarPortadaMejorada());
-                }
-                return randomGlobalTotalCache;
-            } catch (error) {
-                console.warn('No se pudo cargar el total global de Número aleatorio.', error);
-                return randomGlobalTotalCache;
-            } finally {
-                randomGlobalTotalPending = null;
-            }
-        })();
-        return randomGlobalTotalPending;
-    }
-
-    function readRandomGlobalTotal() {
-        if (randomGlobalTotalCache === null && !randomGlobalTotalPending) {
-            refreshRandomGlobalTotal();
-        }
-        return randomGlobalTotalCache;
-    }
-
     function cacheOwn(game, stats) {
         const user = profile();
         const data = globalCache.get(game) || Object.create(null);
@@ -246,7 +222,6 @@ window.MiWeb = (() => {
                 p_stats: stats
             });
             await syncGlobalGame(game, true);
-            if (game === 'numero-aleatorio') await refreshRandomGlobalTotal(true);
         } catch (error) {
             console.warn('No se pudo guardar el ranking global; queda guardado localmente.', error);
         }
@@ -503,7 +478,6 @@ window.MiWeb = (() => {
     return {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
-        mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        readRandomGlobalTotal, refreshRandomGlobalTotal
+        mountRanking, refreshRanking, refreshRankings, syncGlobalGame
     };
 })();

@@ -1006,24 +1006,7 @@
 
                 <!-- JUEGO 1 -->
 
-                <div class="tarjeta" data-categoria="interesantes">
-
-                    <h2 id="tituloAleatorio">
-                        🎲 Número aleatorio
-                    </h2>
-
-                    <p id="descripcionAleatorio">
-                        Genera un número aleatorio entre dos números.
-                    </p>
-
-                    <a
-                        href="juegos/numero-aleatorio/index.html"
-                        id="botonAleatorio"
-                    >
-                        🎲 Jugar
-                    </a>
-
-                </div>
+                
 
 
                 <!-- JUEGO 2 -->
@@ -1072,24 +1055,7 @@
 
                 <!-- JUEGO 4 -->
 
-                <div class="tarjeta" data-categoria="juegos">
-
-                    <h2 id="tituloReflejos">
-                        🏃 Carrera Infinita
-                    </h2>
-
-                    <p id="descripcionReflejos">
-                        Esquiva los obstáculos y llega lo más lejos posible.
-                    </p>
-
-                    <a
-                        href="juegos/carrera-infinita/index.html"
-                        id="botonReflejos"
-                    >
-                        🏃 Jugar
-                    </a>
-
-                </div>
+                
 
 
                 <!-- JUEGO 5 -->
@@ -1322,6 +1288,14 @@
         ========================= */
 
         const ULTIMO_ABIERTO_KEY = "miWebUltimoAbiertoV1";
+        try {
+            const ultimo = JSON.parse(localStorage.getItem(ULTIMO_ABIERTO_KEY) || "null");
+            if (ultimo && ['juegos/numero-aleatorio/index.html', 'juegos/carrera-infinita/index.html', 'juegos/math-snake/index.html'].includes(ultimo.href)) {
+                localStorage.removeItem(ULTIMO_ABIERTO_KEY);
+            }
+        } catch {
+            localStorage.removeItem(ULTIMO_ABIERTO_KEY);
+        }
 
         function textoPortada() {
             const idioma = localStorage.getItem("idioma") || "es";
@@ -1402,7 +1376,7 @@
                     card.insertBefore(badge, card.firstChild);
                 }
                 const titleId = card.querySelector("h2")?.id || "";
-                const mostrarEstadistica = card.dataset.categoria === "juegos" || titleId === "tituloAleatorio";
+                const mostrarEstadistica = card.dataset.categoria === "juegos";
                 let stat = card.querySelector(".estadistica-tarjeta");
 
                 if (mostrarEstadistica && !stat) {
@@ -1461,12 +1435,7 @@
                 
                 
                 
-                if (titleId === "tituloAleatorio") {
-                    const total = MiWeb.readRandomGlobalTotal();
-                    return total === null
-                        ? "🌍 " + t.global
-                        : "🌍 " + t.global + ": " + Number(total).toLocaleString(document.documentElement.lang || "es");
-                }
+                
                 if (titleId === "tituloAdivina") {
                     row = valorUsuario(MiWeb.readStats("estadisticasAdivinaNumero"));
                     return row ? "🏆 " + t.intentos + ": " + (row.mejorIntentos || 0) : t.sinRecord;
@@ -1475,10 +1444,7 @@
                     row = valorUsuario(MiWeb.readStats("estadisticasPulsaBoton"));
                     return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
                 }
-                if (titleId === "tituloReflejos") {
-                    row = valorUsuario(MiWeb.readStats("estadisticasCarreraInfinita"));
-                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
-                }
+                
                 if (titleId === "tituloAdivino") {
                     row = valorUsuario(MiWeb.readStats("estadisticasAdivinoTuNumero"));
                     return row ? "🏆 " + t.intentos + ": " + (row.mejorIntentos || 0) : t.sinRecord;
@@ -1793,22 +1759,7 @@
                     "🎮 Juegos";
 
 
-                /* Juego 1 */
-
-                document.getElementById(
-                    "tituloAleatorio"
-                ).textContent =
-                    "🎲 Número aleatorio";
-
-                document.getElementById(
-                    "descripcionAleatorio"
-                ).textContent =
-                    "Genera un número aleatorio entre dos números.";
-
-                document.getElementById(
-                    "botonAleatorio"
-                ).textContent =
-                    "🎲 Jugar";
+                
 
 
                 /* Juego 2 */
@@ -1847,22 +1798,7 @@
                     "🟢 Jugar";
 
 
-                /* Juego 4 */
-
-                document.getElementById(
-                    "tituloReflejos"
-                ).textContent =
-                    "🏃 Carrera Infinita";
-
-                document.getElementById(
-                    "descripcionReflejos"
-                ).textContent =
-                    "Esquiva los obstáculos y llega lo más lejos posible.";
-
-                document.getElementById(
-                    "botonReflejos"
-                ).textContent =
-                    "🏃 Jugar";
+                
 
 
                 /* Juego 5 */
@@ -1953,22 +1889,7 @@
                     "🎮 Games";
 
 
-                /* Game 1 */
-
-                document.getElementById(
-                    "tituloAleatorio"
-                ).textContent =
-                    "🎲 Random number";
-
-                document.getElementById(
-                    "descripcionAleatorio"
-                ).textContent =
-                    "Generate a random number between two numbers.";
-
-                document.getElementById(
-                    "botonAleatorio"
-                ).textContent =
-                    "🎲 Play";
+                
 
 
                 /* Game 2 */
@@ -2007,22 +1928,7 @@
                     "🟢 Play";
 
 
-                /* Game 4 */
-
-                document.getElementById(
-                    "tituloReflejos"
-                ).textContent =
-                    "🏃 Infinite Run";
-
-                document.getElementById(
-                    "descripcionReflejos"
-                ).textContent =
-                    "Dodge the obstacles and get as far as possible.";
-
-                document.getElementById(
-                    "botonReflejos"
-                ).textContent =
-                    "🏃 Play";
+                
 
 
                 /* Game 5 */
@@ -2113,22 +2019,7 @@
                     "🎮 Խաղեր";
 
 
-                /* Game 1 */
-
-                document.getElementById(
-                    "tituloAleatorio"
-                ).textContent =
-                    "🎲 Պատահական թիվ";
-
-                document.getElementById(
-                    "descripcionAleatorio"
-                ).textContent =
-                    "Ստեղծիր պատահական թիվ երկու թվերի միջև։";
-
-                document.getElementById(
-                    "botonAleatorio"
-                ).textContent =
-                    "🎲 Խաղալ";
+                
 
 
                 /* Game 2 */
@@ -2167,22 +2058,7 @@
                     "🟢 Խաղալ";
 
 
-                /* Game 4 */
-
-                document.getElementById(
-                    "tituloReflejos"
-                ).textContent =
-                    "🏃 Անվերջ վազք";
-
-                document.getElementById(
-                    "descripcionReflejos"
-                ).textContent =
-                    "Խուսափիր խոչընդոտներից և գնա որքան հնարավոր է հեռու։";
-
-                document.getElementById(
-                    "botonReflejos"
-                ).textContent =
-                    "🏃 Խաղալ";
+                
 
 
                 /* Game 5 */
