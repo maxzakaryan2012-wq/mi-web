@@ -83,7 +83,7 @@ function addRandomTile(){
 }
 
 function startNew(countPrevious=true){
-    if(countPrevious&&movedAtLeastOnce&&!ended)syncFinishedGame(true);
+    if(countPrevious&&movedAtLeastOnce&&!ended){syncFinishedGame(true);MiWeb.xpAction('game_finish');}
     board=Array(16).fill(0);
     score=0;
     wonShown=false;
@@ -152,9 +152,10 @@ function move(direction){
         mergePositions.forEach(j=>mergedIndices.add(indices[j]));
     }
 
-    if(before.every((v,i)=>v===board[i]))return;
+    if(before.every((v,i)=>v===board[i])){MiWeb.xpAction('wrong');return;}
 
     movedAtLeastOnce=true;
+    MiWeb.xpAction('correct');
     score+=gained;
     addRandomTile();
 
@@ -167,6 +168,7 @@ function move(direction){
         ended=true;
         $('mensaje').textContent=T[lang()].over;
         syncFinishedGame(true);
+        MiWeb.xpAction('game_finish');
     }
 
     saveCurrent();
