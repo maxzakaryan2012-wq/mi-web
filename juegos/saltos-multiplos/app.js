@@ -105,6 +105,7 @@ function renderText(){
     setTheme();
     updateHud();
     MiWeb.refreshRanking('saltos-multiplos');
+    MiWeb.xpAction('game_finish');
 }
 
 function updateHud(){
@@ -242,6 +243,7 @@ async function selectPlatform(index){
         correctCount++;
         score+=10+Math.min(20,streak*2)+timeBonus;
         $('mensaje').textContent=t.correct+'  +'+(10+Math.min(20,streak*2)+timeBonus);
+        MiWeb.xpAction('correct');
         flash('ok');
         particles(index,true);
         updateHud();
@@ -259,6 +261,7 @@ async function selectPlatform(index){
         lives--;
         streak=0;
         $('mensaje').textContent=t.wrong+' '+target;
+        MiWeb.xpAction('wrong');
         flash('bad');
         particles(index,false);
         updateHud();
@@ -284,6 +287,7 @@ function handleTimeout(){
     lives--;
     streak=0;
     $('mensaje').textContent=T[lang()].timeout;
+    MiWeb.xpAction('wrong');
     flash('bad');
     updateHud();
 
