@@ -916,6 +916,12 @@
                 </div>
 
                 <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloPrimos">🎯 Disparador de primos</h2>
+                    <p id="descripcionPrimos">Dispara solo a los números primos antes de que lleguen abajo.</p>
+                    <a href="juegos/disparador-primos/index.html" id="botonPrimos">🎯 Jugar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="juegos">
                     <h2 id="tituloSecuencia">🔢 Secuencia matemática</h2>
                     <p id="descripcionSecuencia">Descubre qué número viene después en distintas secuencias.</p>
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
@@ -938,6 +944,12 @@
                     <h2 id="tituloCollatz">🔗 Conjetura de Collatz</h2>
                     <p id="descripcionCollatz">Introduce un número y observa su secuencia, sus pasos y su gráfica.</p>
                     <a href="juegos/collatz/index.html" id="botonCollatz">🔗 Explorar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="interesantes">
+                    <h2 id="tituloCriba">🧪 Criba de Eratóstenes</h2>
+                    <p id="descripcionCriba">Observa cómo se eliminan múltiplos hasta quedar solo los números primos.</p>
+                    <a href="experimentos/criba-eratostenes/index.html" id="botonCriba">🧪 Explorar</a>
                 </div>
 
                 <div class="tarjeta" data-categoria="calculadora">
@@ -1276,7 +1288,7 @@
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
                     sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", calculos: "Cálculos",
-                    pasos: "Máx. pasos", generados: "Generados", intentos: "Mejor", partidas: "Partidas"
+                    pasos: "Máx. pasos", generados: "Generados", intentos: "Mejor", partidas: "Partidas", exploraciones: "Exploraciones"
                 },
                 en: {
                     herramientas: "Tools", juegos: "Games", calculadoras: "Calculators", interesantes: "Experiments",
@@ -1286,7 +1298,7 @@
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
                     sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", calculos: "Calculations",
-                    pasos: "Max steps", generados: "Generated", intentos: "Best", partidas: "Games"
+                    pasos: "Max steps", generados: "Generated", intentos: "Best", partidas: "Games", exploraciones: "Explorations"
                 },
                 hy: {
                     herramientas: "Գործիքներ", juegos: "Խաղեր", calculadoras: "Հաշվիչներ", interesantes: "Փորձեր",
@@ -1296,7 +1308,7 @@
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
                     sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", calculos: "Հաշվարկներ",
-                    pasos: "Առավել. քայլեր", generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր"
+                    pasos: "Առավել. քայլեր", generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", exploraciones: "Փորձարկումներ"
                 }
             }[idioma];
         }
@@ -1385,6 +1397,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("duelo-calculo"));
                     return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
                 }
+                if (titleId === "tituloPrimos") {
+                    row = valorUsuario(MiWeb.readExtraStats("disparador-primos"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
                 if (titleId === "tituloSecuencia") {
                     row = valorUsuario(MiWeb.readExtraStats("secuencia"));
                     return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
@@ -1400,6 +1416,10 @@
                 if (titleId === "tituloCollatz") {
                     row = valorUsuario(MiWeb.readExtraStats("collatz"));
                     return row ? "🏆 " + t.pasos + ": " + (row.maxPasos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloCriba") {
+                    row = valorUsuario(MiWeb.readExtraStats("criba-eratostenes"));
+                    return row ? "🧪 " + t.exploraciones + ": " + (row.exploraciones || 0) : t.sinRecord;
                 }
                 if (titleId === "tituloPitagoras") {
                     row = valorUsuario(MiWeb.readExtraStats("pitagoras"));
@@ -1615,6 +1635,18 @@
                 hy: ['⚡ Մտավոր հաշվարկի մենամարտ', '30 վայրկյանում լուծիր որքան հնարավոր է շատ գործողություններ։', '⚡ Խաղալ']
             }[document.documentElement.lang];
             ['tituloDuelo', 'descripcionDuelo', 'botonDuelo'].forEach((id, i) => document.getElementById(id).textContent = duelo[i]);
+            const primos = {
+                es: ['🎯 Disparador de primos', 'Dispara solo a los números primos antes de que lleguen abajo.', '🎯 Jugar'],
+                en: ['🎯 Prime shooter', 'Shoot only the prime numbers before they reach the bottom.', '🎯 Play'],
+                hy: ['🎯 Պարզ թվերի հրաձիգ', 'Կրակիր միայն պարզ թվերին՝ մինչև դրանք հասնեն ներքև։', '🎯 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloPrimos', 'descripcionPrimos', 'botonPrimos'].forEach((id, i) => document.getElementById(id).textContent = primos[i]);
+            const criba = {
+                es: ['🧪 Criba de Eratóstenes', 'Observa cómo se eliminan múltiplos hasta quedar solo los números primos.', '🧪 Explorar'],
+                en: ['🧪 Sieve of Eratosthenes', 'Watch multiples disappear until only prime numbers remain.', '🧪 Explore'],
+                hy: ['🧪 Էրատոսթենեսի մաղ', 'Դիտիր, թե ինչպես են բազմապատիկները հեռացվում և մնում միայն պարզ թվերը։', '🧪 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloCriba', 'descripcionCriba', 'botonCriba'].forEach((id, i) => document.getElementById(id).textContent = criba[i]);
 
             const idioma =
                 localStorage.getItem("idioma") || "es";
