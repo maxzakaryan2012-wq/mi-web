@@ -1010,6 +1010,12 @@
                     <a href="calculadoras/fracciones/index.html" id="botonFraccionesCalc">➕ Calcular</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="calculadora">
+                    <h2 id="tituloEstadisticaCalc">📊 Calculadora estadística</h2>
+                    <p id="descripcionEstadisticaCalc">Calcula media, mediana, moda, mínimo y máximo de una lista de números.</p>
+                    <a href="calculadoras/estadistica/index.html" id="botonEstadisticaCalc">📊 Calcular</a>
+                </div>
+
                 <!-- JUEGO 1 -->
 
                 
@@ -1690,6 +1696,12 @@
                 hy: ['➕ Կոտորակների հաշվիչ', 'Գումարիր, հանիր, բազմապատկիր կամ բաժանիր երկու կոտորակ և պարզեցրու արդյունքը։', '➕ Հաշվել']
             }[document.documentElement.lang];
             ['tituloFraccionesCalc', 'descripcionFraccionesCalc', 'botonFraccionesCalc'].forEach((id, i) => document.getElementById(id).textContent = fraccionesCalc[i]);
+            const estadisticaCalc = {
+                es: ['📊 Calculadora estadística', 'Calcula media, mediana, moda, mínimo y máximo de una lista de números.', '📊 Calcular'],
+                en: ['📊 Statistics calculator', 'Calculate mean, median, mode, minimum and maximum for a list of numbers.', '📊 Calculate'],
+                hy: ['📊 Վիճակագրական հաշվիչ', 'Հաշվիր թվերի ցանկի միջինը, մեդիանը, մոդան, նվազագույնը և առավելագույնը։', '📊 Հաշվել']
+            }[document.documentElement.lang];
+            ['tituloEstadisticaCalc', 'descripcionEstadisticaCalc', 'botonEstadisticaCalc'].forEach((id, i) => document.getElementById(id).textContent = estadisticaCalc[i]);
             const factorizacion = {
                 es: ['🧬 Factorización prima', 'Descompón un número en sus factores primos y descubre cuántos divisores tiene.', '🧬 Explorar'],
                 en: ['🧬 Prime factorization', 'Break a number into prime factors and discover how many divisors it has.', '🧬 Explore'],
