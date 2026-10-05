@@ -413,6 +413,317 @@
                 padding: 35px 15px;
             }
         }
+
+        /* =========================
+           PORTADA MEJORADA
+        ========================= */
+
+        .usuario-barra {
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 13px;
+            background: #292929;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        body.claro .usuario-barra {
+            background: #e8e8e8;
+            color: #111;
+        }
+
+        .cabecera {
+            padding: 48px 25px;
+            border: 1px solid #2d2d2d;
+            border-radius: 24px;
+            background: linear-gradient(145deg, #1d1d1d, #141414);
+        }
+
+        body.claro .cabecera {
+            background: linear-gradient(145deg, #fff, #f4f4f4);
+            border-color: #ddd;
+        }
+
+        .hero-botones {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .hero-botones button {
+            border: 1px solid #444;
+            border-radius: 11px;
+            padding: 12px 20px;
+            background: white;
+            color: #111;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .hero-botones button.secundario {
+            background: #292929;
+            color: white;
+        }
+
+        body.claro .hero-botones button.secundario {
+            background: #e8e8e8;
+            color: #111;
+            border-color: #ccc;
+        }
+
+        .extras-inicio {
+            margin-bottom: 34px;
+        }
+
+        .resumen-web {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .resumen-dato {
+            padding: 16px;
+            border-radius: 14px;
+            background: #1d1d1d;
+            border: 1px solid #2d2d2d;
+            text-align: center;
+        }
+
+        .resumen-dato strong {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 3px;
+        }
+
+        .resumen-dato span {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        body.claro .resumen-dato {
+            background: white;
+            border-color: #ddd;
+        }
+
+        body.claro .resumen-dato span {
+            color: #555;
+        }
+
+        .destacado {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 25px;
+            margin-bottom: 16px;
+            border-radius: 18px;
+            background: #1d1d1d;
+            border: 1px solid #3b3b3b;
+        }
+
+        body.claro .destacado {
+            background: white;
+            border-color: #ddd;
+        }
+
+        .destacado-etiqueta {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        body.claro .destacado-etiqueta {
+            color: #555;
+        }
+
+        .destacado h2 {
+            margin: 0 0 8px;
+        }
+
+        .destacado p {
+            color: #aaa;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        body.claro .destacado p {
+            color: #555;
+        }
+
+        .destacado a,
+        .reciente a {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: white;
+            color: #111;
+            text-decoration: none;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        body.claro .destacado a,
+        body.claro .reciente a {
+            background: #e8e8e8;
+        }
+
+        .reciente {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 17px 20px;
+            border-radius: 15px;
+            background: #181818;
+            border: 1px solid #2d2d2d;
+            margin-bottom: 22px;
+        }
+
+        body.claro .reciente {
+            background: white;
+            border-color: #ddd;
+        }
+
+        .reciente-texto strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .reciente-texto span {
+            color: #aaa;
+        }
+
+        body.claro .reciente-texto span {
+            color: #555;
+        }
+
+        .buscador-catalogo {
+            max-width: 720px;
+            margin: 0 auto 30px;
+        }
+
+        .buscador-catalogo input {
+            width: 100%;
+            padding: 15px 18px;
+            border-radius: 13px;
+            border: 1px solid #444;
+            background: #181818;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .buscador-catalogo input:focus {
+            border-color: #777;
+        }
+
+        body.claro .buscador-catalogo input {
+            background: white;
+            color: #111;
+            border-color: #bbb;
+        }
+
+        .grupo-catalogo {
+            margin: 0 0 42px;
+        }
+
+        .grupo-catalogo-titulo {
+            margin: 0 0 18px;
+            font-size: 27px;
+        }
+
+        .tipo-tarjeta {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+            background: #292929;
+            color: #bbb;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        body.claro .tipo-tarjeta {
+            background: #eee;
+            color: #555;
+        }
+
+        .estadistica-tarjeta {
+            min-height: 22px;
+            margin: 10px 0 0;
+            color: #ddd;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        body.claro .estadistica-tarjeta {
+            color: #444;
+        }
+
+        .sin-resultados {
+            display: none;
+            text-align: center;
+            color: #aaa;
+            padding: 25px;
+        }
+
+        body.claro .sin-resultados {
+            color: #555;
+        }
+
+        @media (max-width: 850px) {
+            .resumen-web {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .destacado {
+                grid-template-columns: 1fr;
+            }
+
+            .destacado a {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .cabecera {
+                padding: 32px 18px;
+            }
+
+            .resumen-web {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .reciente {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .reciente a {
+                text-align: center;
+            }
+
+            .usuario-barra {
+                max-width: 120px;
+                padding: 8px 9px;
+            }
+        }
+
     </style>
 </head>
 
@@ -453,6 +764,10 @@
         </nav>
 
         <div class="controles">
+
+            <button class="usuario-barra" id="usuarioBarra" type="button" onclick="mostrarSeccion('registro')">
+                👤 Usuario
+            </button>
 
             <div class="menu-idioma">
 
@@ -511,9 +826,44 @@
             </h1>
 
             <p id="subtitulo">
-                Pequeños juegos y experimentos.
+                Juegos, matemáticas y experimentos.
             </p>
 
+            <div class="hero-botones">
+                <button type="button" id="heroJugar" onclick="mostrarSeccion('juegos')">🎮 Ver juegos</button>
+                <button type="button" class="secundario" id="heroCalculadoras" onclick="mostrarSeccion('calculadora')">🧮 Calculadoras</button>
+            </div>
+
+        </section>
+
+        <section class="extras-inicio" id="extrasInicio">
+            <div class="resumen-web">
+                <div class="resumen-dato"><strong id="totalHerramientas">11</strong><span id="textoHerramientas">Herramientas</span></div>
+                <div class="resumen-dato"><strong id="totalJuegos">6</strong><span id="textoTotalJuegos">Juegos</span></div>
+                <div class="resumen-dato"><strong id="totalCalculadoras">3</strong><span id="textoTotalCalculadoras">Calculadoras</span></div>
+                <div class="resumen-dato"><strong id="totalInteresantes">2</strong><span id="textoTotalInteresantes">Experimentos</span></div>
+            </div>
+
+            <div class="destacado" id="destacado">
+                <div>
+                    <span class="destacado-etiqueta" id="destacadoEtiqueta">⭐ Destacado</span>
+                    <h2 id="destacadoTitulo">⚡ Duelo de cálculo mental</h2>
+                    <p id="destacadoDescripcion">Resuelve tantas operaciones como puedas en 30 segundos.</p>
+                </div>
+                <a id="destacadoBoton" href="juegos/duelo-calculo/index.html">▶️ Jugar ahora</a>
+            </div>
+
+            <div class="reciente" id="reciente">
+                <div class="reciente-texto">
+                    <strong id="recienteEtiqueta">🕒 Abierto recientemente</strong>
+                    <span id="recienteTitulo"></span>
+                </div>
+                <a id="recienteBoton" href="#">Continuar</a>
+            </div>
+        </section>
+
+        <section class="buscador-catalogo" id="buscadorCatalogo">
+            <input type="search" id="buscarTarjetas" autocomplete="off" placeholder="🔎 Buscar juego, calculadora o experimento..." aria-label="Buscar" oninput="filtrarTarjetas()">
         </section>
 
 
@@ -587,6 +937,8 @@
                 🎮 Juegos
             </h2>
 
+
+            <p class="sin-resultados" id="sinResultados">No hay resultados.</p>
 
             <div class="juegos">
 
@@ -897,17 +1249,19 @@
             vistaActual = seccion;
 
             const cabecera = document.querySelector(".cabecera");
+            const extras = document.getElementById("extrasInicio");
+            const buscador = document.getElementById("buscadorCatalogo");
             const registro = document.getElementById("registro");
             const juegos = document.getElementById("juegos");
             const formulario = document.getElementById("formularioUsuario");
+            const tituloCatalogo = document.getElementById("tituloJuegos");
 
             cabecera.style.display = seccion === "inicio" ? "" : "none";
-            registro.style.display = (seccion === "inicio" || seccion === "registro") ? "" : "none";
+            extras.style.display = seccion === "inicio" ? "" : "none";
+            buscador.style.display = seccion === "registro" ? "none" : "";
+            registro.style.display = seccion === "registro" ? "" : "none";
             juegos.style.display = seccion === "registro" ? "none" : "";
-
-            document.querySelectorAll(".tarjeta[data-categoria]").forEach(tarjeta => {
-                tarjeta.hidden = !(seccion === "inicio" || tarjeta.dataset.categoria === seccion);
-            });
+            tituloCatalogo.style.display = seccion === "inicio" ? "none" : "";
 
             if (seccion === "registro") {
                 formulario.style.display = "flex";
@@ -917,6 +1271,7 @@
             }
 
             actualizarNavegacionSeccion();
+            actualizarPortadaMejorada();
 
             if (actualizarHash && location.hash !== "#" + seccion) {
                 history.pushState(null, "", "#" + seccion);
@@ -935,6 +1290,294 @@
         window.addEventListener("hashchange", () => {
             mostrarSeccion(location.hash.slice(1) || "inicio", false);
         });
+
+
+        /* =========================
+           PORTADA MEJORADA
+        ========================= */
+
+        const ULTIMO_ABIERTO_KEY = "miWebUltimoAbiertoV1";
+
+        function textoPortada() {
+            const idioma = localStorage.getItem("idioma") || "es";
+            return {
+                es: {
+                    herramientas: "Herramientas", juegos: "Juegos", calculadoras: "Calculadoras", interesantes: "Experimentos",
+                    jugar: "🎮 Ver juegos", calculadorasBoton: "🧮 Calculadoras",
+                    destacado: "⭐ Destacado", jugarAhora: "▶️ Jugar ahora",
+                    reciente: "🕒 Abierto recientemente", continuar: "Continuar",
+                    buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
+                    grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
+                    tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", calculos: "Cálculos",
+                    pasos: "Máx. pasos", generados: "Generados", intentos: "Mejor", partidas: "Partidas"
+                },
+                en: {
+                    herramientas: "Tools", juegos: "Games", calculadoras: "Calculators", interesantes: "Experiments",
+                    jugar: "🎮 View games", calculadorasBoton: "🧮 Calculators",
+                    destacado: "⭐ Featured", jugarAhora: "▶️ Play now",
+                    reciente: "🕒 Recently opened", continuar: "Continue",
+                    buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
+                    grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
+                    tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", calculos: "Calculations",
+                    pasos: "Max steps", generados: "Generated", intentos: "Best", partidas: "Games"
+                },
+                hy: {
+                    herramientas: "Գործիքներ", juegos: "Խաղեր", calculadoras: "Հաշվիչներ", interesantes: "Փորձեր",
+                    jugar: "🎮 Տեսնել խաղերը", calculadorasBoton: "🧮 Հաշվիչներ",
+                    destacado: "⭐ Առաջարկվող", jugarAhora: "▶️ Խաղալ հիմա",
+                    reciente: "🕒 Վերջերս բացված", continuar: "Շարունակել",
+                    buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
+                    grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
+                    tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", calculos: "Հաշվարկներ",
+                    pasos: "Առավել. քայլեր", generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր"
+                }
+            }[idioma];
+        }
+
+        function crearGruposCatalogo() {
+            const grid = document.querySelector("#juegos > .juegos");
+            if (!grid || document.querySelector(".grupo-catalogo")) return;
+
+            const config = [
+                ["juegos", "tituloGrupoJuegos"],
+                ["calculadora", "tituloGrupoCalculadoras"],
+                ["interesantes", "tituloGrupoInteresantes"]
+            ];
+
+            const parent = grid.parentNode;
+            config.forEach(([categoria, tituloId]) => {
+                const section = document.createElement("section");
+                section.className = "grupo-catalogo";
+                section.dataset.grupo = categoria;
+
+                const h2 = document.createElement("h2");
+                h2.className = "grupo-catalogo-titulo";
+                h2.id = tituloId;
+
+                const nuevoGrid = document.createElement("div");
+                nuevoGrid.className = "juegos";
+
+                [...grid.querySelectorAll('.tarjeta[data-categoria="' + categoria + '"]')].forEach(card => {
+                    nuevoGrid.appendChild(card);
+                });
+
+                section.append(h2, nuevoGrid);
+                parent.insertBefore(section, grid);
+            });
+
+            grid.remove();
+        }
+
+        function prepararTarjetas() {
+            const t = textoPortada();
+            document.querySelectorAll(".tarjeta[data-categoria]").forEach(card => {
+                if (!card.querySelector(".tipo-tarjeta")) {
+                    const badge = document.createElement("span");
+                    badge.className = "tipo-tarjeta";
+                    card.insertBefore(badge, card.firstChild);
+                }
+                if (!card.querySelector(".estadistica-tarjeta")) {
+                    const stat = document.createElement("div");
+                    stat.className = "estadistica-tarjeta";
+                    const link = card.querySelector("a");
+                    card.insertBefore(stat, link);
+                }
+
+                const categoria = card.dataset.categoria;
+                card.querySelector(".tipo-tarjeta").textContent =
+                    categoria === "juegos" ? t.tipoJuego :
+                    categoria === "calculadora" ? t.tipoCalculadora : t.tipoInteresante;
+
+                const link = card.querySelector("a");
+                if (link && !link.dataset.recientePreparado) {
+                    link.dataset.recientePreparado = "1";
+                    link.addEventListener("click", () => {
+                        const title = card.querySelector("h2");
+                        localStorage.setItem(ULTIMO_ABIERTO_KEY, JSON.stringify({
+                            href: link.getAttribute("href"),
+                            titleId: title ? title.id : "",
+                            fallback: title ? title.textContent : ""
+                        }));
+                    });
+                }
+            });
+        }
+
+        function valorUsuario(data) {
+            const id = MiWeb.profile().id;
+            return data && data[id] ? data[id] : null;
+        }
+
+        function estadisticaDeTarjeta(card) {
+            const t = textoPortada();
+            const titleId = card.querySelector("h2")?.id || "";
+            let row = null;
+
+            try {
+                if (titleId === "tituloDuelo") {
+                    row = valorUsuario(MiWeb.readExtraStats("duelo-calculo"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloSecuencia") {
+                    row = valorUsuario(MiWeb.readExtraStats("secuencia"));
+                    return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloAreas") {
+                    row = valorUsuario(MiWeb.readExtraStats("areas"));
+                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloPorcentajes") {
+                    row = valorUsuario(MiWeb.readExtraStats("porcentajes"));
+                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloCollatz") {
+                    row = valorUsuario(MiWeb.readExtraStats("collatz"));
+                    return row ? "🏆 " + t.pasos + ": " + (row.maxPasos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloPitagoras") {
+                    row = valorUsuario(MiWeb.readExtraStats("pitagoras"));
+                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloAleatorio") {
+                    row = valorUsuario(MiWeb.readStats("estadisticasNumeroAleatorio"));
+                    return row ? "🎲 " + t.generados + ": " + (row.generados || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloAdivina") {
+                    row = valorUsuario(MiWeb.readStats("estadisticasAdivinaNumero"));
+                    return row ? "🏆 " + t.intentos + ": " + (row.mejorIntentos || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloPulsa") {
+                    row = valorUsuario(MiWeb.readStats("estadisticasPulsaBoton"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloReflejos") {
+                    row = valorUsuario(MiWeb.readStats("estadisticasCarreraInfinita"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloAdivino") {
+                    row = valorUsuario(MiWeb.readStats("estadisticasAdivinoTuNumero"));
+                    return row ? "🏆 " + t.intentos + ": " + (row.mejorIntentos || 0) : t.sinRecord;
+                }
+            } catch (error) {
+                console.warn("No se pudo leer una estadística", error);
+            }
+            return t.sinRecord;
+        }
+
+        function actualizarEstadisticasTarjetas() {
+            document.querySelectorAll(".tarjeta[data-categoria]").forEach(card => {
+                const stat = card.querySelector(".estadistica-tarjeta");
+                if (stat) stat.textContent = estadisticaDeTarjeta(card);
+            });
+        }
+
+        function actualizarResumenWeb() {
+            const cards = [...document.querySelectorAll(".tarjeta[data-categoria]")];
+            document.getElementById("totalHerramientas").textContent = cards.length;
+            document.getElementById("totalJuegos").textContent = cards.filter(c => c.dataset.categoria === "juegos").length;
+            document.getElementById("totalCalculadoras").textContent = cards.filter(c => c.dataset.categoria === "calculadora").length;
+            document.getElementById("totalInteresantes").textContent = cards.filter(c => c.dataset.categoria === "interesantes").length;
+        }
+
+        function actualizarDestacado() {
+            const candidatos = [...document.querySelectorAll('.tarjeta[data-categoria="juegos"]')];
+            if (!candidatos.length) return;
+            const hoy = new Date();
+            const semilla = hoy.getFullYear() * 400 + hoy.getMonth() * 32 + hoy.getDate();
+            const card = candidatos[semilla % candidatos.length];
+            const title = card.querySelector("h2");
+            const desc = card.querySelector("p");
+            const link = card.querySelector("a");
+            document.getElementById("destacadoTitulo").textContent = title?.textContent || "";
+            document.getElementById("destacadoDescripcion").textContent = desc?.textContent || "";
+            document.getElementById("destacadoBoton").href = link?.getAttribute("href") || "#";
+            document.getElementById("destacadoBoton").onclick = () => {
+                if (link) localStorage.setItem(ULTIMO_ABIERTO_KEY, JSON.stringify({
+                    href: link.getAttribute("href"),
+                    titleId: title?.id || "",
+                    fallback: title?.textContent || ""
+                }));
+            };
+        }
+
+        function actualizarReciente() {
+            const panel = document.getElementById("reciente");
+            let last = null;
+            try { last = JSON.parse(localStorage.getItem(ULTIMO_ABIERTO_KEY) || "null"); } catch {}
+            if (!last || !last.href) {
+                panel.style.display = "none";
+                return;
+            }
+            let title = last.fallback || "";
+            if (last.titleId) {
+                const el = document.getElementById(last.titleId);
+                if (el) title = el.textContent;
+            }
+            document.getElementById("recienteTitulo").textContent = title;
+            document.getElementById("recienteBoton").href = last.href;
+            panel.style.display = "flex";
+        }
+
+        function actualizarTextosPortada() {
+            const t = textoPortada();
+            document.getElementById("heroJugar").textContent = t.jugar;
+            document.getElementById("heroCalculadoras").textContent = t.calculadorasBoton;
+            document.getElementById("textoHerramientas").textContent = t.herramientas;
+            document.getElementById("textoTotalJuegos").textContent = t.juegos;
+            document.getElementById("textoTotalCalculadoras").textContent = t.calculadoras;
+            document.getElementById("textoTotalInteresantes").textContent = t.interesantes;
+            document.getElementById("destacadoEtiqueta").textContent = t.destacado;
+            document.getElementById("destacadoBoton").textContent = t.jugarAhora;
+            document.getElementById("recienteEtiqueta").textContent = t.reciente;
+            document.getElementById("recienteBoton").textContent = t.continuar;
+            document.getElementById("buscarTarjetas").placeholder = t.buscar;
+            document.getElementById("sinResultados").textContent = t.sinResultados;
+            document.getElementById("tituloGrupoJuegos").textContent = t.grupoJuegos;
+            document.getElementById("tituloGrupoCalculadoras").textContent = t.grupoCalculadoras;
+            document.getElementById("tituloGrupoInteresantes").textContent = t.grupoInteresantes;
+            prepararTarjetas();
+        }
+
+        function filtrarTarjetas() {
+            const input = document.getElementById("buscarTarjetas");
+            const termino = (input?.value || "").trim().toLocaleLowerCase();
+            let visibles = 0;
+
+            document.querySelectorAll(".grupo-catalogo").forEach(grupo => {
+                const categoria = grupo.dataset.grupo;
+                const categoriaVisible = vistaActual === "inicio" || vistaActual === categoria;
+                let visiblesGrupo = 0;
+
+                grupo.querySelectorAll(".tarjeta").forEach(card => {
+                    const texto = card.textContent.toLocaleLowerCase();
+                    const coincide = !termino || texto.includes(termino);
+                    card.hidden = !(categoriaVisible && coincide);
+                    if (categoriaVisible && coincide) {
+                        visibles++;
+                        visiblesGrupo++;
+                    }
+                });
+
+                grupo.style.display = categoriaVisible && visiblesGrupo > 0 ? "" : "none";
+            });
+
+            document.getElementById("sinResultados").style.display = visibles === 0 ? "block" : "none";
+        }
+
+        function actualizarPortadaMejorada() {
+            if (!document.querySelector(".grupo-catalogo")) crearGruposCatalogo();
+            actualizarTextosPortada();
+            actualizarResumenWeb();
+            actualizarEstadisticasTarjetas();
+            actualizarDestacado();
+            actualizarReciente();
+            filtrarTarjetas();
+        }
+
+        window.addEventListener("pageshow", actualizarPortadaMejorada);
 
 
         /* =========================
@@ -1049,7 +1692,7 @@
                 document.getElementById(
                     "subtitulo"
                 ).textContent =
-                    "Pequeños juegos y experimentos.";
+                    "Juegos, matemáticas y experimentos.";
 
                 document.getElementById(
                     "botonCambiarNombre"
@@ -1209,7 +1852,7 @@
                 document.getElementById(
                     "subtitulo"
                 ).textContent =
-                    "Small games and experiments.";
+                    "Games, mathematics and experiments.";
 
                 document.getElementById(
                     "botonCambiarNombre"
@@ -1369,7 +2012,7 @@
                 document.getElementById(
                     "subtitulo"
                 ).textContent =
-                    "Փոքր խաղեր և փորձեր։";
+                    "Խաղեր, մաթեմատիկա և փորձեր։";
 
                 document.getElementById(
                     "botonCambiarNombre"
@@ -1501,6 +2144,8 @@
 
             actualizarNavegacionSeccion();
 
+            if (document.querySelector(".grupo-catalogo")) actualizarPortadaMejorada();
+
         }
 
 
@@ -1552,6 +2197,9 @@
                 "nombreGuardado"
             ).textContent =
                 "👤 " + nombre;
+
+            const usuarioBarra = document.getElementById("usuarioBarra");
+            if (usuarioBarra) usuarioBarra.textContent = "👤 " + nombre;
 
         }
 
@@ -1657,9 +2305,13 @@
 
         aplicarTema();
 
+        crearGruposCatalogo();
+
         aplicarIdioma();
 
         mostrarNombreUsuario();
+
+        actualizarPortadaMejorada();
 
         mostrarSeccion(location.hash.slice(1) || "inicio", false);
 
