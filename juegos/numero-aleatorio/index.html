@@ -395,51 +395,17 @@
         <div id="resultado"></div>
 
 
-        <!-- ESTADÍSTICAS -->
+        <!-- ESTADÍSTICA PERSONAL -->
 
         <section class="estadisticas">
-            <p id="avisoLocal"></p>
-
             <h2 id="tituloEstadisticas">
-                🏆 Estadísticas
+                📊 Tus estadísticas
             </h2>
 
-            <div class="tabla-contenedor">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th id="thPuesto">
-                                Puesto
-                            </th>
-
-                            <th id="thNombre">
-                                Nombre
-                            </th>
-
-                            <th id="thGenerados">
-                                Números generados
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="tablaRanking">
-                    </tbody>
-
-                </table>
-
+            <div class="posicion-usuario" style="display:block">
+                <span id="textoGeneradosPersonales">Números generados</span>:
+                <strong id="generadosPersonales">0</strong>
             </div>
-
-            <div
-                class="posicion-usuario"
-                id="posicionUsuario"
-            ></div>
-
         </section>
 
     </main>
@@ -553,229 +519,15 @@
             MiWeb.writeStats(ESTADISTICAS_KEY, estadisticas);
 
 
-            mostrarRanking();
+            mostrarEstadisticaPersonal();
         }
 
 
-        function ordenarRanking(estadisticas) {
-
-            const jugadores =
-                Object.keys(estadisticas).map(
-                    function(nombre) {
-
-                        return {
-
-                            id: nombre,
-                            nombre: MiWeb.playerName(nombre),
-
-                            generados:
-                                estadisticas[nombre].generados
-
-                        };
-
-                    }
-                );
-
-
-            jugadores.sort(
-                function(a, b) {
-
-                    if (
-                        a.generados !==
-                        b.generados
-                    ) {
-
-                        return (
-                            b.generados -
-                            a.generados
-                        );
-                    }
-
-
-                    return a.nombre.localeCompare(
-                        b.nombre
-                    );
-
-                }
-            );
-
-
-            return jugadores;
-        }
-
-
-        function mostrarRanking() {
-
-            const estadisticas =
-                obtenerEstadisticas();
-
-
-            const ranking =
-                ordenarRanking(
-                    estadisticas
-                );
-
-
-            const tabla =
-                document.getElementById(
-                    "tablaRanking"
-                );
-
-
-            const nombreUsuario =
-                obtenerNombreUsuario();
-
-
-            tabla.innerHTML = "";
-
-
-            const top10 =
-                ranking.slice(0, 10);
-
-
-            top10.forEach(
-                function(jugador, index) {
-
-                    const fila =
-                        document.createElement("tr");
-
-
-                    if (
-                        jugador.id === MiWeb.profile().id
-                    ) {
-
-                        fila.classList.add(
-                            "tu-fila"
-                        );
-                    }
-
-
-                    const puesto =
-                        document.createElement("td");
-
-
-                    const nombre =
-                        document.createElement("td");
-
-
-                    const generados =
-                        document.createElement("td");
-
-
-                    puesto.textContent =
-                        index + 1;
-
-
-                    nombre.textContent =
-                        jugador.nombre;
-
-
-                    generados.textContent =
-                        jugador.generados;
-
-
-                    fila.appendChild(puesto);
-                    fila.appendChild(nombre);
-                    fila.appendChild(generados);
-
-
-                    tabla.appendChild(fila);
-
-                }
-            );
-
-
-            mostrarPosicionUsuario(
-                ranking,
-                nombreUsuario
-            );
-        }
-
-
-        function mostrarPosicionUsuario(
-            ranking,
-            nombreUsuario
-        ) {
-
-            const elemento =
-                document.getElementById(
-                    "posicionUsuario"
-                );
-
-
-            const posicion =
-                ranking.findIndex(
-                    function(jugador) {
-
-                        return (
-                            jugador.id === MiWeb.profile().id
-                        );
-
-                    }
-                );
-
-
-            if (
-                posicion === -1 ||
-                posicion < 10
-            ) {
-
-                elemento.style.display =
-                    "none";
-
-                return;
-            }
-
-
-            const jugador =
-                ranking[posicion];
-
-
-            const idioma =
-                localStorage.getItem(
-                    "idioma"
-                ) || "es";
-
-
-            if (idioma === "en") {
-
-                elemento.textContent =
-                    "👤 Your position: " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.generados +
-                    " random numbers generated";
-
-
-            } else if (idioma === "hy") {
-
-                elemento.textContent =
-                    "👤 Քո դիրքը՝ " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.generados +
-                    " պատահական թիվ";
-
-
-            } else {
-
-                elemento.textContent =
-                    "👤 Tu posición: " +
-                    (posicion + 1) +
-                    " — " +
-                    nombreUsuario +
-                    " — " +
-                    jugador.generados +
-                    " números aleatorios generados";
-            }
-
-
-            elemento.style.display =
-                "block";
+        function mostrarEstadisticaPersonal() {
+            const estadisticas = obtenerEstadisticas();
+            const actual = estadisticas[MiWeb.profile().id];
+            document.getElementById("generadosPersonales").textContent =
+                actual ? Number(actual.generados) || 0 : 0;
         }
 
 
@@ -857,14 +609,10 @@
                     "tituloEstadisticas"
                 );
 
-            const thPuesto =
-                document.getElementById("thPuesto");
-
-            const thNombre =
-                document.getElementById("thNombre");
-
-            const thGenerados =
-                document.getElementById("thGenerados");
+            const textoGeneradosPersonales =
+                document.getElementById(
+                    "textoGeneradosPersonales"
+                );
 
 
             if (idioma === "en") {
@@ -891,15 +639,9 @@
                     "🇬🇧 EN ▾";
 
                 tituloEstadisticas.textContent =
-                    "🏆 Statistics";
+                    "📊 Your statistics";
 
-                thPuesto.textContent =
-                    "Place";
-
-                thNombre.textContent =
-                    "Name";
-
-                thGenerados.textContent =
+                textoGeneradosPersonales.textContent =
                     "Random numbers generated";
 
                 document.title =
@@ -930,15 +672,9 @@
                     "🇦🇲 HY ▾";
 
                 tituloEstadisticas.textContent =
-                    "🏆 Վիճակագրություն";
+                    "📊 Քո վիճակագրությունը";
 
-                thPuesto.textContent =
-                    "Դիրք";
-
-                thNombre.textContent =
-                    "Անուն";
-
-                thGenerados.textContent =
+                textoGeneradosPersonales.textContent =
                     "Ստեղծված պատահական թվեր";
 
                 document.title =
@@ -969,15 +705,9 @@
                     "🇪🇸 ES ▾";
 
                 tituloEstadisticas.textContent =
-                    "🏆 Estadísticas";
+                    "📊 Tus estadísticas";
 
-                thPuesto.textContent =
-                    "Puesto";
-
-                thNombre.textContent =
-                    "Nombre";
-
-                thGenerados.textContent =
+                textoGeneradosPersonales.textContent =
                     "Números generados";
 
                 document.title =
@@ -985,7 +715,7 @@
             }
 
 
-            mostrarRanking();
+            mostrarEstadisticaPersonal();
 
             actualizarTextoTema();
         }
@@ -1124,7 +854,7 @@
 
         aplicarTema();
 
-        mostrarRanking();
+        mostrarEstadisticaPersonal();
 
     </script>
 
