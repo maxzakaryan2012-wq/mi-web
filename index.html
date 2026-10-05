@@ -1287,8 +1287,8 @@
                     buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
-                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", calculos: "Cálculos",
-                    pasos: "Máx. pasos", generados: "Generados", intentos: "Mejor", partidas: "Partidas", exploraciones: "Exploraciones"
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha",
+                    generados: "Generados", intentos: "Mejor", partidas: "Partidas", global: "Global"
                 },
                 en: {
                     herramientas: "Tools", juegos: "Games", calculadoras: "Calculators", interesantes: "Experiments",
@@ -1297,8 +1297,8 @@
                     buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
-                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", calculos: "Calculations",
-                    pasos: "Max steps", generados: "Generated", intentos: "Best", partidas: "Games", exploraciones: "Explorations"
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak",
+                    generados: "Generated", intentos: "Best", partidas: "Games", global: "Global"
                 },
                 hy: {
                     herramientas: "Գործիքներ", juegos: "Խաղեր", calculadoras: "Հաշվիչներ", interesantes: "Փորձեր",
@@ -1307,8 +1307,8 @@
                     buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
-                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", calculos: "Հաշվարկներ",
-                    pasos: "Առավել. քայլեր", generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", exploraciones: "Փորձարկումներ"
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք",
+                    generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", global: "Ընդհանուր"
                 }
             }[idioma];
         }
@@ -1355,11 +1355,17 @@
                     badge.className = "tipo-tarjeta";
                     card.insertBefore(badge, card.firstChild);
                 }
-                if (!card.querySelector(".estadistica-tarjeta")) {
-                    const stat = document.createElement("div");
+                const titleId = card.querySelector("h2")?.id || "";
+                const mostrarEstadistica = card.dataset.categoria === "juegos" || titleId === "tituloAleatorio";
+                let stat = card.querySelector(".estadistica-tarjeta");
+
+                if (mostrarEstadistica && !stat) {
+                    stat = document.createElement("div");
                     stat.className = "estadistica-tarjeta";
                     const link = card.querySelector("a");
                     card.insertBefore(stat, link);
+                } else if (!mostrarEstadistica && stat) {
+                    stat.remove();
                 }
 
                 const categoria = card.dataset.categoria;
@@ -1405,29 +1411,11 @@
                     row = valorUsuario(MiWeb.readExtraStats("secuencia"));
                     return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
                 }
-                if (titleId === "tituloAreas") {
-                    row = valorUsuario(MiWeb.readExtraStats("areas"));
-                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloPorcentajes") {
-                    row = valorUsuario(MiWeb.readExtraStats("porcentajes"));
-                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloCollatz") {
-                    row = valorUsuario(MiWeb.readExtraStats("collatz"));
-                    return row ? "🏆 " + t.pasos + ": " + (row.maxPasos || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloCriba") {
-                    row = valorUsuario(MiWeb.readExtraStats("criba-eratostenes"));
-                    return row ? "🧪 " + t.exploraciones + ": " + (row.exploraciones || 0) : t.sinRecord;
-                }
-                if (titleId === "tituloPitagoras") {
-                    row = valorUsuario(MiWeb.readExtraStats("pitagoras"));
-                    return row ? "📊 " + t.calculos + ": " + (row.calculos || 0) : t.sinRecord;
-                }
                 if (titleId === "tituloAleatorio") {
-                    row = valorUsuario(MiWeb.readStats("estadisticasNumeroAleatorio"));
-                    return row ? "🎲 " + t.generados + ": " + (row.generados || 0) : t.sinRecord;
+                    const total = MiWeb.readRandomGlobalTotal();
+                    return total === null
+                        ? "🌍 " + t.global
+                        : "🌍 " + t.global + ": " + Number(total).toLocaleString(document.documentElement.lang || "es");
                 }
                 if (titleId === "tituloAdivina") {
                     row = valorUsuario(MiWeb.readStats("estadisticasAdivinaNumero"));

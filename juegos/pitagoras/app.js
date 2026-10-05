@@ -22,7 +22,7 @@ async function initPython(){state='loading';render();try{
  if(!window.loadPyodide)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
  py=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/'});const r=await fetch('calculadora.py');if(!r.ok)throw Error();await py.runPythonAsync(await r.text());state='ready';
 }catch(e){console.error(e);state='failed'}render()}
-$('formulario').addEventListener('submit',e=>{e.preventDefault();if(!py)return;const fn=py.globals.get('calcular_json');try{answer=JSON.parse(fn($('lado').value,$('primero').value,$('segundo').value))}catch(e){answer={error:'failed'}}finally{fn.destroy()}if(answer&&!answer.error)MiWeb.updateExtraStats('pitagoras',v=>({...v,calculos:(v.calculos||0)+1}));render()});
+$('formulario').addEventListener('submit',e=>{e.preventDefault();if(!py)return;const fn=py.globals.get('calcular_json');try{answer=JSON.parse(fn($('lado').value,$('primero').value,$('segundo').value))}catch(e){answer={error:'failed'}}finally{fn.destroy()}render()});
 $('lado').addEventListener('change',()=>{answer=null;render()});['primero','segundo'].forEach(id=>$(id).addEventListener('input',()=>{answer=null;render()}));
 $('botonIdioma').onclick=()=>{$('menuIdiomas').style.display=$('menuIdiomas').style.display==='block'?'none':'block'};
 $('menuIdiomas').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;localStorage.setItem('idioma',b.dataset.lang);$('menuIdiomas').style.display='none';render()});

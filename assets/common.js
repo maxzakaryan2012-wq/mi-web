@@ -24,11 +24,15 @@ window.MiWeb = (() => {
 
     const STATS_VERSION = ':season-2026-10-04-reset-1';
     const RESET_KEY = 'miWebStatsReset';
+    const NON_GAME_STATS_CLEANUP_KEY = 'miWebNonGameStatsCleanupV1';
+    const DISABLED_STATS_GAMES = new Set(['pitagoras', 'porcentajes', 'areas', 'collatz', 'criba-eratostenes']);
     const rankingConfigs = new Map();
     const globalCache = new Map();
     const globalNames = new Map();
     const syncPending = new Map();
     const initialSyncStarted = new Set();
+    let randomGlobalTotalCache = null;
+    let randomGlobalTotalPending = null;
 
     if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
         for (const key of Object.keys(fields)) {
@@ -45,6 +49,18 @@ window.MiWeb = (() => {
             return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
         } catch { return {}; }
     }
+
+    function cleanupNonGameStats() {
+        if (localStorage.getItem(NON_GAME_STATS_CLEANUP_KEY) === '1') return;
+        const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+        DISABLED_STATS_GAMES.forEach(game => {
+            delete all[game];
+        });
+        localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
+        localStorage.setItem(NON_GAME_STATS_CLEANUP_KEY, '1');
+    }
+
+    cleanupNonGameStats();
 
     function profile() {
         const saved = parseObject(localStorage.getItem(PROFILE_KEY));
@@ -142,6 +158,36 @@ window.MiWeb = (() => {
         try { return JSON.parse(text); } catch { return null; }
     }
 
+    async function refreshRandomGlobalTotal(force = false) {
+        if (randomGlobalTotalPending && !force) return randomGlobalTotalPending;
+        randomGlobalTotalPending = (async () => {
+            try {
+                const total = await rpc('get_random_global_total', {});
+                randomGlobalTotalCache = Math.max(0, Number(total) || 0);
+                window.dispatchEvent(new CustomEvent('miweb-random-global-total', {
+                    detail: { total: randomGlobalTotalCache }
+                }));
+                if (typeof window.actualizarPortadaMejorada === 'function') {
+                    queueMicrotask(() => window.actualizarPortadaMejorada());
+                }
+                return randomGlobalTotalCache;
+            } catch (error) {
+                console.warn('No se pudo cargar el total global de Número aleatorio.', error);
+                return randomGlobalTotalCache;
+            } finally {
+                randomGlobalTotalPending = null;
+            }
+        })();
+        return randomGlobalTotalPending;
+    }
+
+    function readRandomGlobalTotal() {
+        if (randomGlobalTotalCache === null && !randomGlobalTotalPending) {
+            refreshRandomGlobalTotal();
+        }
+        return randomGlobalTotalCache;
+    }
+
     function cacheOwn(game, stats) {
         const user = profile();
         const data = globalCache.get(game) || Object.create(null);
@@ -161,7 +207,7 @@ window.MiWeb = (() => {
     }
 
     async function syncGlobalGame(game, force = false) {
-        if (!game) return null;
+        if (!game || DISABLED_STATS_GAMES.has(game)) return null;
         if (syncPending.has(game) && !force) return syncPending.get(game);
 
         const promise = (async () => {
@@ -192,7 +238,7 @@ window.MiWeb = (() => {
     }
 
     async function submitGlobal(game, stats) {
-        if (!game || !stats || typeof stats !== 'object') return;
+        if (!game || DISABLED_STATS_GAMES.has(game) || !stats || typeof stats !== 'object') return;
         try {
             await rpc('submit_game_stats', {
                 p_game: game,
@@ -200,6 +246,7 @@ window.MiWeb = (() => {
                 p_stats: stats
             });
             await syncGlobalGame(game, true);
+            if (game === 'numero-aleatorio') await refreshRandomGlobalTotal(true);
         } catch (error) {
             console.warn('No se pudo guardar el ranking global; queda guardado localmente.', error);
         }
@@ -237,11 +284,13 @@ window.MiWeb = (() => {
         if (own) {
             cacheOwn(game, own);
             notifyGlobal(game);
-            submitGlobal(game, own);
+            return submitGlobal(game, own);
         }
+        return Promise.resolve();
     }
 
     function readExtraStats(game) {
+        if (DISABLED_STATS_GAMES.has(game)) return Object.create(null);
         const local = readLocalExtra(game);
         const own = local[profile().id];
         initialSync(game, own);
@@ -249,6 +298,12 @@ window.MiWeb = (() => {
     }
 
     function writeExtraStats(game, data) {
+        if (DISABLED_STATS_GAMES.has(game)) {
+            const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
+            delete all[game];
+            localStorage.setItem(EXTRA_STATS_KEY, JSON.stringify(all));
+            return;
+        }
         const all = parseObject(localStorage.getItem(EXTRA_STATS_KEY));
         const clean = sanitizeExtra(data);
         all[game] = clean;
@@ -262,6 +317,7 @@ window.MiWeb = (() => {
     }
 
     function updateExtraStats(game, updater) {
+        if (DISABLED_STATS_GAMES.has(game)) return {};
         const local = readLocalExtra(game);
         const user = profile();
         const current = local[user.id] || {};
@@ -447,6 +503,7 @@ window.MiWeb = (() => {
     return {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
-        mountRanking, refreshRanking, refreshRankings, syncGlobalGame
+        mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
+        readRandomGlobalTotal, refreshRandomGlobalTotal
     };
 })();
