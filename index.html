@@ -927,6 +927,30 @@
                     <a href="juegos/secuencia/index.html" id="botonSecuencia">🔢 Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloMultiplicaciones">✖️ Reto de multiplicaciones</h2>
+                    <p id="descripcionMultiplicaciones">Resuelve todas las multiplicaciones que puedas antes de que termine el tiempo.</p>
+                    <a href="juegos/reto-multiplicaciones/index.html" id="botonMultiplicaciones">✖️ Jugar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloFracciones">🍰 Quiz de fracciones</h2>
+                    <p id="descripcionFracciones">Suma y resta fracciones y elige la respuesta correcta.</p>
+                    <a href="juegos/quiz-fracciones/index.html" id="botonFracciones">🍰 Jugar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloOperacion">❓ Operación perdida</h2>
+                    <p id="descripcionOperacion">Descubre qué operación falta para que la igualdad sea correcta.</p>
+                    <a href="juegos/operacion-perdida/index.html" id="botonOperacion">❓ Jugar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloMathSnake">🐍 Math Snake</h2>
+                    <p id="descripcionMathSnake">Mueve la serpiente y come únicamente la respuesta correcta.</p>
+                    <a href="juegos/math-snake/index.html" id="botonMathSnake">🐍 Jugar</a>
+                </div>
+
                 <div class="tarjeta" data-categoria="calculadora">
                     <h2 id="tituloAreas">📐 Calculador de áreas</h2>
                     <p id="descripcionAreas">Elige una figura e introduce sus medidas para calcular el área paso a paso.</p>
@@ -950,6 +974,12 @@
                     <h2 id="tituloCriba">🧪 Criba de Eratóstenes</h2>
                     <p id="descripcionCriba">Observa cómo se eliminan múltiplos hasta quedar solo los números primos.</p>
                     <a href="experimentos/criba-eratostenes/index.html" id="botonCriba">🧪 Explorar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="interesantes">
+                    <h2 id="tituloConstructorEcuaciones">🧩 Constructor de ecuaciones</h2>
+                    <p id="descripcionConstructorEcuaciones">Construye una ecuación ax + b = c y mira cómo se resuelve paso a paso.</p>
+                    <a href="experimentos/constructor-ecuaciones/index.html" id="botonConstructorEcuaciones">🧩 Explorar</a>
                 </div>
 
                 <div class="tarjeta" data-categoria="calculadora">
@@ -1411,6 +1441,22 @@
                     row = valorUsuario(MiWeb.readExtraStats("secuencia"));
                     return row ? "🔥 " + t.racha + ": " + (row.mejorRacha || 0) : t.sinRecord;
                 }
+                if (titleId === "tituloMultiplicaciones") {
+                    row = valorUsuario(MiWeb.readExtraStats("reto-multiplicaciones"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloFracciones") {
+                    row = valorUsuario(MiWeb.readExtraStats("quiz-fracciones"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloOperacion") {
+                    row = valorUsuario(MiWeb.readExtraStats("operacion-perdida"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloMathSnake") {
+                    row = valorUsuario(MiWeb.readExtraStats("math-snake"));
+                    return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
                 if (titleId === "tituloAleatorio") {
                     const total = MiWeb.readRandomGlobalTotal();
                     return total === null
@@ -1617,6 +1663,36 @@
                 hy: ['🔢 Թվային հաջորդականություն', 'Գուշակիր, թե որ թիվն է հաջորդը տարբեր հաջորդականություններում։', '🔢 Խաղալ']
             }[document.documentElement.lang];
             ['tituloSecuencia', 'descripcionSecuencia', 'botonSecuencia'].forEach((id, i) => document.getElementById(id).textContent = secuencia[i]);
+            const multiplicaciones = {
+                es: ['✖️ Reto de multiplicaciones', 'Resuelve todas las multiplicaciones que puedas antes de que termine el tiempo.', '✖️ Jugar'],
+                en: ['✖️ Multiplication challenge', 'Solve as many multiplications as you can before time runs out.', '✖️ Play'],
+                hy: ['✖️ Բազմապատկման մարտահրավեր', 'Լուծիր որքան հնարավոր է շատ բազմապատկումներ մինչև ժամանակը վերջանա։', '✖️ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloMultiplicaciones', 'descripcionMultiplicaciones', 'botonMultiplicaciones'].forEach((id, i) => document.getElementById(id).textContent = multiplicaciones[i]);
+            const fracciones = {
+                es: ['🍰 Quiz de fracciones', 'Suma y resta fracciones y elige la respuesta correcta.', '🍰 Jugar'],
+                en: ['🍰 Fraction quiz', 'Add and subtract fractions and choose the correct answer.', '🍰 Play'],
+                hy: ['🍰 Կոտորակների հարցաշար', 'Գումարիր և հանիր կոտորակները ու ընտրիր ճիշտ պատասխանը։', '🍰 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloFracciones', 'descripcionFracciones', 'botonFracciones'].forEach((id, i) => document.getElementById(id).textContent = fracciones[i]);
+            const operacion = {
+                es: ['❓ Operación perdida', 'Descubre qué operación falta para que la igualdad sea correcta.', '❓ Jugar'],
+                en: ['❓ Missing operation', 'Find the missing operation that makes the equation correct.', '❓ Play'],
+                hy: ['❓ Բացակայող գործողություն', 'Գտիր այն գործողությունը, որը հավասարությունը դարձնում է ճիշտ։', '❓ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloOperacion', 'descripcionOperacion', 'botonOperacion'].forEach((id, i) => document.getElementById(id).textContent = operacion[i]);
+            const mathSnake = {
+                es: ['🐍 Math Snake', 'Mueve la serpiente y come únicamente la respuesta correcta.', '🐍 Jugar'],
+                en: ['🐍 Math Snake', 'Move the snake and eat only the correct answer.', '🐍 Play'],
+                hy: ['🐍 Math Snake', 'Շարժիր օձին և կեր միայն ճիշտ պատասխանը։', '🐍 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloMathSnake', 'descripcionMathSnake', 'botonMathSnake'].forEach((id, i) => document.getElementById(id).textContent = mathSnake[i]);
+            const constructorEcuaciones = {
+                es: ['🧩 Constructor de ecuaciones', 'Construye una ecuación ax + b = c y mira cómo se resuelve paso a paso.', '🧩 Explorar'],
+                en: ['🧩 Equation builder', 'Build an equation ax + b = c and see how it is solved step by step.', '🧩 Explore'],
+                hy: ['🧩 Հավասարումների կառուցիչ', 'Կառուցիր ax + b = c տեսքի հավասարում և տես դրա լուծումը քայլ առ քայլ։', '🧩 Դիտել']
+            }[document.documentElement.lang];
+            ['tituloConstructorEcuaciones', 'descripcionConstructorEcuaciones', 'botonConstructorEcuaciones'].forEach((id, i) => document.getElementById(id).textContent = constructorEcuaciones[i]);
             const duelo = {
                 es: ['⚡ Duelo de cálculo mental', 'Resuelve tantas operaciones como puedas en 30 segundos.', '⚡ Jugar'],
                 en: ['⚡ Mental math duel', 'Solve as many operations as you can in 30 seconds.', '⚡ Play'],
