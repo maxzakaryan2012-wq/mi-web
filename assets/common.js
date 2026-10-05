@@ -350,6 +350,7 @@ window.MiWeb = (() => {
         const selected = localStorage.getItem('idioma');
         const language = ['es', 'en', 'hy'].includes(selected) ? selected : 'es';
         document.documentElement.lang = language;
+        if (document.getElementById('miweb-xp-widget')) renderXpWidget();
         const notice = document.getElementById('avisoLocal');
         if (notice) notice.textContent = {
             es: 'Clasificación global compartida entre jugadores. Si no hay Internet, tus estadísticas se guardan localmente y se sincronizan después.',
@@ -535,7 +536,7 @@ window.MiWeb = (() => {
         for (const [name, category] of entries) {
             if (path.includes('/' + name + '/')) return { context: name, category };
         }
-        if (/\/mi-web\/?(?:index\.html)?$/.test(path) || path.endsWith('/mi-web/') || path.endsWith('/mi-web/index.html')) {
+        if (path.endsWith('/') || path.endsWith('/index.html')) {
             return { context: 'home', category: 'home' };
         }
         return null;
