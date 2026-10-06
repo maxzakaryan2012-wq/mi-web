@@ -222,7 +222,7 @@ function flash(kind){
   el.classList.add(kind);
 }
 
-function answer(value){
+async function answer(value){
   if(locked||!current||completed)return;
   locked=true;
   answeredQuestions++;
@@ -240,7 +240,7 @@ function answer(value){
     $('mensaje').textContent=t.correct;
     $('mensaje').className='mensaje ok';
     flash('ok');
-    MiWeb.xpAction('correct');
+    await MiWeb.xpAction('correct');
     addGlobalCorrect();
   }else{
     streak=0;
@@ -255,7 +255,7 @@ function answer(value){
   save();
 
   if(correct&&correctInLevel>=10){
-    MiWeb.xpAction('level_up');
+    await MiWeb.xpAction('level_up');
     $('mensaje').textContent=t.levelUp;
     $('mensaje').className='mensaje level';
 
