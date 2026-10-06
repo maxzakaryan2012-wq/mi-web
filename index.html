@@ -415,6 +415,230 @@
         }
 
         /* =========================
+           RANKING GLOBAL DE XP
+        ========================= */
+
+        let rankingXpFilas = [];
+
+        function textosRankingXp() {
+            const idioma = localStorage.getItem("idioma") || "es";
+            return {
+                es: {
+                    titulo: "🏆 Ranking XP",
+                    descripcion: "Clasificación global por XP total. Cuanto más juegas, calculas y experimentas, más subes.",
+                    jugadores: "Jugadores",
+                    xpTodos: "XP de todos",
+                    tuPuesto: "Tu puesto",
+                    actualizar: "↻ Actualizar ranking",
+                    cargando: "Cargando ranking...",
+                    vacio: "No hay jugadores con XP todavía.",
+                    puesto: "Puesto",
+                    jugador: "Jugador",
+                    nivel: "Nivel",
+                    xp: "XP total",
+                    progreso: "Progreso",
+                    tu: "TÚ",
+                    max: "MÁX"
+                },
+                en: {
+                    titulo: "🏆 XP Ranking",
+                    descripcion: "Global ranking by total XP. The more you play, calculate and experiment, the higher you climb.",
+                    jugadores: "Players",
+                    xpTodos: "Everyone's XP",
+                    tuPuesto: "Your rank",
+                    actualizar: "↻ Refresh ranking",
+                    cargando: "Loading ranking...",
+                    vacio: "No players have XP yet.",
+                    puesto: "Rank",
+                    jugador: "Player",
+                    nivel: "Level",
+                    xp: "Total XP",
+                    progreso: "Progress",
+                    tu: "YOU",
+                    max: "MAX"
+                },
+                hy: {
+                    titulo: "🏆 XP վարկանիշ",
+                    descripcion: "Ընդհանուր վարկանիշ՝ ըստ հավաքած XP-ի։ Որքան շատ խաղաս, հաշվես և փորձեր անես, այնքան բարձր կբարձրանաս։",
+                    jugadores: "Խաղացողներ",
+                    xpTodos: "Բոլորի XP-ն",
+                    tuPuesto: "Քո տեղը",
+                    actualizar: "↻ Թարմացնել վարկանիշը",
+                    cargando: "Վարկանիշը բեռնվում է...",
+                    vacio: "Դեռ XP ունեցող խաղացողներ չկան։",
+                    puesto: "Տեղ",
+                    jugador: "Խաղացող",
+                    nivel: "Մակարդակ",
+                    xp: "Ընդհանուր XP",
+                    progreso: "Առաջընթաց",
+                    tu: "ԴՈՒ",
+                    max: "MAX"
+                }
+            }[idioma];
+        }
+
+        function formatoRankingXp(valor) {
+            return new Intl.NumberFormat(document.documentElement.lang || "es")
+                .format(Number(valor) || 0);
+        }
+
+        function actualizarTextosRankingXp() {
+            const t = textosRankingXp();
+            document.getElementById("rankingTitulo").textContent = t.titulo;
+            document.getElementById("rankingDescripcion").textContent = t.descripcion;
+            document.getElementById("rankingTxtJugadores").textContent = t.jugadores;
+            document.getElementById("rankingTxtXpTodos").textContent = t.xpTodos;
+            document.getElementById("rankingTxtTuPuesto").textContent = t.tuPuesto;
+            document.getElementById("rankingActualizar").textContent = t.actualizar;
+            document.getElementById("rankingThPuesto").textContent = t.puesto;
+            document.getElementById("rankingThJugador").textContent = t.jugador;
+            document.getElementById("rankingThNivel").textContent = t.nivel;
+            document.getElementById("rankingThXp").textContent = t.xp;
+            document.getElementById("rankingThProgreso").textContent = t.progreso;
+            document.getElementById("rankingVacio").textContent = t.vacio;
+        }
+
+        function dibujarPodioRankingXp() {
+            const t = textosRankingXp();
+            const medallas = { 1: "🥇", 2: "🥈", 3: "🥉" };
+
+            [1, 2, 3].forEach(posicion => {
+                const caja = document.querySelector('[data-ranking-podio="' + posicion + '"]');
+                const fila = rankingXpFilas[posicion - 1];
+
+                caja.innerHTML = "";
+
+                const medalla = document.createElement("div");
+                medalla.className = "medalla";
+                medalla.textContent = medallas[posicion];
+                caja.appendChild(medalla);
+
+                const nombre = document.createElement("strong");
+                nombre.textContent = fila ? fila.player_name + (fila.is_you ? " · " + t.tu : "") : "—";
+                caja.appendChild(nombre);
+
+                if (fila) {
+                    const nivel = document.createElement("div");
+                    nivel.className = "nivel";
+                    nivel.textContent = t.nivel + " " + fila.level;
+
+                    const xp = document.createElement("div");
+                    xp.className = "xp";
+                    xp.textContent = formatoRankingXp(fila.total_xp) + " XP";
+
+                    caja.append(nivel, xp);
+                }
+            });
+        }
+
+        function dibujarRankingXp() {
+            actualizarTextosRankingXp();
+
+            const t = textosRankingXp();
+            const cuerpo = document.getElementById("rankingBody");
+            const vacio = document.getElementById("rankingVacio");
+            const mia = rankingXpFilas.find(fila => fila.is_you);
+
+            document.getElementById("rankingTotalJugadores").textContent =
+                formatoRankingXp(rankingXpFilas.length);
+
+            document.getElementById("rankingXpTodos").textContent =
+                formatoRankingXp(rankingXpFilas.reduce((total, fila) => total + Number(fila.total_xp || 0), 0));
+
+            document.getElementById("rankingTuPuesto").textContent =
+                mia ? "#" + mia.rank : "—";
+
+            dibujarPodioRankingXp();
+            cuerpo.innerHTML = "";
+            vacio.hidden = rankingXpFilas.length > 0;
+
+            rankingXpFilas.forEach(fila => {
+                const tr = document.createElement("tr");
+                if (fila.is_you) tr.className = "tu";
+
+                const tdPuesto = document.createElement("td");
+                tdPuesto.className = "ranking-rank";
+                tdPuesto.textContent = "#" + fila.rank;
+
+                const tdJugador = document.createElement("td");
+                const nombre = document.createElement("strong");
+                nombre.textContent = fila.player_name;
+                tdJugador.appendChild(nombre);
+
+                if (fila.is_you) {
+                    const badge = document.createElement("span");
+                    badge.className = "ranking-tu";
+                    badge.textContent = t.tu;
+                    tdJugador.appendChild(badge);
+                }
+
+                const tdNivel = document.createElement("td");
+                tdNivel.className = "ranking-nivel";
+                tdNivel.textContent = t.nivel + " " + fila.level;
+
+                const tdXp = document.createElement("td");
+                tdXp.className = "ranking-xp";
+                tdXp.textContent = formatoRankingXp(fila.total_xp) + " XP";
+
+                const tdProgreso = document.createElement("td");
+
+                if (Number(fila.level) >= 100) {
+                    tdProgreso.textContent = t.max;
+                } else {
+                    const texto = document.createElement("div");
+                    texto.textContent =
+                        formatoRankingXp(fila.current_xp) +
+                        " / " +
+                        formatoRankingXp(fila.next_xp) +
+                        " XP";
+
+                    const barra = document.createElement("div");
+                    barra.className = "ranking-progreso";
+
+                    const relleno = document.createElement("span");
+                    const porcentaje = Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            Number(fila.current_xp) /
+                            Math.max(1, Number(fila.next_xp)) *
+                            100
+                        )
+                    );
+
+                    relleno.style.width = porcentaje + "%";
+                    barra.appendChild(relleno);
+                    tdProgreso.append(texto, barra);
+                }
+
+                tr.append(tdPuesto, tdJugador, tdNivel, tdXp, tdProgreso);
+                cuerpo.appendChild(tr);
+            });
+        }
+
+        async function cargarRankingXp() {
+            const estado = document.getElementById("rankingEstado");
+            const boton = document.getElementById("rankingActualizar");
+            const t = textosRankingXp();
+
+            boton.disabled = true;
+            estado.textContent = t.cargando;
+
+            rankingXpFilas = await MiWeb.getXpLeaderboard();
+
+            estado.textContent = "";
+            boton.disabled = false;
+            dibujarRankingXp();
+        }
+
+        document.getElementById("rankingActualizar")
+            .addEventListener("click", cargarRankingXp);
+
+        window.addEventListener("miweb-xp", () => {
+            if (vistaActual === "ranking") cargarRankingXp();
+        });
+
+        /* =========================
            PORTADA MEJORADA
         ========================= */
 
@@ -695,7 +919,291 @@
             }
         }
 
-    </style>
+            /* =========================
+           RANKING XP
+        ========================= */
+
+        .ranking-seccion {
+            display: none;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .ranking-cabecera {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .ranking-cabecera h1 {
+            font-size: 42px;
+            margin: 0 0 8px;
+        }
+
+        .ranking-cabecera p {
+            color: #aaa;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        body.claro .ranking-cabecera p {
+            color: #555;
+        }
+
+        .ranking-resumen {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ranking-resumen-card,
+        .ranking-panel,
+        .ranking-podio-puesto {
+            background: #1d1d1d;
+            border: 1px solid #333;
+            border-radius: 16px;
+        }
+
+        body.claro .ranking-resumen-card,
+        body.claro .ranking-panel,
+        body.claro .ranking-podio-puesto {
+            background: white;
+            border-color: #ddd;
+        }
+
+        .ranking-resumen-card {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .ranking-resumen-card span {
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        body.claro .ranking-resumen-card span {
+            color: #555;
+        }
+
+        .ranking-resumen-card strong {
+            display: block;
+            margin-top: 5px;
+            font-size: 28px;
+        }
+
+        .ranking-panel {
+            padding: 20px;
+        }
+
+        .ranking-acciones {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .ranking-actualizar {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 17px;
+            background: white;
+            color: #111;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        body.claro .ranking-actualizar {
+            background: #111;
+            color: white;
+        }
+
+        .ranking-estado {
+            min-height: 24px;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 12px;
+        }
+
+        body.claro .ranking-estado {
+            color: #555;
+        }
+
+        .ranking-podio {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            align-items: end;
+            margin: 0 0 24px;
+        }
+
+        .ranking-podio-puesto {
+            min-height: 132px;
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .ranking-podio-puesto.primero {
+            min-height: 162px;
+            border-color: #d7ad33;
+            box-shadow: 0 0 0 2px rgba(215,173,51,.08);
+        }
+
+        .ranking-podio-puesto .medalla {
+            font-size: 34px;
+        }
+
+        .ranking-podio-puesto strong {
+            font-size: 20px;
+            margin-top: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .ranking-podio-puesto .nivel {
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        .ranking-podio-puesto .xp {
+            color: #e9bd45;
+            font-weight: 900;
+            margin-top: 4px;
+        }
+
+        .ranking-tabla-wrap {
+            overflow-x: auto;
+            border: 1px solid #333;
+            border-radius: 13px;
+        }
+
+        body.claro .ranking-tabla-wrap {
+            border-color: #ddd;
+        }
+
+        .ranking-tabla {
+            width: 100%;
+            min-width: 620px;
+            border-collapse: collapse;
+        }
+
+        .ranking-tabla th,
+        .ranking-tabla td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #303030;
+            text-align: left;
+        }
+
+        body.claro .ranking-tabla th,
+        body.claro .ranking-tabla td {
+            border-bottom-color: #e5e5e5;
+        }
+
+        .ranking-tabla th {
+            color: #aaa;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            background: #181818;
+        }
+
+        body.claro .ranking-tabla th {
+            color: #555;
+            background: #f7f7f7;
+        }
+
+        .ranking-tabla tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ranking-tabla tr.tu {
+            background: rgba(240,193,75,.09);
+            outline: 1px solid rgba(240,193,75,.35);
+            outline-offset: -1px;
+        }
+
+        .ranking-rank {
+            font-weight: 900;
+            width: 64px;
+        }
+
+        .ranking-xp {
+            color: #f0c14b;
+            font-weight: 900;
+        }
+
+        .ranking-nivel {
+            font-weight: bold;
+        }
+
+        .ranking-tu {
+            font-size: 11px;
+            background: #d7ad33;
+            color: #111;
+            border-radius: 999px;
+            padding: 3px 7px;
+            font-weight: 900;
+            margin-left: 7px;
+        }
+
+        .ranking-progreso {
+            height: 7px;
+            max-width: 170px;
+            margin-top: 5px;
+            overflow: hidden;
+            border-radius: 99px;
+            background: #333;
+        }
+
+        body.claro .ranking-progreso {
+            background: #e4e4e4;
+        }
+
+        .ranking-progreso span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg,#ffd84d,#ff9f3d);
+        }
+
+        .ranking-vacio {
+            padding: 30px 10px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        @media (max-width: 650px) {
+            .ranking-cabecera h1 {
+                font-size: 34px;
+            }
+
+            .ranking-resumen {
+                grid-template-columns: 1fr;
+            }
+
+            .ranking-panel {
+                padding: 12px;
+            }
+
+            .ranking-podio {
+                gap: 6px;
+            }
+
+            .ranking-podio-puesto {
+                min-height: 120px;
+                padding: 12px 5px;
+            }
+
+            .ranking-podio-puesto.primero {
+                min-height: 145px;
+            }
+
+            .ranking-podio-puesto strong {
+                font-size: 15px;
+            }
+        }
+
+</style>
 </head>
 
 <body>
@@ -728,7 +1236,7 @@
                 🧮 Calculadora
             </a>
 
-            <a href="ranking/index.html" id="rankingNav">
+            <a href="#ranking" id="rankingNav" data-view="ranking">
                 🏆 Ranking
             </a>
 
@@ -892,6 +1400,62 @@
 
             </div>
 
+        </section>
+
+
+        <!-- =========================
+             RANKING XP
+        ========================= -->
+
+        <section class="ranking-seccion" id="rankingSeccion">
+            <div class="ranking-cabecera">
+                <h1 id="rankingTitulo">🏆 Ranking XP</h1>
+                <p id="rankingDescripcion">Clasificación global por XP total.</p>
+            </div>
+
+            <div class="ranking-resumen">
+                <div class="ranking-resumen-card">
+                    <span id="rankingTxtJugadores">Jugadores</span>
+                    <strong id="rankingTotalJugadores">0</strong>
+                </div>
+                <div class="ranking-resumen-card">
+                    <span id="rankingTxtXpTodos">XP de todos</span>
+                    <strong id="rankingXpTodos">0</strong>
+                </div>
+                <div class="ranking-resumen-card">
+                    <span id="rankingTxtTuPuesto">Tu puesto</span>
+                    <strong id="rankingTuPuesto">—</strong>
+                </div>
+            </div>
+
+            <div class="ranking-panel">
+                <div class="ranking-acciones">
+                    <button class="ranking-actualizar" id="rankingActualizar" type="button">↻ Actualizar ranking</button>
+                </div>
+                <div class="ranking-estado" id="rankingEstado"></div>
+
+                <div class="ranking-podio">
+                    <div class="ranking-podio-puesto" data-ranking-podio="2"></div>
+                    <div class="ranking-podio-puesto primero" data-ranking-podio="1"></div>
+                    <div class="ranking-podio-puesto" data-ranking-podio="3"></div>
+                </div>
+
+                <div class="ranking-tabla-wrap">
+                    <table class="ranking-tabla">
+                        <thead>
+                            <tr>
+                                <th id="rankingThPuesto">Puesto</th>
+                                <th id="rankingThJugador">Jugador</th>
+                                <th id="rankingThNivel">Nivel</th>
+                                <th id="rankingThXp">XP total</th>
+                                <th id="rankingThProgreso">Progreso</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody"></tbody>
+                    </table>
+                    <div class="ranking-vacio" id="rankingVacio" hidden>No hay jugadores con XP todavía.</div>
+                </div>
+            </div>
         </section>
 
 
@@ -1261,7 +1825,7 @@
         }
 
         function mostrarSeccion(seccion, actualizarHash = true) {
-            const validas = ["inicio", "juegos", "interesantes", "calculadora", "registro"];
+            const validas = ["inicio", "juegos", "interesantes", "calculadora", "ranking", "registro"];
             if (!validas.includes(seccion)) seccion = "inicio";
             vistaActual = seccion;
 
@@ -1269,16 +1833,18 @@
             const extras = document.getElementById("extrasInicio");
             const buscador = document.getElementById("buscadorCatalogo");
             const registro = document.getElementById("registro");
+            const ranking = document.getElementById("rankingSeccion");
             const juegos = document.getElementById("juegos");
             const formulario = document.getElementById("formularioUsuario");
             const tituloCatalogo = document.getElementById("tituloJuegos");
 
             cabecera.style.display = seccion === "inicio" ? "" : "none";
             extras.style.display = seccion === "inicio" ? "" : "none";
-            buscador.style.display = seccion === "registro" ? "none" : "";
+            buscador.style.display = (seccion === "registro" || seccion === "ranking") ? "none" : "";
             registro.style.display = seccion === "registro" ? "" : "none";
-            juegos.style.display = seccion === "registro" ? "none" : "";
-            tituloCatalogo.style.display = seccion === "inicio" ? "none" : "";
+            ranking.style.display = seccion === "ranking" ? "" : "none";
+            juegos.style.display = (seccion === "registro" || seccion === "ranking") ? "none" : "";
+            tituloCatalogo.style.display = (seccion === "inicio" || seccion === "ranking" || seccion === "registro") ? "none" : "";
 
             if (seccion === "registro") {
                 formulario.style.display = "flex";
@@ -1289,6 +1855,7 @@
 
             actualizarNavegacionSeccion();
             actualizarPortadaMejorada();
+            if (seccion === "ranking") cargarRankingXp();
 
             if (actualizarHash && location.hash !== "#" + seccion) {
                 history.pushState(null, "", "#" + seccion);
@@ -2144,6 +2711,8 @@
             mostrarNombreUsuario();
 
             actualizarNavegacionSeccion();
+            actualizarTextosRankingXp();
+            if (vistaActual === "ranking") dibujarRankingXp();
 
             if (document.querySelector(".grupo-catalogo")) actualizarPortadaMejorada();
 
