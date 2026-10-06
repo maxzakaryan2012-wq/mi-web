@@ -532,7 +532,7 @@
     </main>
 
 
-    <script src="../../assets/common.js?v=xp-20261006-8"></script>
+    <script src="../../assets/common.js?v=xp-20261006-10"></script>
     <script>
 
         /* =========================
@@ -622,7 +622,9 @@
             }
 
             puntos++;
-            MiWeb.xpAction("correct");
+            if (puntos % 7 === 0) {
+                MiWeb.xpAction("click_7");
+            }
 
             document.getElementById(
                 "puntos"
