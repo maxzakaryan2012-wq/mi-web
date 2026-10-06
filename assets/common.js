@@ -579,7 +579,7 @@ window.MiWeb = (() => {
         style.id = 'miweb-xp-styles';
         style.textContent = `
             .miweb-xp-widget{position:fixed;right:14px;bottom:14px;z-index:9998;width:min(290px,calc(100vw - 28px));font-family:Arial,sans-serif}
-            .miweb-xp-chip{width:100%;border:1px solid #444;background:#1d1d1d;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 7px 24px rgba(0,0,0,.28);cursor:pointer;text-align:left}
+            .miweb-xp-chip{width:100%;border:1px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 7px 24px rgba(0,0,0,.28),0 0 0 2px rgba(224,180,60,.08);cursor:pointer;text-align:left}
             .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800}
             .miweb-xp-small{font-size:12px;color:#aaa;font-weight:600}
             .miweb-xp-bar{height:7px;background:#333;border-radius:99px;overflow:hidden;margin-top:8px}
@@ -588,7 +588,7 @@ window.MiWeb = (() => {
             .miweb-xp-widget.abierto .miweb-xp-detail{display:block}
             .miweb-xp-toast{position:fixed;right:24px;bottom:104px;z-index:9999;background:#252525;color:#fff;border:1px solid #555;border-radius:999px;padding:8px 12px;font-weight:bold;pointer-events:none;animation:miwebXpToast 1.25s ease forwards}
             @keyframes miwebXpToast{0%{opacity:0;transform:translateY(8px)}15%,70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px)}}
-            body.claro .miweb-xp-chip{background:#fff;color:#111;border-color:#d4d4d4;box-shadow:0 7px 24px rgba(0,0,0,.12)}
+            body.claro .miweb-xp-chip{background:#fff;color:#111;border-color:#c99618;box-shadow:0 7px 24px rgba(0,0,0,.12),0 0 0 2px rgba(201,150,24,.08)}
             body.claro .miweb-xp-small,body.claro .miweb-xp-detail{color:#555}
             body.claro .miweb-xp-bar{background:#e6e6e6}
             body.claro .miweb-xp-detail{border-top-color:#ddd}
