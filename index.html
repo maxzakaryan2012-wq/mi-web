@@ -1289,6 +1289,12 @@
                     <a href="juegos/verdadero-falso/index.html" id="botonVerdaderoFalso">✅❌ Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloCreaNumero">🃏 Crea el número</h2>
+                    <p id="descripcionCreaNumero">Combina 3 o 4 cartas con +, −, × y ÷ hasta conseguir exactamente el número objetivo.</p>
+                    <a href="juegos/crea-el-numero/index.html" id="botonCreaNumero">🃏 Jugar</a>
+                </div>
+
                 
 
                 
@@ -1454,7 +1460,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261006-8"></script>
+    <script src="assets/common.js?v=xp-20261006-9"></script>
     <script>
 
         /* =========================
@@ -1954,7 +1960,7 @@
                     buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
-                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo",
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo", resueltos: "Resueltos",
                     generados: "Generados", intentos: "Mejor", partidas: "Partidas", global: "Global"
                 },
                 en: {
@@ -1964,7 +1970,7 @@
                     buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
-                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level",
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level", resueltos: "Solved",
                     generados: "Generated", intentos: "Best", partidas: "Games", global: "Global"
                 },
                 hy: {
@@ -1974,7 +1980,7 @@
                     buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
-                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ",
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ", resueltos: "Լուծված",
                     generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", global: "Ընդհանուր"
                 }
             }[idioma];
@@ -2089,6 +2095,10 @@
                 if (titleId === "tituloVerdaderoFalso") {
                     row = valorUsuario(MiWeb.readExtraStats("verdadero-falso"));
                     return row ? "🎚️ " + t.nivelMax + ": " + (row.maxNivel || 1) : t.sinRecord;
+                }
+                if (titleId === "tituloCreaNumero") {
+                    row = valorUsuario(MiWeb.readExtraStats("crea-el-numero"));
+                    return row ? "🃏 " + t.nivelMax + ": " + (row.maxNivel || 1) + " · " + (row.resueltos || 0) + " " + t.resueltos : t.sinRecord;
                 }
                 
                 
@@ -2310,6 +2320,12 @@
                 hy: ['✅❌ Ճիշտ թե սխալ', 'Որոշիր՝ յուրաքանչյուր մաթեմատիկական հավասարում ճիշտ է, թե սխալ, և անցիր 10 մակարդակ։', '✅❌ Խաղալ']
             }[document.documentElement.lang];
             ['tituloVerdaderoFalso', 'descripcionVerdaderoFalso', 'botonVerdaderoFalso'].forEach((id, i) => document.getElementById(id).textContent = verdaderoFalso[i]);
+            const creaNumero = {
+                es: ['🃏 Crea el número', 'Combina 3 o 4 cartas con +, −, × y ÷ hasta conseguir exactamente el número objetivo.', '🃏 Jugar'],
+                en: ['🃏 Make the number', 'Combine 3 or 4 cards with +, −, × and ÷ to reach the exact target number.', '🃏 Play'],
+                hy: ['🃏 Ստեղծիր թիվը', 'Միացրու 3 կամ 4 քարտ +, −, × և ÷ գործողություններով՝ ճիշտ նպատակային թիվը ստանալու համար։', '🃏 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloCreaNumero', 'descripcionCreaNumero', 'botonCreaNumero'].forEach((id, i) => document.getElementById(id).textContent = creaNumero[i]);
             
             
             

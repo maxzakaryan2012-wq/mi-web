@@ -525,7 +525,7 @@ window.MiWeb = (() => {
         const path = location.pathname.toLowerCase();
         const entries = [
             ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
-            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['adivina-el-numero','game'],
+            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
             ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
@@ -554,7 +554,7 @@ window.MiWeb = (() => {
         if (event === 'correct' && category === 'game') {
             if (context === 'pulsa-el-boton') return 1;
             if (context === 'disparador-primos') return 4;
-            if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso'].includes(context)) return 5;
+            if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso','crea-el-numero'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
