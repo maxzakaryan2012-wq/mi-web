@@ -1289,6 +1289,12 @@
                     <a href="juegos/verdadero-falso/index.html" id="botonVerdaderoFalso">✅❌ Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloCreaNumero">🃏 Crea el número</h2>
+                    <p id="descripcionCreaNumero">Combina 3 o 4 cartas con +, −, × y ÷ hasta conseguir exactamente el número objetivo.</p>
+                    <a href="juegos/crea-el-numero/index.html" id="botonCreaNumero">🃏 Jugar</a>
+                </div>
+
                 
 
                 
@@ -1454,7 +1460,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261006-8"></script>
+    <script src="assets/common.js?v=xp-20261006-9"></script>
     <script>
 
         /* =========================
@@ -2090,6 +2096,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("verdadero-falso"));
                     return row ? "🎚️ " + t.nivelMax + ": " + (row.maxNivel || 1) : t.sinRecord;
                 }
+                if (titleId === "tituloCreaNumero") {
+                    row = valorUsuario(MiWeb.readExtraStats("crea-el-numero"));
+                    return row ? "🃏 " + t.nivelMax + ": " + (row.maxNivel || 1) + " · " + (row.resueltos || 0) + " resueltos" : t.sinRecord;
+                }
                 
                 
                 
@@ -2310,6 +2320,12 @@
                 hy: ['✅❌ Ճիշտ թե սխալ', 'Որոշիր՝ յուրաքանչյուր մաթեմատիկական հավասարում ճիշտ է, թե սխալ, և անցիր 10 մակարդակ։', '✅❌ Խաղալ']
             }[document.documentElement.lang];
             ['tituloVerdaderoFalso', 'descripcionVerdaderoFalso', 'botonVerdaderoFalso'].forEach((id, i) => document.getElementById(id).textContent = verdaderoFalso[i]);
+            const creaNumero = {
+                es: ['🃏 Crea el número', 'Combina 3 o 4 cartas con +, −, × y ÷ hasta conseguir exactamente el número objetivo.', '🃏 Jugar'],
+                en: ['🃏 Make the number', 'Combine 3 or 4 cards with +, −, × and ÷ to reach the exact target number.', '🃏 Play'],
+                hy: ['🃏 Ստեղծիր թիվը', 'Միացրու 3 կամ 4 քարտ +, −, × և ÷ գործողություններով՝ ճիշտ նպատակային թիվը ստանալու համար։', '🃏 Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloCreaNumero', 'descripcionCreaNumero', 'botonCreaNumero'].forEach((id, i) => document.getElementById(id).textContent = creaNumero[i]);
             
             
             
