@@ -544,13 +544,12 @@
 
 
             numeroIntentos++;
+            MiWeb.xpAction("attempt");
 
             actualizarIntentos();
 
 
             if (numero < numeroSecreto) {
-
-                MiWeb.xpAction("wrong");
 
                 if (idioma === "en") {
 
@@ -573,8 +572,6 @@
 
 
             } else if (numero > numeroSecreto) {
-
-                MiWeb.xpAction("wrong");
 
                 if (idioma === "en") {
 
@@ -642,7 +639,6 @@
 
 
                 MiWeb.xpAction("correct");
-                MiWeb.xpAction("game_finish");
 
                 guardarEstadistica(
                     intentosFinales
