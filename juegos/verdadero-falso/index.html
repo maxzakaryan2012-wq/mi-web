@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verdadero o falso - MI WEB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;transition:.25s}
+.barra{min-height:70px;background:#181818;border-bottom:1px solid #333;display:flex;align-items:center;padding:12px 22px;gap:12px}
+.volver{color:#fff;text-decoration:none;font-weight:800;font-size:18px}.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#252525;color:#fff;border:1px solid #444;border-radius:9px;padding:10px 13px;cursor:pointer}
+.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:9px;overflow:hidden;min-width:145px;z-index:30}
+.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:11px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+main{max-width:920px;margin:auto;padding:36px 18px 120px;text-align:center}
+h1{font-size:42px;margin:0 0 8px}.descripcion{color:#aaa;line-height:1.5;margin:0 auto 18px;max-width:720px}
+.panel{background:#1d1d1d;border:1px solid #333;border-radius:20px;padding:20px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.dato{background:#181818;border:1px solid #333;border-radius:13px;padding:11px}.dato span{display:block;color:#aaa;font-size:12px}.dato strong{display:block;font-size:24px;margin-top:3px}
+.nivel-box{background:#181818;border:1px solid #333;border-radius:15px;padding:14px;margin-bottom:16px}
+.nivel-fila{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800}.nivel-fila strong{font-size:21px}
+.progreso{height:12px;background:#303030;border-radius:99px;overflow:hidden;margin-top:10px}.progreso-fill{height:100%;width:0;background:linear-gradient(90deg,#ffd84d,#ff9f3d);transition:width .25s ease}
+.juego{position:relative;min-height:350px;border:1px solid #333;border-radius:18px;background:radial-gradient(circle at 50% 18%,rgba(72,104,150,.16),transparent 44%),#15191e;padding:32px 20px 24px;overflow:hidden}
+.nivel-chip{display:inline-flex;align-items:center;gap:7px;background:#252a31;border:1px solid #3b424c;border-radius:999px;padding:7px 12px;color:#bbb;font-size:13px;font-weight:700}
+.operacion{font-size:clamp(37px,7vw,65px);font-weight:900;letter-spacing:.5px;margin:40px 0 32px;min-height:78px;display:flex;align-items:center;justify-content:center}
+.botones{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:650px;margin:auto}
+.respuesta{border:0;border-radius:16px;padding:20px 15px;font-size:23px;font-weight:900;color:#fff;cursor:pointer;transition:transform .12s,filter .12s}
+.respuesta:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.08)}.respuesta:active:not(:disabled){transform:translateY(0)}
+.respuesta.verdadero{background:#238846;box-shadow:0 7px 0 #13572b}.respuesta.falso{background:#b63a47;box-shadow:0 7px 0 #73232b}
+.respuesta:disabled{cursor:default;opacity:.72}
+.mensaje{min-height:29px;margin:18px 0 0;font-weight:800;font-size:17px}.mensaje.ok{color:#6ee385}.mensaje.bad{color:#ff7580}.mensaje.level{color:#ffd75b}
+.atajos{color:#888;font-size:13px;margin-top:14px}
+.overlay{position:absolute;inset:0;z-index:20;background:rgba(12,15,18,.9);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.overlay.oculto{display:none}.overlay h2{font-size:32px;margin:0 0 9px}.overlay p{max-width:560px;color:#ccc;line-height:1.5;margin:0 0 18px}
+.accion{border:0;border-radius:11px;padding:13px 20px;background:#fff;color:#111;font-size:16px;font-weight:900;cursor:pointer}
+.nota{color:#aaa;font-size:14px;line-height:1.55;margin:17px 0 0}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0}.flash.ok{animation:flashOk .35s}.flash.bad{animation:flashBad .35s}
+@keyframes flashOk{50%{background:rgba(58,211,103,.12);opacity:1}}@keyframes flashBad{50%{background:rgba(255,65,75,.12);opacity:1}}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}
+body.claro .panel,body.claro .dato,body.claro .nivel-box{background:#fff;border-color:#ddd}body.claro .descripcion,body.claro .nota,body.claro .dato span{color:#555}
+body.claro .juego{background:radial-gradient(circle at 50% 18%,rgba(80,130,200,.12),transparent 44%),#f8fafc;border-color:#d5d9df}
+body.claro .nivel-chip{background:#eef1f4;border-color:#d5dae0;color:#555}body.claro .progreso{background:#e5e5e5}body.claro .overlay{background:rgba(248,250,252,.92)}body.claro .overlay p{color:#555}
+@media(max-width:650px){.barra{padding:10px 12px}main{padding:28px 10px 120px}h1{font-size:32px}.panel{padding:12px}.hud{grid-template-columns:repeat(2,1fr)}.juego{min-height:330px;padding:25px 12px 20px}.operacion{margin:35px 0 28px}.botones{gap:10px}.respuesta{font-size:19px;padding:18px 8px}}
+@media(prefers-reduced-motion:reduce){.respuesta,.progreso-fill{transition:none}.flash{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="barra">
+<a class="volver" id="volver" href="../../index.html#juegos">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma">
+<button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas">
+<button data-lang="es">🇪🇸 Español</button>
+<button data-lang="en">🇬🇧 English</button>
+<button data-lang="hy">🇦🇲 Հայերեն</button>
+</div>
+</div>
+<button id="botonTema">☀️ Claro</button>
+</header>
+
+<main>
+<h1 id="titulo">✅❌ Verdadero o falso</h1>
+<p class="descripcion" id="descripcion">Decide si la operación es correcta. Consigue 10 aciertos para superar cada nivel.</p>
+
+<section class="panel">
+<div class="hud">
+<div class="dato"><span id="txtNivel">Nivel</span><strong id="nivel">1/10</strong></div>
+<div class="dato"><span id="txtAciertos">Aciertos</span><strong id="aciertos">0</strong></div>
+<div class="dato"><span id="txtRacha">Racha</span><strong id="racha">0</strong></div>
+<div class="dato"><span id="txtXp">XP por acierto</span><strong>+5</strong></div>
+</div>
+
+<div class="nivel-box">
+<div class="nivel-fila"><strong id="objetivoNivel">Nivel 1</strong><span id="progresoTexto">0 / 10</span></div>
+<div class="progreso"><div class="progreso-fill" id="progresoFill"></div></div>
+</div>
+
+<div class="juego" id="zonaJuego">
+<div class="nivel-chip" id="dificultad">➕➖ 1 operación</div>
+<div class="operacion" id="operacion">—</div>
+
+<div class="botones">
+<button class="respuesta verdadero" id="verdadero" type="button">✓ Verdadero</button>
+<button class="respuesta falso" id="falso" type="button">✕ Falso</button>
+</div>
+
+<div class="mensaje" id="mensaje" aria-live="polite"></div>
+<div class="atajos" id="atajos">Teclado: V = verdadero · F = falso</div>
+<div class="flash" id="flash"></div>
+
+<div class="overlay" id="overlay">
+<h2 id="overlayTitulo">¿Preparado?</h2>
+<p id="overlayTexto">Cada acierto da +5 XP. Al conseguir 10 aciertos recibes +5 XP extra y pasas al siguiente nivel.</p>
+<button class="accion" id="empezar" type="button">▶️ Empezar</button>
+</div>
+</div>
+
+<p class="nota" id="nota">Nivel 1: suma y resta. Nivel 2 añade multiplicación. Después aumenta el número de operaciones y la dificultad hasta el nivel 10.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js?v=xp-20261006-7"></script>
+<script src="app.js"></script>
+</body>
+</html>

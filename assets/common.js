@@ -525,7 +525,7 @@ window.MiWeb = (() => {
         const path = location.pathname.toLowerCase();
         const entries = [
             ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
-            ['2048','game'],['saltos-multiplos','game'],['adivina-el-numero','game'],
+            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
             ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
@@ -554,12 +554,13 @@ window.MiWeb = (() => {
         if (event === 'correct' && category === 'game') {
             if (context === 'pulsa-el-boton') return 1;
             if (context === 'disparador-primos') return 4;
-            if (['duelo-calculo','secuencia','saltos-multiplos'].includes(context)) return 5;
+            if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
-        if (event === 'wrong' && category === 'game') return 1;
-        if (event === 'game_finish' && category === 'game') return context === '2048' ? 0 : context === 'pulsa-el-boton' ? 6 : 8;
+        if (context === 'verdadero-falso' && event === 'level_up') return 5;
+        if (event === 'wrong' && category === 'game') return context === 'verdadero-falso' ? 0 : 1;
+        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso'].includes(context) ? 0 : context === 'pulsa-el-boton' ? 6 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;

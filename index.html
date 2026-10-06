@@ -1283,6 +1283,12 @@
                     <a href="juegos/saltos-multiplos/index.html" id="botonSaltosMultiplos">🦘 Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloVerdaderoFalso">✅❌ Verdadero o falso</h2>
+                    <p id="descripcionVerdaderoFalso">Decide si cada operación matemática es verdadera o falsa y supera 10 niveles.</p>
+                    <a href="juegos/verdadero-falso/index.html" id="botonVerdaderoFalso">✅❌ Jugar</a>
+                </div>
+
                 
 
                 
@@ -1448,7 +1454,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261006-6"></script>
+    <script src="assets/common.js?v=xp-20261006-7"></script>
     <script>
 
         /* =========================
@@ -1948,7 +1954,7 @@
                     buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
-                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha",
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo",
                     generados: "Generados", intentos: "Mejor", partidas: "Partidas", global: "Global"
                 },
                 en: {
@@ -1958,7 +1964,7 @@
                     buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
-                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak",
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level",
                     generados: "Generated", intentos: "Best", partidas: "Games", global: "Global"
                 },
                 hy: {
@@ -1968,7 +1974,7 @@
                     buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
-                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք",
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ",
                     generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", global: "Ընդհանուր"
                 }
             }[idioma];
@@ -2079,6 +2085,10 @@
                 if (titleId === "tituloSaltosMultiplos") {
                     row = valorUsuario(MiWeb.readExtraStats("saltos-multiplos"));
                     return row ? "🏆 " + t.puntos + ": " + (row.mejorPuntuacion || 0) : t.sinRecord;
+                }
+                if (titleId === "tituloVerdaderoFalso") {
+                    row = valorUsuario(MiWeb.readExtraStats("verdadero-falso"));
+                    return row ? "🎚️ " + t.nivelMax + ": " + (row.maxNivel || 1) : t.sinRecord;
                 }
                 
                 
@@ -2294,6 +2304,12 @@
                 hy: ['🦘 Բազմապատիկների ցատկեր', 'Գտիր ճիշտ բազմապատիկը և ցատկիր հարթակից հարթակ մինչև ժամանակը վերջանա։', '🦘 Խաղալ']
             }[document.documentElement.lang];
             ['tituloSaltosMultiplos', 'descripcionSaltosMultiplos', 'botonSaltosMultiplos'].forEach((id, i) => document.getElementById(id).textContent = saltosMultiplos[i]);
+            const verdaderoFalso = {
+                es: ['✅❌ Verdadero o falso', 'Decide si cada operación matemática es verdadera o falsa y supera 10 niveles.', '✅❌ Jugar'],
+                en: ['✅❌ True or false', 'Decide whether each math equation is true or false and clear 10 levels.', '✅❌ Play'],
+                hy: ['✅❌ Ճիշտ թե սխալ', 'Որոշիր՝ յուրաքանչյուր մաթեմատիկական հավասարում ճիշտ է, թե սխալ, և անցիր 10 մակարդակ։', '✅❌ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloVerdaderoFalso', 'descripcionVerdaderoFalso', 'botonVerdaderoFalso'].forEach((id, i) => document.getElementById(id).textContent = verdaderoFalso[i]);
             
             
             
