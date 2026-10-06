@@ -249,8 +249,8 @@ function renderText(){
     $('nuevo').textContent=t.new;
     $('nota').textContent=t.note;
     $('botonIdioma').textContent=l==='en'?'🇬🇧 EN ▾':l==='hy'?'🇦🇲 HY ▾':'🇪🇸 ES ▾';
-    if(ended)$('mensaje').textContent=t.over;
-    else if(wonShown)$('mensaje').textContent=t.win;
+    if(wonShown)$('mensaje').textContent=t.win;
+    else if(ended)$('mensaje').textContent=t.over;
     setTheme();
     render();
     MiWeb.refreshRanking('2048');
