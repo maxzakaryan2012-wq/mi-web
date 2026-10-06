@@ -2,7 +2,7 @@ const T={
 es:{
 title:'🏆 Ranking XP',
 desc:'Clasificación global por XP total. Cuanto más juegas, calculas y experimentas, más subes.',
-back:'← Inicio',light:'☀️ Claro',dark:'🌙 Oscuro',
+home:'🏠 Inicio',games:'🎮 Juegos',interesting:'✨ Cosas interesantes',calculator:'🧮 Calculadora',ranking:'🏆 Ranking',register:'👤 Registrarse',user:'👤 Usuario',light:'☀️ Claro',dark:'🌙 Oscuro',
 players:'Jugadores',allXp:'XP de todos',yourRank:'Tu puesto',
 refresh:'↻ Actualizar ranking',loading:'Cargando ranking...',empty:'No hay jugadores con XP todavía.',
 rank:'Puesto',player:'Jugador',level:'Nivel',xp:'XP total',progress:'Progreso',you:'TÚ',max:'MÁX'
@@ -10,7 +10,7 @@ rank:'Puesto',player:'Jugador',level:'Nivel',xp:'XP total',progress:'Progreso',y
 en:{
 title:'🏆 XP Ranking',
 desc:'Global ranking by total XP. The more you play, calculate and experiment, the higher you climb.',
-back:'← Home',light:'☀️ Light',dark:'🌙 Dark',
+home:'🏠 Home',games:'🎮 Games',interesting:'✨ Interesting things',calculator:'🧮 Calculators',ranking:'🏆 Ranking',register:'👤 Register',user:'👤 User',light:'☀️ Light',dark:'🌙 Dark',
 players:'Players',allXp:'Everyone’s XP',yourRank:'Your rank',
 refresh:'↻ Refresh ranking',loading:'Loading ranking...',empty:'No players have XP yet.',
 rank:'Rank',player:'Player',level:'Level',xp:'Total XP',progress:'Progress',you:'YOU',max:'MAX'
@@ -18,7 +18,7 @@ rank:'Rank',player:'Player',level:'Level',xp:'Total XP',progress:'Progress',you:
 hy:{
 title:'🏆 XP վարկանիշ',
 desc:'Ընդհանուր վարկանիշ՝ ըստ հավաքած XP-ի։ Որքան շատ խաղաս, հաշվես և փորձեր անես, այնքան բարձր կբարձրանաս։',
-back:'← Գլխավոր',light:'☀️ Բաց',dark:'🌙 Մութ',
+home:'🏠 Գլխավոր',games:'🎮 Խաղեր',interesting:'✨ Հետաքրքիր բաներ',calculator:'🧮 Հաշվիչներ',ranking:'🏆 Վարկանիշ',register:'👤 Գրանցվել',user:'👤 Օգտատեր',light:'☀️ Բաց',dark:'🌙 Մութ',
 players:'Խաղացողներ',allXp:'Բոլորի XP-ն',yourRank:'Քո տեղը',
 refresh:'↻ Թարմացնել վարկանիշը',loading:'Վարկանիշը բեռնվում է...',empty:'Դեռ XP ունեցող խաղացողներ չկան։',
 rank:'Տեղ',player:'Խաղացող',level:'Մակարդակ',xp:'Ընդհանուր XP',progress:'Առաջընթաց',you:'ԴՈՒ',max:'MAX'
@@ -50,7 +50,13 @@ function renderText(){
  MiWeb.applyLanguage();
  $('titulo').textContent=t.title;
  $('descripcion').textContent=t.desc;
- $('volver').textContent=t.back;
+ $('navInicio').textContent=t.home;
+ $('navJuegos').textContent=t.games;
+ $('navInteresantes').textContent=t.interesting;
+ $('navCalculadora').textContent=t.calculator;
+ $('navRanking').textContent=t.ranking;
+ $('navRegistro').textContent=t.register;
+ $('usuarioBarra').textContent=t.user;
  $('txtJugadores').textContent=t.players;
  $('txtXpTodos').textContent=t.allXp;
  $('txtTuPuesto').textContent=t.yourRank;
