@@ -582,12 +582,12 @@ window.MiWeb = (() => {
         const style = document.createElement('style');
         style.id = 'miweb-xp-styles';
         style.textContent = `
-            .miweb-xp-widget{position:fixed;right:16px;bottom:16px;z-index:9998;width:min(350px,calc(100vw - 32px));font-family:Arial,sans-serif}
-            .miweb-xp-chip{width:100%;border:2px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:17px;padding:15px 16px;box-shadow:0 9px 30px rgba(0,0,0,.32),0 0 0 3px rgba(224,180,60,.09);cursor:pointer;text-align:left}
-            .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800}
-            .miweb-xp-level{font-size:22px;letter-spacing:.2px}
-            .miweb-xp-small{font-size:14px;color:#aaa;font-weight:700}
-            .miweb-xp-bar{height:10px;background:#333;border-radius:99px;overflow:hidden;margin-top:11px}
+            .miweb-xp-widget{position:fixed;right:18px;bottom:18px;z-index:9998;width:min(400px,calc(100vw - 36px));font-family:Arial,sans-serif}
+            .miweb-xp-chip{width:100%;border:2px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:19px;padding:18px 20px;box-shadow:0 10px 34px rgba(0,0,0,.34),0 0 0 3px rgba(224,180,60,.09);cursor:pointer;text-align:left}
+            .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800}
+            .miweb-xp-level{font-size:26px;letter-spacing:.2px}
+            .miweb-xp-small{font-size:15px;color:#aaa;font-weight:700}
+            .miweb-xp-bar{height:12px;background:#333;border-radius:99px;overflow:hidden;margin-top:13px}
             .miweb-xp-fill{height:100%;background:linear-gradient(90deg,#ffd84d,#ff9f3d);width:0%;transition:width .25s ease}
             .miweb-xp-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #3a3a3a;color:#bbb;font-size:13px;line-height:1.5}
             .miweb-xp-widget.abierto .miweb-xp-detail{display:block}
@@ -597,7 +597,7 @@ window.MiWeb = (() => {
             body.claro .miweb-xp-small,body.claro .miweb-xp-detail{color:#555}
             body.claro .miweb-xp-bar{background:#e6e6e6}
             body.claro .miweb-xp-detail{border-top-color:#ddd}
-            @media(max-width:520px){.miweb-xp-widget{right:9px;bottom:9px;width:min(295px,calc(100vw - 18px))}.miweb-xp-chip{padding:12px 13px}.miweb-xp-level{font-size:19px}.miweb-xp-small{font-size:12px}.miweb-xp-toast{right:16px;bottom:112px}}
+            @media(max-width:520px){.miweb-xp-widget{right:7px;bottom:7px;width:min(220px,calc(100vw - 14px))}.miweb-xp-chip{border-width:1px;border-radius:12px;padding:8px 10px}.miweb-xp-row{gap:7px}.miweb-xp-level{font-size:15px}.miweb-xp-small{font-size:10px}.miweb-xp-bar{height:6px;margin-top:7px}.miweb-xp-detail{margin-top:7px;padding-top:7px;font-size:11px;line-height:1.35}.miweb-xp-toast{right:10px;bottom:72px;font-size:12px;padding:6px 9px}}
             @media(prefers-reduced-motion:reduce){.miweb-xp-fill{transition:none}.miweb-xp-toast{animation:none;opacity:1}}
         `;
         document.head.appendChild(style);
