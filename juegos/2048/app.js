@@ -1,7 +1,7 @@
 const T={
-es:{title:'🔢 2048',desc:'Une fichas iguales hasta conseguir 2048. Puedes seguir jugando después.',back:'← Volver',light:'☀️ Claro',dark:'🌙 Oscuro',points:'Puntos',best:'Mejor',tile:'Mayor ficha',new:'🔄 Nueva partida',note:'Usa las flechas o WASD. En móvil también puedes deslizar sobre el tablero.',win:'🎉 ¡Has conseguido 2048! Puedes seguir jugando.',over:'💥 No quedan movimientos. Fin de la partida.'},
-en:{title:'🔢 2048',desc:'Merge equal tiles until you reach 2048. You can keep playing afterwards.',back:'← Back',light:'☀️ Light',dark:'🌙 Dark',points:'Score',best:'Best',tile:'Highest tile',new:'🔄 New game',note:'Use the arrow keys or WASD. On mobile you can also swipe on the board.',win:'🎉 You reached 2048! You can keep playing.',over:'💥 No moves left. Game over.'},
-hy:{title:'🔢 2048',desc:'Միացրու նույն թվերով վանդակները մինչև ստանաս 2048։ Հետո կարող ես շարունակել խաղալ։',back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',points:'Միավորներ',best:'Լավագույն',tile:'Ամենամեծ վանդակ',new:'🔄 Նոր խաղ',note:'Օգտագործիր սլաքները կամ WASD։ Հեռախոսում կարող ես նաև սահեցնել տախտակի վրա։',win:'🎉 Դու ստացար 2048։ Կարող ես շարունակել խաղալ։',over:'💥 Այլ քայլ չկա։ Խաղն ավարտվեց։'}
+es:{title:'🔢 2048',desc:'Une fichas iguales hasta conseguir 2048. Al llegar a 2048, ganas 200 XP y termina la partida.',back:'← Volver',light:'☀️ Claro',dark:'🌙 Oscuro',points:'Puntos',best:'Mejor',tile:'Mayor ficha',new:'🔄 Nueva partida',note:'XP: ficha 16 = +1 · ficha 64 = +4 · ficha 2048 = +200. Usa flechas/WASD o desliza en móvil.',win:'🏆 ¡2048 conseguido! +200 XP · Fin de la partida.',over:'💥 No quedan movimientos. Fin de la partida.'},
+en:{title:'🔢 2048',desc:'Merge equal tiles until you reach 2048. Reaching 2048 gives 200 XP and ends the game.',back:'← Back',light:'☀️ Light',dark:'🌙 Dark',points:'Score',best:'Best',tile:'Highest tile',new:'🔄 New game',note:'XP: tile 16 = +1 · tile 64 = +4 · tile 2048 = +200. Use arrows/WASD or swipe on mobile.',win:'🏆 2048 reached! +200 XP · Game over.',over:'💥 No moves left. Game over.'},
+hy:{title:'🔢 2048',desc:'Միացրու նույն թվերով վանդակները մինչև ստանաս 2048։ 2048-ը տալիս է 200 XP և ավարտում խաղը։',back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',points:'Միավորներ',best:'Լավագույն',tile:'Ամենամեծ վանդակ',new:'🔄 Նոր խաղ',note:'XP՝ 16 = +1 · 64 = +4 · 2048 = +200։ Օգտագործիր սլաքները/WASD կամ սահեցրու հեռախոսում։',win:'🏆 Ստացար 2048։ +200 XP · Խաղն ավարտվեց։',over:'💥 Այլ քայլ չկա։ Խաղն ավարտվեց։'}
 };
 
 const $=id=>document.getElementById(id);
@@ -83,7 +83,7 @@ function addRandomTile(){
 }
 
 function startNew(countPrevious=true){
-    if(countPrevious&&movedAtLeastOnce&&!ended){syncFinishedGame(true);MiWeb.xpAction('game_finish');}
+    if(countPrevious&&movedAtLeastOnce&&!ended)syncFinishedGame(true);
     board=Array(16).fill(0);
     score=0;
     wonShown=false;
@@ -106,6 +106,7 @@ function collapse(values){
     const filtered=values.filter(Boolean);
     const result=[];
     const mergePositions=[];
+    const mergedValues=[];
     let gained=0;
     for(let i=0;i<filtered.length;i++){
         if(i+1<filtered.length&&filtered[i]===filtered[i+1]){
@@ -113,11 +114,12 @@ function collapse(values){
             result.push(value);
             gained+=value;
             mergePositions.push(result.length-1);
+            mergedValues.push(value);
             i++;
         }else result.push(filtered[i]);
     }
     while(result.length<SIZE)result.push(0);
-    return {result,gained,mergePositions};
+    return {result,gained,mergePositions,mergedValues};
 }
 
 function getLines(direction){
@@ -142,33 +144,45 @@ function move(direction){
     if(ended)return;
     const before=board.slice();
     let gained=0;
+    const createdTiles=[];
     mergedIndices.clear();
     newIndex=-1;
 
     for(const indices of getLines(direction)){
-        const {result,gained:lineGain,mergePositions}=collapse(lineValues(indices));
+        const {result,gained:lineGain,mergePositions,mergedValues}=collapse(lineValues(indices));
         gained+=lineGain;
+        createdTiles.push(...mergedValues);
         result.forEach((v,j)=>board[indices[j]]=v);
         mergePositions.forEach(j=>mergedIndices.add(indices[j]));
     }
 
-    if(before.every((v,i)=>v===board[i])){MiWeb.xpAction('wrong');return;}
+    if(before.every((v,i)=>v===board[i]))return;
 
     movedAtLeastOnce=true;
-    MiWeb.xpAction('correct');
     score+=gained;
-    addRandomTile();
 
-    if(!wonShown&&maxTile()>=2048){
+    createdTiles.forEach(value=>{
+        if(value===16)MiWeb.xpAction('tile_16');
+        else if(value===64)MiWeb.xpAction('tile_64');
+        else if(value===2048)MiWeb.xpAction('tile_2048');
+    });
+
+    if(createdTiles.includes(2048)){
         wonShown=true;
+        ended=true;
         $('mensaje').textContent=T[lang()].win;
+        syncFinishedGame(true);
+        saveCurrent();
+        render();
+        return;
     }
+
+    addRandomTile();
 
     if(!canMove()){
         ended=true;
         $('mensaje').textContent=T[lang()].over;
         syncFinishedGame(true);
-        MiWeb.xpAction('game_finish');
     }
 
     saveCurrent();
