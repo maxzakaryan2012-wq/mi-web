@@ -105,7 +105,6 @@ function renderText(){
     setTheme();
     updateHud();
     MiWeb.refreshRanking('saltos-multiplos');
-    MiWeb.xpAction('game_finish');
 }
 
 function updateHud(){
@@ -356,6 +355,7 @@ function endGame(){
     $('botonInicio').textContent=t.again;
     $('mensaje').textContent=t.over+' · '+t.score+': '+score;
     MiWeb.refreshRanking('saltos-multiplos');
+    MiWeb.xpAction('game_finish');
 }
 
 buttons.forEach((button,i)=>button.addEventListener('click',()=>selectPlatform(i)));

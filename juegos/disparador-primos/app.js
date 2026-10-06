@@ -123,7 +123,6 @@ function renderText(){
     setTheme();
     showStats();
     MiWeb.refreshRanking('disparador-primos');
-    MiWeb.xpAction('game_finish');
 }
 
 function stats(){
@@ -347,6 +346,7 @@ function endGame(){
     $('overlayTitulo').textContent=T[lang()].over+' '+score;
     $('botonInicio').textContent=T[lang()].again;
     MiWeb.refreshRanking('disparador-primos');
+    MiWeb.xpAction('game_finish');
 }
 
 function loseLife(message){
