@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crea el número - MI WEB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;transition:.25s}
+.barra{min-height:70px;background:#181818;border-bottom:1px solid #333;display:flex;align-items:center;padding:12px 22px;gap:12px}
+.volver{color:#fff;text-decoration:none;font-weight:800;font-size:18px}.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#252525;color:#fff;border:1px solid #444;border-radius:9px;padding:10px 13px;cursor:pointer}
+.idiomas{display:none;position:absolute;right:0;top:45px;background:#202020;border:1px solid #444;border-radius:9px;overflow:hidden;min-width:145px;z-index:30}
+.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:11px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+main{max-width:980px;margin:auto;padding:36px 18px 120px;text-align:center}
+h1{font-size:42px;margin:0 0 8px}.descripcion{color:#aaa;line-height:1.5;margin:0 auto 18px;max-width:760px}
+.panel{background:#1d1d1d;border:1px solid #333;border-radius:20px;padding:20px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.dato{background:#181818;border:1px solid #333;border-radius:13px;padding:11px}.dato span{display:block;color:#aaa;font-size:12px}.dato strong{display:block;font-size:24px;margin-top:3px}
+.objetivo-wrap{background:#15191e;border:1px solid #333;border-radius:18px;padding:18px;margin-bottom:16px}
+.objetivo-label{color:#aaa;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.7px}.objetivo{font-size:52px;font-weight:900;margin-top:4px}
+.progreso{height:9px;background:#303030;border-radius:99px;overflow:hidden;margin-top:12px}.progreso-fill{height:100%;background:linear-gradient(90deg,#ffd84d,#ff9f3d);width:0;transition:width .25s}
+.mesa{position:relative;min-height:390px;border:1px solid #333;border-radius:18px;background:radial-gradient(circle at 50% 15%,rgba(39,128,82,.2),transparent 42%),linear-gradient(#14301f,#102419);padding:24px 14px;overflow:hidden}
+.estado{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;color:#d7e2db;font-size:14px}
+.cartas{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;min-height:170px;margin:6px 0 20px}
+.carta{position:relative;width:112px;height:154px;border:0;border-radius:13px;background:#fafafa;color:#111;box-shadow:0 8px 0 #c9c9c9,0 13px 22px rgba(0,0,0,.28);cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px}
+.carta:hover:not(:disabled){transform:translateY(-5px)}.carta.seleccionada{outline:4px solid #ffd34d;transform:translateY(-7px);box-shadow:0 8px 0 #b58d12,0 15px 25px rgba(0,0,0,.32)}
+.carta:disabled{cursor:default}.carta .esquina{position:absolute;left:9px;top:7px;text-align:center;font-weight:900;line-height:1}.carta .esquina.abajo{left:auto;top:auto;right:9px;bottom:7px;transform:rotate(180deg)}
+.carta .rango{font-size:24px}.carta .palo{font-size:18px;margin-top:2px}.carta .centro{font-size:45px;font-weight:900;line-height:1}.carta .valor-real{font-size:12px;color:#777;font-weight:700;margin-top:8px}
+.carta.roja{color:#c72c35}.carta.resultado{background:#fff8d7;box-shadow:0 8px 0 #c8b65c,0 13px 22px rgba(0,0,0,.28)}
+.operadores{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.operador{width:64px;height:52px;border:1px solid #555;border-radius:12px;background:#252b30;color:#fff;font-size:25px;font-weight:900;cursor:pointer;transition:.12s}
+.operador:hover:not(:disabled){transform:translateY(-2px);background:#343c43}.operador.activo{background:#d3a91e;color:#111;border-color:#efcc57}.operador:disabled{opacity:.4;cursor:default}
+.acciones{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:10px}.accion{border:0;border-radius:10px;padding:11px 15px;background:#eee;color:#111;font-weight:800;cursor:pointer}.accion.secundaria{background:#30363c;color:#fff;border:1px solid #505861}
+.historial{max-width:690px;margin:18px auto 0;background:rgba(0,0,0,.16);border-radius:12px;padding:12px;text-align:left;min-height:54px}.historial-titulo{font-size:12px;color:#aeb9b1;font-weight:800;text-transform:uppercase}.historial-lista{margin:8px 0 0;padding-left:22px;color:#e0e6e2;line-height:1.6}
+.mensaje{min-height:29px;margin:16px 0 0;font-weight:800;font-size:17px}.mensaje.ok{color:#74e494}.mensaje.bad{color:#ff7c86}.mensaje.info{color:#ffd65d}
+.overlay{position:absolute;inset:0;z-index:20;background:rgba(12,18,14,.9);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}.overlay.oculto{display:none}
+.overlay h2{font-size:32px;margin:0 0 8px}.overlay p{max-width:590px;line-height:1.5;color:#c9d1cc;margin:0 0 18px}.boton-principal{border:0;border-radius:11px;padding:13px 20px;background:#fff;color:#111;font-size:16px;font-weight:900;cursor:pointer}
+.nota{color:#aaa;font-size:14px;line-height:1.55;margin:17px 0 0}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0}.flash.ok{animation:flashOk .4s}.flash.bad{animation:flashBad .4s}
+@keyframes flashOk{50%{background:rgba(54,218,101,.14);opacity:1}}@keyframes flashBad{50%{background:rgba(255,67,80,.12);opacity:1}}
+body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}
+body.claro .panel,body.claro .dato,body.claro .objetivo-wrap{background:#fff;border-color:#ddd}body.claro .descripcion,body.claro .nota,body.claro .dato span,body.claro .objetivo-label{color:#555}
+body.claro .mesa{border-color:#cbd7ce;background:radial-gradient(circle at 50% 15%,rgba(70,160,105,.17),transparent 42%),linear-gradient(#e5f3e8,#d9ebdd)}
+body.claro .estado{color:#34473a}body.claro .operador{background:#fff;color:#111;border-color:#bbb}body.claro .operador.activo{background:#ffd861;border-color:#c99d18}.accion.secundaria{border-color:#666}
+body.claro .historial{background:rgba(255,255,255,.55)}body.claro .historial-titulo{color:#617066}body.claro .historial-lista{color:#26332b}body.claro .progreso{background:#e4e4e4}
+@media(max-width:650px){.barra{padding:10px 12px}main{padding:28px 9px 120px}h1{font-size:32px}.panel{padding:11px}.hud{grid-template-columns:repeat(2,1fr)}.objetivo{font-size:45px}.mesa{padding:19px 8px;min-height:390px}.cartas{gap:8px;min-height:145px}.carta{width:82px;height:116px;border-radius:10px;padding:5px}.carta .rango{font-size:18px}.carta .palo{font-size:14px}.carta .centro{font-size:34px}.carta .valor-real{font-size:10px;margin-top:5px}.carta .esquina{left:6px;top:6px}.carta .esquina.abajo{right:6px;bottom:6px}.operador{width:55px;height:47px}.historial{font-size:13px}}
+@media(max-width:390px){.carta{width:73px;height:106px}.cartas{gap:6px}.carta .centro{font-size:30px}}
+@media(prefers-reduced-motion:reduce){.carta,.operador,.progreso-fill{transition:none}.flash{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="barra">
+<a class="volver" id="volver" href="../../index.html#juegos">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma">
+<button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas">
+<button data-lang="es">🇪🇸 Español</button>
+<button data-lang="en">🇬🇧 English</button>
+<button data-lang="hy">🇦🇲 Հայերեն</button>
+</div>
+</div>
+<button id="botonTema">☀️ Claro</button>
+</header>
+
+<main>
+<h1 id="titulo">🃏 Crea el número</h1>
+<p class="descripcion" id="descripcion">Usa todas las cartas una sola vez y combina sus valores hasta conseguir exactamente el número objetivo.</p>
+
+<section class="panel">
+<div class="hud">
+<div class="dato"><span id="txtNivel">Nivel</span><strong id="nivel">1</strong></div>
+<div class="dato"><span id="txtResueltos">Resueltos</span><strong id="resueltos">0</strong></div>
+<div class="dato"><span id="txtRacha">Racha</span><strong id="racha">0</strong></div>
+<div class="dato"><span id="txtXp">XP al resolver</span><strong>+5</strong></div>
+</div>
+
+<div class="objetivo-wrap">
+<div class="objetivo-label" id="txtObjetivo">Número objetivo</div>
+<div class="objetivo" id="objetivo">24</div>
+<div class="progreso"><div class="progreso-fill" id="progresoFill"></div></div>
+</div>
+
+<div class="mesa">
+<div class="estado"><span id="dificultad">3 cartas · + −</span><span>•</span><span id="instruccion">Elige una carta</span></div>
+
+<div class="cartas" id="cartas"></div>
+
+<div class="operadores" id="operadores">
+<button class="operador" data-op="+">+</button>
+<button class="operador" data-op="-">−</button>
+<button class="operador" data-op="*">×</button>
+<button class="operador" data-op="/">÷</button>
+</div>
+
+<div class="acciones">
+<button class="accion secundaria" id="deshacer" type="button">↶ Deshacer</button>
+<button class="accion secundaria" id="reiniciar" type="button">↺ Reiniciar reto</button>
+<button class="accion secundaria" id="nuevo" type="button">🎲 Nuevo reto</button>
+</div>
+
+<div class="historial">
+<div class="historial-titulo" id="txtHistorial">Operaciones</div>
+<ol class="historial-lista" id="historial"></ol>
+</div>
+
+<div class="mensaje" id="mensaje" aria-live="polite"></div>
+<div class="flash" id="flash"></div>
+
+<div class="overlay" id="overlay">
+<h2 id="overlayTitulo">¿Preparado?</h2>
+<p id="overlayTexto">Combina las cartas hasta dejar una sola. Debes usar todas. Cada reto está generado con una solución posible.</p>
+<button class="boton-principal" id="empezar" type="button">▶️ Empezar</button>
+</div>
+</div>
+
+<p class="nota" id="nota">A=11, J=12, Q=13 y K=14. La división solo se permite cuando el resultado es entero. Cada 5 retos resueltos sube la dificultad.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js?v=xp-20261006-9"></script>
+<script src="app.js"></script>
+</body>
+</html>
