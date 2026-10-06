@@ -244,8 +244,9 @@ async function answer(value){
     addGlobalCorrect();
   }else{
     streak=0;
+    correctInLevel=Math.max(0,correctInLevel-1);
     const truth=current.expression+' = '+current.result;
-    $('mensaje').textContent=t.wrong+' '+truth;
+    $('mensaje').textContent=t.wrong+' '+truth+' · -1';
     $('mensaje').className='mensaje bad';
     flash('bad');
     updateStats();
