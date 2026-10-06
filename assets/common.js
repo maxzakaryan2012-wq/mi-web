@@ -549,7 +549,7 @@ window.MiWeb = (() => {
         if (event === 'active_minute') return category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0;
         if (event === 'correct' && category === 'game') {
             if (context === 'pulsa-el-boton') return 1;
-            if (context === '2048') return 2;
+            if (context === '2048') return 1;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 8;
