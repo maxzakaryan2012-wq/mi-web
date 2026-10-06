@@ -551,8 +551,9 @@ window.MiWeb = (() => {
         if (context === '2048' && event === 'tile_16') return 1;
         if (context === '2048' && event === 'tile_64') return 4;
         if (context === '2048' && event === 'tile_2048') return 200;
+        if (context === 'pulsa-el-boton' && event === 'click_7') return 1;
         if (event === 'correct' && category === 'game') {
-            if (context === 'pulsa-el-boton') return 1;
+            if (context === 'pulsa-el-boton') return 0;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso','crea-el-numero'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
