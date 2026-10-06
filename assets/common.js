@@ -579,13 +579,14 @@ window.MiWeb = (() => {
         const style = document.createElement('style');
         style.id = 'miweb-xp-styles';
         style.textContent = `
-            .miweb-xp-widget{position:fixed;right:14px;bottom:14px;z-index:9998;width:min(290px,calc(100vw - 28px));font-family:Arial,sans-serif}
-            .miweb-xp-chip{width:100%;border:1px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 7px 24px rgba(0,0,0,.28),0 0 0 2px rgba(224,180,60,.08);cursor:pointer;text-align:left}
-            .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800}
-            .miweb-xp-small{font-size:12px;color:#aaa;font-weight:600}
-            .miweb-xp-bar{height:7px;background:#333;border-radius:99px;overflow:hidden;margin-top:8px}
+            .miweb-xp-widget{position:fixed;right:16px;bottom:16px;z-index:9998;width:min(350px,calc(100vw - 32px));font-family:Arial,sans-serif}
+            .miweb-xp-chip{width:100%;border:2px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:17px;padding:15px 16px;box-shadow:0 9px 30px rgba(0,0,0,.32),0 0 0 3px rgba(224,180,60,.09);cursor:pointer;text-align:left}
+            .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800}
+            .miweb-xp-level{font-size:22px;letter-spacing:.2px}
+            .miweb-xp-small{font-size:14px;color:#aaa;font-weight:700}
+            .miweb-xp-bar{height:10px;background:#333;border-radius:99px;overflow:hidden;margin-top:11px}
             .miweb-xp-fill{height:100%;background:linear-gradient(90deg,#ffd84d,#ff9f3d);width:0%;transition:width .25s ease}
-            .miweb-xp-detail{display:none;margin-top:7px;padding-top:8px;border-top:1px solid #3a3a3a;color:#bbb;font-size:12px;line-height:1.45}
+            .miweb-xp-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #3a3a3a;color:#bbb;font-size:13px;line-height:1.5}
             .miweb-xp-widget.abierto .miweb-xp-detail{display:block}
             .miweb-xp-toast{position:fixed;right:24px;bottom:104px;z-index:9999;background:#252525;color:#fff;border:1px solid #555;border-radius:999px;padding:8px 12px;font-weight:bold;pointer-events:none;animation:miwebXpToast 1.25s ease forwards}
             @keyframes miwebXpToast{0%{opacity:0;transform:translateY(8px)}15%,70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px)}}
@@ -593,7 +594,7 @@ window.MiWeb = (() => {
             body.claro .miweb-xp-small,body.claro .miweb-xp-detail{color:#555}
             body.claro .miweb-xp-bar{background:#e6e6e6}
             body.claro .miweb-xp-detail{border-top-color:#ddd}
-            @media(max-width:520px){.miweb-xp-widget{right:9px;bottom:9px;width:min(245px,calc(100vw - 18px))}.miweb-xp-toast{right:16px;bottom:95px}}
+            @media(max-width:520px){.miweb-xp-widget{right:9px;bottom:9px;width:min(295px,calc(100vw - 18px))}.miweb-xp-chip{padding:12px 13px}.miweb-xp-level{font-size:19px}.miweb-xp-small{font-size:12px}.miweb-xp-toast{right:16px;bottom:112px}}
             @media(prefers-reduced-motion:reduce){.miweb-xp-fill{transition:none}.miweb-xp-toast{animation:none;opacity:1}}
         `;
         document.head.appendChild(style);
@@ -702,6 +703,16 @@ window.MiWeb = (() => {
         return { awarded:0, ...(xpCache || readLocalXp()) };
     }
 
+    async function getXpLeaderboard() {
+        try {
+            const rows = await rpc('get_xp_leaderboard', {});
+            return Array.isArray(rows) ? rows : [];
+        } catch (error) {
+            console.warn('No se pudo cargar el ranking global de XP.', error);
+            return [];
+        }
+    }
+
     function xpAction(event) {
         return awardXP(event);
     }
@@ -740,6 +751,6 @@ window.MiWeb = (() => {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        awardXP, xpAction, refreshXp, xpRequiredForLevel, xpProgressFromTotal
+        awardXP, xpAction, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
     };
 })();
