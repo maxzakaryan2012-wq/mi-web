@@ -1960,7 +1960,7 @@
                     buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
-                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo",
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo", resueltos: "Resueltos",
                     generados: "Generados", intentos: "Mejor", partidas: "Partidas", global: "Global"
                 },
                 en: {
@@ -1970,7 +1970,7 @@
                     buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
-                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level",
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level", resueltos: "Solved",
                     generados: "Generated", intentos: "Best", partidas: "Games", global: "Global"
                 },
                 hy: {
@@ -1980,7 +1980,7 @@
                     buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
-                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ",
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ", resueltos: "Լուծված",
                     generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", global: "Ընդհանուր"
                 }
             }[idioma];
@@ -2098,7 +2098,7 @@
                 }
                 if (titleId === "tituloCreaNumero") {
                     row = valorUsuario(MiWeb.readExtraStats("crea-el-numero"));
-                    return row ? "🃏 " + t.nivelMax + ": " + (row.maxNivel || 1) + " · " + (row.resueltos || 0) + " resueltos" : t.sinRecord;
+                    return row ? "🃏 " + t.nivelMax + ": " + (row.maxNivel || 1) + " · " + (row.resueltos || 0) + " " + t.resueltos : t.sinRecord;
                 }
                 
                 
