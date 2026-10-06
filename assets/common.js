@@ -548,16 +548,18 @@ window.MiWeb = (() => {
         if (event === 'page_enter') return category === 'home' ? 1 : category === 'game' ? 3 : 2;
         if (event === 'active_minute') return category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0;
         if (event === 'attempt' && category === 'game' && ['adivina-el-numero','adivino-tu-numero'].includes(context)) return 1;
+        if (context === '2048' && event === 'tile_16') return 1;
+        if (context === '2048' && event === 'tile_64') return 4;
+        if (context === '2048' && event === 'tile_2048') return 200;
         if (event === 'correct' && category === 'game') {
             if (context === 'pulsa-el-boton') return 1;
-            if (context === '2048') return 1;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
         if (event === 'wrong' && category === 'game') return 1;
-        if (event === 'game_finish' && category === 'game') return context === 'pulsa-el-boton' ? 6 : context === '2048' ? 10 : 8;
+        if (event === 'game_finish' && category === 'game') return context === '2048' ? 0 : context === 'pulsa-el-boton' ? 6 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;
