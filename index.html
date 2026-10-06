@@ -415,248 +415,6 @@
         }
 
         /* =========================
-           RANKING GLOBAL DE XP
-        ========================= */
-
-        let rankingXpFilas = [];
-
-        function textosRankingXp() {
-            const idioma = localStorage.getItem("idioma") || "es";
-            return {
-                es: {
-                    titulo: "🏆 Ranking XP",
-                    descripcion: "Clasificación global por XP total. Cuanto más juegas, calculas y experimentas, más subes.",
-                    jugadores: "Jugadores",
-                    xpTodos: "XP de todos",
-                    tuPuesto: "Tu puesto",
-                    actualizar: "↻ Actualizar ranking",
-                    cargando: "Cargando ranking...",
-                    vacio: "No hay jugadores con XP todavía.",
-                    puesto: "Puesto",
-                    jugador: "Jugador",
-                    nivel: "Nivel",
-                    xp: "XP total",
-                    progreso: "Progreso",
-                    tu: "TÚ",
-                    max: "MÁX"
-                },
-                en: {
-                    titulo: "🏆 XP Ranking",
-                    descripcion: "Global ranking by total XP. The more you play, calculate and experiment, the higher you climb.",
-                    jugadores: "Players",
-                    xpTodos: "Everyone's XP",
-                    tuPuesto: "Your rank",
-                    actualizar: "↻ Refresh ranking",
-                    cargando: "Loading ranking...",
-                    vacio: "No players have XP yet.",
-                    puesto: "Rank",
-                    jugador: "Player",
-                    nivel: "Level",
-                    xp: "Total XP",
-                    progreso: "Progress",
-                    tu: "YOU",
-                    max: "MAX"
-                },
-                hy: {
-                    titulo: "🏆 XP վարկանիշ",
-                    descripcion: "Ընդհանուր վարկանիշ՝ ըստ հավաքած XP-ի։ Որքան շատ խաղաս, հաշվես և փորձեր անես, այնքան բարձր կբարձրանաս։",
-                    jugadores: "Խաղացողներ",
-                    xpTodos: "Բոլորի XP-ն",
-                    tuPuesto: "Քո տեղը",
-                    actualizar: "↻ Թարմացնել վարկանիշը",
-                    cargando: "Վարկանիշը բեռնվում է...",
-                    vacio: "Դեռ XP ունեցող խաղացողներ չկան։",
-                    puesto: "Տեղ",
-                    jugador: "Խաղացող",
-                    nivel: "Մակարդակ",
-                    xp: "Ընդհանուր XP",
-                    progreso: "Առաջընթաց",
-                    tu: "ԴՈՒ",
-                    max: "MAX"
-                }
-            }[idioma];
-        }
-
-        function formatoRankingXp(valor) {
-            return new Intl.NumberFormat(document.documentElement.lang || "es")
-                .format(Number(valor) || 0);
-        }
-
-        function actualizarTextosRankingXp() {
-            const t = textosRankingXp();
-            document.getElementById("rankingTitulo").textContent = t.titulo;
-            document.getElementById("rankingDescripcion").textContent = t.descripcion;
-            document.getElementById("rankingTxtJugadores").textContent = t.jugadores;
-            document.getElementById("rankingTxtXpTodos").textContent = t.xpTodos;
-            document.getElementById("rankingTxtTuPuesto").textContent = t.tuPuesto;
-            document.getElementById("rankingActualizar").textContent = t.actualizar;
-            document.getElementById("rankingThPuesto").textContent = t.puesto;
-            document.getElementById("rankingThJugador").textContent = t.jugador;
-            document.getElementById("rankingThNivel").textContent = t.nivel;
-            document.getElementById("rankingThXp").textContent = t.xp;
-            document.getElementById("rankingThProgreso").textContent = t.progreso;
-            document.getElementById("rankingVacio").textContent = t.vacio;
-        }
-
-        function dibujarPodioRankingXp() {
-            const t = textosRankingXp();
-            const medallas = { 1: "🥇", 2: "🥈", 3: "🥉" };
-
-            [1, 2, 3].forEach(posicion => {
-                const caja = document.querySelector('[data-ranking-podio="' + posicion + '"]');
-                const fila = rankingXpFilas[posicion - 1];
-
-                caja.innerHTML = "";
-
-                const medalla = document.createElement("div");
-                medalla.className = "medalla";
-                medalla.textContent = medallas[posicion];
-                caja.appendChild(medalla);
-
-                const nombre = document.createElement("strong");
-                nombre.textContent = fila ? fila.player_name + (fila.is_you ? " · " + t.tu : "") : "—";
-                caja.appendChild(nombre);
-
-                if (fila) {
-                    const nivel = document.createElement("div");
-                    nivel.className = "nivel";
-                    nivel.textContent = t.nivel + " " + fila.level;
-
-                    const xp = document.createElement("div");
-                    xp.className = "xp";
-                    xp.textContent = formatoRankingXp(fila.total_xp) + " XP";
-
-                    caja.append(nivel, xp);
-                }
-            });
-        }
-
-        function dibujarRankingXp() {
-            actualizarTextosRankingXp();
-
-            const t = textosRankingXp();
-            const cuerpo = document.getElementById("rankingBody");
-            const vacio = document.getElementById("rankingVacio");
-            const mia = rankingXpFilas.find(fila => fila.is_you);
-
-            document.getElementById("rankingTotalJugadores").textContent =
-                formatoRankingXp(rankingXpFilas.length);
-
-            document.getElementById("rankingXpTodos").textContent =
-                formatoRankingXp(rankingXpFilas.reduce((total, fila) => total + Number(fila.total_xp || 0), 0));
-
-            document.getElementById("rankingTuPuesto").textContent =
-                mia ? "#" + mia.rank : "—";
-
-            dibujarPodioRankingXp();
-            cuerpo.innerHTML = "";
-            vacio.hidden = rankingXpFilas.length > 0;
-
-            rankingXpFilas.forEach(fila => {
-                const tr = document.createElement("tr");
-                if (fila.is_you) tr.className = "tu";
-
-                const tdPuesto = document.createElement("td");
-                tdPuesto.className = "ranking-rank";
-                tdPuesto.textContent = "#" + fila.rank;
-
-                const tdJugador = document.createElement("td");
-                const nombre = document.createElement("strong");
-                nombre.textContent = fila.player_name;
-                tdJugador.appendChild(nombre);
-
-                if (fila.is_you) {
-                    const badge = document.createElement("span");
-                    badge.className = "ranking-tu";
-                    badge.textContent = t.tu;
-                    tdJugador.appendChild(badge);
-                }
-
-                const tdNivel = document.createElement("td");
-                tdNivel.className = "ranking-nivel";
-                tdNivel.textContent = t.nivel + " " + fila.level;
-
-                const tdXp = document.createElement("td");
-                tdXp.className = "ranking-xp";
-                tdXp.textContent = formatoRankingXp(fila.total_xp) + " XP";
-
-                const tdProgreso = document.createElement("td");
-
-                if (Number(fila.level) >= 100) {
-                    tdProgreso.textContent = t.max;
-                } else {
-                    const texto = document.createElement("div");
-                    texto.textContent =
-                        formatoRankingXp(fila.current_xp) +
-                        " / " +
-                        formatoRankingXp(fila.next_xp) +
-                        " XP";
-
-                    const barra = document.createElement("div");
-                    barra.className = "ranking-progreso";
-
-                    const relleno = document.createElement("span");
-                    const porcentaje = Math.max(
-                        0,
-                        Math.min(
-                            100,
-                            Number(fila.current_xp) /
-                            Math.max(1, Number(fila.next_xp)) *
-                            100
-                        )
-                    );
-
-                    relleno.style.width = porcentaje + "%";
-                    barra.appendChild(relleno);
-                    tdProgreso.append(texto, barra);
-                }
-
-                tr.append(tdPuesto, tdJugador, tdNivel, tdXp, tdProgreso);
-                cuerpo.appendChild(tr);
-            });
-        }
-
-        async function cargarRankingXp() {
-            const estado = document.getElementById("rankingEstado");
-            const boton = document.getElementById("rankingActualizar");
-            const t = textosRankingXp();
-
-            boton.disabled = true;
-            estado.textContent = t.cargando;
-
-            try {
-                if (!window.MiWeb || typeof MiWeb.getXpLeaderboard !== "function") {
-                    throw new Error("La versión del sistema XP no está actualizada.");
-                }
-
-                rankingXpFilas = await MiWeb.getXpLeaderboard();
-
-                if (!Array.isArray(rankingXpFilas)) {
-                    rankingXpFilas = [];
-                }
-
-                estado.textContent = rankingXpFilas.length
-                    ? ""
-                    : "No se recibieron jugadores. Pulsa actualizar.";
-            } catch (error) {
-                console.error("Error cargando Ranking XP", error);
-                rankingXpFilas = [];
-                estado.textContent =
-                    "⚠️ No se pudo cargar el ranking. Recarga la página (Ctrl + F5).";
-            } finally {
-                boton.disabled = false;
-                dibujarRankingXp();
-            }
-        }
-
-        document.getElementById("rankingActualizar")
-            .addEventListener("click", cargarRankingXp);
-
-        window.addEventListener("miweb-xp", () => {
-            if (vistaActual === "ranking") cargarRankingXp();
-        });
-
-        /* =========================
            PORTADA MEJORADA
         ========================= */
 
@@ -1893,6 +1651,278 @@
             mostrarSeccion(location.hash.slice(1) || "inicio", false);
         });
 
+
+        /* =========================
+           RANKING GLOBAL DE XP
+        ========================= */
+
+        let rankingXpFilas = [];
+
+        function textosRankingXp() {
+            const idioma = localStorage.getItem("idioma") || "es";
+            return {
+                es: {
+                    titulo: "🏆 Ranking XP",
+                    descripcion: "Clasificación global por XP total. Cuanto más juegas, calculas y experimentas, más subes.",
+                    jugadores: "Jugadores",
+                    xpTodos: "XP de todos",
+                    tuPuesto: "Tu puesto",
+                    actualizar: "↻ Actualizar ranking",
+                    cargando: "Cargando ranking...",
+                    vacio: "No hay jugadores con XP todavía.",
+                    puesto: "Puesto",
+                    jugador: "Jugador",
+                    nivel: "Nivel",
+                    xp: "XP total",
+                    progreso: "Progreso",
+                    tu: "TÚ",
+                    max: "MÁX"
+                },
+                en: {
+                    titulo: "🏆 XP Ranking",
+                    descripcion: "Global ranking by total XP. The more you play, calculate and experiment, the higher you climb.",
+                    jugadores: "Players",
+                    xpTodos: "Everyone's XP",
+                    tuPuesto: "Your rank",
+                    actualizar: "↻ Refresh ranking",
+                    cargando: "Loading ranking...",
+                    vacio: "No players have XP yet.",
+                    puesto: "Rank",
+                    jugador: "Player",
+                    nivel: "Level",
+                    xp: "Total XP",
+                    progreso: "Progress",
+                    tu: "YOU",
+                    max: "MAX"
+                },
+                hy: {
+                    titulo: "🏆 XP վարկանիշ",
+                    descripcion: "Ընդհանուր վարկանիշ՝ ըստ հավաքած XP-ի։ Որքան շատ խաղաս, հաշվես և փորձեր անես, այնքան բարձր կբարձրանաս։",
+                    jugadores: "Խաղացողներ",
+                    xpTodos: "Բոլորի XP-ն",
+                    tuPuesto: "Քո տեղը",
+                    actualizar: "↻ Թարմացնել վարկանիշը",
+                    cargando: "Վարկանիշը բեռնվում է...",
+                    vacio: "Դեռ XP ունեցող խաղացողներ չկան։",
+                    puesto: "Տեղ",
+                    jugador: "Խաղացող",
+                    nivel: "Մակարդակ",
+                    xp: "Ընդհանուր XP",
+                    progreso: "Առաջընթաց",
+                    tu: "ԴՈՒ",
+                    max: "MAX"
+                }
+            }[idioma];
+        }
+
+        function formatoRankingXp(valor) {
+            return new Intl.NumberFormat(document.documentElement.lang || "es")
+                .format(Number(valor) || 0);
+        }
+
+        function actualizarTextosRankingXp() {
+            const t = textosRankingXp();
+            document.getElementById("rankingTitulo").textContent = t.titulo;
+            document.getElementById("rankingDescripcion").textContent = t.descripcion;
+            document.getElementById("rankingTxtJugadores").textContent = t.jugadores;
+            document.getElementById("rankingTxtXpTodos").textContent = t.xpTodos;
+            document.getElementById("rankingTxtTuPuesto").textContent = t.tuPuesto;
+            document.getElementById("rankingActualizar").textContent = t.actualizar;
+            document.getElementById("rankingThPuesto").textContent = t.puesto;
+            document.getElementById("rankingThJugador").textContent = t.jugador;
+            document.getElementById("rankingThNivel").textContent = t.nivel;
+            document.getElementById("rankingThXp").textContent = t.xp;
+            document.getElementById("rankingThProgreso").textContent = t.progreso;
+            document.getElementById("rankingVacio").textContent = t.vacio;
+        }
+
+        function dibujarPodioRankingXp() {
+            const t = textosRankingXp();
+            const medallas = { 1: "🥇", 2: "🥈", 3: "🥉" };
+
+            [1, 2, 3].forEach(posicion => {
+                const caja = document.querySelector('[data-ranking-podio="' + posicion + '"]');
+                const fila = rankingXpFilas[posicion - 1];
+
+                caja.innerHTML = "";
+
+                const medalla = document.createElement("div");
+                medalla.className = "medalla";
+                medalla.textContent = medallas[posicion];
+                caja.appendChild(medalla);
+
+                const nombre = document.createElement("strong");
+                nombre.textContent = fila ? fila.player_name + (fila.is_you ? " · " + t.tu : "") : "—";
+                caja.appendChild(nombre);
+
+                if (fila) {
+                    const nivel = document.createElement("div");
+                    nivel.className = "nivel";
+                    nivel.textContent = t.nivel + " " + fila.level;
+
+                    const xp = document.createElement("div");
+                    xp.className = "xp";
+                    xp.textContent = formatoRankingXp(fila.total_xp) + " XP";
+
+                    caja.append(nivel, xp);
+                }
+            });
+        }
+
+        function dibujarRankingXp() {
+            actualizarTextosRankingXp();
+
+            const t = textosRankingXp();
+            const cuerpo = document.getElementById("rankingBody");
+            const vacio = document.getElementById("rankingVacio");
+            const mia = rankingXpFilas.find(fila => fila.is_you);
+
+            document.getElementById("rankingTotalJugadores").textContent =
+                formatoRankingXp(rankingXpFilas.length);
+
+            document.getElementById("rankingXpTodos").textContent =
+                formatoRankingXp(rankingXpFilas.reduce((total, fila) => total + Number(fila.total_xp || 0), 0));
+
+            document.getElementById("rankingTuPuesto").textContent =
+                mia ? "#" + mia.rank : "—";
+
+            dibujarPodioRankingXp();
+            cuerpo.innerHTML = "";
+            vacio.hidden = rankingXpFilas.length > 0;
+
+            rankingXpFilas.forEach(fila => {
+                const tr = document.createElement("tr");
+                if (fila.is_you) tr.className = "tu";
+
+                const tdPuesto = document.createElement("td");
+                tdPuesto.className = "ranking-rank";
+                tdPuesto.textContent = "#" + fila.rank;
+
+                const tdJugador = document.createElement("td");
+                const nombre = document.createElement("strong");
+                nombre.textContent = fila.player_name;
+                tdJugador.appendChild(nombre);
+
+                if (fila.is_you) {
+                    const badge = document.createElement("span");
+                    badge.className = "ranking-tu";
+                    badge.textContent = t.tu;
+                    tdJugador.appendChild(badge);
+                }
+
+                const tdNivel = document.createElement("td");
+                tdNivel.className = "ranking-nivel";
+                tdNivel.textContent = t.nivel + " " + fila.level;
+
+                const tdXp = document.createElement("td");
+                tdXp.className = "ranking-xp";
+                tdXp.textContent = formatoRankingXp(fila.total_xp) + " XP";
+
+                const tdProgreso = document.createElement("td");
+
+                if (Number(fila.level) >= 100) {
+                    tdProgreso.textContent = t.max;
+                } else {
+                    const texto = document.createElement("div");
+                    texto.textContent =
+                        formatoRankingXp(fila.current_xp) +
+                        " / " +
+                        formatoRankingXp(fila.next_xp) +
+                        " XP";
+
+                    const barra = document.createElement("div");
+                    barra.className = "ranking-progreso";
+
+                    const relleno = document.createElement("span");
+                    const porcentaje = Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            Number(fila.current_xp) /
+                            Math.max(1, Number(fila.next_xp)) *
+                            100
+                        )
+                    );
+
+                    relleno.style.width = porcentaje + "%";
+                    barra.appendChild(relleno);
+                    tdProgreso.append(texto, barra);
+                }
+
+                tr.append(tdPuesto, tdJugador, tdNivel, tdXp, tdProgreso);
+                cuerpo.appendChild(tr);
+            });
+        }
+
+        async function obtenerRankingXpDirecto() {
+            const url = "https://bxbjbbylswiocymrqaqk.supabase.co/rest/v1/rpc/get_xp_leaderboard";
+            const key = "sb_publishable_fUqvcSbYMb1gfJdrqS-7Lw_nhLtaEp_";
+            const tokenKey = "miWebGlobalPlayerTokenV1";
+            let token = localStorage.getItem(tokenKey);
+
+            if (!token || token.length < 30) {
+                token = crypto.randomUUID() + crypto.randomUUID();
+                localStorage.setItem(tokenKey, token);
+            }
+
+            const respuesta = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "apikey": key,
+                    "Authorization": "Bearer " + key,
+                    "Content-Type": "application/json",
+                    "x-player-token": token
+                },
+                body: "{}"
+            });
+
+            if (!respuesta.ok) {
+                throw new Error("Supabase " + respuesta.status + ": " + await respuesta.text());
+            }
+
+            const filas = await respuesta.json();
+            return Array.isArray(filas) ? filas : [];
+        }
+
+        async function cargarRankingXp() {
+            const estado = document.getElementById("rankingEstado");
+            const boton = document.getElementById("rankingActualizar");
+            const t = textosRankingXp();
+
+            boton.disabled = true;
+            estado.textContent = t.cargando;
+
+            try {
+                if (window.MiWeb && typeof MiWeb.getXpLeaderboard === "function") {
+                    rankingXpFilas = await MiWeb.getXpLeaderboard();
+                } else {
+                    rankingXpFilas = [];
+                }
+
+                if (!Array.isArray(rankingXpFilas) || rankingXpFilas.length === 0) {
+                    rankingXpFilas = await obtenerRankingXpDirecto();
+                }
+
+                estado.textContent = rankingXpFilas.length
+                    ? ""
+                    : "No se recibieron jugadores. Pulsa actualizar.";
+            } catch (error) {
+                console.error("Error cargando Ranking XP", error);
+                rankingXpFilas = [];
+                estado.textContent =
+                    "⚠️ No se pudo cargar el ranking. Recarga la página (Ctrl + F5).";
+            } finally {
+                boton.disabled = false;
+                dibujarRankingXp();
+            }
+        }
+
+        document.getElementById("rankingActualizar")
+            .addEventListener("click", cargarRankingXp);
+
+        window.addEventListener("miweb-xp", () => {
+            if (vistaActual === "ranking") cargarRankingXp();
+        });
 
         /* =========================
            PORTADA MEJORADA
