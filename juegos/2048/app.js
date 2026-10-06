@@ -50,6 +50,10 @@ function loadCurrent(){
             wonShown=!!s.wonShown;
             ended=!!s.ended;
             movedAtLeastOnce=!!s.movedAtLeastOnce;
+            if(Math.max(0,...board)>=2048){
+                wonShown=true;
+                ended=true;
+            }
             return true;
         }
     }catch{}
