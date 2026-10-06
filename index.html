@@ -624,11 +624,29 @@
             boton.disabled = true;
             estado.textContent = t.cargando;
 
-            rankingXpFilas = await MiWeb.getXpLeaderboard();
+            try {
+                if (!window.MiWeb || typeof MiWeb.getXpLeaderboard !== "function") {
+                    throw new Error("La versión del sistema XP no está actualizada.");
+                }
 
-            estado.textContent = "";
-            boton.disabled = false;
-            dibujarRankingXp();
+                rankingXpFilas = await MiWeb.getXpLeaderboard();
+
+                if (!Array.isArray(rankingXpFilas)) {
+                    rankingXpFilas = [];
+                }
+
+                estado.textContent = rankingXpFilas.length
+                    ? ""
+                    : "No se recibieron jugadores. Pulsa actualizar.";
+            } catch (error) {
+                console.error("Error cargando Ranking XP", error);
+                rankingXpFilas = [];
+                estado.textContent =
+                    "⚠️ No se pudo cargar el ranking. Recarga la página (Ctrl + F5).";
+            } finally {
+                boton.disabled = false;
+                dibujarRankingXp();
+            }
         }
 
         document.getElementById("rankingActualizar")
@@ -1672,7 +1690,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261006-4"></script>
+    <script src="assets/common.js?v=xp-20261006-6"></script>
     <script>
 
         /* =========================
