@@ -525,7 +525,7 @@ window.MiWeb = (() => {
         const path = location.pathname.toLowerCase();
         const entries = [
             ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
-            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['adivina-el-numero','game'],
+            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['ajedrez','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
             ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
@@ -545,23 +545,23 @@ window.MiWeb = (() => {
     function localXpPoints(event, contextInfo = xpContext()) {
         if (!contextInfo) return 0;
         const { context, category } = contextInfo;
-        if (event === 'page_enter') return category === 'home' ? 1 : category === 'game' ? 3 : 2;
-        if (event === 'active_minute') return category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0;
+        if (event === 'page_enter') return context === 'ajedrez' ? 0 : (category === 'home' ? 1 : category === 'game' ? 3 : 2);
+        if (event === 'active_minute') return context === 'ajedrez' ? 0 : (category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0);
         if (event === 'attempt' && category === 'game' && ['adivina-el-numero','adivino-tu-numero'].includes(context)) return 1;
         if (context === '2048' && event === 'tile_16') return 1;
         if (context === '2048' && event === 'tile_64') return 4;
         if (context === '2048' && event === 'tile_2048') return 200;
         if (context === 'pulsa-el-boton' && event === 'click_7') return 0;
         if (event === 'correct' && category === 'game') {
-            if (['pulsa-el-boton','carrera-matematica'].includes(context)) return 0;
+            if (['pulsa-el-boton','carrera-matematica','ajedrez'].includes(context)) return 0;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso','crea-el-numero'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
         if (context === 'verdadero-falso' && event === 'level_up') return 5;
-        if (event === 'wrong' && category === 'game') return ['verdadero-falso','carrera-matematica'].includes(context) ? 0 : 1;
-        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton','carrera-matematica'].includes(context) ? 0 : 8;
+        if (event === 'wrong' && category === 'game') return ['verdadero-falso','carrera-matematica','ajedrez'].includes(context) ? 0 : 1;
+        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton','carrera-matematica','ajedrez'].includes(context) ? 0 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;
@@ -766,6 +766,41 @@ window.MiWeb = (() => {
         return { awarded:0, ...(xpCache || readLocalXp()) };
     }
 
+    async function awardChessMoveXp(details = {}) {
+        const captured = ['p','n','b','r','q'].includes(details.captured) ? details.captured : null;
+        const check = !!details.check;
+        const mate = !!details.mate;
+        const castle = !!details.castle;
+        const previous = xpCache || readLocalXp();
+        const values = {p:1,n:3,b:3,r:5,q:9};
+        const fallbackAmount = 1 + (captured ? values[captured] : 0) + (check ? 10 : 0) + (mate ? 50 : 0) + (castle ? 5 : 0);
+
+        try {
+            const rows = await rpc('award_chess_move_xp', {
+                p_captured: captured,
+                p_check: check,
+                p_mate: mate,
+                p_castle: castle,
+                p_name: profile().name.slice(0,20)
+            });
+            const row = Array.isArray(rows) ? rows[0] : rows;
+            if (row) {
+                storeXp(row);
+                const amount = Math.max(0, Math.floor(Number(row.awarded) || 0));
+                showXpToast(amount, Number(row.level) > Number(previous.level || 1));
+                return row;
+            }
+        } catch (error) {
+            console.warn('No se pudo sincronizar XP de Ajedrez; usando respaldo local.', error);
+            const local = xpProgressFromTotal(Math.min(XP_MAX_TOTAL, (previous.total_xp || 0) + fallbackAmount));
+            storeXp(local);
+            showXpToast(fallbackAmount, local.level > (previous.level || 1));
+            return { awarded:fallbackAmount, ...local, offline:true };
+        }
+
+        return { awarded:0, ...(xpCache || readLocalXp()) };
+    }
+
     async function getXpLeaderboard() {
         try {
             const rows = await rpc('get_xp_leaderboard', {});
@@ -814,6 +849,6 @@ window.MiWeb = (() => {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
+        awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, awardChessMoveXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
     };
 })();

@@ -1301,6 +1301,12 @@
                     <a href="juegos/carrera-matematica/index.html?v=keypad-v2" id="botonCarreraMatematica">🏎️ Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloAjedrez">♟️ Ajedrez</h2>
+                    <p id="descripcionAjedrez">Juega con blancas contra un bot y gana XP por movimientos, capturas, jaques, enroques y mate.</p>
+                    <a href="juegos/ajedrez/index.html?v=chess-v1" id="botonAjedrez">♟️ Jugar</a>
+                </div>
+
                 
 
                 
@@ -1466,7 +1472,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261007-12"></script>
+    <script src="assets/common.js?v=xp-20261007-13"></script>
     <script>
 
         /* =========================
@@ -2110,6 +2116,10 @@
                     row = valorUsuario(MiWeb.readExtraStats("carrera-matematica"));
                     return row ? "🏎️ " + t.victorias + ": " + (row.victorias || 0) + " · 🏁 " + (row.mejorPuesto || 5) + ".º" : t.sinRecord;
                 }
+                if (titleId === "tituloAjedrez") {
+                    row = valorUsuario(MiWeb.readExtraStats("ajedrez"));
+                    return row ? "♟️ " + t.victorias + ": " + (row.victorias || 0) + " · 👑 " + (row.mates || 0) : t.sinRecord;
+                }
                 
                 
                 
@@ -2342,6 +2352,12 @@
                 hy: ['🏎️ Մաթեմատիկական մրցավազք', 'Մրցիր 4 բոտերի դեմ և առաջինը լուծիր 20 գործողություն։', '🏎️ Խաղալ']
             }[document.documentElement.lang];
             ['tituloCarreraMatematica', 'descripcionCarreraMatematica', 'botonCarreraMatematica'].forEach((id, i) => document.getElementById(id).textContent = carreraMatematica[i]);
+            const ajedrez = {
+                es: ['♟️ Ajedrez', 'Juega con blancas contra un bot y gana XP por movimientos, capturas, jaques, enroques y mate.', '♟️ Jugar'],
+                en: ['♟️ Chess', 'Play White against a bot and earn XP for moves, captures, checks, castling and checkmate.', '♟️ Play'],
+                hy: ['♟️ Շախմատ', 'Խաղա սպիտակներով բոտի դեմ և ստացիր XP քայլերի, վերցնելու, շախի, ռոկիրովկայի և մատի համար։', '♟️ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloAjedrez', 'descripcionAjedrez', 'botonAjedrez'].forEach((id, i) => document.getElementById(id).textContent = ajedrez[i]);
             
             
             
