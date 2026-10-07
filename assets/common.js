@@ -545,23 +545,23 @@ window.MiWeb = (() => {
     function localXpPoints(event, contextInfo = xpContext()) {
         if (!contextInfo) return 0;
         const { context, category } = contextInfo;
-        if (event === 'page_enter') return category === 'home' ? 1 : category === 'game' ? 3 : 2;
-        if (event === 'active_minute') return category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0;
+        if (event === 'page_enter') return context === 'ajedrez' ? 0 : (category === 'home' ? 1 : category === 'game' ? 3 : 2);
+        if (event === 'active_minute') return context === 'ajedrez' ? 0 : (category === 'game' ? 2 : (category === 'calculator' || category === 'experiment') ? 1 : 0);
         if (event === 'attempt' && category === 'game' && ['adivina-el-numero','adivino-tu-numero'].includes(context)) return 1;
         if (context === '2048' && event === 'tile_16') return 1;
         if (context === '2048' && event === 'tile_64') return 4;
         if (context === '2048' && event === 'tile_2048') return 200;
         if (context === 'pulsa-el-boton' && event === 'click_7') return 0;
         if (event === 'correct' && category === 'game') {
-            if (['pulsa-el-boton','carrera-matematica'].includes(context)) return 0;
+            if (['pulsa-el-boton','carrera-matematica','ajedrez'].includes(context)) return 0;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso','crea-el-numero'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
         if (context === 'verdadero-falso' && event === 'level_up') return 5;
-        if (event === 'wrong' && category === 'game') return ['verdadero-falso','carrera-matematica'].includes(context) ? 0 : 1;
-        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton','carrera-matematica'].includes(context) ? 0 : 8;
+        if (event === 'wrong' && category === 'game') return ['verdadero-falso','carrera-matematica','ajedrez'].includes(context) ? 0 : 1;
+        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton','carrera-matematica','ajedrez'].includes(context) ? 0 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;
