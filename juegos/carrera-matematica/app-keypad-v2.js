@@ -89,8 +89,8 @@ function createRacers(){
  racers=[player];
 
  const botSpeeds=shuffle([
-   800+Math.random()*300,
-   800+Math.random()*300,
+   450+Math.random()*200,
+   850+Math.random()*250,
    1500+Math.random()*400,
    3000+Math.random()*800
  ]);
