@@ -438,4 +438,6 @@ MiWeb.mountRanking({
  compare:(a,b)=>(b.victorias||0)-(a.victorias||0)||(a.mejorPuesto||5)-(b.mejorPuesto||5)||(b.mejorRacha||0)-(a.mejorRacha||0)
 });
 
+createRacers();
+buildLanes();
 renderText();
