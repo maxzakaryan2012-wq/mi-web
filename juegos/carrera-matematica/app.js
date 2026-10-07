@@ -4,27 +4,27 @@ title:'🏎️ Carrera matemática',
 desc:'Compite contra 4 bots. Resuelve operaciones del 1 al 10 antes que ellos y sé el primero en llegar a 10 aciertos.',
 back:'← Volver',light:'☀️ Claro',dark:'🌙 Oscuro',
 place:'Puesto',correct:'Aciertos',streak:'Racha',time:'Tiempo',
-overlayTitle:'🏁 Carrera matemática',overlayText:'El primero en conseguir 10 respuestas correctas gana. Un fallo rompe tu racha, pero no te hace retroceder.',
+overlayTitle:'🏁 Carrera matemática',overlayText:'El primero en conseguir 20 respuestas correctas gana. Un fallo rompe tu racha, pero no te hace retroceder.',
 start:'🏎️ Empezar carrera',again:'🔄 Otra carrera',
 note:'Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 10. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.',
 ok:'✅ Correcto',bad:'❌ Incorrecto. Era',raceOver:'🏁 Carrera terminada',you:'TÚ',xp:'XP',bestStreak:'Mejor racha'
 },
 en:{
 title:'🏎️ Math race',
-desc:'Race against 4 bots. Solve operations from 1 to 10 faster than them and be the first to reach 10 correct answers.',
+desc:'Race against 4 bots. Solve operations from 1 to 10 faster than them and be the first to reach 20 correct answers.',
 back:'← Back',light:'☀️ Light',dark:'🌙 Dark',
 place:'Place',correct:'Correct',streak:'Streak',time:'Time',
-overlayTitle:'🏁 Math race',overlayText:'The first to get 10 correct answers wins. A wrong answer breaks your streak but does not move you backwards.',
+overlayTitle:'🏁 Math race',overlayText:'The first to get 20 correct answers wins. A wrong answer breaks your streak but does not move you backwards.',
 start:'🏎️ Start race',again:'🔄 Race again',
 note:'There is only one operation. All operands are from 1 to 10 and the result never exceeds 10. Rewards: 1st 30 XP · 2nd 20 · 3rd 15 · 4th 10 · 5th 5.',
 ok:'✅ Correct',bad:'❌ Wrong. It was',raceOver:'🏁 Race finished',you:'YOU',xp:'XP',bestStreak:'Best streak'
 },
 hy:{
 title:'🏎️ Մաթեմատիկական մրցավազք',
-desc:'Մրցիր 4 բոտերի դեմ։ Արագ լուծիր 1-ից 10 թվերով գործողությունները և առաջինը հասիր 10 ճիշտ պատասխանի։',
+desc:'Մրցիր 4 բոտերի դեմ։ Արագ լուծիր 1-ից 10 թվերով գործողությունները և առաջինը հասիր 20 ճիշտ պատասխանի։',
 back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',
 place:'Տեղ',correct:'Ճիշտ',streak:'Շարք',time:'Ժամանակ',
-overlayTitle:'🏁 Մաթեմատիկական մրցավազք',overlayText:'Հաղթում է նա, ով առաջինը կհավաքի 10 ճիշտ պատասխան։ Սխալը կոտրում է շարքը, բայց մեքենան հետ չի գնում։',
+overlayTitle:'🏁 Մաթեմատիկական մրցավազք',overlayText:'Հաղթում է նա, ով առաջինը կհավաքի 20 ճիշտ պատասխան։ Սխալը կոտրում է շարքը, բայց մեքենան հետ չի գնում։',
 start:'🏎️ Սկսել մրցավազքը',again:'🔄 Նոր մրցավազք',
 note:'Միայն մեկ գործողություն է։ Թվերը 1-ից 10 են, իսկ արդյունքը երբեք չի անցնում 10-ը։ Մրցանակներ՝ 1-ին 30 XP · 2-րդ 20 · 3-րդ 15 · 4-րդ 10 · 5-րդ 5։',
 ok:'✅ Ճիշտ է',bad:'❌ Սխալ է։ Պատասխանն էր',raceOver:'🏁 Մրցավազքն ավարտվեց',you:'ԴՈՒ',xp:'XP',bestStreak:'Լավագույն շարք'
@@ -33,7 +33,7 @@ ok:'✅ Ճիշտ է',bad:'❌ Սխալ է։ Պատասխանն էր',raceOver:'�
 
 const $=id=>document.getElementById(id);
 const GAME='carrera-matematica';
-const FINISH=10;
+const FINISH=20;
 const XP_BY_PLACE={1:30,2:20,3:15,4:10,5:5};
 const COLORS=['#ef4444','#3b82f6','#22c55e','#f59e0b','#a855f7','#ec4899','#06b6d4','#84cc16','#f97316'];
 const HUMAN_NAMES=['Lucas','Sofía','Daniel','Emma','Leo','Marta','Hugo','Nora','Mateo','Lucía','Álex','Carla','Bruno','Elena','Mario','Sara'];
@@ -94,7 +94,7 @@ function createRacers(){
      id:'bot'+i,name,color:colors[i],progress:0,streak:0,bestStreak:0,isPlayer:false,
      lastAdvance:performance.now()+i,
      accuracy:0.77+Math.random()*.17,
-     speed:760+Math.random()*780
+     speed:1250+Math.random()*1250
    });
  }
 }
