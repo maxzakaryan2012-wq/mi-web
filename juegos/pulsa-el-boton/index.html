@@ -532,7 +532,7 @@
     </main>
 
 
-    <script src="../../assets/common.js?v=xp-20261006-10"></script>
+    <script src="../../assets/common.js?v=xp-20261007-11"></script>
     <script>
 
         /* =========================
@@ -622,9 +622,6 @@
             }
 
             puntos++;
-            if (puntos % 7 === 0) {
-                MiWeb.xpAction("click_7");
-            }
 
             document.getElementById(
                 "puntos"
@@ -801,7 +798,7 @@
            TERMINAR JUEGO
         ========================= */
 
-        function terminarJuego() {
+        async function terminarJuego() {
 
             if (!jugando) {
                 return;
@@ -856,7 +853,14 @@
                     " puntos.";
             }
 
-            MiWeb.xpAction("game_finish");
+            const premioXp = Math.floor(puntos / 7);
+            await MiWeb.awardPulsaFinalXp(puntos);
+
+            const mensaje = document.getElementById("mensaje");
+            if (premioXp > 0) {
+                mensaje.textContent += "  ⭐ +" + premioXp + " XP";
+            }
+
             guardarEstadistica();
         }
 
