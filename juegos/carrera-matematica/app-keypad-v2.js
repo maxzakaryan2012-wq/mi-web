@@ -88,13 +88,20 @@ function createRacers(){
  };
  racers=[player];
 
+ const botSpeeds=shuffle([
+   800+Math.random()*300,
+   800+Math.random()*300,
+   1500+Math.random()*400,
+   3000+Math.random()*800
+ ]);
+
  for(let i=1;i<5;i++){
    const name=botName(used); used.add(name);
    racers.push({
      id:'bot'+i,name,color:colors[i],progress:0,streak:0,bestStreak:0,isPlayer:false,
      lastAdvance:performance.now()+i,
      accuracy:0.77+Math.random()*.17,
-     speed:1250+Math.random()*1250
+     speed:botSpeeds[i-1]
    });
  }
 }
