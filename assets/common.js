@@ -525,7 +525,7 @@ window.MiWeb = (() => {
         const path = location.pathname.toLowerCase();
         const entries = [
             ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
-            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['adivina-el-numero','game'],
+            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
             ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
@@ -553,15 +553,15 @@ window.MiWeb = (() => {
         if (context === '2048' && event === 'tile_2048') return 200;
         if (context === 'pulsa-el-boton' && event === 'click_7') return 0;
         if (event === 'correct' && category === 'game') {
-            if (context === 'pulsa-el-boton') return 0;
+            if (['pulsa-el-boton','carrera-matematica'].includes(context)) return 0;
             if (context === 'disparador-primos') return 4;
             if (['duelo-calculo','secuencia','saltos-multiplos','verdadero-falso','crea-el-numero'].includes(context)) return 5;
             if (['adivina-el-numero','adivino-tu-numero'].includes(context)) return 10;
             return 4;
         }
         if (context === 'verdadero-falso' && event === 'level_up') return 5;
-        if (event === 'wrong' && category === 'game') return context === 'verdadero-falso' ? 0 : 1;
-        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton'].includes(context) ? 0 : 8;
+        if (event === 'wrong' && category === 'game') return ['verdadero-falso','carrera-matematica'].includes(context) ? 0 : 1;
+        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton','carrera-matematica'].includes(context) ? 0 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;
@@ -737,6 +737,35 @@ window.MiWeb = (() => {
         return { awarded:0, ...(xpCache || readLocalXp()) };
     }
 
+    async function awardMathRaceXp(place) {
+        const cleanPlace = Math.max(1, Math.min(5, Math.floor(Number(place) || 5)));
+        const previous = xpCache || readLocalXp();
+        const rewards = {1:30,2:20,3:15,4:10,5:5};
+
+        try {
+            const rows = await rpc('award_math_race_finish_xp', {
+                p_place: cleanPlace,
+                p_name: profile().name.slice(0,20)
+            });
+            const row = Array.isArray(rows) ? rows[0] : rows;
+            if (row) {
+                storeXp(row);
+                const amount = Math.max(0, Math.floor(Number(row.awarded) || 0));
+                showXpToast(amount, Number(row.level) > Number(previous.level || 1));
+                return row;
+            }
+        } catch (error) {
+            console.warn('No se pudo sincronizar el premio de Carrera matemática; usando respaldo local.', error);
+            const amount = rewards[cleanPlace] || 5;
+            const local = xpProgressFromTotal(Math.min(XP_MAX_TOTAL, (previous.total_xp || 0) + amount));
+            storeXp(local);
+            showXpToast(amount, local.level > (previous.level || 1));
+            return { awarded:amount, ...local, offline:true };
+        }
+
+        return { awarded:0, ...(xpCache || readLocalXp()) };
+    }
+
     async function getXpLeaderboard() {
         try {
             const rows = await rpc('get_xp_leaderboard', {});
@@ -785,6 +814,6 @@ window.MiWeb = (() => {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        awardXP, xpAction, awardPulsaFinalXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
+        awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
     };
 })();
