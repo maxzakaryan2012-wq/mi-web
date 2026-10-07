@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carrera matemática - MI WEB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#101114;color:#fff;transition:.25s}
+.barra{min-height:70px;background:#18191d;border-bottom:1px solid #333;display:flex;align-items:center;padding:12px 22px;gap:12px}
+.volver{color:#fff;text-decoration:none;font-weight:800;font-size:18px}.espacio{flex:1}.menu-idioma{position:relative}
+.boton-idioma,#botonTema{background:#25272c;color:#fff;border:1px solid #444;border-radius:9px;padding:10px 13px;cursor:pointer}
+.idiomas{display:none;position:absolute;right:0;top:45px;background:#202126;border:1px solid #444;border-radius:9px;overflow:hidden;min-width:145px;z-index:30}
+.idiomas button{width:100%;border:0;background:transparent;color:#fff;padding:11px;text-align:left;cursor:pointer}.idiomas button:hover{background:#333}
+main{max-width:1050px;margin:auto;padding:34px 16px 120px;text-align:center}
+h1{font-size:42px;margin:0 0 8px}.descripcion{color:#aaa;line-height:1.5;max-width:790px;margin:0 auto 18px}
+.panel{background:#1b1d22;border:1px solid #333;border-radius:20px;padding:18px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.dato{background:#15171b;border:1px solid #333;border-radius:13px;padding:10px}.dato span{display:block;color:#999;font-size:12px}.dato strong{display:block;font-size:23px;margin-top:4px}
+.pista{position:relative;border:1px solid #35383e;border-radius:18px;overflow:hidden;background:#25282d;padding:12px 14px}
+.pista:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 9.5%,rgba(255,255,255,.025) 9.5% 10%);pointer-events:none}
+.carril{position:relative;height:70px;border-bottom:2px dashed rgba(255,255,255,.16);display:flex;align-items:center}
+.carril:last-child{border-bottom:0}
+.nombre{position:absolute;left:7px;top:6px;z-index:4;font-size:12px;font-weight:900;background:rgba(10,10,12,.72);padding:3px 7px;border-radius:999px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nombre.tu{outline:1px solid #ffd54a;color:#ffe477}
+.meta{position:absolute;right:18px;top:0;bottom:0;width:13px;background:
+conic-gradient(#fff 25%,#111 0 50%,#fff 0 75%,#111 0) 0/10px 10px;box-shadow:0 0 10px rgba(255,255,255,.3);z-index:2}
+.car-wrap{position:absolute;left:4px;bottom:9px;width:58px;height:34px;transition:left .28s cubic-bezier(.2,.75,.25,1);z-index:3}
+.car{position:absolute;left:5px;top:10px;width:47px;height:18px;border-radius:8px 11px 5px 5px;background:var(--car);box-shadow:inset 0 -4px rgba(0,0,0,.18),0 3px 5px rgba(0,0,0,.35)}
+.car:before{content:"";position:absolute;left:13px;top:-9px;width:24px;height:12px;border-radius:10px 10px 2px 2px;background:var(--car);filter:brightness(1.12)}
+.car:after{content:"";position:absolute;left:17px;top:-6px;width:15px;height:7px;border-radius:5px 5px 1px 1px;background:#bde8ff;opacity:.8}
+.rueda{position:absolute;width:10px;height:10px;border-radius:50%;background:#101010;border:2px solid #555;bottom:-5px}.rueda.a{left:7px}.rueda.b{right:6px}
+.progreso-mini{position:absolute;right:8px;top:7px;font-size:11px;font-weight:800;color:#c7ccd3}
+.zona-pregunta{margin-top:16px;background:#15171b;border:1px solid #333;border-radius:17px;padding:18px}
+.operacion{font-size:clamp(42px,8vw,70px);font-weight:900;letter-spacing:1px;min-height:85px;display:flex;align-items:center;justify-content:center;margin:2px 0 10px}
+.respuestas{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:720px;margin:auto}
+.respuesta{border:1px solid #484b52;background:#292c32;color:#fff;border-radius:12px;padding:13px 5px;font-size:20px;font-weight:900;cursor:pointer;transition:.1s}
+.respuesta:hover:not(:disabled){background:#373b43;transform:translateY(-2px)}.respuesta:disabled{opacity:.45;cursor:default}
+.respuesta[data-value="10"]{grid-column:auto}
+.mensaje{min-height:27px;margin-top:11px;font-weight:800}.mensaje.ok{color:#70e28e}.mensaje.bad{color:#ff7c86}.mensaje.info{color:#ffd75e}
+.racha{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 9px;border-radius:999px;background:#22252a;color:#bbb;font-size:12px;font-weight:800}
+.overlay{position:absolute;inset:0;z-index:30;background:rgba(14,15,18,.91);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:25px}
+.overlay.oculto{display:none}.overlay h2{font-size:38px;margin:0 0 8px}.overlay p{color:#c7c9ce;max-width:650px;line-height:1.5;margin:0 0 17px}.accion{border:0;border-radius:11px;padding:13px 20px;background:#fff;color:#111;font-weight:900;font-size:16px;cursor:pointer}
+.cuenta{font-size:84px;font-weight:1000;color:#ffd84c;text-shadow:0 5px 25px rgba(255,216,76,.25)}
+.resultados{width:min(620px,100%);margin:14px auto 0;text-align:left}.resultado-fila{display:grid;grid-template-columns:48px 1fr auto auto;gap:9px;align-items:center;border-bottom:1px solid #383a40;padding:10px 6px}.resultado-fila:last-child{border-bottom:0}.resultado-fila.tu{background:rgba(255,216,76,.08);border-radius:9px}.puesto{font-weight:1000;font-size:20px}.xp-premio{color:#ffd75e;font-weight:900}
+.nota{color:#999;font-size:14px;line-height:1.5;margin:16px 0 0}
+body.claro{background:#f3f4f6;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}
+body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}
+body.claro .panel,body.claro .dato,body.claro .zona-pregunta{background:#fff;border-color:#ddd}body.claro .descripcion,body.claro .nota,body.claro .dato span{color:#555}
+body.claro .pista{background:#d5d8dc;border-color:#c4c7cc}body.claro .carril{border-bottom-color:rgba(0,0,0,.14)}body.claro .nombre{background:rgba(255,255,255,.78);color:#111}body.claro .nombre.tu{color:#7b5f00}
+body.claro .progreso-mini{color:#333}body.claro .respuesta{background:#f4f5f7;color:#111;border-color:#bbb}body.claro .respuesta:hover:not(:disabled){background:#e9eaed}
+body.claro .racha{background:#eee;color:#444}body.claro .overlay{background:rgba(247,248,250,.93)}body.claro .overlay p{color:#555}body.claro .resultado-fila{border-bottom-color:#ddd}
+@media(max-width:700px){.barra{padding:10px 12px}main{padding:26px 8px 115px}h1{font-size:31px}.panel{padding:10px}.hud{grid-template-columns:repeat(2,1fr)}.pista{padding:8px 5px}.carril{height:61px}.nombre{font-size:10px;max-width:92px}.car-wrap{width:48px;height:29px}.car{width:40px;height:16px}.car:before{left:11px;width:20px}.meta{right:10px}.progreso-mini{font-size:9px}.zona-pregunta{padding:13px 8px}.operacion{font-size:43px;min-height:70px}.respuestas{grid-template-columns:repeat(4,1fr);gap:6px}.respuesta{padding:12px 3px;font-size:18px}.resultado-fila{grid-template-columns:42px 1fr auto;font-size:13px}.resultado-fila .racha-final{display:none}}
+@media(max-width:390px){.respuestas{grid-template-columns:repeat(4,1fr)}.car-wrap{width:43px}.car{width:36px}.nombre{max-width:80px}}
+@media(prefers-reduced-motion:reduce){.car-wrap,.respuesta{transition:none}}
+</style>
+</head>
+<body>
+<header class="barra">
+<a class="volver" id="volver" href="../../index.html#juegos">← Volver</a>
+<div class="espacio"></div>
+<div class="menu-idioma">
+<button class="boton-idioma" id="botonIdioma">🇪🇸 ES ▾</button>
+<div class="idiomas" id="menuIdiomas">
+<button data-lang="es">🇪🇸 Español</button>
+<button data-lang="en">🇬🇧 English</button>
+<button data-lang="hy">🇦🇲 Հայերեն</button>
+</div>
+</div>
+<button id="botonTema">☀️ Claro</button>
+</header>
+
+<main>
+<h1 id="titulo">🏎️ Carrera matemática</h1>
+<p class="descripcion" id="descripcion">Compite contra 4 bots. Resuelve operaciones del 1 al 10 antes que ellos y sé el primero en llegar a 10 aciertos.</p>
+
+<section class="panel">
+<div class="hud">
+<div class="dato"><span id="txtPuesto">Puesto</span><strong id="puestoActual">—</strong></div>
+<div class="dato"><span id="txtAciertos">Aciertos</span><strong id="aciertos">0/10</strong></div>
+<div class="dato"><span id="txtRacha">Racha</span><strong id="racha">0</strong></div>
+<div class="dato"><span id="txtTiempo">Tiempo</span><strong id="tiempo">0.0 s</strong></div>
+</div>
+
+<div class="pista" id="pista">
+<div class="meta"></div>
+<div id="carriles"></div>
+<div class="overlay" id="overlay">
+<h2 id="overlayTitulo">🏁 Carrera matemática</h2>
+<p id="overlayTexto">El primero en conseguir 10 respuestas correctas gana. Un fallo rompe tu racha, pero no te hace retroceder.</p>
+<button class="accion" id="empezar" type="button">🏎️ Empezar carrera</button>
+</div>
+</div>
+
+<div class="zona-pregunta">
+<div class="operacion" id="operacion">—</div>
+<div class="respuestas" id="respuestas"></div>
+<div class="mensaje" id="mensaje" aria-live="polite"></div>
+<div class="racha" id="rachaInfo">🔥 Racha: 0</div>
+</div>
+
+<p class="nota" id="nota">Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 10. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.</p>
+</section>
+</main>
+
+<script src="../../assets/common.js?v=xp-20261007-12"></script>
+<script src="app.js"></script>
+</body>
+</html>
