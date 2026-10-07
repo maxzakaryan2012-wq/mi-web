@@ -6,7 +6,7 @@ back:'← Volver',light:'☀️ Claro',dark:'🌙 Oscuro',
 place:'Puesto',correct:'Aciertos',streak:'Racha',time:'Tiempo',
 overlayTitle:'🏁 Carrera matemática',overlayText:'El primero en conseguir 20 respuestas correctas gana. Un fallo rompe tu racha, pero no te hace retroceder.',
 start:'🏎️ Empezar carrera',again:'🔄 Otra carrera',
-note:'Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 10. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.',
+note:'Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 9. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.',
 ok:'✅ Correcto',bad:'❌ Incorrecto. Era',raceOver:'🏁 Carrera terminada',you:'TÚ',xp:'XP',bestStreak:'Mejor racha'
 },
 en:{
@@ -16,7 +16,7 @@ back:'← Back',light:'☀️ Light',dark:'🌙 Dark',
 place:'Place',correct:'Correct',streak:'Streak',time:'Time',
 overlayTitle:'🏁 Math race',overlayText:'The first to get 20 correct answers wins. A wrong answer breaks your streak but does not move you backwards.',
 start:'🏎️ Start race',again:'🔄 Race again',
-note:'There is only one operation. All operands are from 1 to 10 and the result never exceeds 10. Rewards: 1st 30 XP · 2nd 20 · 3rd 15 · 4th 10 · 5th 5.',
+note:'There is only one operation. All operands are from 1 to 10 and the result never exceeds 9. Rewards: 1st 30 XP · 2nd 20 · 3rd 15 · 4th 10 · 5th 5.',
 ok:'✅ Correct',bad:'❌ Wrong. It was',raceOver:'🏁 Race finished',you:'YOU',xp:'XP',bestStreak:'Best streak'
 },
 hy:{
@@ -26,7 +26,7 @@ back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',
 place:'Տեղ',correct:'Ճիշտ',streak:'Շարք',time:'Ժամանակ',
 overlayTitle:'🏁 Մաթեմատիկական մրցավազք',overlayText:'Հաղթում է նա, ով առաջինը կհավաքի 20 ճիշտ պատասխան։ Սխալը կոտրում է շարքը, բայց մեքենան հետ չի գնում։',
 start:'🏎️ Սկսել մրցավազքը',again:'🔄 Նոր մրցավազք',
-note:'Միայն մեկ գործողություն է։ Թվերը 1-ից 10 են, իսկ արդյունքը երբեք չի անցնում 10-ը։ Մրցանակներ՝ 1-ին 30 XP · 2-րդ 20 · 3-րդ 15 · 4-րդ 10 · 5-րդ 5։',
+note:'Միայն մեկ գործողություն է։ Թվերը 1-ից 10 են, իսկ արդյունքը երբեք չի անցնում 9-ը։ Մրցանակներ՝ 1-ին 30 XP · 2-րդ 20 · 3-րդ 15 · 4-րդ 10 · 5-րդ 5։',
 ok:'✅ Ճիշտ է',bad:'❌ Սխալ է։ Պատասխանն էր',raceOver:'🏁 Մրցավազքն ավարտվեց',you:'ԴՈՒ',xp:'XP',bestStreak:'Լավագույն շարք'
 }
 };
@@ -121,8 +121,8 @@ function generateQuestion(){
  let a,b,result;
 
  if(op==='+'){
-   a=rand(1,9);
-   b=rand(1,10-a);
+   a=rand(1,8);
+   b=rand(1,9-a);
    result=a+b;
  }else if(op==='-'){
    a=rand(1,10);
@@ -130,12 +130,12 @@ function generateQuestion(){
    result=a-b;
  }else if(op==='*'){
    const pairs=[];
-   for(let x=1;x<=10;x++)for(let y=1;y<=10;y++)if(x*y<=10)pairs.push([x,y]);
+   for(let x=1;x<=10;x++)for(let y=1;y<=10;y++)if(x*y<=9)pairs.push([x,y]);
    [a,b]=choice(pairs);
    result=a*b;
  }else{
    const pairs=[];
-   for(let x=1;x<=10;x++)for(let y=1;y<=10;y++)if(x%y===0&&x/y<=10)pairs.push([x,y]);
+   for(let x=1;x<=10;x++)for(let y=1;y<=10;y++)if(x%y===0&&x/y<=9)pairs.push([x,y]);
    [a,b]=choice(pairs);
    result=a/b;
  }
@@ -154,15 +154,16 @@ function nextQuestion(){
 function makeAnswerButtons(){
  const wrap=$('respuestas');
  wrap.innerHTML='';
- for(let i=0;i<=10;i++){
+ const order=[7,8,9,4,5,6,1,2,3,0];
+ order.forEach(value=>{
    const b=document.createElement('button');
    b.type='button';
-   b.className='respuesta';
-   b.dataset.value=i;
-   b.textContent=i;
-   b.addEventListener('click',()=>answer(i));
+   b.className='respuesta'+(value===0?' cero':'');
+   b.dataset.value=value;
+   b.textContent=value;
+   b.addEventListener('click',()=>answer(value));
    wrap.appendChild(b);
- }
+ });
 }
 
 function setAnswersEnabled(enabled){
