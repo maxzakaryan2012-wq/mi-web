@@ -20,6 +20,7 @@ let locked=false;
 let ended=false;
 let statsRun={xp:0,checks:0,captures:0,mates:0};
 let lastMove=null;
+let gameSerial=0;
 
 function lang(){const l=localStorage.getItem('idioma');return T[l]?l:'es'}
 
@@ -133,11 +134,12 @@ async function doPlayerMove(from,to){
  $('turno').textContent=T[lang()].botTurn;
  $('turno').classList.add('bot-pensando');
 
- setTimeout(botMove,480+Math.random()*420);
+ const serial=gameSerial;
+ setTimeout(()=>botMove(serial),480+Math.random()*420);
 }
 
-function botMove(){
- if(ended||game.turn()!=='b')return;
+function botMove(serial){
+ if(serial!==gameSerial||ended||game.turn()!=='b')return;
  const moves=game.moves({verbose:true});
  if(!moves.length){finishGame(game.isCheckmate()?'win':'draw');return}
 
@@ -204,6 +206,7 @@ function saveStats(result){
 }
 
 function newGame(){
+ gameSerial++;
  game=new Chess();selected=null;legal=[];locked=false;ended=false;lastMove=null;
  statsRun={xp:0,checks:0,captures:0,mates:0};
  updateHud();renderBoard();
