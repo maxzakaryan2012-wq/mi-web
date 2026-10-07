@@ -33,10 +33,10 @@ conic-gradient(#fff 25%,#111 0 50%,#fff 0 75%,#111 0) 0/20px 10px;box-shadow:0 0
 .progreso-mini{position:absolute;right:8px;top:7px;font-size:11px;font-weight:800;color:#c7ccd3}
 .zona-pregunta{margin-top:16px;background:#15171b;border:1px solid #333;border-radius:17px;padding:18px}
 .operacion{font-size:clamp(42px,8vw,70px);font-weight:900;letter-spacing:1px;min-height:85px;display:flex;align-items:center;justify-content:center;margin:2px 0 10px}
-.respuestas{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:720px;margin:auto}
+.respuestas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:360px;margin:auto}
 .respuesta{border:1px solid #484b52;background:#292c32;color:#fff;border-radius:12px;padding:13px 5px;font-size:20px;font-weight:900;cursor:pointer;transition:.1s}
 .respuesta:hover:not(:disabled){background:#373b43;transform:translateY(-2px)}.respuesta:disabled{opacity:.45;cursor:default}
-.respuesta[data-value="10"]{grid-column:auto}
+.respuesta.cero{grid-column:2}
 .mensaje{min-height:27px;margin-top:11px;font-weight:800}.mensaje.ok{color:#70e28e}.mensaje.bad{color:#ff7c86}.mensaje.info{color:#ffd75e}
 .racha{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 9px;border-radius:999px;background:#22252a;color:#bbb;font-size:12px;font-weight:800}
 .overlay{position:absolute;inset:0;z-index:30;background:rgba(14,15,18,.91);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:25px}
@@ -50,8 +50,8 @@ body.claro .panel,body.claro .dato,body.claro .zona-pregunta{background:#fff;bor
 body.claro .pista{background:#d5d8dc;border-color:#c4c7cc}body.claro .carril{border-bottom-color:rgba(0,0,0,.14)}body.claro .nombre{background:rgba(255,255,255,.78);color:#111}body.claro .nombre.tu{color:#7b5f00}
 body.claro .progreso-mini{color:#333}body.claro .respuesta{background:#f4f5f7;color:#111;border-color:#bbb}body.claro .respuesta:hover:not(:disabled){background:#e9eaed}
 body.claro .racha{background:#eee;color:#444}body.claro .overlay{background:rgba(247,248,250,.93)}body.claro .overlay p{color:#555}body.claro .resultado-fila{border-bottom-color:#ddd}
-@media(max-width:700px){.barra{padding:10px 12px}main{padding:26px 8px 115px}h1{font-size:31px}.panel{padding:10px}.hud{grid-template-columns:repeat(2,1fr)}.pista{padding:8px 5px}.carril{height:61px}.nombre{font-size:10px;max-width:92px}.car-wrap{width:48px;height:29px}.car{width:40px;height:16px}.car:before{left:11px;width:20px}.meta{right:10px}.progreso-mini{font-size:9px}.zona-pregunta{padding:13px 8px}.operacion{font-size:43px;min-height:70px}.respuestas{grid-template-columns:repeat(4,1fr);gap:6px}.respuesta{padding:12px 3px;font-size:18px}.resultado-fila{grid-template-columns:42px 1fr auto;font-size:13px}.resultado-fila .racha-final{display:none}}
-@media(max-width:390px){.respuestas{grid-template-columns:repeat(4,1fr)}.car-wrap{width:43px}.car{width:36px}.nombre{max-width:80px}}
+@media(max-width:700px){.barra{padding:10px 12px}main{padding:26px 8px 115px}h1{font-size:31px}.panel{padding:10px}.hud{grid-template-columns:repeat(2,1fr)}.pista{padding:8px 5px}.carril{height:61px}.nombre{font-size:10px;max-width:92px}.car-wrap{width:48px;height:29px}.car{width:40px;height:16px}.car:before{left:11px;width:20px}.meta{right:10px}.progreso-mini{font-size:9px}.zona-pregunta{padding:13px 8px}.operacion{font-size:43px;min-height:70px}.respuestas{grid-template-columns:repeat(3,1fr);gap:6px;max-width:300px}.respuesta{padding:12px 3px;font-size:18px}.resultado-fila{grid-template-columns:42px 1fr auto;font-size:13px}.resultado-fila .racha-final{display:none}}
+@media(max-width:390px){.respuestas{grid-template-columns:repeat(3,1fr);max-width:270px}.car-wrap{width:43px}.car{width:36px}.nombre{max-width:80px}}
 @media(prefers-reduced-motion:reduce){.car-wrap,.respuesta{transition:none}}
 </style>
 </head>
@@ -99,7 +99,7 @@ body.claro .racha{background:#eee;color:#444}body.claro .overlay{background:rgba
 <div class="racha" id="rachaInfo">🔥 Racha: 0</div>
 </div>
 
-<p class="nota" id="nota">Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 10. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.</p>
+<p class="nota" id="nota">Solo hay una operación. Los números usados están entre 1 y 10 y el resultado nunca supera 9. Premios: 1.º 30 XP · 2.º 20 · 3.º 15 · 4.º 10 · 5.º 5.</p>
 </section>
 </main>
 
