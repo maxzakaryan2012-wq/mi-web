@@ -551,7 +551,7 @@ window.MiWeb = (() => {
         if (context === '2048' && event === 'tile_16') return 1;
         if (context === '2048' && event === 'tile_64') return 4;
         if (context === '2048' && event === 'tile_2048') return 200;
-        if (context === 'pulsa-el-boton' && event === 'click_7') return 1;
+        if (context === 'pulsa-el-boton' && event === 'click_7') return 0;
         if (event === 'correct' && category === 'game') {
             if (context === 'pulsa-el-boton') return 0;
             if (context === 'disparador-primos') return 4;
@@ -561,7 +561,7 @@ window.MiWeb = (() => {
         }
         if (context === 'verdadero-falso' && event === 'level_up') return 5;
         if (event === 'wrong' && category === 'game') return context === 'verdadero-falso' ? 0 : 1;
-        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso'].includes(context) ? 0 : context === 'pulsa-el-boton' ? 6 : 8;
+        if (event === 'game_finish' && category === 'game') return ['2048','verdadero-falso','pulsa-el-boton'].includes(context) ? 0 : 8;
         if (event === 'tool_success' && category === 'calculator') return 4;
         if (event === 'tool_invalid' && category === 'calculator') return 1;
         if (event === 'experiment_run' && category === 'experiment') return 3;
@@ -707,6 +707,36 @@ window.MiWeb = (() => {
         return { awarded:0, ...(xpCache || readLocalXp()) };
     }
 
+    async function awardPulsaFinalXp(clicks) {
+        const cleanClicks = Math.max(0, Math.floor(Number(clicks) || 0));
+        const previous = xpCache || readLocalXp();
+
+        try {
+            const rows = await rpc('award_pulsa_finish_xp', {
+                p_clicks: cleanClicks,
+                p_name: profile().name.slice(0,20)
+            });
+            const row = Array.isArray(rows) ? rows[0] : rows;
+            if (row) {
+                storeXp(row);
+                const amount = Math.max(0, Math.floor(Number(row.awarded) || 0));
+                showXpToast(amount, Number(row.level) > Number(previous.level || 1));
+                return row;
+            }
+        } catch (error) {
+            console.warn('No se pudo sincronizar el XP final de Pulsa el botón; usando respaldo local.', error);
+            const amount = Math.floor(cleanClicks / 7);
+            if (amount > 0) {
+                const local = xpProgressFromTotal(Math.min(XP_MAX_TOTAL, (previous.total_xp || 0) + amount));
+                storeXp(local);
+                showXpToast(amount, local.level > (previous.level || 1));
+                return { awarded:amount, ...local, offline:true };
+            }
+        }
+
+        return { awarded:0, ...(xpCache || readLocalXp()) };
+    }
+
     async function getXpLeaderboard() {
         try {
             const rows = await rpc('get_xp_leaderboard', {});
@@ -755,6 +785,6 @@ window.MiWeb = (() => {
         profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        awardXP, xpAction, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
+        awardXP, xpAction, awardPulsaFinalXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
     };
 })();
