@@ -1295,6 +1295,12 @@
                     <a href="juegos/crea-el-numero/index.html" id="botonCreaNumero">🃏 Jugar</a>
                 </div>
 
+                <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloCarreraMatematica">🏎️ Carrera matemática</h2>
+                    <p id="descripcionCarreraMatematica">Compite contra 4 bots y sé el primero en resolver 10 operaciones.</p>
+                    <a href="juegos/carrera-matematica/index.html" id="botonCarreraMatematica">🏎️ Jugar</a>
+                </div>
+
                 
 
                 
@@ -1460,7 +1466,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261006-9"></script>
+    <script src="assets/common.js?v=xp-20261007-12"></script>
     <script>
 
         /* =========================
@@ -1960,7 +1966,7 @@
                     buscar: "🔎 Buscar juego, calculadora o experimento...", sinResultados: "No hay resultados.",
                     grupoJuegos: "🎮 Juegos", grupoCalculadoras: "🧮 Calculadoras", grupoInteresantes: "✨ Cosas interesantes",
                     tipoJuego: "Juego", tipoCalculadora: "Calculadora", tipoInteresante: "Experimento",
-                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo", resueltos: "Resueltos",
+                    sinRecord: "Sin estadísticas todavía", puntos: "Récord", racha: "Mejor racha", nivelMax: "Nivel máximo", resueltos: "Resueltos", victorias: "Victorias",
                     generados: "Generados", intentos: "Mejor", partidas: "Partidas", global: "Global"
                 },
                 en: {
@@ -1970,7 +1976,7 @@
                     buscar: "🔎 Search games, calculators or experiments...", sinResultados: "No results.",
                     grupoJuegos: "🎮 Games", grupoCalculadoras: "🧮 Calculators", grupoInteresantes: "✨ Interesting things",
                     tipoJuego: "Game", tipoCalculadora: "Calculator", tipoInteresante: "Experiment",
-                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level", resueltos: "Solved",
+                    sinRecord: "No statistics yet", puntos: "Record", racha: "Best streak", nivelMax: "Highest level", resueltos: "Solved", victorias: "Wins",
                     generados: "Generated", intentos: "Best", partidas: "Games", global: "Global"
                 },
                 hy: {
@@ -1980,7 +1986,7 @@
                     buscar: "🔎 Փնտրել խաղ, հաշվիչ կամ փորձ...", sinResultados: "Արդյունք չկա։",
                     grupoJuegos: "🎮 Խաղեր", grupoCalculadoras: "🧮 Հաշվիչներ", grupoInteresantes: "✨ Հետաքրքիր բաներ",
                     tipoJuego: "Խաղ", tipoCalculadora: "Հաշվիչ", tipoInteresante: "Փորձ",
-                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ", resueltos: "Լուծված",
+                    sinRecord: "Դեռ վիճակագրություն չկա", puntos: "Ռեկորդ", racha: "Լավագույն շարք", nivelMax: "Առավելագույն մակարդակ", resueltos: "Լուծված", victorias: "Հաղթանակներ",
                     generados: "Ստեղծված", intentos: "Լավագույն", partidas: "Խաղեր", global: "Ընդհանուր"
                 }
             }[idioma];
@@ -2099,6 +2105,10 @@
                 if (titleId === "tituloCreaNumero") {
                     row = valorUsuario(MiWeb.readExtraStats("crea-el-numero"));
                     return row ? "🃏 " + t.nivelMax + ": " + (row.maxNivel || 1) + " · " + (row.resueltos || 0) + " " + t.resueltos : t.sinRecord;
+                }
+                if (titleId === "tituloCarreraMatematica") {
+                    row = valorUsuario(MiWeb.readExtraStats("carrera-matematica"));
+                    return row ? "🏎️ " + t.victorias + ": " + (row.victorias || 0) + " · 🏁 " + (row.mejorPuesto || 5) + ".º" : t.sinRecord;
                 }
                 
                 
@@ -2326,6 +2336,12 @@
                 hy: ['🃏 Ստեղծիր թիվը', 'Միացրու 3 կամ 4 քարտ +, −, × և ÷ գործողություններով՝ ճիշտ նպատակային թիվը ստանալու համար։', '🃏 Խաղալ']
             }[document.documentElement.lang];
             ['tituloCreaNumero', 'descripcionCreaNumero', 'botonCreaNumero'].forEach((id, i) => document.getElementById(id).textContent = creaNumero[i]);
+            const carreraMatematica = {
+                es: ['🏎️ Carrera matemática', 'Compite contra 4 bots y sé el primero en resolver 10 operaciones.', '🏎️ Jugar'],
+                en: ['🏎️ Math race', 'Race against 4 bots and be the first to solve 10 operations.', '🏎️ Play'],
+                hy: ['🏎️ Մաթեմատիկական մրցավազք', 'Մրցիր 4 բոտերի դեմ և առաջինը լուծիր 10 գործողություն։', '🏎️ Խաղալ']
+            }[document.documentElement.lang];
+            ['tituloCarreraMatematica', 'descripcionCarreraMatematica', 'botonCarreraMatematica'].forEach((id, i) => document.getElementById(id).textContent = carreraMatematica[i]);
             
             
             
