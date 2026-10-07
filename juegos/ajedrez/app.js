@@ -144,7 +144,9 @@ function botMove(){
  let best=null,bestScore=-Infinity;
  for(const m of moves){
    const temp=new Chess(game.fen());
-   temp.move({from:m.from,to:m.to,promotion:m.promotion||'q'});
+   const spec={from:m.from,to:m.to};
+   if(m.promotion)spec.promotion=m.promotion;
+   temp.move(spec);
    let score=Math.random()*2;
    if(m.captured)score+=(VALUES[m.captured]||0)*8;
    if(m.promotion)score+=7;
@@ -155,7 +157,9 @@ function botMove(){
    score+=(3.5-Math.abs(file-3.5))*.15+(3.5-Math.abs(rank-3.5))*.15;
    if(score>bestScore){bestScore=score;best=m}
  }
- const move=game.move({from:best.from,to:best.to,promotion:best.promotion||'q'});
+ const spec={from:best.from,to:best.to};
+ if(best.promotion)spec.promotion=best.promotion;
+ const move=game.move(spec);
  lastMove={from:move.from,to:move.to};
  renderBoard();
 
