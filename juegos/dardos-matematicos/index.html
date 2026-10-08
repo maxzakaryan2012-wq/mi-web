@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101b1b">
+  <title>Dardos matemáticos - MI WEB</title>
+  <style>
+    *{box-sizing:border-box}
+    :root{color-scheme:dark;--bg:#101b1b;--panel:#182626;--line:#2b4140;--text:#f4f7ed;--muted:#aec0b7;--lime:#c4f36a;--orange:#ffb454}
+    body{margin:0;background:radial-gradient(ellipse at 50% -15%,#294944 0%,var(--bg) 55%);color:var(--text);font-family:Arial,"Noto Sans Armenian","Segoe UI",sans-serif;min-height:100vh;min-height:100svh}
+    button,input{font:inherit}
+    button{touch-action:manipulation}
+    .barra{height:64px;display:flex;align-items:center;gap:10px;padding:0 max(14px,env(safe-area-inset-left));border-bottom:1px solid #ffffff15;background:#0c1515aa}
+    .volver{color:var(--text);font-weight:700;text-decoration:none;min-height:44px;display:flex;align-items:center;padding:0 8px}
+    .espacio{flex:1}
+    .menu-idioma{position:relative}
+    .boton-idioma,.tema{border:1px solid var(--line);border-radius:12px;background:#1b2b2a;color:var(--text);min-height:44px;padding:9px 12px;cursor:pointer}
+    .idiomas{display:none;position:absolute;right:0;top:48px;z-index:10;min-width:155px;padding:5px;background:#182626;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px #0008}
+    .idiomas button{width:100%;min-height:44px;text-align:left;color:var(--text);background:transparent;border:0;border-radius:8px;padding:9px 11px;cursor:pointer}
+    .idiomas button:hover{background:#ffffff12}
+    main{width:min(980px,100%);margin:auto;padding:28px 20px calc(40px + env(safe-area-inset-bottom))}
+    .cabecera{text-align:center;margin:0 auto 20px;max-width:680px}
+    h1{font-size:clamp(29px,5vw,43px);line-height:1.12;margin:0 0 9px;letter-spacing:-.7px}
+    .descripcion{color:var(--muted);font-size:16px;line-height:1.5;margin:0}
+    .panel{background:linear-gradient(150deg,#1a2b2a,#142120);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 55px #0003;margin-top:16px}
+    .operacion{display:flex;justify-content:center;align-items:center;gap:10px;min-height:68px;margin:0 0 14px;text-align:center;flex-wrap:wrap}
+    .operacion-label{font-size:14px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:800}
+    #operacion{font-size:clamp(27px,6vw,40px);font-weight:900;letter-spacing:.5px;color:var(--lime)}
+    .hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:12px}
+    .dato{border:1px solid var(--line);background:#0e1919;border-radius:14px;text-align:center;padding:9px 5px}
+    .dato span{display:block;color:var(--muted);font-size:12px;line-height:1.3}
+    .dato strong{display:block;font-size:24px;margin-top:2px}
+    .lienzo{position:relative;border:1px solid #ffffff20;border-radius:17px;overflow:hidden;background:#132322}
+    canvas{display:block;width:100%;height:auto;aspect-ratio:2/1;touch-action:manipulation}
+    .overlay{position:absolute;inset:0;display:grid;place-items:center;padding:16px;background:#0710109c}
+    .overlay.oculto{display:none}
+    .overlay-tarjeta{width:min(410px,100%);text-align:center;background:#172726;border:1px solid #54706a;border-radius:18px;padding:20px;box-shadow:0 14px 40px #0008}
+    .overlay-tarjeta h2{font-size:25px;margin:0 0 9px}
+    .overlay-tarjeta p{color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 16px}
+    .boton{border:0;border-radius:13px;min-height:48px;padding:12px 18px;background:var(--lime);color:#172117;font-weight:900;cursor:pointer;box-shadow:0 4px 0 #7eaa3c}
+    .boton:active{transform:translateY(2px);box-shadow:0 2px 0 #7eaa3c}
+    .controles{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin-top:15px}
+    .control label{display:flex;justify-content:space-between;gap:10px;margin-bottom:7px;font-size:14px;font-weight:800}
+    .control output{color:var(--lime);font-variant-numeric:tabular-nums}
+    input[type=range]{display:block;width:100%;height:28px;accent-color:var(--lime);cursor:pointer}
+    #botonLanzar{min-width:180px}
+    .mensaje{min-height:29px;margin:12px 2px 0;text-align:center;font-size:16px;font-weight:800;line-height:1.45}
+    .instrucciones{color:var(--muted);font-size:13px;text-align:center;line-height:1.5;margin:5px 0 0}
+    .records{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .record{background:#0e1919;border:1px solid var(--line);border-radius:14px;text-align:center;padding:13px 7px}
+    .record span{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+    .record strong{display:block;font-size:23px;margin-top:4px}
+    body.claro{color-scheme:light;--bg:#eff4eb;--panel:#fff;--line:#d3dfd3;--text:#17231d;--muted:#51665b;background:radial-gradient(ellipse at 50% -15%,#deedcf 0%,var(--bg) 60%)}
+    body.claro .barra{background:#ffffffbd;border-bottom-color:#d7e1d7}
+    body.claro .boton-idioma,body.claro .tema{background:#fff;color:var(--text)}
+    body.claro .idiomas,body.claro .overlay-tarjeta{background:#fff}
+    body.claro .idiomas button{color:var(--text)}
+    body.claro .panel{background:linear-gradient(150deg,#fff,#f5f8f1)}
+    body.claro .dato,body.claro .record{background:#f4f7f1}
+    body.claro .lienzo{background:#dcece2}
+    body.claro .overlay{background:#eff5edbb}
+    body.claro .overlay-tarjeta{border-color:#cbd9cc}
+    @media(max-width:620px){
+      .barra{height:58px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right));gap:6px}
+      .volver{font-size:14px;padding:0 5px}
+      .boton-idioma,.tema{font-size:13px;min-height:44px;padding:8px 9px}
+      main{padding:21px 11px calc(28px + env(safe-area-inset-bottom))}
+      .cabecera{margin-bottom:14px}
+      .descripcion{font-size:15px}
+      .panel{padding:12px;border-radius:17px;margin-top:12px}
+      .operacion{min-height:56px;margin-bottom:9px;gap:7px}
+      .operacion-label{font-size:11px;letter-spacing:1px}
+      .hud{gap:6px;margin-bottom:8px}
+      .dato{padding:7px 3px;border-radius:11px}
+      .dato span{font-size:11px}
+      .dato strong{font-size:20px}
+      .lienzo{border-radius:12px}
+      .controles{grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:11px}
+      .control label{font-size:12px;margin-bottom:2px}
+      input[type=range]{height:34px}
+      #botonLanzar{grid-column:1/-1;width:100%;min-height:50px}
+      .mensaje{font-size:14px;margin-top:9px}
+      .instrucciones{font-size:12px}
+      .records{gap:6px}
+      .record{padding:10px 4px}
+      .record span{font-size:11px}
+      .record strong{font-size:20px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <header class="barra">
+    <a class="volver" id="volver" href="../../index.html">← Volver</a>
+    <div class="espacio"></div>
+    <div class="menu-idioma">
+      <button class="boton-idioma" id="botonIdioma" type="button" aria-haspopup="true" aria-expanded="false">🇪🇸 ES ▾</button>
+      <div class="idiomas" id="menuIdiomas">
+        <button type="button" data-lang="es">🇪🇸 Español</button>
+        <button type="button" data-lang="en">🇬🇧 English</button>
+        <button type="button" data-lang="hy">🇦🇲 Հայերեն</button>
+      </div>
+    </div>
+    <button class="tema" id="botonTema" type="button">☀️ Claro</button>
+  </header>
+  <main>
+    <section class="cabecera">
+      <h1 id="titulo">🎯 Dardos matemáticos</h1>
+      <p class="descripcion" id="descripcion">Resuelve la operación, ajusta el ángulo y la fuerza, y lanza el dardo a la diana correcta.</p>
+    </section>
+    <section class="panel" aria-label="Juego">
+      <div class="operacion"><span class="operacion-label" id="etiquetaOperacion">Resuelve:</span><span id="operacion" aria-live="polite">—</span></div>
+      <div class="hud">
+        <div class="dato"><span id="textoPuntos">Puntos</span><strong id="puntos">0</strong></div>
+        <div class="dato"><span id="textoAciertos">Aciertos</span><strong id="aciertos">0</strong></div>
+        <div class="dato"><span id="textoLanzamientos">Dardos</span><strong id="lanzamientos">10</strong></div>
+        <div class="dato"><span id="textoVidas">Vidas</span><strong id="vidas">3</strong></div>
+      </div>
+      <div class="lienzo">
+        <canvas id="juego" width="820" height="410" aria-label="Cinco dianas y la trayectoria del dardo"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="overlay-tarjeta">
+            <h2 id="overlayTitulo">¿Preparado?</h2>
+            <p id="overlayTexto">Resuelve la operación. Ajusta el ángulo y la fuerza para que el dardo llegue al número correcto. Tienes 10 dardos y 3 vidas.</p>
+            <button class="boton" id="botonInicio" type="button">▶️ Empezar</button>
+          </div>
+        </div>
+      </div>
+      <div class="controles">
+        <div class="control"><label for="angulo"><span id="etiquetaAngulo">↗ Ángulo</span><output id="valorAngulo" for="angulo">45°</output></label><input id="angulo" type="range" min="15" max="75" value="45"></div>
+        <div class="control"><label for="fuerza"><span id="etiquetaFuerza">💪 Fuerza</span><output id="valorFuerza" for="fuerza">5</output></label><input id="fuerza" type="range" min="1" max="10" value="5"></div>
+        <button class="boton" id="botonLanzar" type="button" disabled>🎯 Lanzar dardo</button>
+      </div>
+      <p class="mensaje" id="mensaje" role="status" aria-live="polite"></p>
+      <p class="instrucciones" id="instrucciones">La línea de puntos muestra la trayectoria aproximada. Un impacto en una diana equivocada también cuenta como fallo.</p>
+    </section>
+    <section class="panel">
+      <h2 id="tituloRecords" style="text-align:center;margin:2px 0 13px">🏆 Tus récords</h2>
+      <div class="records">
+        <div class="record"><span id="textoMejorPuntuacion">Mejor puntuación</span><strong id="mejorPuntuacion">0</strong></div>
+        <div class="record"><span id="textoMejorRacha">Mejor racha</span><strong id="mejorRacha">0</strong></div>
+        <div class="record"><span id="textoPartidas">Partidas</span><strong id="partidas">0</strong></div>
+      </div>
+    </section>
+  </main>
+  <script src="../../assets/common.js?v=xp-20261008-dardos"></script>
+  <script src="app.js?v=20261008-1"></script>
+</body>
+</html>
