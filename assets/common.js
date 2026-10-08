@@ -333,17 +333,25 @@ window.MiWeb = (() => {
         }
     }
 
-    function rename(name) {
-        name = name.trim();
-        if (!name) return;
+    async function rename(name) {
+        name = String(name || '').trim().slice(0, 20);
+        if (!name) throw new Error('invalid_player_name');
+
+        const rows = await rpc('set_player_name', { p_name: name });
+        const row = Array.isArray(rows) ? rows[0] : rows;
+        const savedName = String(row?.player_name || name).trim();
+        if (!savedName) throw new Error('invalid_player_name');
+
         const user = profile();
         Object.keys(fields).forEach(readLocalOld);
-        user.name = name.slice(0, 20);
+        user.name = savedName;
         localStorage.setItem(PROFILE_KEY, JSON.stringify(user));
         localStorage.setItem('nombreUsuario', user.name);
         globalNames.set(user.id, user.name);
         syncCurrentName();
         refreshRankings();
+        await refreshXp(true);
+        return user.name;
     }
 
     function applyLanguage() {
