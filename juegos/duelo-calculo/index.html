@@ -9,6 +9,45 @@
 #botonInicio,#botonComprobar{padding:13px 24px;border:0;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;background:#fff;color:#111}.info{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.dato{background:#181818;border:1px solid #333;border-radius:13px;padding:14px}.dato span{display:block;color:#aaa;font-size:13px}.dato strong{display:block;font-size:25px;margin-top:5px}.operacion{font-size:clamp(42px,9vw,72px);font-weight:bold;margin:25px 0}.entrada{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.entrada input{width:220px;padding:14px;border-radius:10px;border:1px solid #555;background:#202020;color:#fff;font-size:20px;text-align:center;outline:none}.entrada input:focus{border-color:#888}#mensaje{min-height:30px;margin-top:16px;font-size:18px;font-weight:bold}.records{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.record{background:#181818;border:1px solid #333;border-radius:13px;padding:16px}.record span{display:block;color:#aaa;font-size:13px}.record strong{font-size:24px;display:block;margin-top:5px}.nota{color:#aaa;font-size:14px;margin-top:20px}.descarga{display:inline-block;margin-top:22px;color:#bbb}.oculto{display:none}
 body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;border-bottom-color:#ddd}body.claro .volver{color:#111}body.claro .boton-idioma,body.claro #botonTema{background:#f1f1f1;color:#111;border-color:#ccc}body.claro .idiomas{background:#fff;border-color:#ccc}body.claro .idiomas button{color:#111}body.claro .idiomas button:hover{background:#eee}body.claro #descripcion,body.claro .dato span,body.claro .record span,body.claro .nota,body.claro .descarga{color:#555}body.claro .panel{background:#fff;border-color:#ddd}body.claro .dato,body.claro .record{background:#f8f8f8;border-color:#ddd}body.claro .config select,body.claro .entrada input{background:#fff;color:#111;border-color:#bbb}
 @media(max-width:650px){.barra{padding:0 12px}.contenedor{padding:35px 15px}h1{font-size:31px}.info{grid-template-columns:repeat(2,1fr)}.records{grid-template-columns:1fr}.entrada input,.entrada button,#botonInicio{width:100%}}
+
+/* Ajustes de lectura y controles táctiles */
+button, select, input { font: inherit; }
+button, select { min-height: 44px; }
+body { min-height: 100vh; min-height: 100svh; }
+.barra { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+.operacion { overflow-wrap: anywhere; }
+@media (max-width: 650px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  .barra { min-height: 60px; height: auto; gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+  .volver { font-size: 16px; }
+  .boton-idioma, #botonTema { min-height: 44px; padding: 9px 10px; font-size: 14px; }
+  .contenedor { width: 100%; padding: 24px 12px calc(28px + env(safe-area-inset-bottom)); }
+  h1 { font-size: clamp(25px, 7vw, 31px); line-height: 1.15; }
+  #descripcion { font-size: 16px; line-height: 1.45; margin: 0 4px 18px; }
+  .panel { border-radius: 16px; padding: 16px 12px; margin-top: 14px; }
+  .config { display: grid; grid-template-columns: 1fr; align-items: stretch; gap: 12px; }
+  .config > div, .config label, .config select { width: 100%; }
+  .config label { margin-bottom: 6px; }
+  .config select, #botonInicio { min-height: 48px; }
+  .info { gap: 8px; margin: 16px 0; }
+  .dato { padding: 10px 6px; }
+  .dato span { font-size: 12px; line-height: 1.25; }
+  .dato strong { font-size: 23px; }
+  .operacion { font-size: clamp(38px, 12vw, 58px); margin: 18px 0; }
+  .entrada { display: grid; grid-template-columns: 1fr; gap: 9px; }
+  .entrada input, .entrada button, #botonComprobar, #botonInicio { width: 100%; min-height: 50px; }
+  .entrada input { font-size: 16px; }
+  #mensaje { min-height: 28px; font-size: 16px; line-height: 1.4; }
+  .records { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .record { min-width: 0; padding: 10px 5px; }
+  .record span { font-size: 11px; line-height: 1.3; overflow-wrap: anywhere; }
+  .record strong { font-size: 20px; }
+  .nota { font-size: 13px; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
 </style>
 </head>
 <body>
@@ -19,12 +58,12 @@ body.claro{background:#f4f4f4;color:#111}body.claro .barra{background:#fff;borde
 <div class="config"><div><label for="dificultad" id="labelDificultad">Dificultad</label><select id="dificultad"><option value="facil">Fácil</option><option value="medio">Medio</option><option value="dificil">Difícil</option></select></div><button id="botonInicio" type="button">▶️ Empezar</button></div>
 <div class="info"><div class="dato"><span id="textoTiempo">Tiempo</span><strong id="tiempo">30</strong></div><div class="dato"><span id="textoPuntos">Puntos</span><strong id="puntos">0</strong></div><div class="dato"><span id="textoRacha">Racha</span><strong id="racha">0</strong></div><div class="dato"><span id="textoAciertos">Aciertos</span><strong id="aciertos">0</strong></div></div>
 <div class="operacion" id="operacion">—</div>
-<form class="entrada" id="formulario"><input id="respuesta" inputmode="numeric" autocomplete="off" placeholder="Respuesta" disabled><button id="botonComprobar" disabled>✅ Responder</button></form>
+<form class="entrada" id="formulario"><input id="respuesta" inputmode="numeric" enterkeyhint="done" autocapitalize="off" spellcheck="false" autocomplete="off" placeholder="Respuesta" disabled><button id="botonComprobar" disabled>✅ Responder</button></form>
 <div id="mensaje" role="status" aria-live="polite"></div>
 </section>
 <section class="panel"><h2 id="tituloRecords">🏆 Tus récords</h2><div class="records"><div class="record"><span id="textoRecordPuntos">Mejor puntuación</span><strong id="recordPuntos">0</strong></div><div class="record"><span id="textoRecordRacha">Mejor racha</span><strong id="recordRacha">0</strong></div><div class="record"><span id="textoPartidas">Partidas</span><strong id="recordPartidas">0</strong></div></div></section>
 <p class="nota" id="nota">Fácil: suma y resta. Medio: añade multiplicaciones. Difícil: incluye divisiones exactas y números mayores.</p>
 <a class="descarga" id="descarga" href="calculo.py" download>Descargar código Python</a>
 </main>
-<script src="../../assets/common.js?v=xp-20261006-8"></script><script src="app.js"></script>
+<script src="../../assets/common.js?v=xp-20261006-8"></script><script src="app.js?v=mobile-20261008"></script>
 </body></html>
