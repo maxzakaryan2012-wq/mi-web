@@ -255,6 +255,22 @@
             color: white;
         }
 
+        .registro-estado {
+            min-height: 22px;
+            margin: 10px 0 0;
+            font-size: 13px;
+            font-weight: 800;
+            color: #aaa;
+        }
+
+        .registro-estado.error {
+            color: #ff7c86;
+        }
+
+        .registro-estado.ok {
+            color: #70e28e;
+        }
+
         body.claro .formulario-usuario button {
             background: #e8e8e8;
             color: #111;
@@ -1176,6 +1192,8 @@
 
             </div>
 
+            <p class="registro-estado" id="registroEstado" aria-live="polite"></p>
+
         </section>
 
 
@@ -1472,7 +1490,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261007-13"></script>
+    <script src="assets/common.js?v=xp-20261008-14"></script>
     <script>
 
         /* =========================
@@ -1576,7 +1594,11 @@
                     registro: "👤 Registrarse",
                     todo: "🎮 Todo",
                     registroTitulo: "👤 Registrarse",
-                    registroDescripcion: "Elige el nombre que aparecerá en tus estadísticas y rankings."
+                    registroDescripcion: "Elige un nombre único. Mayúsculas/minúsculas y números no crean un nombre distinto.",
+                    nombreOcupado: "Ese nombre ya pertenece a otro jugador.",
+                    nombreError: "No se pudo guardar el nombre. Comprueba tu conexión.",
+                    nombreGuardando: "Comprobando nombre...",
+                    nombreOk: "Nombre guardado."
                 },
                 en: {
                     inicio: "🏠 Home",
@@ -1587,7 +1609,11 @@
                     registro: "👤 Register",
                     todo: "🎮 Everything",
                     registroTitulo: "👤 Register",
-                    registroDescripcion: "Choose the name that will appear in your statistics and rankings."
+                    registroDescripcion: "Choose a unique name. Upper/lowercase changes and numbers do not make it a different name.",
+                    nombreOcupado: "That name already belongs to another player.",
+                    nombreError: "The name could not be saved. Check your connection.",
+                    nombreGuardando: "Checking name...",
+                    nombreOk: "Name saved."
                 },
                 hy: {
                     inicio: "🏠 Գլխավոր",
@@ -1598,7 +1624,11 @@
                     registro: "👤 Գրանցվել",
                     todo: "🎮 Ամեն ինչ",
                     registroTitulo: "👤 Գրանցվել",
-                    registroDescripcion: "Ընտրիր այն անունը, որը կերևա քո վիճակագրության և վարկանիշների մեջ։"
+                    registroDescripcion: "Ընտրիր եզակի անուն։ Մեծատառ/փոքրատառ փոփոխությունները և թվերը նոր անուն չեն ստեղծում։",
+                    nombreOcupado: "Այդ անունն արդեն պատկանում է մեկ այլ խաղացողի։",
+                    nombreError: "Անունը չհաջողվեց պահպանել։ Ստուգիր ինտերնետ կապը։",
+                    nombreGuardando: "Անունը ստուգվում է...",
+                    nombreOk: "Անունը պահպանված է։"
                 }
             }[idioma];
         }
@@ -2898,8 +2928,16 @@
                     "nombreUsuario"
                 );
 
+            const estado =
+                document.getElementById(
+                    "registroEstado"
+                );
+
             formulario.style.display =
                 "flex";
+
+            estado.textContent = "";
+            estado.className = "registro-estado";
 
             input.value =
                 obtenerNombreUsuario();
@@ -2911,12 +2949,24 @@
         }
 
 
-        function guardarNombre() {
+        async function guardarNombre() {
 
             const input =
                 document.getElementById(
                     "nombreUsuario"
                 );
+
+            const boton =
+                document.getElementById(
+                    "botonGuardarNombre"
+                );
+
+            const estado =
+                document.getElementById(
+                    "registroEstado"
+                );
+
+            const t = textosSecciones();
 
             const nombre =
                 input.value.trim();
@@ -2929,14 +2979,46 @@
 
             }
 
-            MiWeb.rename(nombre);
+            boton.disabled = true;
+            estado.textContent = t.nombreGuardando;
+            estado.className = "registro-estado";
 
-            mostrarNombreUsuario();
+            try {
 
-            document.getElementById(
-                "formularioUsuario"
-            ).style.display =
-                "none";
+                await MiWeb.rename(nombre);
+
+                mostrarNombreUsuario();
+
+                estado.textContent = t.nombreOk;
+                estado.className = "registro-estado ok";
+
+                document.getElementById(
+                    "formularioUsuario"
+                ).style.display =
+                    "none";
+
+            } catch (error) {
+
+                const mensaje = String(
+                    error && error.message || ""
+                );
+
+                estado.textContent =
+                    mensaje.includes("name_taken")
+                    ? t.nombreOcupado
+                    : t.nombreError;
+
+                estado.className =
+                    "registro-estado error";
+
+                input.focus();
+                input.select();
+
+            } finally {
+
+                boton.disabled = false;
+
+            }
 
         }
 
@@ -2947,6 +3029,14 @@
                 "formularioUsuario"
             ).style.display =
                 "none";
+
+            const estado =
+                document.getElementById(
+                    "registroEstado"
+                );
+
+            estado.textContent = "";
+            estado.className = "registro-estado";
 
         }
 
