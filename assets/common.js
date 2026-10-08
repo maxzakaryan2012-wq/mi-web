@@ -532,7 +532,7 @@ window.MiWeb = (() => {
     function xpContext() {
         const path = location.pathname.toLowerCase();
         const entries = [
-            ['duelo-calculo','game'],['disparador-primos','game'],['secuencia','game'],
+            ['duelo-calculo','game'],['disparador-primos','game'],['dardos-matematicos','game'],['secuencia','game'],
             ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['ajedrez','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
