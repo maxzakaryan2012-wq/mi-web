@@ -149,60 +149,54 @@ function spawn(){
     targets.push({n,x,y:-r,r,speed,prime:isPrime(n)});
 }
 
-function gunGeometry(){
-    const baseX=canvas.width/2;
-    const baseY=canvas.height-20;
-    const angle=Math.atan2(aimY-baseY,aimX-baseX);
-    const barrelLength=66;
-    return {
-        baseX,baseY,angle,
-        muzzleX:baseX+Math.cos(angle)*barrelLength,
-        muzzleY:baseY+Math.sin(angle)*barrelLength
-    };
+// Perspective projection of a paintball marker built from shaded 3D faces.
+let recoil=0;
+function gunPoint(x,y,z){
+    const yaw=(aimX/canvas.width-.5)*.65;
+    const pitch=(aimY/canvas.height-.5)*.24;
+    const xx=x*Math.cos(yaw)+z*Math.sin(yaw);
+    const zz=z*Math.cos(yaw)-x*Math.sin(yaw);
+    const yy=y*Math.cos(pitch)-zz*Math.sin(pitch);
+    const depth=zz*Math.cos(pitch)+y*Math.sin(pitch)+recoil*24;
+    const scale=360/(360+depth);
+    return {x:canvas.width/2+xx*scale,y:canvas.height-24+yy*scale+recoil*12,z:depth};
 }
-
+function gunGeometry(){
+    const p=gunPoint(0,-56,155);
+    return {muzzleX:p.x,muzzleY:p.y};
+}
 function drawGun(){
-    const g=gunGeometry();
-    const light=document.body.classList.contains('claro');
-    ctx.save();
-    ctx.translate(g.baseX,g.baseY);
-    ctx.rotate(g.angle);
-
-    ctx.shadowColor='rgba(0,0,0,.35)';
-    ctx.shadowBlur=8;
-    ctx.shadowOffsetY=3;
-
-    ctx.fillStyle=light?'#565b63':'#c2c7ce';
-    ctx.beginPath();
-    ctx.roundRect(-4,-10,58,20,6);
-    ctx.fill();
-
-    ctx.fillStyle=light?'#282b30':'#747b85';
-    ctx.fillRect(48,-12,16,24);
-
-    ctx.fillStyle=light?'#373b41':'#9198a1';
-    ctx.beginPath();
-    ctx.moveTo(8,8);
-    ctx.lineTo(31,8);
-    ctx.lineTo(22,48);
-    ctx.lineTo(5,48);
-    ctx.lineTo(0,18);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.shadowColor='transparent';
-    ctx.strokeStyle=light?'#111':'#25282d';
-    ctx.lineWidth=3;
-    ctx.beginPath();
-    ctx.arc(26,12,9,0.15,2.8);
-    ctx.stroke();
-
-    ctx.fillStyle=light?'#191b1f':'#2e3339';
-    ctx.fillRect(12,-15,17,5);
-
-    ctx.fillStyle='#111';
-    ctx.fillRect(61,-6,5,12);
-
+    const faces=[];
+    function box(x,y,z,w,h,d,colors){
+        const p=[[x,y,z],[x+w,y,z],[x+w,y+h,z],[x,y+h,z],
+          [x,y,z+d],[x+w,y,z+d],[x+w,y+h,z+d],[x,y+h,z+d]].map(v=>gunPoint(...v));
+        [[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[0,3,7,4],[1,5,6,2]].forEach((ids,i)=>{
+            faces.push({p:ids.map(j=>p[j]),z:ids.reduce((n,j)=>n+p[j].z,0)/4,color:colors[i%colors.length]});
+        });
+    }
+    // Grip, receiver, rail, barrel and hopper have real depth coordinates.
+    box(-16,-12,-18,32,65,36,['#24282e','#40474f','#68717b','#171b20','#333940','#515b65']);
+    box(-25,-52,-20,50,42,90,['#444d58','#333b44','#a4afb9','#232830','#586574','#778491']);
+    box(-8,-60,-10,16,8,65,['#242a31','#4c5660','#bbc4cd']);
+    box(-12,-65,65,24,18,90,['#495661','#202830','#9daab5','#242c33','#657482','#82909d']);
+    box(-15,-68,143,30,24,12,['#586773','#151b21','#c4ced6','#252d35','#657480','#95a2ad']);
+    box(-5,-66,156,10,19,1,['#080c10']);
+    box(18,-64,8,10,35,18,['#34424c','#53636e','#80919a']);
+    box(18,-102,-5,39,38,57,['#3d4b58','#303b46','#8b9ba8','#29323c','#4a5b6a','#657989']);
+    // Raised rear sight.
+    box(-17,-65,-14,9,13,9,['#303940','#75838f','#c5cdd3']);
+    box(8,-65,-14,9,13,9,['#303940','#75838f','#c5cdd3']);
+    faces.sort((a,b)=>b.z-a.z);
+    ctx.save();ctx.lineWidth=.7;ctx.strokeStyle='#10182055';
+    for(const f of faces){
+        ctx.beginPath();f.p.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();
+        ctx.fillStyle=f.color;ctx.fill();ctx.stroke();
+    }
+    // Soft pressure puff at the muzzle on each shot.
+    if(recoil>.55){
+        const p=gunGeometry();ctx.globalAlpha=(recoil-.55)*.8;
+        ctx.fillStyle='#dbe8ee';ctx.beginPath();ctx.ellipse(p.muzzleX,p.muzzleY-5,13*(1.4-recoil),9,0,0,Math.PI*2);ctx.fill();
+    }
     ctx.restore();
 }
 
@@ -251,6 +245,7 @@ function drawSplats(){
 }
 
 function firePaintball(targetX,targetY,color){
+    recoil=1;
     const g=gunGeometry();
     const distance=Math.hypot(targetX-g.muzzleX,targetY-g.muzzleY);
     shots.push({
@@ -264,6 +259,7 @@ function firePaintball(targetX,targetY,color){
 }
 
 function updateEffects(dt){
+    recoil=Math.max(0,recoil-dt*7);
     const completed=[];
     for(const shot of shots){
         shot.elapsed+=dt;
@@ -289,7 +285,7 @@ function drawShots(){
         ctx.shadowColor=s.color;
         ctx.shadowBlur=12;
         ctx.beginPath();
-        ctx.arc(s.x,s.y,7,0,Math.PI*2);
+        ctx.arc(s.x,s.y,9-5*Math.min(1,s.elapsed/s.duration),0,Math.PI*2);
         ctx.fill();
 
         ctx.shadowBlur=0;
@@ -302,33 +298,45 @@ function drawShots(){
 }
 
 function draw(){
-    const fg=getComputedStyle(document.body).color;
-    const bg=document.body.classList.contains('claro')?'#fafafa':'#101010';
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.textAlign='center';
-    ctx.textBaseline='middle';
-    ctx.font='bold 20px Arial';
-
-    for(const t of targets){
-        ctx.beginPath();
-        ctx.arc(t.x,t.y,t.r,0,Math.PI*2);
-        ctx.fillStyle=document.body.classList.contains('claro')?'#e9e9e9':'#262626';
-        ctx.fill();
-        ctx.strokeStyle=fg;
-        ctx.globalAlpha=.5;
-        ctx.stroke();
-        ctx.globalAlpha=1;
-        ctx.fillStyle=fg;
-        ctx.fillText(String(t.n),t.x,t.y);
+    const light=document.body.classList.contains('claro'),w=canvas.width,h=canvas.height;
+    const wall=ctx.createLinearGradient(0,0,0,h);
+    wall.addColorStop(0,light?'#edf0f3':'#141a21');wall.addColorStop(1,light?'#c3ccd3':'#343e49');
+    ctx.fillStyle=wall;ctx.fillRect(0,0,w,h);
+    // Receding wall panels and floor lines frame the shooting gallery.
+    const vx=w/2,vy=100;
+    ctx.fillStyle=light?'#dce2e7':'#222b35';ctx.fillRect(0,h*.72,w,h*.28);
+    ctx.strokeStyle=light?'#b2bdc7':'#46515d';ctx.lineWidth=1;
+    for(let x=-w;x<=w*2;x+=w/6){
+        ctx.beginPath();ctx.moveTo(vx+(x-vx)*.2,h*.72);ctx.lineTo(x,h);ctx.stroke();
     }
-
-    drawSplats();
-    drawShots();
-    drawGun();
+    for(const y of [.76,.83,.93]){
+        ctx.beginPath();ctx.moveTo(0,h*y);ctx.lineTo(w,h*y);ctx.stroke();
+    }
+    ctx.strokeStyle=light?'#b5bfc9':'#394550';
+    for(const x of [0,w]){
+        ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(vx+(x-vx)*.72,vy);
+        ctx.lineTo(vx+(x-vx)*.72,h*.72);ctx.lineTo(x,h);ctx.stroke();
+    }
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 20px Arial';
+    for(const t of targets){
+        // Spherical shading preserves the exact visible hit radius.
+        ctx.save();ctx.fillStyle='#0003';ctx.beginPath();ctx.ellipse(t.x+5,t.y+8,t.r,t.r,0,0,Math.PI*2);ctx.fill();
+        const ball=ctx.createRadialGradient(t.x-t.r*.35,t.y-t.r*.4,1,t.x,t.y,t.r);
+        ball.addColorStop(0,light?'#ffffff':'#aab8c5');ball.addColorStop(.55,light?'#e1e7ed':'#526171');ball.addColorStop(1,light?'#7e909f':'#26323e');
+        ctx.fillStyle=ball;ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fill();
+        ctx.strokeStyle=light?'#6f8495':'#90a1b1';ctx.lineWidth=1;ctx.stroke();
+        ctx.fillStyle=light?'#172330':'#fff';ctx.shadowColor=light?'transparent':'#000';ctx.shadowBlur=3;
+        ctx.fillText(String(t.n),t.x,t.y+1);ctx.restore();
+    }
+    drawSplats();drawGun();drawShots();
+    if(playing){
+        ctx.save();ctx.strokeStyle=light?'#152a40':'#fff';ctx.lineWidth=1.5;ctx.beginPath();
+        ctx.arc(aimX,aimY,9,0,Math.PI*2);
+        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+            ctx.moveTo(aimX+dx*12,aimY+dy*12);ctx.lineTo(aimX+dx*17,aimY+dy*17);
+        }
+        ctx.stroke();ctx.restore();
+    }
 }
 
 function endGame(){
@@ -408,6 +416,7 @@ function start(){
     targets=[];
     shots=[];
     splats=[];
+    recoil=0;
     playing=true;
     last=0;
     spawnTimer=.25;
