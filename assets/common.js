@@ -333,11 +333,11 @@ window.MiWeb = (() => {
         }
     }
 
-    async function rename(name) {
+    async function rename(name, email) {
         name = String(name || '').trim().slice(0, 20);
         if (!name) throw new Error('invalid_player_name');
 
-        const rows = await rpc('set_player_name', { p_name: name });
+        const rows = email === undefined ? await rpc('set_player_name', { p_name: name }) : await rpc('set_player_registration', { p_name: name, p_email: email });
         const row = Array.isArray(rows) ? rows[0] : rows;
         const savedName = String(row?.player_name || name).trim();
         if (!savedName) throw new Error('invalid_player_name');
@@ -854,7 +854,7 @@ window.MiWeb = (() => {
     }
 
     return {
-        profile, rename, readStats, writeStats, playerName, applyLanguage,
+        getContact: () => rpc('get_player_contact', {}), profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
         awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, awardChessMoveXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
