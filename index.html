@@ -1176,6 +1176,9 @@
                     autocomplete="off"
                 >
 
+                <label id="labelCorreo" for="correoUsuario">Correo electrónico</label>
+                <input type="email" id="correoUsuario" maxlength="254" required autocomplete="email" inputmode="email" placeholder="nombre@ejemplo.com">
+                <p id="notaCorreo">Tu correo es privado y no aparece en los rankings.</p>
                 <button
                     onclick="guardarNombre()"
                     id="botonGuardarNombre"
@@ -1497,7 +1500,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=xp-20261008-15"></script>
+    <script src="assets/common.js?v=20261009-email"></script>
     <script>
 
         /* =========================
@@ -1648,6 +1651,13 @@
             document.getElementById("calculadoraNav").textContent = t.calculadora;
             document.getElementById("rankingNav").textContent = t.ranking;
             document.getElementById("registroNav").textContent = t.registro;
+            const correoText = {
+                es: ['Correo electrónico', 'Tu correo es privado y no aparece en los rankings.'],
+                en: ['Email address', 'Your email is private and is not shown in leaderboards.'],
+                hy: ['Էլեկտրոնային փոստ', 'Քո էլեկտրոնային հասցեն գաղտնի է և չի ցուցադրվում վարկանիշներում։']
+            }[localStorage.getItem('idioma')] || ['Correo electrónico', 'Tu correo es privado y no aparece en los rankings.'];
+            document.getElementById('labelCorreo').textContent = correoText[0];
+            document.getElementById('notaCorreo').textContent = correoText[1];
             document.getElementById("tituloRegistro").textContent = t.registroTitulo;
             document.getElementById("descripcionRegistro").textContent = t.registroDescripcion;
 
@@ -2996,13 +3006,15 @@
 
             }
 
+            const correo = document.getElementById("correoUsuario");
+            if (!correo.reportValidity()) return;
             boton.disabled = true;
             estado.textContent = t.nombreGuardando;
             estado.className = "registro-estado";
 
             try {
 
-                await MiWeb.rename(nombre);
+                await MiWeb.rename(nombre, correo.value.trim());
 
                 mostrarNombreUsuario();
 
@@ -3099,7 +3111,7 @@
         aplicarIdioma();
 
         mostrarNombreUsuario();
-
+        MiWeb.getContact().then(email => { if(email && !document.getElementById('correoUsuario').value) document.getElementById('correoUsuario').value = email; }).catch(() => {});
         actualizarPortadaMejorada();
 
         mostrarSeccion(location.hash.slice(1) || "inicio", false);
