@@ -4,9 +4,12 @@ const T={
  hy:{title:'🎯 Մաթեմատիկական տեգեր',desc:'Լուծիր գործողությունը, կարգավորիր անկյունն ու ուժը և նետիր տեգը ճիշտ թիրախին։',back:'← Հետ',light:'☀️ Բաց',dark:'🌙 Մութ',solve:'Լուծիր՝',angle:'↗ Անկյուն',power:'💪 Ուժ',points:'Միավորներ',hits:'Դիպուկ հարվածներ',throws:'Տեգեր',lives:'Կյանքեր',launch:'🎯 Նետել տեգը',ready:'Պատրա՞ստ ես',intro:'Լուծիր գործողությունը։ Կարգավորիր անկյունն ու ուժը, որպեսզի տեգը հասնի ճիշտ թվին։ Ունես 10 նետում և 3 կյանք։',start:'▶️ Սկսել',again:'🔄 Կրկին խաղալ',instructions:'Կետագիծը ցույց է տալիս մոտավոր ուղին։ Սխալ թիրախին հարվածելը նույնպես սխալ է։',records:'🏆 Քո ռեկորդները',bestScore:'Լավագույն միավոր',bestStreak:'Լավագույն շարք',games:'Խաղեր',correct:'Դիպուկ հարված։ Ճիշտ պատասխանն էր՝ ',wrongTarget:'Սխալ թիրախ։ Պատասխանն էր՝ ',miss:'Տեգը չհարվածեց թիրախներին։ Պատասխանն էր՝ ',finished:'Խաղն ավարտվեց · Միավորներ՝ ',hitsOf:' · Դիպուկ հարվածներ՝ ',answer:'Պատասխանն էր՝ ',shotsLeft:' տեգ է մնացել',golden:'Շարք՝ ',pointsWord:'! +',pointsShort:' միավոր',empty:'Սկսելու համար կարգավորիր անկյունն ու ուժը։'}
 };
 
+Object.assign(T.es,{desc:'Resuelve la operación, apunta con el ratón y haz clic en la diana correcta.',intro:'Mueve el ratón para apuntar y haz clic para lanzar. En móvil, arrastra el dedo y suelta. Tienes 10 dardos y 3 vidas.',instructions:'Ratón: apunta y haz clic. Móvil: arrastra para apuntar y suelta para lanzar.',empty:'Apunta a la respuesta correcta y lanza.'});
+Object.assign(T.en,{desc:'Solve the operation, aim with the mouse and click the correct target.',intro:'Move the mouse to aim and click to throw. On mobile, drag and release. You have 10 darts and 3 lives.',instructions:'Mouse: aim and click. Mobile: drag to aim and release to throw.',empty:'Aim at the correct answer and throw.'});
+Object.assign(T.hy,{desc:'Լուծիր գործողությունը, նշան բռնիր մկնիկով և սեղմիր ճիշտ թիրախի վրա։',intro:'Շարժիր մկնիկը՝ նշան բռնելու համար, և սեղմիր՝ նետելու համար։ Հեռախոսով շարժիր մատը և բաց թող։ Ունես 10 տեգ և 3 կյանք։',instructions:'Մկնիկով՝ նշան բռնիր և սեղմիր։ Հեռախոսով՝ շարժիր մատը և բաց թող։',empty:'Նշան բռնիր ճիշտ պատասխանի վրա և նետիր։'});
 const $=id=>document.getElementById(id);
 const canvas=$('juego'),ctx=canvas.getContext('2d');
-const W=canvas.width,H=canvas.height,GROUND=354,LAUNCH_X=W/2,LAUNCH_Y=GROUND-14,G=420;
+const W=canvas.width,H=canvas.height,GROUND=354,LAUNCH_X=W/2,LAUNCH_Y=GROUND-48,G=420;
 const TARGET_X=[110,260,410,560,710];
 const STATS_GAME='dardos-matematicos';
 let targets=[],answer=0,expression='',active=false,flying=false,shots=10,lives=3,score=0,hits=0,streak=0,bestRun=0,shot=null,raf=0,nextRoundTimer=0;
@@ -27,8 +30,9 @@ function makeTargets(){
   targets=TARGET_X.map((x,i)=>({x,y:218,r:33,n:values[i]}));
   $('operacion').textContent=expression;
 }
-function speed(){return Number($('fuerza').value)}
-function angle(){return Number($('angulo').value)*Math.PI/180}
+let aimX=W/2,aimY=218,aimPointer=null;
+function speed(){return 5+(218-aimY)/30}
+function angle(){return Math.atan((aimX-W/2)/360)}
 function landing(a=angle(),v=speed()){return {x:W/2+Math.tan(a)*360,y:218+(5-v)*30}}
 function projectileAt(t,a=angle(),v=speed()){
   const p=Math.max(0,Math.min(1,t)),end=landing(a,v);
@@ -74,21 +78,41 @@ function drawDart(x,y,vx,vy){
   ctx.fillStyle='#f06451';ctx.beginPath();ctx.moveTo(-18,0);ctx.lineTo(-26,-7);ctx.lineTo(-23,0);ctx.lineTo(-26,7);ctx.closePath();ctx.fill();ctx.restore();
 }
 function drawLauncher(){
-  // Perspective arm: shaded forearm, wrist, palm and curled fingers.
-  const p=shot?Math.min(1,shot.elapsed):0;
-  const thrust=shot?Math.sin(Math.min(1,p/.3)*Math.PI)*25:0;
-  ctx.save();ctx.translate(W/2,H+18);ctx.rotate((shot?shot.a:angle())*.35);
-  ctx.shadowColor='#0006';ctx.shadowBlur=12;ctx.shadowOffsetX=8;
-  const skin=ctx.createLinearGradient(-40,0,38,0);
-  skin.addColorStop(0,'#895139');skin.addColorStop(.35,'#d79b74');skin.addColorStop(.65,'#f2c49c');skin.addColorStop(1,'#a26748');
-  ctx.fillStyle=skin;ctx.beginPath();ctx.moveTo(-47,20);ctx.lineTo(-22,-78-thrust);ctx.quadraticCurveTo(-20,-100-thrust,4,-99-thrust);ctx.quadraticCurveTo(24,-96-thrust,25,-75-thrust);ctx.lineTo(54,20);ctx.closePath();ctx.fill();
-  ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(0,-94-thrust,25,32,-.12,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;ctx.strokeStyle='#9b6449';ctx.lineWidth=2;
-  for(let i=0;i<4;i++){ctx.fillStyle=skin;roundRect(ctx,-20+i*10,-119-thrust,12,27,6);ctx.fill();ctx.stroke();}
-  ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(21,-94-thrust,11,22,.6,0,Math.PI*2);ctx.fill();ctx.stroke();
-  const sleeve=ctx.createLinearGradient(-50,0,50,0);sleeve.addColorStop(0,'#222');sleeve.addColorStop(.5,'#666');sleeve.addColorStop(1,'#292929');ctx.fillStyle=sleeve;
-  ctx.beginPath();ctx.moveTo(-48,-5);ctx.lineTo(49,-5);ctx.lineTo(63,35);ctx.lineTo(-62,35);ctx.closePath();ctx.fill();ctx.restore();
-  if(!shot)drawDart(LAUNCH_X,LAUNCH_Y-20,Math.sin(angle()),-1);
+  const progress=shot?shot.elapsed:0;
+  const release=shot?Math.sin(Math.min(1,progress/.55)*Math.PI):0;
+  const turn=shot?shot.a:angle();
+  ctx.save();ctx.translate(W/2,H+25);ctx.rotate(turn*.23);ctx.translate(0,-release*28);
+  ctx.shadowColor='#0005';ctx.shadowBlur=14;ctx.shadowOffsetX=7;
+  const skin=ctx.createLinearGradient(-42,0,38,-15);
+  skin.addColorStop(0,'#8b513b');skin.addColorStop(.2,'#bc805c');skin.addColorStop(.53,'#f0bf94');skin.addColorStop(.8,'#d99d74');skin.addColorStop(1,'#945b40');
+  ctx.fillStyle=skin;
+  // Tapered forearm flowing into the wrist.
+  ctx.beginPath();ctx.moveTo(-51,30);ctx.bezierCurveTo(-46,-10,-26,-57,-22,-90);
+  ctx.bezierCurveTo(-18,-107,17,-110,23,-90);ctx.bezierCurveTo(28,-57,48,-8,55,30);ctx.closePath();ctx.fill();
+  ctx.shadowBlur=0;
+  // Palm and knuckles, with an asymmetric natural grip.
+  ctx.beginPath();ctx.moveTo(-22,-83);ctx.bezierCurveTo(-35,-95,-35,-119,-25,-134);
+  ctx.bezierCurveTo(-18,-146,9,-145,20,-130);ctx.bezierCurveTo(30,-115,26,-94,19,-84);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#9e674b';ctx.lineWidth=1.4;
+  // Three curled fingers unfold slightly during release.
+  for(let i=0;i<3;i++){
+    ctx.save();ctx.translate(-20+i*13,-123+i*3);ctx.rotate(-.18+release*(i-1)*.23);
+    const length=24+release*(18-i*3);
+    ctx.fillStyle=skin;roundRect(ctx,-5,-length,13,length+14,6);ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#b77f5e';ctx.beginPath();ctx.moveTo(-2,1);ctx.quadraticCurveTo(3,3,6,1);ctx.stroke();ctx.restore();
+  }
+  // Index finger and thumb pinch the dart shaft.
+  ctx.fillStyle=skin;ctx.beginPath();ctx.moveTo(-21,-110);ctx.bezierCurveTo(-31,-128,-22,-155,-12,-155);
+  ctx.bezierCurveTo(-3,-155,-5,-145,-11,-140);ctx.lineTo(-9,-115);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(24,-97);ctx.bezierCurveTo(36,-110,29,-123,11,-131);
+  ctx.bezierCurveTo(1,-137,-6,-129,1,-122);ctx.lineTo(15,-108);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle='#edc7ad';ctx.beginPath();ctx.ellipse(4,-127,5,7,-.65,0,Math.PI*2);ctx.fill();
+  // Wrist creases and soft reflected highlight.
+  ctx.strokeStyle='#af755655';ctx.beginPath();ctx.moveTo(-15,-87);ctx.quadraticCurveTo(0,-82,15,-88);ctx.moveTo(-12,-79);ctx.quadraticCurveTo(0,-75,13,-81);ctx.stroke();
+  const sleeve=ctx.createLinearGradient(-55,0,55,0);sleeve.addColorStop(0,'#242424');sleeve.addColorStop(.55,'#656565');sleeve.addColorStop(1,'#292929');
+  ctx.fillStyle=sleeve;ctx.beginPath();ctx.moveTo(-48,-6);ctx.quadraticCurveTo(0,5,48,-6);ctx.lineTo(64,40);ctx.lineTo(-64,40);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#888';ctx.beginPath();ctx.moveTo(-45,-2);ctx.quadraticCurveTo(0,8,46,-2);ctx.stroke();ctx.restore();
+  if(!shot)drawDart(LAUNCH_X,LAUNCH_Y,Math.sin(turn)*.4,-1);
 }
 function draw(){
   drawBackground();targets.forEach(drawTarget);drawAim();drawLauncher();
@@ -96,10 +120,35 @@ function draw(){
     ctx.save();ctx.translate(p.x,p.y);const scale=1.2-.65*Math.min(1,shot.elapsed);ctx.scale(scale,scale);drawDart(0,0,q.x-p.x,q.y-p.y||-1);ctx.restore();}
 }
 
-function updateControls(){
-  $('valorAngulo').textContent=$('angulo').value+'°';$('valorFuerza').textContent=$('fuerza').value;draw();
+function pointAt(e){
+  const rect=canvas.getBoundingClientRect();
+  aimX=Math.max(0,Math.min(W,(e.clientX-rect.left)*W/rect.width));
+  aimY=Math.max(0,Math.min(H,(e.clientY-rect.top)*H/rect.height));draw();
 }
-
+canvas.addEventListener('pointerdown',e=>{
+  if(!active||flying||$('botonLanzar').disabled||e.button!==0||aimPointer!==null)return;
+  e.preventDefault();aimPointer=e.pointerId;canvas.setPointerCapture(e.pointerId);pointAt(e);
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!active||flying||$('botonLanzar').disabled)return;
+  if(e.pointerType==='mouse'||e.pointerId===aimPointer)pointAt(e);
+});
+canvas.addEventListener('pointerup',e=>{
+  if(e.pointerId!==aimPointer)return;
+  e.preventDefault();aimPointer=null;
+  const rect=canvas.getBoundingClientRect();
+  if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+  if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)return;
+  pointAt(e);throwDart();
+});
+canvas.addEventListener('pointercancel',()=>{aimPointer=null});
+canvas.addEventListener('lostpointercapture',()=>{aimPointer=null});
+canvas.addEventListener('keydown',e=>{
+  if(!active||flying||$('botonLanzar').disabled)return;
+  const moves={ArrowLeft:[-8,0],ArrowRight:[8,0],ArrowUp:[0,-8],ArrowDown:[0,8]};
+  if(moves[e.key]){e.preventDefault();aimX=Math.max(0,Math.min(W,aimX+moves[e.key][0]));aimY=Math.max(0,Math.min(H,aimY+moves[e.key][1]));draw();}
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();throwDart();}
+});
 function stats(){const rows=MiWeb.readExtraStats(STATS_GAME),id=MiWeb.profile().id;return rows[id]||{mejorPuntuacion:0,mejorRacha:0,partidas:0}}
 function showStats(){const s=stats();$('mejorPuntuacion').textContent=s.mejorPuntuacion||0;$('mejorRacha').textContent=s.mejorRacha||0;$('partidas').textContent=s.partidas||0}
 function saveStats(){
@@ -108,7 +157,7 @@ function saveStats(){
 function updateHud(){ $('puntos').textContent=score;$('aciertos').textContent=hits;$('lanzamientos').textContent=shots;$('vidas').textContent='❤️'.repeat(lives)||'0'; }
 function newRound(){difficultyQuestion();makeTargets();draw();if(active)$('botonLanzar').disabled=false;}
 function startGame(){
-  clearTimeout(nextRoundTimer);cancelAnimationFrame(raf);active=true;flying=false;$('angulo').disabled=false;$('fuerza').disabled=false;shots=10;lives=3;score=0;hits=0;streak=0;bestRun=0;shot=null;newRound();updateHud();
+  clearTimeout(nextRoundTimer);cancelAnimationFrame(raf);active=true;flying=false;shots=10;lives=3;score=0;hits=0;streak=0;bestRun=0;shot=null;newRound();updateHud();
   $('overlay').classList.add('oculto');$('botonLanzar').disabled=false;$('mensaje').textContent=T[lang()].empty;
 }
 function finishGame(){
@@ -125,14 +174,14 @@ function finishThrow(target){
 }
 function throwDart(){
   if(!active||flying||$('botonLanzar').disabled)return;
-  flying=true;$('botonLanzar').disabled=true;$('angulo').disabled=true;$('fuerza').disabled=true;
+  flying=true;$('botonLanzar').disabled=true;
   shot={elapsed:0,a:angle(),v:speed()};let last=performance.now();
   const frame=now=>{
     if(!flying||!shot)return;
     shot.elapsed=Math.min(1,shot.elapsed+Math.min(.05,(now-last)/1000)/.8);last=now;draw();
     if(shot.elapsed>=1){
       const end=landing(shot.a,shot.v),target=targets.find(t=>Math.hypot(end.x-t.x,end.y-t.y)<=t.r);
-      $('angulo').disabled=false;$('fuerza').disabled=false;finishThrow(target||null);return;
+      finishThrow(target||null);return;
     }
     raf=requestAnimationFrame(frame);
   };raf=requestAnimationFrame(frame);
@@ -140,7 +189,7 @@ function throwDart(){
 
 function renderText(){
   const l=lang(),t=T[l];document.body.classList.toggle('claro',localStorage.getItem('tema')==='claro');document.documentElement.lang=l;document.title=t.title.replace(/^🎯 /,'')+' - MI WEB';MiWeb.applyLanguage();
-  $('titulo').textContent=t.title;$('descripcion').textContent=t.desc;$('volver').textContent=t.back;$('etiquetaOperacion').textContent=t.solve;$('etiquetaAngulo').textContent=t.angle;$('etiquetaFuerza').textContent=t.power;
+  $('titulo').textContent=t.title;$('descripcion').textContent=t.desc;$('volver').textContent=t.back;$('etiquetaOperacion').textContent=t.solve;
   $('textoPuntos').textContent=t.points;$('textoAciertos').textContent=t.hits;$('textoLanzamientos').textContent=t.throws;$('textoVidas').textContent=t.lives;$('botonLanzar').textContent=t.launch;
   $('overlayTitulo').textContent=active?'':t.ready;$('overlayTexto').textContent=t.intro;$('botonInicio').textContent=active?t.start:(hits||score?t.again:t.start);
   $('instrucciones').textContent=t.instructions;$('tituloRecords').textContent=t.records;$('textoMejorPuntuacion').textContent=t.bestScore;$('textoMejorRacha').textContent=t.bestStreak;$('textoPartidas').textContent=t.games;
@@ -149,7 +198,7 @@ function renderText(){
 }
 function menuToggle(force){const open=force??$('menuIdiomas').style.display!=='block';$('menuIdiomas').style.display=open?'block':'none';$('botonIdioma').setAttribute('aria-expanded',String(open))}
 
-$('angulo').addEventListener('input',updateControls);$('fuerza').addEventListener('input',updateControls);
+
 $('botonLanzar').addEventListener('click',throwDart);$('botonInicio').addEventListener('click',startGame);
 $('botonIdioma').addEventListener('click',()=>menuToggle());$('menuIdiomas').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;localStorage.setItem('idioma',b.dataset.lang);menuToggle(false);renderText()});
 $('botonTema').addEventListener('click',()=>{localStorage.setItem('tema',localStorage.getItem('tema')==='claro'?'oscuro':'claro');renderText()});
