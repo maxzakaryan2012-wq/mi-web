@@ -153,7 +153,7 @@ function spawn(){
 let recoil=0;
 function gunPoint(x,y,z){
     const yaw=(aimX/canvas.width-.5)*.65;
-    const pitch=(aimY/canvas.height-.5)*.24;
+    const pitch=(.5-aimY/canvas.height)*.24;
     const xx=x*Math.cos(yaw)+z*Math.sin(yaw);
     const zz=z*Math.cos(yaw)-x*Math.sin(yaw);
     const yy=y*Math.cos(pitch)-zz*Math.sin(pitch);
