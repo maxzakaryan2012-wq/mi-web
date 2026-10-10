@@ -1330,6 +1330,12 @@
                 </div>
 
                 <div class="tarjeta" data-categoria="juegos">
+                    <h2 id="tituloDurak">🃏 Durak</h2>
+                    <p id="descripcionDurak">Podkidnoy contra el bot: principiante, medio, difícil e imposible. ¡Quédate sin cartas!</p>
+                    <a href="juegos/durak/index.html" id="botonDurak">🃏 Jugar</a>
+                </div>
+
+                <div class="tarjeta" data-categoria="juegos">
                     <h2 id="tituloAjedrez">♟️ Ajedrez</h2>
                     <p id="descripcionAjedrez">Juega con blancas contra un bot y gana XP por movimientos, capturas, jaques, enroques y mate.</p>
                     <a href="juegos/ajedrez/index.html?v=chess-v1" id="botonAjedrez">♟️ Jugar</a>
@@ -2403,6 +2409,12 @@
                 hy: ['🏎️ Մաթեմատիկական մրցավազք', 'Մրցիր 4 բոտերի դեմ և առաջինը լուծիր 20 գործողություն։', '🏎️ Խաղալ']
             }[document.documentElement.lang];
             ['tituloCarreraMatematica', 'descripcionCarreraMatematica', 'botonCarreraMatematica'].forEach((id, i) => document.getElementById(id).textContent = carreraMatematica[i]);
+            const durak = {
+                es: ['🃏 Durak', 'Podkidnoy contra el bot: principiante, medio, difícil e imposible. ¡Quédate sin cartas!', '🃏 Jugar'],
+                en: ['🃏 Durak', 'Podkidnoy against the bot: beginner, medium, hard and impossible. Run out of cards!', '🃏 Play'],
+                hy: ['🃏 Դուրակ', 'Խաղա բոտի դեմ՝ սկսնակ, միջին, դժվար և անհնար մակարդակներով։ Ազատվիր քարտերից։', '🃏 Խաղալ']
+            }[document.documentElement.lang] || ['🃏 Durak', 'Podkidnoy · 4 niveles', '🃏 Jugar'];
+            ['tituloDurak', 'descripcionDurak', 'botonDurak'].forEach((id, i) => document.getElementById(id).textContent = durak[i]);
             const ajedrez = {
                 es: ['♟️ Ajedrez', 'Juega con blancas contra un bot y gana XP por movimientos, capturas, jaques, enroques y mate.', '♟️ Jugar'],
                 en: ['♟️ Chess', 'Play White against a bot and earn XP for moves, captures, checks, castling and checkmate.', '♟️ Play'],
