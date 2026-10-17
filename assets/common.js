@@ -533,7 +533,7 @@ window.MiWeb = (() => {
         const path = location.pathname.toLowerCase();
         const entries = [
             ['duelo-calculo','game'],['disparador-primos','game'],['dardos-matematicos','game'],['secuencia','game'],
-            ['2048','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['ajedrez','game'],['adivina-el-numero','game'],
+            ['2048','game'],['durak','game'],['saltos-multiplos','game'],['verdadero-falso','game'],['crea-el-numero','game'],['carrera-matematica','game'],['ajedrez','game'],['adivina-el-numero','game'],
             ['pulsa-el-boton','game'],['adivino-tu-numero','game'],
             ['areas','calculator'],['porcentajes','calculator'],['pitagoras','calculator'],
             ['divisibilidad','calculator'],['mcd-mcm','calculator'],['fracciones','calculator'],
