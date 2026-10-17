@@ -35,6 +35,44 @@ window.MiWeb = (() => {
     let xpActiveTimer = null;
     let xpRefreshPending = null;
 
+    let achievementCache = null;
+    let achievementPending = null;
+    let achievementTimer = null;
+
+    async function getAchievements() {
+        if (achievementPending) return achievementPending;
+        achievementPending = (async () => {
+            const response = await rpc('get_my_achievements', {});
+            const rows = Array.isArray(response) ? response : [];
+            const previous = achievementCache;
+            achievementCache = rows;
+            window.dispatchEvent(new CustomEvent('miweb-achievements', { detail:{ rows } }));
+            if (previous) {
+                const old = new Set(previous.filter(r => r.unlocked_at).map(r => r.badge_id));
+                const unlocked = rows.filter(r => r.unlocked_at && !old.has(r.badge_id));
+                if (unlocked.length && document.body) {
+                    const l = document.documentElement.lang;
+                    const label = l === 'hy' ? 'Նոր մեդալներ' : l === 'en' ? 'New medals' : 'Nuevas medallas';
+                    const toast = document.createElement('div');
+                    toast.className = 'miweb-achievement-toast';
+                    toast.setAttribute('role','status');
+                    toast.textContent = '🏅 ' + label + ': +' + unlocked.length;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2700);
+                }
+            }
+            return rows;
+        })();
+        try { return await achievementPending; }
+        finally { achievementPending = null; }
+    }
+    function scheduleAchievements() {
+        if (!xpContext()) return;
+        clearTimeout(achievementTimer);
+        achievementTimer = setTimeout(() => getAchievements().catch(() => {}), 2500);
+    }
+
+
     if (localStorage.getItem(RESET_KEY) !== STATS_VERSION) {
         for (const key of Object.keys(fields)) {
             localStorage.removeItem(key);
@@ -229,6 +267,7 @@ window.MiWeb = (() => {
                 p_stats: stats
             });
             await syncGlobalGame(game, true);
+            scheduleAchievements();
         } catch (error) {
             console.warn('No se pudo guardar el ranking global; queda guardado localmente.', error);
         }
@@ -526,6 +565,7 @@ window.MiWeb = (() => {
         };
         localStorage.setItem(XP_LOCAL_KEY, JSON.stringify(xpCache));
         renderXpWidget();
+        scheduleAchievements();
         window.dispatchEvent(new CustomEvent('miweb-xp', { detail: { ...xpCache } }));
     }
 
@@ -591,6 +631,7 @@ window.MiWeb = (() => {
         const style = document.createElement('style');
         style.id = 'miweb-xp-styles';
         style.textContent = `
+            .miweb-achievement-toast{position:fixed;z-index:10005;right:14px;bottom:108px;max-width:calc(100vw - 28px);padding:13px 18px;border-radius:12px;background:#24202f;color:#ffe6a1;border:2px solid #e0b43c;font-size:14px;font-weight:800;box-shadow:0 7px 22px #0006}
             .miweb-xp-widget{position:fixed;right:18px;bottom:18px;z-index:9998;width:min(400px,calc(100vw - 36px));font-family:Arial,sans-serif}
             .miweb-xp-chip{width:100%;border:2px solid #e0b43c;background:#1d1d1d;color:#fff;border-radius:19px;padding:18px 20px;box-shadow:0 10px 34px rgba(0,0,0,.34),0 0 0 3px rgba(224,180,60,.09);cursor:pointer;text-align:left}
             .miweb-xp-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800}
@@ -829,6 +870,7 @@ window.MiWeb = (() => {
         ensureXpWidget();
         xpCache = readLocalXp();
         renderXpWidget();
+        getAchievements().catch(() => {});
         refreshXp().finally(() => awardXP('page_enter'));
 
         clearInterval(xpActiveTimer);
@@ -857,6 +899,6 @@ window.MiWeb = (() => {
         getContact: () => rpc('get_player_contact', {}), profile, rename, readStats, writeStats, playerName, applyLanguage,
         validIntegerRange, readExtraStats, writeExtraStats, updateExtraStats,
         mountRanking, refreshRanking, refreshRankings, syncGlobalGame,
-        awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, awardChessMoveXp, refreshXp, getXpLeaderboard, xpRequiredForLevel, xpProgressFromTotal
+        awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, awardChessMoveXp, refreshXp, getXpLeaderboard, getAchievements, xpRequiredForLevel, xpProgressFromTotal
     };
 })();

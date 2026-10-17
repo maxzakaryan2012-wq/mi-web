@@ -995,7 +995,15 @@
             }
         }
 
-</style>
+
+        .medallas-teaser{display:flex;align-items:center;gap:14px;margin:14px 0 20px;padding:16px 20px;border-radius:15px;background:#252137;border:1px solid #7264d9;color:#fff;text-decoration:none;transition:transform .2s}
+        .medallas-teaser:hover{transform:translateY(-2px)}.medallas-teaser-icon{font-size:34px}
+        .medallas-teaser span:nth-child(2){display:flex;flex:1;flex-direction:column;gap:5px}
+        .medallas-teaser small{font-size:13px;color:#d2cdec}
+        body.claro .medallas-teaser{background:#edeafb;color:#242044}
+        body.claro .medallas-teaser small{color:#4c4865}
+        @media(max-width:550px){.medallas-teaser{padding:12px 13px;gap:9px}.medallas-teaser-icon{font-size:27px}}
+    </style>
 </head>
 
 <body>
@@ -1031,6 +1039,8 @@
             <a href="#ranking" id="rankingNav" data-view="ranking">
                 🏆 Ranking
             </a>
+
+            <a href="logros/index.html" id="logrosNav">🎖️ Logros</a>
 
             <a href="#registro" id="registroNav" data-view="registro">
                 👤 Registrarse
@@ -1115,6 +1125,11 @@
                 <div class="resumen-dato"><strong id="totalInteresantes">2</strong><span id="textoTotalInteresantes">Experimentos</span></div>
             </div>
 
+            <a class="medallas-teaser" href="logros/index.html" id="medallasTeaser">
+                <span class="medallas-teaser-icon">🏅</span>
+                <span><strong id="medallasTeaserTitulo">Logros y medallas</strong><small id="medallasTeaserResumen">Consulta tus logros y desafíos</small></span>
+                <span aria-hidden="true">➜</span>
+            </a>
             <div class="destacado" id="destacado">
                 <div>
                     <span class="destacado-etiqueta" id="destacadoEtiqueta">⭐ Destacado</span>
@@ -1506,7 +1521,7 @@
     </main>
 
 
-    <script src="assets/common.js?v=20261009-email"></script>
+    <script src="assets/common.js?v=20261017-badges"></script>
     <script>
 
         /* =========================
@@ -3116,11 +3131,29 @@
            INICIAR
         ========================= */
 
+
+        let savedAchievementRows = null;
+        function renderHomeAchievements() {
+            const l = localStorage.getItem('idioma') || 'es';
+            const titles = {
+                es:['🎖️ Logros','Logros y medallas','Consulta tus logros y desafíos','Medallas conseguidas: '],
+                en:['🎖️ Achievements','Achievements and medals','See your achievements and challenges','Medals unlocked: '],
+                hy:['🎖️ Նվաճումներ','Նվաճումներ և մեդալներ','Տես քո նվաճումներն ու առաջադրանքները','Բացված մեդալներ՝ ']
+            }[l] || ['🎖️ Logros','Logros y medallas','Consulta tus logros y desafíos','Medallas conseguidas: '];
+            document.getElementById('logrosNav').textContent=titles[0];
+            document.getElementById('medallasTeaserTitulo').textContent=titles[1];
+            document.getElementById('medallasTeaserResumen').textContent=savedAchievementRows
+              ? titles[3] + savedAchievementRows.filter(x=>x.unlocked_at).length + ' / ' + savedAchievementRows.length : titles[2];
+        }
+        window.addEventListener('miweb-achievements',event=>{savedAchievementRows=event.detail.rows;renderHomeAchievements()});
+        new MutationObserver(renderHomeAchievements).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
         aplicarTema();
 
         crearGruposCatalogo();
 
         aplicarIdioma();
+        renderHomeAchievements();
+        MiWeb.getAchievements().catch(() => {});
 
         mostrarNombreUsuario();
         MiWeb.getContact().then(email => { if(email && !document.getElementById('correoUsuario').value) document.getElementById('correoUsuario').value = email; }).catch(() => {});
