@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logros y medallas · MI WEB</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#111217;color:#f5f4fc;--panel:#1e202b;--border:#393c4f;--muted:#acb1c3}
+body.claro{background:#f5f6f9;color:#171821;--panel:#fff;--border:#ced1e0;--muted:#53596c}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px max(15px,calc((100vw - 1150px)/2));background:var(--panel);border-bottom:1px solid var(--border)}
+header a{font-weight:800;color:inherit;text-decoration:none}.controls{display:flex;gap:8px}
+button,select{min-height:44px;font:inherit;color:inherit;background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:10px 13px;cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #e2bc62;outline-offset:3px}
+main{max-width:1130px;margin:auto;padding:30px 15px 115px}
+h1{font-size:clamp(29px,5vw,47px);margin:0 0 6px}#subtitle{color:var(--muted);line-height:1.55}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:23px 0}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.stat strong{display:block;color:#e4bd70;font-size:clamp(25px,5vw,36px)}body.claro .stat strong{color:#7159b5}.stat span{color:var(--muted);font-size:12px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.filters button.active{background:#6956bc;color:white;border-color:#6956bc}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:13px}
+.medal{display:flex;gap:12px;border:1px solid var(--border);border-radius:15px;padding:17px;background:var(--panel);min-height:177px}
+.medal.obtained{border-color:#c8a063;background:linear-gradient(140deg,rgba(194,146,73,.13),transparent 70%),var(--panel)}
+.medal.pending{opacity:.79}.emoji{font-size:35px;flex-shrink:0;line-height:1.2;filter:grayscale(1)}.obtained .emoji{filter:none}
+.medal-body{flex:1;min-width:0}.topline{display:flex;gap:5px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}h2{font-size:16px;margin:0}.flag{font-size:11px;color:#e4c171;border-radius:24px;background:#483c29;padding:5px 8px;font-weight:800}.pending .flag{background:#373848;color:#c4c6d0}
+body.claro .flag{background:#efe5cd;color:#785d2c}body.claro .pending .flag{background:#e6e7f0;color:#545866}
+.description{color:var(--muted);font-size:13px;line-height:1.5;margin:10px 0 16px;min-height:38px}
+.counter{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);gap:6px;margin-bottom:6px}
+.track{height:9px;border-radius:9px;overflow:hidden;background:#434554}body.claro .track{background:#e4e4ef}
+.fill{height:100%;background:linear-gradient(90deg,#8270d8,#e7c46f);border-radius:9px}
+.date{display:block;margin-top:10px;color:var(--muted);font-size:11px}
+#loading,#error,#empty{padding:24px;text-align:center;color:var(--muted)}#info{font-size:13px;color:var(--muted);line-height:1.5;margin:25px 0}
+@media(max-width:550px){header{padding:10px 12px}main{padding:22px 11px 110px}.summary{gap:6px}.stat{padding:12px 4px}.stat span{font-size:11px}.grid{grid-template-columns:1fr}.medal{padding:13px}.filters button{flex:1}}
+</style></head>
+<body><header><a href="../index.html">← MI WEB</a><div class="controls"><select id="language" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="hy">HY</option></select><button id="theme" aria-label="Cambiar tema">☀️</button></div></header>
+<main><h1 id="title">🏅 Logros y medallas</h1><p id="subtitle">Colecciona medallas</p>
+<section class="summary"><div class="stat"><strong id="total">—</strong><span id="totalLabel">Medallas</span></div><div class="stat"><strong id="obtained">—</strong><span id="earnedLabel">Conseguidos</span></div><div class="stat"><strong id="remaining">—</strong><span id="lockedLabel">Pendientes</span></div></section>
+<div class="filters"><button data-tab="all" id="all" aria-pressed="true">Todos</button><button data-tab="earned" id="earned" aria-pressed="false">Conseguidos</button><button data-tab="locked" id="locked" aria-pressed="false">Pendientes</button></div>
+<p id="loading" role="status">Cargando tus medallas…</p><div id="error" role="alert" hidden><p id="errorText"></p><button id="retry">Reintentar</button></div>
+<section class="grid" id="grid" aria-label="Medallas"></section><p id="empty" hidden>—</p><p id="info"></p>
+</main><script src="../assets/common.js?v=achievements-20261017"></script><script src="app.js?v=achievements-20261017"></script></body></html>
