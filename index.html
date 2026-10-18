@@ -1003,6 +1003,68 @@
         body.claro .medallas-teaser{background:#edeafb;color:#242044}
         body.claro .medallas-teaser small{color:#4c4865}
         @media(max-width:550px){.medallas-teaser{padding:12px 13px;gap:9px}.medallas-teaser-icon{font-size:27px}}
+
+        /* Logros: mismo estilo blanco/negro, sin pantalla independiente */
+        .logros-seccion{width:100%;min-height:calc(100vh - 170px);padding:0 0 55px}
+        .logros-cabecera{text-align:center;margin:0 0 28px}
+        .logros-cabecera h1{font-size:clamp(32px,5vw,48px);margin:0 0 10px}
+        .logros-cabecera p{color:#aaa;font-size:16px;line-height:1.55}
+        .logros-resumen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:880px;margin:0 auto 28px}
+        .logros-dato{padding:18px 12px;border:1px solid #383838;background:#1d1d1d;border-radius:14px;text-align:center}
+        .logros-dato strong{display:block;color:#fff;font-size:clamp(27px,4vw,38px)}
+        .logros-dato span{font-size:13px;color:#aaa}
+        .logros-toolbar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+        .logros-toolbar button{font:inherit;font-size:14px;padding:10px 17px;color:#eee;background:#232323;border:1px solid #444;border-radius:10px;min-height:44px;cursor:pointer}
+        .logros-toolbar button.active{background:#fff;border-color:#fff;color:#111;font-weight:800}
+        .logros-toolbar button:focus-visible{outline:3px solid #aaa;outline-offset:3px}
+        .logros-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+        .logros-grid .medal{display:flex;gap:13px;min-width:0;min-height:185px;border:1px solid #383838;background:#1d1d1d;border-radius:15px;padding:17px}
+        .logros-grid .medal.obtained{border-color:#898989}
+        .logros-grid .medal.pending{opacity:.73}
+        .logros-grid .emoji{font-size:35px;line-height:1.3;flex-shrink:0;filter:grayscale(1)}
+        .logros-grid .medal.obtained .emoji{filter:grayscale(.35)}
+        .logros-grid .medal-body{min-width:0;flex:1}
+        .logros-grid .topline{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:6px}
+        .logros-grid h2{font-size:16px;margin:0}
+        .logros-grid .flag{font-size:11px;font-weight:800;border:1px solid #555;background:#333;color:#ddd;border-radius:25px;padding:4px 7px}
+        .logros-grid .medal.obtained .flag{color:#111;background:#fff;border-color:#fff}
+        .logros-grid .description{font-size:13px;color:#aaa;line-height:1.5;min-height:38px;margin:10px 0 15px}
+        .logros-grid .counter{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#aaa;margin-bottom:7px}
+        .logros-grid .counter strong{color:#eee}
+        .logros-grid .track{height:8px;border-radius:8px;background:#404040;overflow:hidden}
+        .logros-grid .fill{background:#e7e7e7;height:100%;border-radius:8px}
+        .logros-grid .date{display:block;margin-top:9px;font-size:11px;color:#aaa}
+        .logros-info{text-align:center;color:#999;font-size:12px;margin:26px 0 0;line-height:1.6}
+        #logros-loading,#logros-error,#logros-empty{padding:20px;color:#aaa;text-align:center;border:1px solid #444;border-radius:12px}
+        body.claro .logros-cabecera p{color:#555}
+        body.claro .logros-dato,body.claro .logros-grid .medal{background:#fff;border-color:#ddd}
+        body.claro .logros-grid .medal.obtained{border-color:#777}
+        body.claro .logros-dato strong,body.claro .logros-grid .counter strong{color:#111}
+        body.claro .logros-dato span,body.claro .logros-grid .description,body.claro .logros-grid .counter,body.claro .logros-grid .date{color:#555}
+        body.claro .logros-toolbar button{background:#fff;border-color:#ccc;color:#111}
+        body.claro .logros-toolbar button.active{background:#111;border-color:#111;color:#fff}
+        body.claro .logros-grid .flag{background:#eee;color:#555;border-color:#ddd}
+        body.claro .logros-grid .medal.obtained .flag{background:#111;color:#fff;border-color:#111}
+        body.claro .logros-grid .track{background:#e4e4e4}
+        body.claro .logros-grid .fill{background:#111}
+        .medallas-teaser{background:#1d1d1d;border-color:#424242;color:#fff}
+        .medallas-teaser small{color:#bbb}
+        body.claro .medallas-teaser{background:#fff;color:#111;border-color:#ddd}
+        body.claro .medallas-teaser small{color:#555}
+        @media(max-width:1080px){.logros-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:650px){
+            .logros-cabecera{text-align:left;margin:0 0 19px}
+            .logros-cabecera h1{font-size:29px}.logros-cabecera p{font-size:14px}
+            .logros-resumen{gap:7px;margin-bottom:18px}
+            .logros-dato{padding:13px 6px}.logros-dato span{font-size:11px}
+            .logros-toolbar{gap:6px;justify-content:stretch}
+            .logros-toolbar button{flex:1;padding:9px 7px;font-size:12px}
+            #logros-retry{flex-basis:100%}
+            .logros-grid{grid-template-columns:1fr;gap:10px}
+            .logros-grid .medal{min-height:163px;padding:13px}
+            .logros-grid .emoji{font-size:32px}
+        }
+
     </style>
 </head>
 
@@ -1040,7 +1102,7 @@
                 🏆 Ranking
             </a>
 
-            <a href="logros/index.html" id="logrosNav">🎖️ Logros</a>
+            <a href="#logros" id="logrosNav" data-view="logros">🎖️ Logros</a>
 
             <a href="#registro" id="registroNav" data-view="registro">
                 👤 Registrarse
@@ -1125,7 +1187,7 @@
                 <div class="resumen-dato"><strong id="totalInteresantes">2</strong><span id="textoTotalInteresantes">Experimentos</span></div>
             </div>
 
-            <a class="medallas-teaser" href="logros/index.html" id="medallasTeaser">
+            <a class="medallas-teaser" href="#logros" id="medallasTeaser">
                 <span class="medallas-teaser-icon">🏅</span>
                 <span><strong id="medallasTeaserTitulo">Logros y medallas</strong><small id="medallasTeaserResumen">Consulta tus logros y desafíos</small></span>
                 <span aria-hidden="true">➜</span>
@@ -1270,6 +1332,27 @@
             </div>
         </section>
 
+
+
+        <section class="logros-seccion" id="logrosSeccion" aria-labelledby="logros-title" style="display:none">
+            <div class="logros-cabecera"><h1 id="logros-title">🏅 Logros y medallas</h1><p id="logros-subtitle">Completa desafíos y colecciona medallas permanentes.</p></div>
+            <div class="logros-resumen">
+                <div class="logros-dato"><strong id="logros-total">19</strong><span id="logros-totalLabel">Medallas</span></div>
+                <div class="logros-dato"><strong id="logros-obtained">—</strong><span id="logros-earnedLabel">Conseguidos</span></div>
+                <div class="logros-dato"><strong id="logros-remaining">—</strong><span id="logros-lockedLabel">Pendientes</span></div>
+            </div>
+            <div class="logros-toolbar" role="group" aria-label="Filtros de medallas">
+                <button id="logros-all" type="button" data-logros-tab="all" aria-pressed="true" class="active">Todos</button>
+                <button id="logros-earned" type="button" data-logros-tab="earned" aria-pressed="false">Conseguidos</button>
+                <button id="logros-locked" type="button" data-logros-tab="locked" aria-pressed="false">Pendientes</button>
+                <button id="logros-retry" type="button">↻ Actualizar</button>
+            </div>
+            <p id="logros-loading" role="status" hidden>Cargando tus medallas…</p>
+            <div id="logros-error" role="alert" hidden><p id="logros-errorText"></p></div>
+            <div id="logros-grid" class="logros-grid" aria-live="polite"></div>
+            <p id="logros-empty" hidden>—</p>
+            <p id="logros-info" class="logros-info">Las medallas se guardan en Supabase y no dan XP adicional.</p>
+        </section>
 
         <!-- =========================
              JUEGOS
@@ -1693,7 +1776,7 @@
         }
 
         function mostrarSeccion(seccion, actualizarHash = true) {
-            const validas = ["inicio", "juegos", "interesantes", "calculadora", "ranking", "registro"];
+            const validas = ["inicio", "juegos", "interesantes", "calculadora", "ranking", "logros", "registro"];
             if (!validas.includes(seccion)) seccion = "inicio";
             vistaActual = seccion;
 
@@ -1702,17 +1785,19 @@
             const buscador = document.getElementById("buscadorCatalogo");
             const registro = document.getElementById("registro");
             const ranking = document.getElementById("rankingSeccion");
+            const logros = document.getElementById("logrosSeccion");
             const juegos = document.getElementById("juegos");
             const formulario = document.getElementById("formularioUsuario");
             const tituloCatalogo = document.getElementById("tituloJuegos");
 
             cabecera.style.display = seccion === "inicio" ? "" : "none";
             extras.style.display = seccion === "inicio" ? "" : "none";
-            buscador.style.display = (seccion === "registro" || seccion === "ranking") ? "none" : "";
+            buscador.style.display = (seccion === "registro" || seccion === "ranking" || seccion === "logros") ? "none" : "";
             registro.style.display = seccion === "registro" ? "" : "none";
             ranking.style.display = seccion === "ranking" ? "block" : "none";
-            juegos.style.display = (seccion === "registro" || seccion === "ranking") ? "none" : "";
-            tituloCatalogo.style.display = (seccion === "inicio" || seccion === "ranking" || seccion === "registro") ? "none" : "";
+            logros.style.display = seccion === "logros" ? "block" : "none";
+            juegos.style.display = (seccion === "registro" || seccion === "ranking" || seccion === "logros") ? "none" : "";
+            tituloCatalogo.style.display = (seccion === "inicio" || seccion === "ranking" || seccion === "registro" || seccion === "logros") ? "none" : "";
 
             if (seccion === "registro") {
                 formulario.style.display = "flex";
@@ -1724,6 +1809,7 @@
             actualizarNavegacionSeccion();
             actualizarPortadaMejorada();
             if (seccion === "ranking") cargarRankingXp();
+            if (seccion === "logros") window.MiWebLogros?.show();
 
             if (actualizarHash && location.hash !== "#" + seccion) {
                 history.pushState(null, "", "#" + seccion);
@@ -3144,6 +3230,7 @@
             document.getElementById('medallasTeaserTitulo').textContent=titles[1];
             document.getElementById('medallasTeaserResumen').textContent=savedAchievementRows
               ? titles[3] + savedAchievementRows.filter(x=>x.unlocked_at).length + ' / ' + savedAchievementRows.length : titles[2];
+            window.MiWebLogros?.render();
         }
         window.addEventListener('miweb-achievements',event=>{savedAchievementRows=event.detail.rows;renderHomeAchievements()});
         new MutationObserver(renderHomeAchievements).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
@@ -3162,6 +3249,7 @@
         mostrarSeccion(location.hash.slice(1) || "inicio", false);
 
     </script>
+    <script src="logros/app.js?v=tab-bw-20261018"></script>
 
 </body>
 </html>
