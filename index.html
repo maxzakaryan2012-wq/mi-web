@@ -1065,6 +1065,14 @@
             .logros-grid .emoji{font-size:32px}
         }
 
+            .acceso-expedientes {
+            display: block; width: fit-content; margin: 30px 0 0 auto;
+            padding: 9px 12px; border: 1px dashed #444; border-radius: 8px;
+            color: #656565; text-decoration: none; font-size: 11px;
+            letter-spacing: .1em; opacity: .38; transition: opacity .2s,color .2s;
+        }
+        .acceso-expedientes:hover,.acceso-expedientes:focus-visible { opacity: 1; color: inherit; }
+        body.claro .acceso-expedientes { border-color: #ddd; color: #888; }
     </style>
 </head>
 
@@ -2180,6 +2188,15 @@
                 });
 
                 section.append(h2, nuevoGrid);
+                if (categoria === "calculadora") {
+                    const secreto = document.createElement("a");
+                    secreto.href = "juegos/expedientes/index.html";
+                    secreto.className = "acceso-expedientes";
+                    secreto.textContent = "◈ archivo 003 / acceso reservado";
+                    secreto.title = "¿Te atreves a investigar?";
+                    secreto.setAttribute("aria-label", "Acceder al juego secreto de investigación");
+                    section.appendChild(secreto);
+                }
                 parent.insertBefore(section, grid);
             });
 
