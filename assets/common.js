@@ -902,3 +902,43 @@ window.MiWeb = (() => {
         awardXP, xpAction, awardPulsaFinalXp, awardMathRaceXp, awardChessMoveXp, refreshXp, getXpLeaderboard, getAchievements, xpRequiredForLevel, xpProgressFromTotal
     };
 })();
+
+/* Approved full logo: homepage hero only. Navigation, favicon and URL stay unchanged. */
+(() => {
+    const scriptUrl = document.currentScript && document.currentScript.src;
+    const logoUrl = new URL('math-lab-games-logo.svg', scriptUrl || new URL('assets/common.js', document.baseURI)).href;
+
+    function mountHomeLogo() {
+        const title = document.querySelector('main > section.cabecera > h1#tituloPrincipal');
+        if (!title || !document.getElementById('extrasInicio') || document.getElementById('math-lab-home-logo')) return;
+        const hero = title.parentElement;
+        const style = document.createElement('style');
+        style.id = 'math-lab-home-logo-styles';
+        style.textContent = `
+            #math-lab-home-logo{display:block;width:100%;max-width:720px;height:auto;margin:0 auto 20px;background:#fff;border-radius:14px}
+            .cabecera.math-lab-logo-ready > #tituloPrincipal{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0}
+        `;
+        document.head.appendChild(style);
+        const logo = document.createElement('img');
+        logo.id = 'math-lab-home-logo';
+        logo.alt = 'Math Lab Games';
+        logo.width = 2048;
+        logo.height = 682;
+        logo.decoding = 'async';
+        logo.setAttribute('fetchpriority', 'high');
+        logo.addEventListener('load', () => hero.classList.add('math-lab-logo-ready'), { once:true });
+        logo.addEventListener('error', () => {
+            hero.classList.remove('math-lab-logo-ready');
+            logo.remove();
+            style.remove();
+        }, { once:true });
+        title.before(logo);
+        logo.src = logoUrl;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', mountHomeLogo, { once:true });
+    } else {
+        mountHomeLogo();
+    }
+})();
